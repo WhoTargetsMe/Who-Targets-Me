@@ -1,0 +1,13 @@
+h1 {
+  width: 100%;
+  text-align: center;
+}
+
+table {
+  width: 300px;
+  text-align: left;
+}
+
+thead {
+  border-bottom: 1px solid black;
+}

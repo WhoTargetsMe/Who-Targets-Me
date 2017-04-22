@@ -18,5 +18,9 @@
       "matches": ["*://*.facebook.com/*"],
       "js": ["jquery-3.2.1.min.js", "facebook.js"]
     }
-  ]
+  ],
+  "icons":
+    {
+      "128": "icon.png"
+    }
 }
