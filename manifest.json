@@ -1,0 +1,22 @@
+{
+  "version": "0.1",
+  "name": "who-targets-me",
+  "manifest_version": 2,
+  "description": "Track which entities are targeting you with adverts",
+  "browser_action": {
+    "default_title": "Who targets me?",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "contextMenus",
+    "tabs",
+    "storage",
+    "*://*.facebook.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*.facebook.com/*"],
+      "js": ["jquery-3.2.1.min.js", "facebook.js"]
+    }
+  ]
+}
