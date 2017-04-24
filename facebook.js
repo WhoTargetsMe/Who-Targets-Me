@@ -18,19 +18,19 @@ $(document).ready(function() {
 			`advertiserHTML` sample html, from which to find [`top_level_post_id`] (in this case, 1228218533893902)
 			<a href="https://www.facebook.com/getintoteaching/?hc_ref=ADS&amp;fref=nf&amp;ft[tn]=kC&amp;ft[qid]=6412371648924163418&amp;ft[mf_story_key]=3962249031861160198&amp;ft[ei]=AI%40182b18588aea4bc4d7d508ccbed8305d&amp;ft[top_level_post_id]=1228218533893902&amp;ft[fbfeed_location]=1&amp;ft[insertion_position]=59&amp;__md__=0" data-hovercard="/ajax/hovercard/page.php?id=149145438467889&amp;extragetparams=%7B%22hc_ref%22%3A%22ADS%22%2C%22fref%22%3A%22nf%22%7D" data-hovercard-prefer-more-content-show="1" data-hovercard-obj-id="149145438467889" onmousedown="this.href = this.href.replace('__md__=0', '__md__=1');">Get Into Teaching</a>
 			*/
-			var advertID = /\[top_level_post_id\]=([0-9]+)/.exec(advertiserHTML.attr('href'));
+			var top_level_post_id = /\[top_level_post_id\]=([0-9]+)/.exec(advertiserHTML.attr('href'));
 
 			if(advertiserName && (
-				(advertID != null && advertID.constructor === Array)
+				(top_level_post_id != null && top_level_post_id.constructor === Array)
 				/* try data-dedupekey or id=hyperfeed_story_id_... as alternative unique ID? */
 			)) {
-				advertID = advertID[1];
+				top_level_post_id = top_level_post_id[1];
 				updated_advertisers.push(advertiserName);
 				var adContent = $(this).closest('div').prev().find('a:first-of-type').closest('.fbUserContent');
 
 				// Store new adverts to DB
-				if(!processingAdvertIDs.includes(advertID) && !storedAdvertIDs.includes(advertID)) {
-					processingAdvertIDs.push(advertID);
+				if(!processingAdvertIDs.includes(top_level_post_id) && !storedAdvertIDs.includes(top_level_post_id)) {
+					processingAdvertIDs.push(top_level_post_id);
 					console.log(processingAdvertIDs);
 
 					var snapshot = {
@@ -38,7 +38,7 @@ $(document).ready(function() {
 						entityID: advertiserID,
 						timestamp_created: adContent.closest('[data-timestamp]').attr('data-timestamp'),
 						timestamp_snapshot: Date.now(),
-						advertID: advertID,
+						top_level_post_id: top_level_post_id,
 						html: adContent.html(),
 						rawtext: adContent.find('userContent').text()
 					};
@@ -52,16 +52,16 @@ $(document).ready(function() {
 					});
 
 					function saveSnapshot() {
-						console.log("[ARCHIVING] Advertiser: "+advertiserName+" - Advert ID: "+advertID);
+						console.log("[ARCHIVING] Advertiser: "+advertiserName+" - Advert ID: "+top_level_post_id);
 						// Requires server-side DB compatibility
 						$.post("https://who-targets-me.herokuapp.com/analytics/", snapshot, function( data ) {
-							console.log("[ARCHIVING COMPLETE] Advertiser: "+advertiserName+" - Advert ID: "+advertID);
-							storedAdvertIDs.push(advertID); // now update server, too.
+							console.log("[ARCHIVING COMPLETE] Advertiser: "+advertiserName+" - Advert ID: "+top_level_post_id);
+							storedAdvertIDs.push(top_level_post_id); // now update server, too.
 							console.log(storedAdvertIDs);
 						});
 					}
 				} else {
-					// console.log("[ALREADY ARCHIVED] Advertiser: "+advertiserName+" - Advert ID: "+advertID);
+					// console.log("[ALREADY ARCHIVED] Advertiser: "+advertiserName+" - Advert ID: "+top_level_post_id);
 				}
 			}
 		})
