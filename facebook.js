@@ -29,10 +29,12 @@ $(document).ready(function() {
 					processingAdvertIDs.push(top_level_post_id);
 
 					// Get image/video thumbnail URL
-					if(adContent.find('.fbStoryAttachmentImage img')) {
+					if(adContent.find('.fbStoryAttachmentImage')) {
 						var thumbnailMedia = adContent.find('.fbStoryAttachmentImage img.scaledImageFitWidth').attr('src');
+					} else if(adContent.find('video')) {
+						var thumbnailMedia = adContent.find('video[muted]').attr('src');
 					} else {
-						thumbnailMedia = adContent.find('video').attr('src');
+						thumbnailMedia = null; // fail
 					}
 
 					// Get advert link-out
@@ -57,9 +59,10 @@ $(document).ready(function() {
 						// Maybe we want to download and save these on our server?
 						// Images are easy to store... but what about fb-locked videos?
 						thumbnailMedia: thumbnailMedia,
-						// the big/small text beneath thumbnail images. Definitely needs improving
-						fbStory_headline: adContent.find('.mbs._6m6._2cnj._5s6c').text(),
-						fbStory_subtitle: adContent.find('._6m7._3bt9').text(),
+						// the big/small text beneath thumbnail images
+						// captures the majority of cases, but not all
+						fbStory_headline: adContent.find('.mbs._6m6._2cnj._5s6c, ._275z._5s6c').text(), // selectors for image, video
+						fbStory_subtitle: adContent.find('._6m7._3bt9, ._5q4r').text(),
 					};
 
 					// Image snapshot
