@@ -1,4 +1,5 @@
 var advertisers = [];
+var processingPostIDs = [];
 var storedPostIDs = []; // Retrieve from server, all post IDs (i.e. adverts) snapshotted
 var timestamp = Math.floor(Date.now());
 var archivedAttr = 'wtm-archived';
@@ -19,13 +20,19 @@ $(document).ready(function() {
 			*/
 			var postID = /\[top_level_post_id\]=([0-9]+)/.exec(sponsorHTML.attr('href'));
 
-			if(sponsorName && postID != null && postID.constructor === Array) {
+			if(sponsorName && (
+				(postID != null && postID.constructor === Array)
+				/* try data-dedupekey or id=hyperfeed_story_id_... as alternative unique ID? */
+			)) {
 				postID = postID[1];
 				updated_advertisers.push(sponsorName);
 				var adContent = $(this).closest('div').prev().find('a:first-of-type').closest('.fbUserContent');
 
 				// Store new adverts to DB
-				if(storedPostIDs.includes(postID) == false) {
+				if(!processingPostIDs.includes(postID) && !storedPostIDs.includes(postID)) {
+					processingPostIDs.push(postID);
+					console.log(processingPostIDs);
+
 					html2canvas(adContent, {
 						onrendered: function(canvas) {
 							// Awaiting server-side DB compatibility
@@ -37,12 +44,12 @@ $(document).ready(function() {
 							// }, function( data ) {
 								console.log("[ARCHIVING COMPLETE] Advertiser: "+sponsorName+" - Post ID: "+postID);
 								storedPostIDs.push(postID); // now update server, too.
-								console.log(storedPostIDs);
+								// console.log(storedPostIDs);
 							// });
 						}
 					});
 				} else {
-					console.log("[ALREADY ARCHIVED] Advertiser: "+sponsorName+" - Post ID: "+postID);
+					// console.log("[ALREADY ARCHIVED] Advertiser: "+sponsorName+" - Post ID: "+postID);
 				}
 			}
 		})
