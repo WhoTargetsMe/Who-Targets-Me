@@ -1,26 +1,30 @@
 {
-  "version": "0.1.1",
-  "name": "Who Targets Me",
-  "manifest_version": 2,
-  "description": "Track which entities are targeting you with adverts",
-  "browser_action": {
-    "default_title": "Who targets me?",
-    "default_popup": "popup.html"
-  },
-  "permissions": [
-    "contextMenus",
-    "tabs",
-    "storage",
-    "*://*.facebook.com/*"
-  ],
-  "content_scripts": [
-    {
-      "matches": ["*://*.facebook.com/*"],
+	"version": "0.1.1",
+	"name": "Who Targets Me",
+	"manifest_version": 2,
+	"description": "Track which entities are targeting you with adverts",
+	"browser_action": {
+		"default_title": "Who targets me?",
+		"default_popup": "popup.html"
+	},
+	"permissions": [
+		"contextMenus",
+		"tabs",
+		"storage",
+		"*://*.facebook.com/*"
+	],
+	"content_scripts": [
+		{
+			"matches": ["*://*.facebook.com/*"],
       "js": ["jquery-3.2.1.min.js", "html2canvas.js", "session.js", "facebook.js"]
-    }
-  ],
-  "icons":
-    {
-      "128": "icon.png"
-    }
+		}
+	],
+	"permissions": [
+	    "http://fonts.googleapis.com/",
+	    "https://fonts.googleapis.com/"
+	],
+	"icons":
+	{
+		"128": "icon.png"
+	}
 }
