@@ -16,7 +16,7 @@
 	"content_scripts": [
 		{
 			"matches": ["*://*.facebook.com/*"],
-			"js": ["jquery-3.2.1.min.js", "facebook.js", "tachyons.min.css"]
+      "js": ["jquery-3.2.1.min.js", "html2canvas.js", "session.js", "facebook.js"]
 		}
 	],
 	"permissions": [
