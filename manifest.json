@@ -11,17 +11,15 @@
 		"contextMenus",
 		"tabs",
 		"storage",
-		"*://*.facebook.com/*"
+		"*://*.facebook.com/*",
+	    "http://fonts.googleapis.com/",
+	    "https://fonts.googleapis.com/"
 	],
 	"content_scripts": [
 		{
 			"matches": ["*://*.facebook.com/*"],
       "js": ["jquery-3.2.1.min.js", "html2canvas.js", "session.js", "facebook.js"]
 		}
-	],
-	"permissions": [
-	    "http://fonts.googleapis.com/",
-	    "https://fonts.googleapis.com/"
 	],
 	"icons":
 	{

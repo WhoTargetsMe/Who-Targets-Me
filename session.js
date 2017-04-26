@@ -4,95 +4,96 @@
 
 /* Usage
 // Create new session
-thisSession = new Session({
+thisChromeStorage = new ChromeStorage({
 	someSyncedProperty: false
 })
 
 // Invert a session property's value
-thisSession.set('someSyncedProperty', !thisSession.someSyncedProperty);
+thisChromeStorage.set('someSyncedProperty', !thisChromeStorage.someSyncedProperty);
 
 // Listen for session property changes
-thisSession.onChange({
+thisChromeStorage.onChange({
     someSyncedProperty: function(newValue) {
 		// Access a session property
-		console.log(newValue == thisSession.someSyncedProperty) => true
+		console.log(newValue == thisChromeStorage.someSyncedProperty) => true
 	},
 });
 */
 
-// Use when you need to nuke, during testing
-// chrome.storage.sync.clear()
+var ChromeStorage = function(sessionProperties, api = "sync") {
+    var ChromeStorage = this
 
-var Session = function(sessionProperties) {
-    var Session = this
+	ChromeStorage.api = api
+    ChromeStorage.callbacks = {}
 
-    Session.callbacks = {}
+	// Use when you need to nuke, during testing
+	// chrome.storage[api].clear()
 
     /* ----
         Class methods
     */
 
-    Session.set = function(property,value,cb) {
-        var Session = this
-        Session[property] = value
+    ChromeStorage.set = function(property,value,cb) {
+        var ChromeStorage = this
+        ChromeStorage[property] = value
 
         var keyValue = {}
         keyValue[property] = value
 
-        chrome.storage.sync.set(
+        chrome.storage[api].set(
             keyValue,
             function sentToStorage() {
-                console.log("SET Session."+property+" = ",value)
-                if(typeof Session.callbacks[property] === 'function') Session.callbacks[property](value,"set")
+                console.log("SET ChromeStorage."+property+" = ",value)
+                if(typeof ChromeStorage.callbacks[property] === 'function') ChromeStorage.callbacks[property](value,"set")
                 if(typeof cb === 'function') cb(value)
             }
         )
-        return Session[property]
+        return ChromeStorage[property]
     }
 
-	Session.add = function(property,newValue,cb) {
-        var Session = this;
-		var updatedArray = Session[property];
+	ChromeStorage.add = function(property,newValue,cb) {
+        var ChromeStorage = this;
+		var updatedArray = ChromeStorage[property];
 		updatedArray.push(newValue);
-		Session.set(property, updatedArray, cb);
+		ChromeStorage.set(property, updatedArray, cb);
 	}
 
-    Session.get = function(property,cb) {
-        var Session = this
-        chrome.storage.sync.get(property, function receivedPropertyFromStorage(requestedStorage) {
-            console.log("GET Session."+property+" = ",requestedStorage[property])
-            Session[property] = requestedStorage[property]
-            if(typeof Session.callbacks[property] === 'function') Session.callbacks[property](Session[property],"get") // on init
-            if(typeof cb === 'function') cb(Session[property])
+    ChromeStorage.get = function(property,cb) {
+        var ChromeStorage = this
+        chrome.storage[api].get(property, function receivedPropertyFromStorage(requestedStorage) {
+            console.log("GET ChromeStorage."+property+" = ",requestedStorage[property])
+            ChromeStorage[property] = requestedStorage[property]
+            if(typeof ChromeStorage.callbacks[property] === 'function') ChromeStorage.callbacks[property](ChromeStorage[property],"get") // on init
+            if(typeof cb === 'function') cb(ChromeStorage[property])
         })
     }
 
-	Session.init = function(property,defaultValue,cb) {
-        var Session = this;
-		Session.get(property, function(storageValue) {
+	ChromeStorage.init = function(property,defaultValue,cb) {
+        var ChromeStorage = this;
+		ChromeStorage.get(property, function(storageValue) {
 			if(storageValue != undefined) {
 				console.log("Synced "+property+" with server: ",storageValue)
 			} else {
 				console.log("Resetting "+property+" to ",defaultValue)
-				Session.set(property,defaultValue,cb);
+				ChromeStorage.set(property,defaultValue,cb);
 			}
 		})
 	}
 
-    Session.onChange = function(callbackObj) {
-        var Session = this
-		Object.assign(Session.callbacks, callbackObj)
+    ChromeStorage.onChange = function(callbackObj) {
+        var ChromeStorage = this
+		Object.assign(ChromeStorage.callbacks, callbackObj)
     }
 
     /* ----
         Constructor
     */
 
-	console.log("--- Loading chrome sync")
+	console.log("--- Loading from chrome.storage."+ChromeStorage.api)
 	for (var property in sessionProperties) {
 		if(sessionProperties.hasOwnProperty(property) ) {
 			console.log("--- syncing "+property)
-	        Session.init(property, sessionProperties[property]);
+	        ChromeStorage.init(property, sessionProperties[property]);
 		}
 	}
 }

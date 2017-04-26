@@ -1,19 +1,20 @@
-var userStorage = new Session({
-	advertHistory: []
-})
+var userStorage = new ChromeStorage({ // Collect basic targeting data across user's devices
+	targetingHistory: [],
+}, "sync")
 
-var currentSessionHistory = []; // HTML / image data too large to store in `chrome.storage`
-
-Array.prototype.diff = function(a) { // Polyfill diff function
-	return this.filter(function(i) {return a.indexOf(i) < 0;});
-};
+var browserStorage = new ChromeStorage({ // Maintain a record of advert snapshots on this device
+	advertArchive: [],
+}, "local")
 
 $(document).ready(function() {
+	var oldSessionHistory = []
+
 	window.setInterval(function() {
-		var updatedSessionHistory = []
+		var newSessionHistory = []
 
 		thisBatchN = $("a:contains('Sponsored')").length;
 		$("a:contains('Sponsored')").each(function(index) {
+			var uiIndex = index+1;
 			var advertiserHTML = $(this).closest('div').prev().find('a:first-of-type');
 			var advertiserName = advertiserHTML.text();
 			var top_level_post_id = /\[top_level_post_id\]=([0-9]+)/.exec(advertiserHTML.attr('href'));
@@ -22,7 +23,10 @@ $(document).ready(function() {
 			// Check that it's an identifiable post
 			if(advertiserName && top_level_post_id != null && top_level_post_id.constructor === Array) {
 				top_level_post_id = top_level_post_id[1];
+				console.log("Inspecting suspected advert No."+uiIndex+" of "+thisBatchN,advertiserName,top_level_post_id);
+
 				var adContent = $(this).closest('div').prev().find('a:first-of-type').closest('.fbUserContent');
+				adContent.attr('WTM_timestamp_snapshot') ? console.log("!!! Already archived ",advertiserName,top_level_post_id) : console.log("+++ Probably new");
 
 				// Get image/video thumbnail URL
 				if(adContent.find('.fbStoryAttachmentImage')) {
@@ -42,13 +46,16 @@ $(document).ready(function() {
 				}
 
 				// Snapshots are sent to storage, and kept in user session history too.
-				var snapshot = {
+				var snapshot_meta = {
 					entity: advertiserName,
 					entityID: parseInt(advertiserID),
-					timestamp_created: parseInt(adContent.closest('[data-timestamp]').attr('data-timestamp')),
-					// Divide by 1000 to match the above, which is in seconds, compatibility for PHP
-					timestamp_snapshot: parseInt((Date.now() / 1000).toFixed()),
 					top_level_post_id: parseInt(top_level_post_id),
+					timestamp_created: parseInt(adContent.closest('[data-timestamp]').attr('data-timestamp')),
+					// Divide by 1000 to match FB's `timestamp` property (^), which is in seconds, compatibility for PHP
+					timestamp_snapshot: parseInt(adContent.attr('WTM_timestamp_snapshot')) || parseInt((Date.now() / 1000).toFixed()),
+				}
+
+				var snapshot_content = {
 					// May need to go through Facebook gateway, to get REAL url?
 					linkTo: linkTo,
 					postText: adContent.find('.userContent').text(),
@@ -79,42 +86,66 @@ $(document).ready(function() {
 				}
 
 				function saveSnapshot() {
-					// console.log("Noted an ad by "+snapshot.entity,snapshot.top_level_post_id)
-					updatedSessionHistory.push({'snapshot':snapshot,'snapshot_blobs':snapshot_blobs});
-					if(index == thisBatchN-1) {
-						synchronise(updatedSessionHistory);
-					}
+					// console.log("Processed Ad No.",uiIndex,advertiserName,top_level_post_id);
+					adContent.attr('WTM_timestamp_snapshot', snapshot_meta.timestamp_snapshot);
+
+					newSessionHistory.push({
+						meta: snapshot_meta,
+						content: snapshot_content,
+						blobs: snapshot_blobs,
+					});
+
+					inspectNextAd();
+				}
+			} else {
+				console.log("Inspecting suspected non-advert No."+uiIndex+" of "+thisBatchN);
+				inspectNextAd();
+			}
+
+			function inspectNextAd() {
+				if(uiIndex < thisBatchN) {
+					// inspect next ad
+				} else {
+					// console.log("Inspection of "+thisBatchN+" adverts COMPLETE.");
+					synchronise(newSessionHistory);
 				}
 			}
 		})
 
-		function synchronise(updatedSessionHistory) {
-			console.log("Sync'ing ads just found ("+updatedSessionHistory.length+") w/ ads this session's history ("+currentSessionHistory.length+").");
-			// See if there are adverts new to the `currentSessionHistory`, to be POST'd and SESSION'd
-			if(updatedSessionHistory.length != currentSessionHistory.length) {
-				var newAdverts = updatedSessionHistory.diff(currentSessionHistory)
-				newAdverts.map(function(ad, index) {
+		// See if there are adverts new to the `oldSessionHistory`, to be POST'd and SESSION'd
+		function synchronise(newSessionHistory) {
+			console.log("Sync'ing ads just found ("+newSessionHistory.length+") w/ ads this session's history ("+oldSessionHistory.length+").");
+			console.log(newSessionHistory, oldSessionHistory)
+
+			if(newSessionHistory.length == oldSessionHistory.length
+				&& newSessionHistory.slice(-1)[0].meta.top_level_post_id == oldSessionHistory.slice(-1)[0].meta.top_level_post_id
+			) {
+				console.log("--No new adverts--",newSessionHistory.slice(-1)[0].meta.top_level_post_id,oldSessionHistory.slice(-1)[0].meta.top_level_post_id);
+			} else {
+				var diffLength = newSessionHistory.length - oldSessionHistory.length;
+				newAdverts = newSessionHistory.slice(-1 * diffLength);
+
+				newSessionHistory.forEach((x) => console.log("new:",x.meta.entity));
+				oldSessionHistory.forEach((x) => console.log("old:",x.meta.entity));
+				console.log("diff of "+diffLength, newAdverts);
+
+				newAdverts.forEach(function(ad, index) {
 					// Only save small text to user session
-					userStorage.add('advertHistory', ad.snapshot);
-					console.log("New ad [USER SYNC'D] Advertiser: "+ad.snapshot.entity+" - Advert ID: "+ad.snapshot.top_level_post_id, ad.snapshot);
+					userStorage.add('targetingHistory', ad.meta);
+					var browserSnapshot = Object.assign({}, ad.meta, ad.content);
+					browserStorage.add('advertArchive', browserSnapshot);
+					console.log("New ad [USER SYNC'D] Advertiser: "+browserSnapshot.entity+" - Advert ID: "+browserSnapshot.top_level_post_id, browserSnapshot);
 					// Save the whole shabang to server
-					var wholeShabang = Object.assign({}, ad.snapshot, ad.snapshot_blobs);
+					var wholeShabang = Object.assign({}, ad.meta, ad.content, ad.blobs);
 					$.post("https://who-targets-me.herokuapp.com/analytics/", wholeShabang, function( data ) {
 						console.log("This new ad [SERVER SYNC'D] Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id, wholeShabang);
 					});
 				})
-				currentSessionHistory = updatedSessionHistory;
+				oldSessionHistory = newSessionHistory;
 			}
 		}
 	}, 5000);
 });
-
-var timestamp = Math.floor(Date.now());
-function updateAdvertDB(timestamp, data) {
-	chrome.storage.sync.set({timestamp: data}, function() {
-		console.log("Data saved");
-	});
-}
 
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
