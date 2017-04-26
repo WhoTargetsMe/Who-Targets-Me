@@ -25,6 +25,7 @@ var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
 
 	ChromeStorage.api = api
     ChromeStorage.callbacks = {}
+    ChromeStorage.initFuncs = {}
 
 	// Use when you need to nuke, during testing
 	// chrome.storage[api].clear()
@@ -63,7 +64,7 @@ var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
         chrome.storage[api].get(property, function receivedPropertyFromStorage(requestedStorage) {
             console.log("GET ChromeStorage."+property+" = ",requestedStorage[property])
             ChromeStorage[property] = requestedStorage[property]
-            if(typeof ChromeStorage.callbacks[property] === 'function') ChromeStorage.callbacks[property](ChromeStorage[property],"get") // on init
+            if(typeof ChromeStorage.initFuncs[property] === 'function') ChromeStorage.initFuncs[property](ChromeStorage[property],"get") // on init
             if(typeof cb === 'function') cb(ChromeStorage[property])
         })
     }
@@ -75,7 +76,7 @@ var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
 				console.log("Synced "+property+" with server: ",storageValue)
 			} else {
 				console.log("Resetting "+property+" to ",defaultValue)
-				ChromeStorage.set(property,defaultValue,cb);
+				ChromeStorage.set(property,defaultValue);
 			}
 		})
 	}
@@ -85,23 +86,20 @@ var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
 		Object.assign(ChromeStorage.callbacks, callbackObj)
     }
 
+	ChromeStorage.onLoad = function(callbackObj) {
+		var ChromeStorage = this
+		Object.assign(ChromeStorage.initFuncs, callbackObj)
+	}
+
     /* ----
         Constructor
     */
 
 	console.log("--- Loading from chrome.storage."+ChromeStorage.api)
-	var initN = sessionProperties.length;
-	var i = 0;
 	for (var property in sessionProperties) {
-		i++;
 		if(sessionProperties.hasOwnProperty(property) ) {
 			console.log("--- syncing "+property)
-	        ChromeStorage.init(property, sessionProperties[property], function() {
-				if(i == initN) {
-					console.log("All properties loaded.")
-					if(typeof initCb === 'function') initCb();
-				}
-			});
+	        ChromeStorage.init(property, sessionProperties[property]);
 		}
 	}
 }
