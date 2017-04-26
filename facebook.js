@@ -1,8 +1,8 @@
-var userStorage = new Session({ // Collect basic targeting data across user's devices
+var userStorage = new ChromeStorage({ // Collect basic targeting data across user's devices
 	targetingHistory: [],
 }, "sync")
 
-var browserStorage = new Session({ // Maintain a record of advert snapshots on this device
+var browserStorage = new ChromeStorage({ // Maintain a record of advert snapshots on this device
 	advertArchive: [],
 }, "local")
 
