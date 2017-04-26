@@ -6,6 +6,7 @@ var userStorage = new ChromeStorage({ // Collect basic targeting data across use
 }, "sync")
 
 $(document).ready(function() {
+	$("#loading").hide();
 	$("#finished").hide();
 
 	$("#register").submit(function(event) {
@@ -22,12 +23,15 @@ $(document).ready(function() {
 			});
 			console.log(values);
 
+			$("#register").hide();
+			$("#loading").show();
+
 			$.post("https://who-targets-me.herokuapp.com/user/", $('#register').serialize(), function(data) {
 				console.log(data);
 				var response = jQuery.parseJSON(data);
 				userStorage.set('access_token', response.access_token, function() {
 					console.log("User demographic data saved to server; token received.");
-					$("#register").hide();
+					$("#loading").hide();
 					$("#finished").show();
 				});
 			});

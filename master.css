@@ -10,3 +10,18 @@
 .poppins * {
 	font-family: "Poppins";
 }
+
+.dotdotdot:after {
+	overflow: hidden;
+	display: inline-block;
+	vertical-align: bottom;
+	animation: ellipsis steps(4,end) 900ms infinite;
+	content: "\2026";
+	width: 0em;
+}
+
+@keyframes ellipsis {
+	to {
+		width: 1em;
+	}
+}
