@@ -97,9 +97,11 @@ $(document).ready(function() {
 					// console.log("Processed Ad No.",uiIndex,advertiserName,top_level_post_id);
 					adContent.attr('WTM_timestamp_snapshot', snapshot_meta.timestamp_snapshot);
 
-					newSessionHistory.meta.push(snapshot_meta)
-					newSessionHistory.content.push(snapshot_content)
-					newSessionHistory.blobs.push(snapshot_blobs)
+					newSessionHistory.push({
+						meta: snapshot_meta,
+						content: snapshot_content,
+						blobs: snapshot_blobs,
+					});
 
 					inspectNextAd();
 				}
@@ -120,28 +122,20 @@ $(document).ready(function() {
 
 		// See if there are adverts new to the `oldSessionHistory`, to be POST'd and SESSION'd
 		function synchronise(newSessionHistory) {
-			console.log("Sync'ing ads just found ("+newSessionHistory.meta.length+") w/ ads this session's history ("+oldSessionHistory.meta.length+").");
+			console.log("Sync'ing ads just found ("+newSessionHistory.length+") w/ ads this session's history ("+oldSessionHistory.length+").");
 			console.log(newSessionHistory, oldSessionHistory)
 
-			if(newSessionHistory.meta.length == oldSessionHistory.meta.length
-				&& newSessionHistory.meta.slice(-1)[0].top_level_post_id == oldSessionHistory.meta.slice(-1)[0].top_level_post_id
+			if(newSessionHistory.length == oldSessionHistory.length
+				&& newSessionHistory.slice(-1)[0].meta.top_level_post_id == oldSessionHistory.slice(-1)[0].meta.top_level_post_id
 			) {
-				console.log("--No new adverts--",newSessionHistory.meta.slice(-1)[0].top_level_post_id,oldSessionHistory.meta.slice(-1)[0].top_level_post_id);
+				console.log("--No new adverts--",newSessionHistory.slice(-1)[0].meta.top_level_post_id,oldSessionHistory.slice(-1)[0].meta.top_level_post_id);
 			} else {
-				var diffLength = newSessionHistory.meta.length - oldSessionHistory.meta.length;
-				newAdvertsMeta = newSessionHistory.meta.slice(-1 * diffLength);
+				var diffLength = newSessionHistory.length - oldSessionHistory.length;
+				newAdverts = newSessionHistory.slice(-1 * diffLength);
 
-				var newAdverts = newAdvertsMeta.map(function(adMeta, index) {
-					return Object.assign({},
-						{meta: adMeta},
-						{content: newSessionHistory.content[index]},
-						{blobs: newSessionHistory.blobs[index]}
-					)
-				});
-
-				newSessionHistory.meta.forEach((x) => console.log("new:",x.entity));
-				oldSessionHistory.meta.forEach((x) => console.log("old:",x.entity));
-				console.log("diff of "+diffLength,newAdverts);
+				newSessionHistory.forEach((x) => console.log("new:",x.meta.entity));
+				oldSessionHistory.forEach((x) => console.log("old:",x.meta.entity));
+				console.log("diff of "+diffLength, newAdverts);
 
 				newAdverts.forEach(function(ad, index) {
 					// Only save small text to user session
