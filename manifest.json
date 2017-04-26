@@ -12,18 +12,18 @@
 		"tabs",
 		"storage",
 		"*://*.facebook.com/*",
-	    "http://fonts.googleapis.com/",
-	    "https://fonts.googleapis.com/",
+		"http://fonts.googleapis.com/",
+		"https://fonts.googleapis.com/",
 		"*://who-targets-me.herokuapp.com/*"
 	],
 	"content_scripts": [
 		{
 			"matches": ["*://*.facebook.com/*"],
-      		"js": ["jquery-3.2.1.min.js", "html2canvas.js", "session.js", "facebook.js"]
+			"js": ["jquery-3.2.1.min.js", "html2canvas.js", "session.js", "facebook.js"]
 		}
 	],
 	"background":{
-	  	"scripts": ["session.js", "background.js"]
+		"scripts": ["session.js", "background.js"]
 	},
 	"icons":
 	{
