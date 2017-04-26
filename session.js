@@ -27,7 +27,7 @@ var ChromeStorage = function(sessionProperties, api = "sync") {
     ChromeStorage.callbacks = {}
 
 	// Use when you need to nuke, during testing
-	chrome.storage[api].clear()
+	// chrome.storage[api].clear()
 
     /* ----
         Class methods
