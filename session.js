@@ -20,13 +20,14 @@ thisSession.onChange({
 });
 */
 
-// Use when you need to nuke, during testing
-// chrome.storage.sync.clear()
-
-var Session = function(sessionProperties) {
+var Session = function(sessionProperties, api = "sync") {
     var Session = this
 
+	Session.api = api
     Session.callbacks = {}
+
+	// Use when you need to nuke, during testing
+	chrome.storage[api].clear()
 
     /* ----
         Class methods
@@ -39,7 +40,7 @@ var Session = function(sessionProperties) {
         var keyValue = {}
         keyValue[property] = value
 
-        chrome.storage.sync.set(
+        chrome.storage[api].set(
             keyValue,
             function sentToStorage() {
                 console.log("SET Session."+property+" = ",value)
@@ -59,7 +60,7 @@ var Session = function(sessionProperties) {
 
     Session.get = function(property,cb) {
         var Session = this
-        chrome.storage.sync.get(property, function receivedPropertyFromStorage(requestedStorage) {
+        chrome.storage[api].get(property, function receivedPropertyFromStorage(requestedStorage) {
             console.log("GET Session."+property+" = ",requestedStorage[property])
             Session[property] = requestedStorage[property]
             if(typeof Session.callbacks[property] === 'function') Session.callbacks[property](Session[property],"get") // on init
@@ -88,7 +89,7 @@ var Session = function(sessionProperties) {
         Constructor
     */
 
-	console.log("--- Loading chrome sync")
+	console.log("--- Loading from chrome.storage."+Session.api)
 	for (var property in sessionProperties) {
 		if(sessionProperties.hasOwnProperty(property) ) {
 			console.log("--- syncing "+property)
