@@ -12,42 +12,43 @@
 </head>
 <body class='cover no-repeat bg-center white w100 vh-100' style='background-image: url(bg.jpg)'>
 	<main class='center mt6 poppins'>
-		<section class='measure center'>
 			<form id="register">
 				<div class='f-subheadline poppins b tc mb4'><span class='blue'>Who</span><span class='red'>Targets</span><span class='yellow'>Me?</span></div>
-				<div class='f2 lh-title poppins b mb3 tc'>Let's get started</div>
-				<fieldset class="ba b--transparent ph0 mh0">
-					<div class="mb3">
-						<!-- <label class="db fw6 lh-copy f5" for="age">Age</label> -->
-						<!-- min / max age taken from https://github.com/stunningpixels/Who-Targets-Me-Backend/blob/postgres/src/routes.php#L56 -->
-						<input placeholder='Age' class="f3 bg-white b pa2 input-reset ba hover-bg-black hover-white w-100" type="number" name="age" id="age" min=13 max=90 required>
-					</div>
-
-					<div class="mb3">
-						<!-- <label class="db fw6 lh-copy f5" for="postcode">Postcode</label> -->
-						<input placeholder='Postcode' class="f3 bg-white b pa2 input-reset ba hover-bg-black hover-white w-100" type="text" name="postcode" id="postcode" required pattern='[A-Za-z]{1,2}[0-9Rr][0-9A-Za-z]? ?[0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}'>
-					</div>
-
-					<div class="mb3">
-						<!-- <label class="db fw6 lh-copy f5" for="gender">Gender</label> -->
-						<!-- <input class="pa2 input-reset ba hover-bg-black hover-white w-100" type="email" name="gender" id="gender"> -->
-						<div class='flex tc center f3'>
-							<input class='dib v-mid h2 pointer' type="radio" name="gender" required value="female">
-							<label class="dib v-mid h2 pa0 ma0 lh-copy pointer" style='flex-grow: 1' for='female'>Female</label>
-							<input class='dib v-mid h2 pointer' type="radio" name="gender" required value="male">
-							<label class="dib v-mid h2 pa0 ma0 lh-copy pointer" style='flex-grow: 1' for='male'>Male</label>
-							<input class='dib v-mid h2 pointer' type="radio" name="gender" required value="other">
-							<label class="dib v-mid h2 pa0 ma0 lh-copy pointer" style='flex-grow: 1' for='other'>Other</label>
+				<section class='measure center'>
+					<div class='f2 lh-title poppins b mb3 tc'>Let's get started</div>
+					<fieldset class="ba b--transparent ph0 mh0">
+						<div class="mb3">
+							<!-- <label class="db fw6 lh-copy f5" for="age">Age</label> -->
+							<!-- min / max age taken from https://github.com/stunningpixels/Who-Targets-Me-Backend/blob/postgres/src/routes.php#L56 -->
+							<input placeholder='Age' class="f3 bg-white b pa2 input-reset ba hover-bg-black hover-white w-100" type="number" name="age" id="age" min=13 max=90 required>
 						</div>
+
+						<div class="mb3">
+							<!-- <label class="db fw6 lh-copy f5" for="postcode">Postcode</label> -->
+							<input placeholder='Postcode' class="f3 bg-white b pa2 input-reset ba hover-bg-black hover-white w-100" type="text" name="postcode" id="postcode" required pattern='[A-Za-z]{1,2}[0-9Rr][0-9A-Za-z]? ?[0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}'>
+						</div>
+
+						<div class="mb3">
+							<!-- <label class="db fw6 lh-copy f5" for="gender">Gender</label> -->
+							<!-- <input class="pa2 input-reset ba hover-bg-black hover-white w-100" type="email" name="gender" id="gender"> -->
+							<div class='flex tc center f3'>
+								<input class='dib v-mid h2 pointer' type="radio" name="gender" required value="female">
+								<label class="dib v-mid h2 pa0 ma0 lh-copy pointer" style='flex-grow: 1' for='female'>Female</label>
+								<input class='dib v-mid h2 pointer' type="radio" name="gender" required value="male">
+								<label class="dib v-mid h2 pa0 ma0 lh-copy pointer" style='flex-grow: 1' for='male'>Male</label>
+								<input class='dib v-mid h2 pointer' type="radio" name="gender" required value="other">
+								<label class="dib v-mid h2 pa0 ma0 lh-copy pointer" style='flex-grow: 1' for='other'>Other</label>
+							</div>
+						</div>
+						<!-- add email, for newsletter subscription? -->
+					</fieldset>
+					<div>
+						<input style='background: #3b5998' class="w-100 dib white b ph3 pv3 input-reset ba b--black grow pointer f3" type="submit" value="Register" id="submit">
 					</div>
-					<!-- add email, for newsletter subscription? -->
-				</fieldset>
-				<div>
-					<input style='background: #3b5998' class="w-100 dib white b ph3 pv3 input-reset ba b--black grow pointer f3" type="submit" value="Register" id="submit">
-				</div>
+				</section>
 			</form>
 
-			<div id='finished'>
+			<div id='finished' class='measure center'>
 				<div class='f1 lh-title poppins b mb3 tc'>Thanks!</div>
 				<div class='f4 mt1 lh-title tc'>Carry on using Facebook as normal, and check the <span class='b blue'>Who</span><span class='b red'>Targets</span><span class='b yellow'>Me?</span> browser-bar icon for your personal ad report in a few days.</div>
 				<div class='f6 tc mv3 ph4 poppins b lh-copy'>Share the project with others - the more participants, the more we all learn about how we’re being targeted by the political parties.</div>
