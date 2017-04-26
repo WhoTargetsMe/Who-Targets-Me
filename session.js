@@ -20,7 +20,7 @@ thisChromeStorage.onChange({
 });
 */
 
-var ChromeStorage = function(sessionProperties, api = "sync") {
+var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
     var ChromeStorage = this
 
 	ChromeStorage.api = api
@@ -90,10 +90,18 @@ var ChromeStorage = function(sessionProperties, api = "sync") {
     */
 
 	console.log("--- Loading from chrome.storage."+ChromeStorage.api)
+	var initN = sessionProperties.length;
+	var i = 0;
 	for (var property in sessionProperties) {
+		i++;
 		if(sessionProperties.hasOwnProperty(property) ) {
 			console.log("--- syncing "+property)
-	        ChromeStorage.init(property, sessionProperties[property]);
+	        ChromeStorage.init(property, sessionProperties[property], function() {
+				if(i == initN) {
+					console.log("All properties loaded.")
+					if(typeof initCb === 'function') initCb();
+				}
+			});
 		}
 	}
 }

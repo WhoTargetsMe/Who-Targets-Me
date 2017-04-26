@@ -1,5 +1,6 @@
 var userStorage = new ChromeStorage({ // Collect basic targeting data across user's devices
 	targetingHistory: [],
+	access_token: null
 }, "sync")
 
 var browserStorage = new ChromeStorage({ // Maintain a record of advert snapshots on this device
@@ -117,8 +118,8 @@ $(document).ready(function() {
 			console.log("Sync'ing ads just found ("+newSessionHistory.length+") w/ ads this session's history ("+oldSessionHistory.length+").");
 			console.log(newSessionHistory, oldSessionHistory)
 
-			if(newSessionHistory.length == oldSessionHistory.length
-				&& newSessionHistory.slice(-1)[0].meta.top_level_post_id == oldSessionHistory.slice(-1)[0].meta.top_level_post_id
+			if(newSessionHistory.length == 0 || (newSessionHistory.length == oldSessionHistory.length
+				&& newSessionHistory.slice(-1)[0].meta.top_level_post_id == oldSessionHistory.slice(-1)[0].meta.top_level_post_id)
 			) {
 				console.log("--No new adverts--",newSessionHistory.slice(-1)[0].meta.top_level_post_id,oldSessionHistory.slice(-1)[0].meta.top_level_post_id);
 			} else {
@@ -137,8 +138,15 @@ $(document).ready(function() {
 					console.log("New ad [USER SYNC'D] Advertiser: "+browserSnapshot.entity+" - Advert ID: "+browserSnapshot.top_level_post_id, browserSnapshot);
 					// Save the whole shabang to server
 					var wholeShabang = Object.assign({}, ad.meta, ad.content, ad.blobs);
-					$.post("https://who-targets-me.herokuapp.com/analytics/", wholeShabang, function( data ) {
-						console.log("This new ad [SERVER SYNC'D] Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id, wholeShabang);
+					$.ajax({
+						type: 'post',
+						url: "https://who-targets-me.herokuapp.com/track/",
+						dataType: 'json',
+						data: wholeShabang,
+					    headers: {"HTTP_ACCESS_TOKEN": userStorage.access_token},
+						success: function(data) {
+							console.log("This new ad [SERVER SYNC'D] Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id, wholeShabang);
+						}
 					});
 				})
 				oldSessionHistory = newSessionHistory;

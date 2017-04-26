@@ -18,9 +18,12 @@
 	"content_scripts": [
 		{
 			"matches": ["*://*.facebook.com/*"],
-      "js": ["jquery-3.2.1.min.js", "html2canvas.js", "session.js", "facebook.js"]
+      		"js": ["jquery-3.2.1.min.js", "html2canvas.js", "session.js", "facebook.js"]
 		}
 	],
+	"background":{
+	  	"scripts": ["session.js", "background.js"]
+	},
 	"icons":
 	{
 		"128": "icon.png"
