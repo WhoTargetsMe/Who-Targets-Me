@@ -20,11 +20,12 @@ thisChromeStorage.onChange({
 });
 */
 
-var ChromeStorage = function(sessionProperties, api = "sync") {
+var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
     var ChromeStorage = this
 
 	ChromeStorage.api = api
     ChromeStorage.callbacks = {}
+    ChromeStorage.initFuncs = {}
 
 	// Use when you need to nuke, during testing
 	// chrome.storage[api].clear()
@@ -63,7 +64,7 @@ var ChromeStorage = function(sessionProperties, api = "sync") {
         chrome.storage[api].get(property, function receivedPropertyFromStorage(requestedStorage) {
             console.log("GET ChromeStorage."+property+" = ",requestedStorage[property])
             ChromeStorage[property] = requestedStorage[property]
-            if(typeof ChromeStorage.callbacks[property] === 'function') ChromeStorage.callbacks[property](ChromeStorage[property],"get") // on init
+            if(typeof ChromeStorage.initFuncs[property] === 'function') ChromeStorage.initFuncs[property](ChromeStorage[property],"get") // on init
             if(typeof cb === 'function') cb(ChromeStorage[property])
         })
     }
@@ -75,7 +76,7 @@ var ChromeStorage = function(sessionProperties, api = "sync") {
 				console.log("Synced "+property+" with server: ",storageValue)
 			} else {
 				console.log("Resetting "+property+" to ",defaultValue)
-				ChromeStorage.set(property,defaultValue,cb);
+				ChromeStorage.set(property,defaultValue);
 			}
 		})
 	}
@@ -84,6 +85,11 @@ var ChromeStorage = function(sessionProperties, api = "sync") {
         var ChromeStorage = this
 		Object.assign(ChromeStorage.callbacks, callbackObj)
     }
+
+	ChromeStorage.onLoad = function(callbackObj) {
+		var ChromeStorage = this
+		Object.assign(ChromeStorage.initFuncs, callbackObj)
+	}
 
     /* ----
         Constructor
