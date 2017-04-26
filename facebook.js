@@ -7,18 +7,10 @@ var browserStorage = new ChromeStorage({ // Maintain a record of advert snapshot
 }, "local")
 
 $(document).ready(function() {
-	var oldSessionHistory = {
-		meta: [],
-		content: [],
-		blobs: [],
-	}
+	var oldSessionHistory = []
 
 	window.setInterval(function() {
-		var newSessionHistory = {
-			meta: [],
-			content: [],
-			blobs: [],
-		}
+		var newSessionHistory = []
 
 		thisBatchN = $("a:contains('Sponsored')").length;
 		$("a:contains('Sponsored')").each(function(index) {
