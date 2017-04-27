@@ -1,5 +1,4 @@
 var userStorage = new ChromeStorage({ // Collect basic targeting data across user's devices
-	targetingHistory: [],
 	access_token: null
 }, "sync")
 
@@ -104,11 +103,10 @@ $(document).ready(function() {
 			if(newSessionHistory.length < 1) { return false; }
 
 			newSessionHistory.forEach(function(ad, index) {
-				// Only save small text to user session
-				userStorage.add('targetingHistory', ad.meta);
 				var browserSnapshot = Object.assign({}, ad.meta, ad.content);
 				browserStorage.add('advertArchive', browserSnapshot);
 				console.log("New ad [USER SYNC'D] Advertiser: "+browserSnapshot.entity+" - Advert ID: "+browserSnapshot.top_level_post_id, browserSnapshot);
+				
 				// Save the whole shabang to server
 				var wholeShabang = Object.assign({}, ad.meta, ad.content, ad.blobs);
 				$.ajax({
