@@ -24,7 +24,7 @@ $(document).ready(function() {
 
 			// Check that it's an identifiable post
 			if(!advertiserName || top_level_post_id == null || top_level_post_id.constructor !== Array) {
-				console.log("Inspecting suspected non-advert No."+uiIndex+" of "+thisBatchN);
+				console.log("- Disregarding suspected non-advert, No."+uiIndex+" of "+thisBatchN);
 				inspectNextAd();
 			} else {
 				top_level_post_id = top_level_post_id[1];
@@ -41,7 +41,7 @@ $(document).ready(function() {
 					}
 				}
 
-				console.log("Inspecting suspected advert No."+uiIndex+" of "+thisBatchN, snapshot.meta.entity, snapshot.meta.top_level_post_id);
+				// console.log("Inspecting suspected advert No."+uiIndex+" of "+thisBatchN, snapshot.meta.entity, snapshot.meta.top_level_post_id);
 
 				// Get image/video thumbnail URL
 				if(adContent.find('.fbStoryAttachmentImage'))
@@ -77,11 +77,11 @@ $(document).ready(function() {
 
 			function saveSnapshot(adContent, snapshot) {
 				if (typeof adContent.attr('WTM_timestamp_snapshot') == typeof undefined || adContent.attr('WTM_timestamp_snapshot') == false) {
-					console.log("+++ Deemed a new ad",snapshot.meta.entity, snapshot.meta.top_level_post_id);
+					console.log("+ Deemed a new ad",snapshot.meta.entity, snapshot.meta.top_level_post_id);
 					newSessionHistory.push(snapshot);
 					adContent.attr('WTM_timestamp_snapshot', snapshot.meta.timestamp_snapshot);
 				} else {
-					console.log("!!! Already archived", snapshot.meta.entity, snapshot.meta.top_level_post_id);
+					console.log("! Already archived", snapshot.meta.entity, snapshot.meta.top_level_post_id);
 				}
 
 				inspectNextAd();
