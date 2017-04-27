@@ -5,7 +5,8 @@
 	"description": "Track which entities are targeting you with adverts",
 	"browser_action": {
 		"default_title": "Who targets me?",
-		"default_popup": "popup.html"
+		"default_popup": "popup.html",
+		"default_icon": "logo-128.png"
 	},
 	"permissions": [
 		"contextMenus",
@@ -19,14 +20,18 @@
 	"content_scripts": [
 		{
 			"matches": ["*://*.facebook.com/*"],
-			"js": ["jquery-3.2.1.min.js", "html2canvas.js", "session.js", "facebook.js"]
+			"js": ["jquery-3.2.1.min.js", "session.js", "facebook.js"]
 		}
 	],
-	"background":{
+	"background": {
 		"scripts": ["session.js", "background.js"]
 	},
-	"icons":
-	{
-		"128": "logo-small-3.png"
+	"icons": {
+		"128": "logo-128.png"
+	},
+	"applications": {
+		"gecko": {
+			"id": "info@whotargets.me"
+		}
 	}
 }
