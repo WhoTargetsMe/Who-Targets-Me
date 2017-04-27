@@ -1,4 +1,4 @@
-// `chrome.storage.sync()` utlity class
+// `api.storage.sync()` utlity class
 // TODO: Add array storage (for things like parsed URLs, msgIDs, settings, ignores)
 // http://stackoverflow.com/questions/15717334/chrome-sync-storage-to-store-and-update-array
 
@@ -20,15 +20,18 @@ thisChromeStorage.onChange({
 });
 */
 
-var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
+// For firefox compatibility
+var api = navigator.userAgent.indexOf('Chrome') >= 0 ? chrome : browser;
+
+var ChromeStorage = function(sessionProperties, method = "sync", initCb) {
     var ChromeStorage = this
 
-	ChromeStorage.api = api
+	ChromeStorage.method = method
     ChromeStorage.callbacks = {}
     ChromeStorage.initFuncs = {}
 
 	// Use when you need to nuke, during testing
-	// chrome.storage[api].clear()
+	// api.storage[method].clear()
 
     /* ----
         Class methods
@@ -41,10 +44,10 @@ var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
         var keyValue = {}
         keyValue[property] = value
 
-        chrome.storage[api].set(
+        api.storage[method].set(
             keyValue,
             function sentToStorage() {
-                console.log("SET ChromeStorage."+ChromeStorage.api+"."+property+" = ",value)
+                console.log("SET ChromeStorage."+ChromeStorage.method+"."+property+" = ",value)
                 if(typeof ChromeStorage.callbacks[property] === 'function') ChromeStorage.callbacks[property](value,"set")
                 if(typeof cb === 'function') cb(value)
             }
@@ -61,8 +64,8 @@ var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
 
     ChromeStorage.get = function(property,cb) {
         var ChromeStorage = this
-        chrome.storage[api].get(property, function receivedPropertyFromStorage(requestedStorage) {
-            console.log("GET ChromeStorage."+ChromeStorage.api+"."+property+" = ",requestedStorage[property])
+        api.storage[method].get(property, function receivedPropertyFromStorage(requestedStorage) {
+            console.log("GET ChromeStorage."+ChromeStorage.method+"."+property+" = ",requestedStorage[property])
             ChromeStorage[property] = requestedStorage[property]
             if(typeof ChromeStorage.initFuncs[property] === 'function') ChromeStorage.initFuncs[property](ChromeStorage[property],"get") // on init
             if(typeof cb === 'function') cb(ChromeStorage[property])
@@ -95,7 +98,7 @@ var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
         Constructor
     */
 
-	console.log("--- Loading from chrome.storage."+ChromeStorage.api)
+	console.log("--- Loading from api.storage."+ChromeStorage.method)
 	for (var property in sessionProperties) {
 		if(sessionProperties.hasOwnProperty(property) ) {
 			console.log("--- syncing "+property)
