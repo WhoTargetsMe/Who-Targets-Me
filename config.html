@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-	<title>Who Targets Me?!</title>
+	<title>Setup - Who Targets Me</title>
 	<script type="text/javascript" src="jquery-3.2.1.min.js"></script>
 	<script type="text/javascript" src="background.js"></script>
 	<script type="text/javascript" src="session.js"></script>
@@ -16,33 +16,32 @@
 				<section class='measure center'>
 					<div class='f2 lh-title poppins b mb3 tc'>Let's get started</div>
 					<fieldset class="ba b--transparent ph0 mh0">
+
 						<div class="mb3">
-							<!-- <label class="db fw6 lh-copy f5" for="age">Age</label> -->
+							<input placeholder='Postcode' class="f3 bg-white b pa2 input-reset ba hover-bg-black hover-white w-100" type="text" name="postcode" id="postcode" required pattern='[A-Za-z]{1,2}[0-9Rr][0-9A-Za-z]? ?[0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}'>
+						</div>
+
+						<div class="mb3">
 							<!-- min / max age taken from https://github.com/stunningpixels/Who-Targets-Me-Backend/blob/postgres/src/routes.php#L56 -->
 							<input placeholder='Age' class="f3 bg-white b pa2 input-reset ba hover-bg-black hover-white w-100" type="number" name="age" id="age" min=13 max=90 required>
 						</div>
 
-						<div class="mb3">
-							<!-- <label class="db fw6 lh-copy f5" for="postcode">Postcode</label> -->
-							<input placeholder='Postcode' class="f3 bg-white b pa2 input-reset ba hover-bg-black hover-white w-100" type="text" name="postcode" id="postcode" required pattern='[A-Za-z]{1,2}[0-9Rr][0-9A-Za-z]? ?[0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}'>
-						</div>
-
 						<div class="mb2">
-							<!-- <label class="db fw6 lh-copy f5" for="gender">Gender</label> -->
-							<!-- <input class="pa2 input-reset ba hover-bg-black hover-white w-100" type="email" name="gender" id="gender"> -->
 							<div class='flex tc center f3'>
-								<input class='dib v-mid h2 pointer' type="radio" name="gender" required value="female">
+								<input class='dib v-mid h2 pointer' type="radio" name="gender" required id="female" value="female">
 								<label class="dib v-mid h2 pa0 ma0 lh-copy pointer" style='flex-grow: 1' for='female'>Female</label>
-								<input class='dib v-mid h2 pointer' type="radio" name="gender" required value="male">
+								<input class='dib v-mid h2 pointer' type="radio" name="gender" required id="male" value="male">
 								<label class="dib v-mid h2 pa0 ma0 lh-copy pointer" style='flex-grow: 1' for='male'>Male</label>
-								<input class='dib v-mid h2 pointer' type="radio" name="gender" required value="other">
+								<input class='dib v-mid h2 pointer' type="radio" name="gender" required id="other" value="other">
 								<label class="dib v-mid h2 pa0 ma0 lh-copy pointer" style='flex-grow: 1' for='other'>Other</label>
 							</div>
 						</div>
+
 						<!-- add email, for newsletter subscription? -->
+
 					</fieldset>
 					<div>
-						<input style='background: #3b5998' class="w-100 dib white b ph3 pv3 input-reset ba b--black grow pointer f3" type="submit" value="Register" id="submit">
+						<input style='background: #3b5998' class="w-100 dib white b ph3 pv3 input-reset ba b--black grow pointer f3" type="submit" value="Start tracking ads" id="submit">
 					</div>
 				</section>
 			</form>

@@ -5,6 +5,13 @@ var userStorage = new ChromeStorage({ // Collect basic targeting data across use
 	access_token: null
 }, "sync")
 
+// Prefill if possible
+userStorage.onLoad({
+	age: () => $('#age').val(userStorage.age),
+	postcode: () => $('#postcode').val(userStorage.postcode),
+	gender: () => $('input#'+userStorage.gender).prop("checked", true)
+})
+
 $(document).ready(function() {
 	$("#loading").hide();
 	$("#finished").hide();

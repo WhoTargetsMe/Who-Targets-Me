@@ -44,7 +44,7 @@ var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
         chrome.storage[api].set(
             keyValue,
             function sentToStorage() {
-                console.log("SET ChromeStorage."+property+" = ",value)
+                console.log("SET ChromeStorage."+ChromeStorage.api+"."+property+" = ",value)
                 if(typeof ChromeStorage.callbacks[property] === 'function') ChromeStorage.callbacks[property](value,"set")
                 if(typeof cb === 'function') cb(value)
             }
@@ -62,7 +62,7 @@ var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
     ChromeStorage.get = function(property,cb) {
         var ChromeStorage = this
         chrome.storage[api].get(property, function receivedPropertyFromStorage(requestedStorage) {
-            console.log("GET ChromeStorage."+property+" = ",requestedStorage[property])
+            console.log("GET ChromeStorage."+ChromeStorage.api+"."+property+" = ",requestedStorage[property])
             ChromeStorage[property] = requestedStorage[property]
             if(typeof ChromeStorage.initFuncs[property] === 'function') ChromeStorage.initFuncs[property](ChromeStorage[property],"get") // on init
             if(typeof cb === 'function') cb(ChromeStorage[property])
