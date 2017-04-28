@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+
+<script type='text/javascript'>
+// pass in data with the following structure
+data = [
+  {
+    group: '18-24',
+    male: 24,
+    female: 22
+  },{
+    group: '25-28',
+    male: 28,
+    female: 31
+  },{
+    group: '29-32',
+    male: 30,
+    female: 38
+  },{
+    group: '33-36',
+    male: 22,
+    female: 17
+  },{
+    group: '37-40',
+    male: 14,
+    female: 13
+  },{
+    group: '41-48',
+    male: 9,
+    female: 8
+  },{
+    group: '49-56',
+    male: 10,
+    female: 6
+  },{
+    group: '57-65',
+    male: 3,
+    female: 2
+  },{
+    group: '66+',
+    male: 1,
+    female: 2
+  }
+]
+
+w = 500;
+h = 500;
+
+margin = {
+  top: 20,
+  bottom: 20,
+  left: 20,
+  right: 20,
+  middle: 28
+}
+
+color = {
+  male: '#8FA5FF',
+  female: '#E8757B'
+}
+
+function drawPopulationPyramid(data) {
+  // the width of each side of the chart
+  var regionWidth = w/2 - margin.middle;
+
+  // these are the x-coordinates of the y-axes
+  var pointA = regionWidth,
+      pointB = w - regionWidth;
+
+  // GET THE TOTAL POPULATION SIZE
+  var totalPopulation = d3.sum(data, function(d) { return d.m + d.f; })
+
+  // CREATE SVG
+  var svg = d3.select('body').append('svg')
+    .attr('width', margin.left + w + margin.right)
+    .attr('height', margin.top + h + margin.bottom)
+    // ADD A GROUP FOR THE SPACE WITHIN THE MARGINS
+    .append('g')
+      .attr('transform', translation(margin.left, margin.top));
+
+  // find the maximum data value on either side
+  //  since this will be shared by both of the x-axes
+  var maxValue = Math.max(
+    d3.max(data, function(d) { return d.male; }),
+    d3.max(data, function(d) { return d.female; })
+  );
+
+  // SET UP SCALES
+
+  // the xScale goes from 0 to the width of a region
+  //  it will be reversed for the left x-axis
+  var xScale = d3.scaleLinear()
+    .domain([0, maxValue])
+    .range([0, regionWidth])
+    .nice();
+
+  var xScaleLeft = d3.scaleLinear()
+    .domain([0, maxValue])
+    .range([regionWidth, 0]);
+
+  var xScaleRight = d3.scaleLinear()
+    .domain([0, maxValue])
+    .range([0, regionWidth]);
+
+  var yScale = d3.scaleBand()
+    .domain(data.map(function(d) { return d.group; }))
+    .rangeRound([h,0], 0.1)
+    .paddingInner([0.1]);
+
+
+  // SET UP AXES
+  var yAxisLeft = d3.axisRight()
+    .scale(yScale)
+    .tickSize(4,0)
+    .tickPadding(margin.middle-4);
+
+  var yAxisRight = d3.axisLeft()
+    .scale(yScale)
+    .tickSize(4,0)
+    .tickFormat('');
+
+  var xAxisRight = d3.axisBottom()
+    .scale(xScale)
+    .ticks([4]);
+
+  var xAxisLeft = d3.axisBottom()
+    // REVERSE THE X-AXIS SCALE ON THE LEFT SIDE BY REVERSING THE RANGE
+    .scale(xScale.copy().range([pointA, 0]))
+    .ticks([4]);
+
+  // MAKE GROUPS FOR EACH SIDE OF CHART
+  // scale(-1,1) is used to reverse the left side so the bars grow left instead of right
+  var leftBarGroup = svg.append('g')
+    .attr('transform', translation(pointA, 0) + 'scale(-1,1)');
+  var rightBarGroup = svg.append('g')
+    .attr('transform', translation(pointB, 0));
+
+  // DRAW AXES
+  svg.append('g')
+    .attr('class', 'axis y left')
+    .attr('transform', translation(pointA, 0))
+    .call(yAxisLeft)
+    .selectAll('text')
+    .style('text-anchor', 'middle');
+
+  svg.append('g')
+    .attr('class', 'axis y right')
+    .attr('transform', translation(pointB, 0))
+    .call(yAxisRight);
+
+  svg.append('g')
+    .attr('class', 'axis x left')
+    .attr('transform', translation(0, h))
+    .call(xAxisLeft);
+
+  svg.append('g')
+    .attr('class', 'axis x right')
+    .attr('transform', translation(pointB, h))
+    .call(xAxisRight);
+
+  // DRAW BARS
+  leftBarGroup.selectAll('.bar.left')
+    .data(data)
+    .enter().append('rect')
+      .attr('class', 'bar left')
+      .attr('x', 0)
+      .attr('y', function(d) { return yScale(d.group); })
+      .attr('width', function(d) { return xScale(d.male); })
+      .attr('height', yScale.bandwidth())
+      .style('fill', color.male);
+
+  leftBarGroup.selectAll('bar.left')
+    .data(data)
+    .exit().remove()
+
+  rightBarGroup.selectAll('.bar.right')
+    .data(data)
+    .enter().append('rect')
+      .attr('class', 'bar right')
+      .attr('x', 0)
+      .attr('y', function(d) { return yScale(d.group); })
+      .attr('width', function(d) { return xScale(d.female); })
+      .attr('height', yScale.bandwidth())
+      .style('fill', color.female);
+
+  rightBarGroup.selectAll('bar.left')
+    .data(data)
+    .exit().remove()
+
+  // so sick of string concatenation for translations
+  function translation(x,y) {
+    return 'translate(' + x + ',' + y + ')';
+  }
+}
+
+drawPopulationPyramid(data)
+
+</script>
+
+</body>
+</html>
