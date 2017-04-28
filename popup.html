@@ -3,11 +3,13 @@
 <head>
 	<title>Who Targets Me?!</title>
 	<script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="session.js"></script>
 	<script type="text/javascript" src="popup.js"></script>
 	<link rel="stylesheet" type="text/css" href="tachyons.min.css">
 	<link rel="stylesheet" type="text/css" href="master.css">
 </head>
-<body style='width: 500px;' class='pa3 tc'>
+<body style='width: 300px;' class='pa3'>
+	<!--
 	<div class='b f5'>
 		<img class='fl mr4' src='logo-small-3.png' title='Who Targets Me?' />
 		<div class='tl'>
@@ -27,5 +29,49 @@
 	</div>
 	<div class='f5 tc pa3 poppins b'><a class='no-underline blue' href='https://whotargets.me/the-problem/'>Read more</a> about how <span class='blue'>Who</span><span class='red'>Targets</span><span class='yellow'>Me?</span> works.</div>
 	<div class='f7 i'>This project is not endorsed by Facebook or any political party. The purpose of the project is to raise awareness of the use of targeted political advertising in UK elections.</div>
+-->
+	<div class="main tc" id="results">
+		<h3>No political adverts yet!</h3>
+		<p>We'll let you know as soon as we start tracking adverts from campaigns.</p>
+	</div>
+
+	<div class="main" id="signup">
+		<div class="pa2 black-80">
+			<h2>Who Targets Me</h2>
+			<p>Please enter your profile data to get started</p>
+
+
+		  <div class="measure">
+		    <label for="signup_age" class="f6 b db mb2">Age <span class="normal black-60">(years)</span></label>
+		    <input id="signup_age" class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" aria-describedby="name-desc">
+		  </div>
+			<div class="measure">
+				<label for="signup_postcode" class="f6 b db mb2">Postcode</label>
+				<input id="signup_postcode" class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" aria-describedby="name-desc">
+			</div>
+
+			<div class="measure">
+				<label for="gender" class="f6 b db mb2">Gender</label>
+		    <div class="items-center mb2">
+					<div class="fl w-third mb2">
+			      <input class="mr2" type="radio" name="signup_gender" value="male">
+			      <label for="signup_gender" class="lh-copy" value="male">Male</label>
+					</div>
+
+					<div class="fl w-third mb2">
+			      <input class="mr2" type="radio" name="signup_gender" value="female">
+			      <label for="signup_gender" class="lh-copy" value="female">Female</label>
+					</div>
+
+					<div class="fl w-third mb2">
+			      <input class="mr2" type="radio" name="signup_gender" value="other">
+			      <label for="signup_gender" class="lh-copy" value="other">Other</label>
+					</div>
+		    </div>
+			</div>
+
+			<span class="f6 link dim ph3 pv2 mb2 dib white bg-black" href="#0" id="createaccount">Get started</span>
+		</div>
+	</div>
 </body>
 </html>

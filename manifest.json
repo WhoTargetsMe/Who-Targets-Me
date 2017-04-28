@@ -23,15 +23,7 @@
 			"js": ["jquery-3.2.1.min.js", "session.js", "facebook.js"]
 		}
 	],
-	"background": {
-		"scripts": ["session.js", "background.js"]
-	},
 	"icons": {
 		"128": "logo-128.png"
-	},
-	"applications": {
-		"gecko": {
-			"id": "info@whotargets.me"
-		}
 	}
 }

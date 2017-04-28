@@ -116,7 +116,7 @@ $(document).ready(function() {
 					url: "https://who-targets-me.herokuapp.com/track/",
 					dataType: 'json',
 					data: wholeShabang,
-				    headers: {"HTTP_ACCESS_TOKEN": userStorage.access_token},
+				    headers: {"Access-Token": userStorage.access_token},
 					success: (data) => console.log("This new ad [SERVER SYNC'D] Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id, wholeShabang)
 				});
 			})
