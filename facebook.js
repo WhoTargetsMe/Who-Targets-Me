@@ -15,7 +15,7 @@ $(document).ready(function() {
 		var thisBatchN = $("a:contains('Sponsored')").length;
 		$("a:contains('Sponsored')").each(function(index) {
 			var uiIndex = index+1;
-			var advertiserHTML = $(this).closest('div').prev().find('a:first-of-type');
+			var advertiserHTML = $(this).closest('div').prev().find('a:first-of-type').first();
 			var top_level_post_id = /\[top_level_post_id\]=([0-9]+)/.exec(advertiserHTML.attr('href'));
 			var advertiserName = advertiserHTML.text();
 			var advertiserID = advertiserHTML.attr('data-hovercard-obj-id');
@@ -114,10 +114,9 @@ $(document).ready(function() {
 					url: "https://who-targets-me.herokuapp.com/track/",
 					dataType: 'json',
 					data: wholeShabang,
-				    headers: {"Access-Token": userStorage.access_token},
-					success: function(data) {
-						console.log("This new ad [SERVER SYNC'D] Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id, wholeShabang)
-					}
+				    headers: {"Access-Token": userStorage.access_token}
+				}).done(function(data) {
+					console.log("This new ad [SERVER SYNC'D] Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id)
 				});
 			})
 			oldSessionHistory.push(newSessionHistory);
