@@ -1,3 +1,7 @@
+/* ----
+	Logic for notification prompts to send user data, receive access_token
+*/
+
 var userStorage = new ChromeStorage({ // Collect basic targeting data across user's devices
 	'dateLastUserDetailsNotification': null,
 	'dateInstalled': Date.now(),
@@ -17,41 +21,6 @@ userStorage.onLoad({
 		}
 	}
 })
-
-var browserStorage = new ChromeStorage({ // Maintain a record of advert snapshots on this device
-	notServerSavedAds: []
-}, "local")
-
-browserStorage.onLoad({
-	'notServerSavedAds': function(value, status) {
-		console.log("Loaded notServerSavedAds",browserStorage.notServerSavedAds,value,status)
-		// Now we can backload old, locally stored ads to the server.
-		archiveOldAds();
-	}
-})
-
-function archiveOldAds() {
-	if(browserStorage.notServerSavedAds != null && browserStorage.notServerSavedAds.constructor == Array && browserStorage.notServerSavedAds.length > 0) {
-		console.log("Backing up user's un-saved browserStorage ad record",browserStorage.notServerSavedAds.length)
-		browserStorage.notServerSavedAds.forEach(function(wholeShabang, index, theArray) {
-			theArray.splice(index, 1);
-			console.log("Now syncing",wholeShabang);
-			console.log("Remaining to sync",theArray);
-			$.ajax({
-				type: 'post',
-				url: "https://who-targets-me.herokuapp.com/track/",
-				dataType: 'json',
-				data: wholeShabang,
-				headers: {"Access-Token": userStorage.access_token}
-			}).done(function(data) {
-				console.log("[SERVER SYNC'D] Backloaded Old ad; Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id)
-			});
-			browserStorage.set('notServerSavedAds', theArray);
-		})
-	} else {
-		console.log("Yay. There are no ads to upload.",browserStorage.notServerSavedAds ? browserStorage.notServerSavedAds.length : 0)
-	}
-}
 
 function start() {
 	var regularCheckInterval = 2 * 60 * 60 * 1000 // hrs
@@ -108,7 +77,6 @@ function start() {
 			chrome.notifications.clear(notificationId)
 		}
 	}
-
 }
 
 Number.prototype.toTime = function(isSec) {
@@ -124,3 +92,42 @@ Number.prototype.toTime = function(isSec) {
 
     return fmt;
 };
+
+/* ----
+	Backup adverts recorded before user got `access_token`
+*/
+
+var browserStorage = new ChromeStorage({ // Maintain a record of advert snapshots on this device
+	notServerSavedAds: []
+}, "local")
+
+browserStorage.onLoad({
+	'notServerSavedAds': function(value, status) {
+		console.log("Loaded notServerSavedAds",browserStorage.notServerSavedAds,value,status)
+		// Now we can backload old, locally stored ads to the server.
+		archiveOldAds();
+	}
+})
+
+function archiveOldAds() {
+	if(browserStorage.notServerSavedAds != null && browserStorage.notServerSavedAds.constructor == Array && browserStorage.notServerSavedAds.length > 0) {
+		console.log("Backing up user's un-saved browserStorage ad record",browserStorage.notServerSavedAds.length)
+		browserStorage.notServerSavedAds.forEach(function(wholeShabang, index, theArray) {
+			theArray.splice(index, 1);
+			console.log("Now syncing",wholeShabang);
+			console.log("Remaining to sync",theArray);
+			$.ajax({
+				type: 'post',
+				url: "https://who-targets-me.herokuapp.com/track/",
+				dataType: 'json',
+				data: wholeShabang,
+				headers: {"Access-Token": userStorage.access_token}
+			}).done(function(data) {
+				console.log("[SERVER SYNC'D] Backloaded Old ad; Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id)
+			});
+			browserStorage.set('notServerSavedAds', theArray);
+		})
+	} else {
+		console.log("Yay. There are no ads to upload.",browserStorage.notServerSavedAds ? browserStorage.notServerSavedAds.length : 0)
+	}
+}
