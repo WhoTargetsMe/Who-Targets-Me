@@ -12,6 +12,7 @@
 		"contextMenus",
 		"tabs",
 		"storage",
+		"notifications",
 		"*://*.facebook.com/*",
 		"http://fonts.googleapis.com/",
 		"https://fonts.googleapis.com/",
@@ -23,6 +24,9 @@
 			"js": ["jquery-3.2.1.min.js", "session.js", "facebook.js"]
 		}
 	],
+	"background": {
+		"scripts": ["session.js", "background.js"]
+	},
 	"icons": {
 		"128": "logo-128.png"
 	}

@@ -1,6 +1,10 @@
 var userStorage = new ChromeStorage({ // Collect basic targeting data across user's devices
-	access_token: null
+	access_token: null,
+	dateTokenGot: null
 }, "sync")
+
+// Hide notification for access_token, if it has been set
+chrome.extension.sendMessage({notification: "hide"});
 
 // Can't access var until it's sync'd
 userStorage.onLoad({ 'access_token': start() })
@@ -53,6 +57,10 @@ function isFormValid() {
 
 		if(response.data.access_token) {
 			userStorage.set('access_token', response.data.access_token, function() {
+				userStorage.set('dateTokenGot', Date.now(), function() {
+					chrome.extension.sendMessage({access_token_received: userStorage.dateTokenGot});
+				});
+
 				$("#loading").hide();
 				$("#results").show();
 			});

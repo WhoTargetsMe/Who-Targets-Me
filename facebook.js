@@ -52,7 +52,7 @@ $(document).ready(function() {
 
 				// Get advert link-out
 				var linkTo = adContent.find('.userContent').next().find('a').attr('href');
-					linkTo = linkTo.includes("l.facebook.com/l.php?") ? getParameterByName('u',linkTo) : decodeURIComponent(linkTo);
+				linkTo = linkTo.includes("l.facebook.com/l.php?") ? getParameterByName('u',linkTo) : decodeURIComponent(linkTo);
 
 				snapshot.content = {
 					// May need to go through Facebook gateway, to get REAL url?
