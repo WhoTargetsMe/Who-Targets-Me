@@ -44,7 +44,7 @@ function start() {
 		                type: "basic",
 		                iconUrl: "logo-128.png",
 		                title: "Activate WhoTargetsMe? ad tracking",
-		                message: "Click the browser-bar icon to get started. We'll use your age, gender and postcode to better understand how parties targeting people."
+		                message: "Click the browser-bar icon to get started. We'll use your age, gender and postcode to better understand how parties target people."
 		            }, function callback(thisNoteID) {
 		                console.log("Notification pushed: "+thisNoteID);
 						notificationId = thisNoteID;
