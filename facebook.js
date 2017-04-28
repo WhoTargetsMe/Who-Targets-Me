@@ -1,9 +1,11 @@
 var userStorage = new ChromeStorage({ // Collect basic targeting data across user's devices
-	access_token: null
+	access_token: null,
+	dateTokenGot: null
 }, "sync")
 
 var browserStorage = new ChromeStorage({ // Maintain a record of advert snapshots on this device
 	advertArchive: [],
+	notServerSavedAds: []
 }, "local")
 
 $(document).ready(function() {
@@ -109,15 +111,22 @@ $(document).ready(function() {
 
 				// Save the whole shabang to server
 				var wholeShabang = Object.assign({}, ad.meta, ad.content, ad.blobs);
-				$.ajax({
-					type: 'post',
-					url: "https://who-targets-me.herokuapp.com/track/",
-					dataType: 'json',
-					data: wholeShabang,
-				    headers: {"Access-Token": userStorage.access_token}
-				}).done(function(data) {
-					console.log("This new ad [SERVER SYNC'D] Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id)
-				});
+
+				if(userStorage.dateTokenGot != null) {
+					console.log("Saving to server");
+					$.ajax({
+						type: 'post',
+						url: "https://who-targets-me.herokuapp.com/track/",
+						dataType: 'json',
+						data: wholeShabang,
+					    headers: {"Access-Token": userStorage.access_token}
+					}).done(function(data) {
+						console.log("This new ad [SERVER SYNC'D] Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id)
+					});
+				} else {
+					console.log("Backing up for server save, once access_token is received");
+					browserStorage.add('notServerSavedAds',wholeShabang);
+				}
 			})
 			oldSessionHistory.push(newSessionHistory);
 			newSessionHistory = [];

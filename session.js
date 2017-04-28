@@ -34,7 +34,7 @@ var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
         Class methods
     */
 
-    ChromeStorage.set = function(property,value,cb) {
+    ChromeStorage.set = function(property,value,cb,method = "set") {
         var ChromeStorage = this
         ChromeStorage[property] = value
 
@@ -45,7 +45,7 @@ var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
             keyValue,
             function sentToStorage() {
                 console.log("SET ChromeStorage."+ChromeStorage.api+"."+property+" = ",value)
-                // if(typeof ChromeStorage.callbacks[property] === 'function') ChromeStorage.callbacks[property](value,"set")
+                // if(typeof ChromeStorage.callbacks[property] === 'function') ChromeStorage.callbacks[property](value,method)
                 if(typeof cb === 'function') cb(value)
             }
         )
@@ -59,24 +59,31 @@ var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
 		ChromeStorage.set(property, updatedArray, cb);
 	}
 
-    ChromeStorage.get = function(property,cb) {
+    ChromeStorage.get = function(property,cb,method = "get") {
         var ChromeStorage = this
         chrome.storage[ChromeStorage.api].get(property, function receivedPropertyFromStorage(requestedStorage) {
             console.log("GET ChromeStorage."+ChromeStorage.api+"."+property+" = ",requestedStorage[property])
             ChromeStorage[property] = requestedStorage[property]
-            if(typeof ChromeStorage.initFuncs[property] === 'function') ChromeStorage.initFuncs[property](ChromeStorage[property],"get") // on init
             if(typeof cb === 'function') cb(ChromeStorage[property])
         })
     }
 
-	ChromeStorage.init = function(property,defaultValue,cb) {
+	ChromeStorage.init = function(property,defaultValue) {
         var ChromeStorage = this;
 		ChromeStorage.get(property, function(storageValue) {
 			if(storageValue != undefined) {
-				console.log("Synced "+property+" with server: ",storageValue)
+				console.log("Synced "+property+" with server: ",storageValue,ChromeStorage.initFuncs[property])
+				if(typeof ChromeStorage.initFuncs[property] === 'function') {
+					console.log("There is an init CB for",property)
+					ChromeStorage.initFuncs[property](ChromeStorage[property],"init_restore");
+				}
 			} else {
 				console.log("Resetting "+property+" to ",defaultValue)
-				ChromeStorage.set(property,defaultValue);
+				ChromeStorage.set(property,defaultValue,function() {
+					if(typeof ChromeStorage.initFuncs[property] === 'function') {
+						ChromeStorage.initFuncs[property](ChromeStorage[property],"init_new");
+					}
+				});
 			}
 		})
 	}
