@@ -14,7 +14,7 @@ setTimeout(function() {
 }, 3000);
 
 function checkForToken() {
-	if(!userStorage.access_token || userStorage.access_token == undefined || userStorage.access_token == nul) {
+	if(!userStorage.access_token || userStorage.access_token == undefined || userStorage.access_token == null) {
 		console.log("No valid userStorage.access_token",userStorage.access_token);
 		chrome.browserAction.setPopup({popup: "config.html"});
 		chrome.tabs.create({url: 'config.html' });
