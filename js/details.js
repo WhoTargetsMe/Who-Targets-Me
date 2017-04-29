@@ -51,8 +51,6 @@ function show_table(data) {
 function show_details() {
     var items = {}, base, key;
     $.each(browserStorage.advertArchive, function(index, val) {
-            console.log(val);
-
             key = val.entity;
             if (!items[key]) {
                 items[key] = 0;
