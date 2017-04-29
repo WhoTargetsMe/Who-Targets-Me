@@ -59,8 +59,10 @@ function show_user_demographics(data) {
 function show_user_ad_info(data) {
 	ad_count = 0;
 	$.each(data.breakdown, function (idx, data) {
-			console.log(data);
 			ad_count += data.count;
+		});
+	$.each(data.breakdown, function (idx, data) {
+			data.percent = ((data.count / ad_count) * 100).toFixed(1);
 		});
 	percent = ((ad_count / data.total) * 100).toFixed(1);
 

@@ -57,4 +57,25 @@ var svg = d3.select("#bar-chart"),
         .on("mouseout", function(d) {
                             tooltip.style("display", "none");
                         });
+
+    g.selectAll(".text")
+        .data(data)
+        .enter().append("svg:text")
+            .attr("class", "bartext")
+            .attr("x", function(d) {
+                return x(0);
+            })
+            .attr("y", function(d) {
+                return y(d.party) + 40;
+            })
+            .text(function(d) {
+                if (d.y0 === 0 && d.y === 0) {
+                    return "";
+                }
+                else {
+                    return ("" + d.percent + "%");
+                }
+            })
+            .style("font", "10px")
+            .attr("transform", "translate(5,-10)")
 }
