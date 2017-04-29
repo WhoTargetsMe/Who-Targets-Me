@@ -1,6 +1,4 @@
-'use strict';
-
-var raw_data = {};
+var browserStorage = null;
 
 function show_data_flare(data) {
     var width = 960,
@@ -44,23 +42,41 @@ function show_data_flare(data) {
 
 
 function show_table(data) {
-    data.map(function(analytic, index) {
-        $("tbody").append("<tr><td>" + analytic.entity + "</td><td>" + analytic.instances + "</td></tr>");
-    });
+    data.map(function(advert, index) {
+            $("#adverts").append("<tr><td>" + advert.entity + "</td><td>" + advert.instances + "</td></tr>");
+        });
+}
+
+
+function show_details() {
+    var items = {}, base, key;
+    $.each(browserStorage.advertArchive, function(index, val) {
+            console.log(val);
+
+            key = val.entity;
+            if (!items[key]) {
+                items[key] = 0;
+            }
+
+            items[key] += 1;
+        });
+
+    var processedData = [];
+    $.each(items, function(key, val) {
+            processedData.push({entity: key, instances: val});
+        });
+
+    show_table(processedData);
+    show_data_flare(processedData);
+
+    checkLoading();
 }
 
 
 $(document).ready(function() {
     checkLoading();
 
-    $.get("https://who-targets-me.herokuapp.com/analytics/", function(raw_response) {
-        response = $.parseJSON(raw_response);
-
-        raw_data = response.data;
-
-        show_table(raw_data);
-        show_data_flare(raw_data);
-
-        checkLoading();
-    });
+    browserStorage = new ChromeStorage({
+            advertArchive: [],
+        }, "local", show_details);
 })
