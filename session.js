@@ -81,7 +81,11 @@ var ChromeStorage = function(sessionProperties, method = "sync", initCb) {
 				console.log("Resetting "+property+" to ",defaultValue)
 				ChromeStorage.set(property,defaultValue);
 			}
-		})
+
+            if (initCb !== null) {
+                initCb();
+            }
+		});
 	}
 
     ChromeStorage.onChange = function(callbackObj) {
@@ -102,7 +106,7 @@ var ChromeStorage = function(sessionProperties, method = "sync", initCb) {
 	for (var property in sessionProperties) {
 		if(sessionProperties.hasOwnProperty(property) ) {
 			console.log("--- syncing "+property)
-	        ChromeStorage.init(property, sessionProperties[property]);
+	        ChromeStorage.init(property, sessionProperties[property], initCb);
 		}
 	}
 }
