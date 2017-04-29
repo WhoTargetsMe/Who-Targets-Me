@@ -1,9 +1,11 @@
 var userStorage = new ChromeStorage({ // Collect basic targeting data across user's devices
-	access_token: null
+	access_token: null,
+	dateTokenGot: null
 }, "sync")
 
 var browserStorage = new ChromeStorage({ // Maintain a record of advert snapshots on this device
 	advertArchive: [],
+	notServerSavedAds: []
 }, "local")
 
 $(document).ready(function() {
@@ -15,7 +17,7 @@ $(document).ready(function() {
 		var thisBatchN = $("a:contains('Sponsored')").length;
 		$("a:contains('Sponsored')").each(function(index) {
 			var uiIndex = index+1;
-			var advertiserHTML = $(this).closest('div').prev().find('a:first-of-type');
+			var advertiserHTML = $(this).closest('div').prev().find('a:first-of-type').first();
 			var top_level_post_id = /\[top_level_post_id\]=([0-9]+)/.exec(advertiserHTML.attr('href'));
 			var advertiserName = advertiserHTML.text();
 			var advertiserID = advertiserHTML.attr('data-hovercard-obj-id');
@@ -52,7 +54,7 @@ $(document).ready(function() {
 
 				// Get advert link-out
 				var linkTo = adContent.find('.userContent').next().find('a').attr('href');
-					linkTo = linkTo.includes("l.facebook.com/l.php?") ? getParameterByName('u',linkTo) : decodeURIComponent(linkTo);
+				linkTo = linkTo.includes("l.facebook.com/l.php?") ? getParameterByName('u',linkTo) : decodeURIComponent(linkTo);
 
 				snapshot.content = {
 					// May need to go through Facebook gateway, to get REAL url?
@@ -106,17 +108,25 @@ $(document).ready(function() {
 				var browserSnapshot = Object.assign({}, ad.meta, ad.content);
 				browserStorage.add('advertArchive', browserSnapshot);
 				console.log("New ad [USER SYNC'D] Advertiser: "+browserSnapshot.entity+" - Advert ID: "+browserSnapshot.top_level_post_id, browserSnapshot);
-				
+
 				// Save the whole shabang to server
 				var wholeShabang = Object.assign({}, ad.meta, ad.content, ad.blobs);
-				$.ajax({
-					type: 'post',
-					url: "https://who-targets-me.herokuapp.com/track/",
-					dataType: 'json',
-					data: wholeShabang,
-				    headers: {"HTTP_ACCESS_TOKEN": userStorage.access_token},
-					success: (data) => console.log("This new ad [SERVER SYNC'D] Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id, wholeShabang)
-				});
+
+				if(userStorage.dateTokenGot != null) {
+					console.log("Saving to server");
+					$.ajax({
+						type: 'post',
+						url: "https://who-targets-me.herokuapp.com/track/",
+						dataType: 'json',
+						data: wholeShabang,
+					    headers: {"Access-Token": userStorage.access_token}
+					}).done(function(data) {
+						console.log("This new ad [SERVER SYNC'D] Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id)
+					});
+				} else {
+					console.log("Backing up for server save, once access_token is received");
+					browserStorage.add('notServerSavedAds',wholeShabang);
+				}
 			})
 			oldSessionHistory.push(newSessionHistory);
 			newSessionHistory = [];
