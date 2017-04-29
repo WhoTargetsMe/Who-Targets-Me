@@ -26,7 +26,7 @@ var api = navigator.userAgent.indexOf('Chrome') >= 0 ? chrome : browser;
 var ChromeStorage = function(sessionProperties, method = "sync", initCb) {
     var ChromeStorage = this
 
-	ChromeStorage.method = method
+	ChromeStorage.api = method
     ChromeStorage.callbacks = {}
     ChromeStorage.initFuncs = {}
 
