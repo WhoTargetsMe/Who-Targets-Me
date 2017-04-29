@@ -88,7 +88,7 @@ var ChromeStorage = function(sessionProperties, method = "sync", initCb) {
 				});
 			}
 
-            if (initCb !== null) {
+            if ((initCb !== undefined) && (initCb !== null)) {
                 initCb();
             }
 		});
