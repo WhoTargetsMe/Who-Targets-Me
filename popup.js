@@ -3,6 +3,13 @@ var userStorage = new ChromeStorage({ // Collect basic targeting data across use
 	dateTokenGot: null
 }, "sync")
 
+
+var browserStorage = new ChromeStorage({ // Collect basic targeting data across user's devices
+	advertArchive: [],
+	notServerSavedAds: []
+}, "local")
+
+
 // Hide notification for access_token, if it has been set
 chrome.extension.sendMessage({notification: "hide"});
 
@@ -20,8 +27,16 @@ function start() {
 		$('#errors').hide();
 		$("#loading").hide();
 
+		$('#data-not-ready').show();
+		$('#data-ready').hide();
+
 		if(userStorage.access_token) {
 			$("#signup").hide();
+
+			if ((browserStorage.advertArchive) && (browserStorage.advertArchive.length > 10)) {
+				$('#data-not-ready').hide();
+				$('#data-ready').show();
+			}
 		} else {
 			$("#results").hide();
 
