@@ -67,12 +67,12 @@ function show_details() {
     show_table(processedData);
     show_data_flare(processedData);
 
-    checkLoading();
+    $('#isLoading').hide();
 }
 
 
 $(document).ready(function() {
-    checkLoading();
+    $('#isLoading').show();
 
     browserStorage = new ChromeStorage({
             advertArchive: [],
