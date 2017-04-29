@@ -3,6 +3,8 @@
 <head>
 	<title>Who Targets Me?!</title>
 	<script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/d3.v4.min.js"></script>
+	<script type="text/javascript" src="js/bar_chart.js"></script>
 	<script type="text/javascript" src="session.js"></script>
 	<script type="text/javascript" src="popup.js"></script>
 	<link rel="stylesheet" type="text/css" href="tachyons.min.css">
@@ -23,7 +25,15 @@
 			<div class='f4 mt1 lh-title'>Carry on using Facebook as normal, and check back in a few days for your personalised ad report</div>
 		</div>
 		<div id="data-ready" class='bg-light-gray b center pa4 tc br3 poppins'>
-			<a class='no-underline blue' href='details.html'><div class='f4'>Show me my personalised report.</div></a>
+			<div id="demographic" class='f6'>xxxx</div>
+			<div>
+				<div style="float:left;"><div id="ad-percentage" class="b f4">27%</div><div>of my feed is political ads</div></div>
+				<div style="float:right"><div id="ad-cost" class="b f4">£2.45</div><div>has been spent on me so far</div></div>
+			</div>
+			<div>
+				<svg id="bar-chart" width="450" height="200"></svg>
+			</div>
+			<div id="summary" class="f10">(Based on seeing 401 ads, of which 111 were political)</div>
 		</div>
 		<div class='f6 tc mv3 ph4 poppins b lh-copy'>Share the project with others - the more participants, the more we all learn about how we're being targeted by the political parties.</div>
 		<div class='tc mv1'>

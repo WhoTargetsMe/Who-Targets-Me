@@ -28,3 +28,40 @@
 
 .main {
 }
+
+
+.bar {
+	fill: #black;
+}
+.bar.conservatives {
+    fill: blue;
+}
+.bar.labour {
+    fill: red;
+}
+.bar.liberaldemocrats {
+    fill: yellow;
+}
+.bar.ukip {
+    fill: purple;
+}
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #D4D8DA;
+    stroke-width: 1px;
+    shape-rendering: crispEdges;
+}
+.x path {
+	display: none;
+}
+.toolTip {
+	position: absolute;
+    display: none;
+    min-width: 80px;
+    height: auto;
+    background: none repeat scroll 0 0 #ffffff;
+    border: 1px solid #6F257F;
+    padding: 14px;
+    text-align: center;
+}
