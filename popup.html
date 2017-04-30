@@ -38,39 +38,42 @@
 
 	<div class="main" id="signup" style="width: 200px">
 		<div class="black-80 ">
-			<div class='f4 b poppins'><span class='blue'>Who</span><span class='red'>Targets</span><span class='yellow'>Me?</span></div>
-			<p>Tell us a bit about who you are</p>
+			<img src="./typographic_logo.png" class="flex"/>
 			<p id='errors'>There are some errors</p>
 
-			<form id="register">
-				<div>
-					<!-- <label for="signup_age" class="f6 b db mb2">Age <span class="normal black-60">(years)</span></label> -->
-					<input placeholder='Your age in years' name="age" required id="signup_age" class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" aria-describedby="name-desc" min=13 max=90 autocomplete="off" autocorrect="off">
-				</div>
+			<div class="pv2">
+				<form id="register">
+					<div>
+						<!-- <label for="signup_age" class="f6 b db mb2">Age <span class="normal black-60">(years)</span></label> -->
+						<input placeholder='Your age in years' name="age" required id="signup_age" class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" aria-describedby="name-desc" min=13 max=90 autocomplete="off" autocorrect="off">
+					</div>
 
-				<div>
-					<!-- <label for="signup_postcode" class="f6 b db mb2">Postcode</label> -->
-					<input placeholder='Your postcode' name="postcode" required id="signup_postcode" class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" aria-describedby="name-desc" autocomplete="off" autocorrect="off" pattern='GIR ?0AA|(?:(?:AB|AL|B|BA|BB|BD|BH|BL|BN|BR|BS|BT|BX|CA|CB|CF|CH|CM|CO|CR|CT|CV|CW|DA|DD|DE|DG|DH|DL|DN|DT|DY|E|EC|EH|EN|EX|FK|FY|G|GL|GY|GU|HA|HD|HG|HP|HR|HS|HU|HX|IG|IM|IP|IV|JE|KA|KT|KW|KY|L|LA|LD|LE|LL|LN|LS|LU|M|ME|MK|ML|N|NE|NG|NN|NP|NR|NW|OL|OX|PA|PE|PH|PL|PO|PR|RG|RH|RM|S|SA|SE|SG|SK|SL|SM|SN|SO|SP|SR|SS|ST|SW|SY|TA|TD|TF|TN|TQ|TR|TS|TW|UB|W|WA|WC|WD|WF|WN|WR|WS|WV|YO|ZE)(?:\d[\dA-Z]? ?\d[ABD-HJLN-UW-Z]{2}))|BFPO ?\d{1,4}'>
-				</div>
+					<div>
+						<!-- <label for="signup_postcode" class="f6 b db mb2">Postcode</label> -->
+						<input placeholder='Your postcode' name="postcode" required id="signup_postcode" class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" aria-describedby="name-desc" autocomplete="off" autocorrect="off" pattern='GIR ?0AA|(?:(?:AB|AL|B|BA|BB|BD|BH|BL|BN|BR|BS|BT|BX|CA|CB|CF|CH|CM|CO|CR|CT|CV|CW|DA|DD|DE|DG|DH|DL|DN|DT|DY|E|EC|EH|EN|EX|FK|FY|G|GL|GY|GU|HA|HD|HG|HP|HR|HS|HU|HX|IG|IM|IP|IV|JE|KA|KT|KW|KY|L|LA|LD|LE|LL|LN|LS|LU|M|ME|MK|ML|N|NE|NG|NN|NP|NR|NW|OL|OX|PA|PE|PH|PL|PO|PR|RG|RH|RM|S|SA|SE|SG|SK|SL|SM|SN|SO|SP|SR|SS|ST|SW|SY|TA|TD|TF|TN|TQ|TR|TS|TW|UB|W|WA|WC|WD|WF|WN|WR|WS|WV|YO|ZE)(?:\d[\dA-Z]? ?\d[ABD-HJLN-UW-Z]{2}))|BFPO ?\d{1,4}'>
+					</div>
 
-				<div>
-					<!-- <label for="gender" class="f6 b db mb2">Gender</label> -->
-					<div class="items-center mb2">
-						<div class="fl w-third mb2 pointer">
+					<div class="items-center mb2 cf">
+						<div class="fl w-third pointer">
 							<input required id='male' class="pointer mr2" type="radio" name="gender" value=1><label for="male" class="lh-copy pointer">Male</label>
 						</div>
-						<div class="fl w-third mb2 pointer">
+						<div class="fl w-third pointer">
 							<input required id='female' class="pointer mr2" type="radio" name="gender" value=2><label for="female" class="lh-copy pointer">Female</label>
 						</div>
-						<div class="fl w-third mb2 pointer">
+						<div class="fl w-third pointer">
 							<input required id='other' class="pointer mr2" type="radio" name="gender" value=0><label for="other" class="lh-copy pointer">Other</label>
 						</div>
 					</div>
-				</div>
 
-				<!-- <span class="f6 link dim ph3 pv2 mb2 dib white bg-black" href="#0" id="createaccount">Get started</span> -->
-				<input class="w-100 dib white b ph3 pv2 mv2 input-reset ba bg-black pointer f6 b-none" type="submit" value="Let's start investigating" id="submit">
-			</form>
+					<input class="w-100 dib white b ph3 pv2 input-reset ba bg-black pointer f6 b-none" type="submit" value="Let's start investigating" id="submit">
+				</form>
+			</div>
+			<p class="justify">Thanks for volunteering, did you know campaigns spent over &#163;1.3m on Facebook advertising during the 2015 general election?</p>
+			<p class="justify">Thanks to people like you, we're a step closer to understanding the reach and messages being used in the era of dark advertising.</p>
+			<div class="cf">
+			  <p class="fl mv0"><a href="https://whotargets.me/">Website</a></p>
+			  <p class="fr mv0"><a href="https://whotargets.me/privacy-policy/">Privacy Policy</a></p>
+			</div>
 		</div>
 	</div>
 
