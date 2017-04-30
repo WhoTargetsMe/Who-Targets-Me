@@ -32,8 +32,25 @@ function get_user_analytics_data(req_failure, req_success) {
 }
 
 
-function show_user_demographics(data) {
-	$('#demographic').text("As a " + data.gender + ", between " + data.age_range + ", voting in " + data.constituency + ":");
+function show_user_demographics() {
+	age_range = "0-100";
+	constituency = "Unknown";
+
+	if (userStorage.age < 30) {
+		age_range = "< 30";
+	} else if (userStorage.age < 40) {
+		age_range = "< 30-40";
+	} else if (userStorage.age < 50) {
+		age_range = "< 40-50";
+	} else if (userStorage.age < 60) {
+		age_range = "< 50-60";
+	} else if (userStorage.age < 70) {
+		age_range = "< 60-70";
+	} else {
+		age_range = "80+";
+	}
+
+	$('#demographic').text("As a " + age_range + " year old " + userStorage.gender + ", voting in " + constituency + ":");
 }
 
 
@@ -87,7 +104,7 @@ function show_user_analytics() {
 		function(data) {
 			process_data(data);
 
-			// show_user_demographics(data.demographic);
+			show_user_demographics();
 			show_user_ad_info(data);
 			render_bar_chart(data.breakdown);
 		});
