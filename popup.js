@@ -21,7 +21,8 @@ function get_user_analytics_data(req_failure, req_success) {
 	$.ajax({
 		type: 'get',
 		// url: "http://192.168.1.198:8001/analytics/",
-		url: "https://who-targets-me.herokuapp.com/analytics/",
+		url: "http://127.0.0.1:8001/analytics/",
+		// url: "https://who-targets-me.herokuapp.com/analytics/",
 		dataType: 'json',
 		headers: {"Access-Token": userStorage.access_token},
 		success: function(res) {
@@ -38,9 +39,6 @@ function show_user_demographics(data) {
 
 function process_data(data) {
 	ad_count = 0;
-
-	// TODO: Make sure we add all of the default parties here if they are
-	//       missing. At least then the bar chart is consistently displayed.
 
 	default_parties = {
 					"Conservatives": true,
@@ -59,27 +57,24 @@ function process_data(data) {
 	$.each(data.breakdown, function (idx, ad_data) {
 			ad_data.percent = ((ad_data.count / ad_count) * 100).toFixed(1);
 		});
-	percent = ((ad_count / data.total) * 100).toFixed(1);
+	data.percent = ((ad_count / data.total) * 100).toFixed(1);
 
-	cost = ((ad_count * data.ad_cost) / 100).toFixed(2);
+	data.cost = ((ad_count * data.ad_cost) / 100).toFixed(2);
 
 	// Add any of the default parties that not present in the server data.
 	for (var key in default_parties) {
-		console.log("Adding missing party", key);
 		data.breakdown.push({"party": key, "count": 0, "percent": 0});
 	}
 
 	// TODO: Sort the party data so it always appears in a consistent order.
-
-	console.log(data);
 }
 
 
 function show_user_ad_info(data) {
-	$('#ad-percentage').text(percent + "%");
-	$('#ad-cost').html('&pound;' + cost);
+	$('#ad-percentage').text(data.percent + "%");
+	$('#ad-cost').html('&pound;' + data.cost);
 
-	$('ad-summary').text("(Based on seeing " + data.total + " ads, of which " + ad_count + " were political)");
+	$('#ad-summary').text("(Based on seeing " + data.total + " ads, of which " + ad_count + " were political)");
 }
 
 
