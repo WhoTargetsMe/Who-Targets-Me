@@ -1,6 +1,4 @@
 function render_bar_chart(data) {
-    console.log(data);
-
     var svg = d3.select("#bar-chart"),
         margin = {top: 10, right: 10, bottom: 10, left: 120},
         width = + svg.attr("width") - margin.left - margin.right,
