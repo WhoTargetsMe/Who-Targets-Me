@@ -3,14 +3,16 @@
 */
 
 var userStorage = new ChromeStorage({ // Collect basic targeting data across user's devices
-	'dateLastUserDetailsNotification': null,
 	'dateInstalled': Date.now(),
 	'dateTokenGot': null,
+	'dateLastUserDetailsNotification': null,
 	'access_token': null
-}, "sync")
+}, {
+	api: "sync",
+	initCb: () => checkAccessToken()
+})
 
 userStorage.onLoad({
-	'access_token': checkAccessToken,
 	'dateInstalled': function(value, status) {
 		console.log("DateInstalled", value, status);
 		if(status == "init_new") {
