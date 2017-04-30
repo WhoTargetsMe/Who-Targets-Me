@@ -1,0 +1,41 @@
+h1 {
+    width: 100%;
+    text-align: center;
+}
+
+table {
+    width: 300px;
+    text-align: left;
+}
+
+thead {
+    border-bottom: 1px solid black;
+}
+
+#isLoading {
+    text-align: center;
+}
+
+#isLoading:after {
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
+    animation: ellipsis steps(4,end) 900ms infinite;
+    content: "\2026";
+    width: 0px;
+}
+
+@keyframes ellipsis {
+    to {
+        width: 20px;
+    }
+}
+
+.arc text {
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+.arc path {
+  stroke: #fff;
+}
