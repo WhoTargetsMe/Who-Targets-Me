@@ -32,3 +32,12 @@
 .justify {
 	text-align: justify;
 }
+
+a {
+	text-decoration: none;
+	color: #0ac9ba;
+}
+
+a:hover {
+	color: #85eae2;
+}
