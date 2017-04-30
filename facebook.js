@@ -4,7 +4,6 @@ var userStorage = new ChromeStorage({ // Collect basic targeting data across use
 }, "sync")
 
 var browserStorage = new ChromeStorage({ // Maintain a record of advert snapshots on this device
-	advertArchive: [],
 	notServerSavedAds: []
 }, "local")
 
@@ -105,11 +104,8 @@ $(document).ready(function() {
 			if(newSessionHistory.length < 1) { return false; }
 
 			newSessionHistory.forEach(function(ad, index) {
-				var browserSnapshot = Object.assign({}, ad.meta, ad.content);
-				browserStorage.add('advertArchive', browserSnapshot);
-				console.log("New ad [USER SYNC'D] Advertiser: "+browserSnapshot.entity+" - Advert ID: "+browserSnapshot.top_level_post_id, browserSnapshot);
-
 				// Save the whole shabang to server
+				console.log("Archiving new ad:",wholeShabang);
 				var wholeShabang = Object.assign({}, ad.meta, ad.content, ad.blobs);
 
 				if(userStorage.dateTokenGot != null) {
