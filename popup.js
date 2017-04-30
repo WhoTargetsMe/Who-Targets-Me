@@ -16,6 +16,109 @@ chrome.extension.sendMessage({notification: "hide"});
 // Can't access var until it's sync'd
 userStorage.onLoad({ 'access_token': start() })
 
+function start() {
+	$(document).ready(function() {
+
+		$('body').on('click', 'a', function(){
+			chrome.tabs.create({url: $(this).attr('href')});
+			return false;
+		});
+
+		$('#errors').hide();
+		$("#loading").hide();
+
+		$('#data-not-ready').show();
+		$('#data-ready').hide();
+
+		if(userStorage.access_token) {
+			$("#signup").hide();
+			$("#loading").show();
+			$("#results").hide();
+			initResultsPage();
+			// 	$('#data-not-ready').hide();
+			// 	$('#data-ready').show();
+			// if ((browserStorage.advertArchive) && (browserStorage.advertArchive.length > 10)) {
+			// 	$('#data-not-ready').hide();
+			// 	$('#data-ready').show();
+			//
+			// 	show_user_analytics();
+			// }
+		} else {
+			$("#results").hide();
+
+			$("#register").submit(function(event) {
+				event.preventDefault();
+
+				var $form = $("#register").get(0);
+				if (!$form.checkValidity || $form.checkValidity()) {
+					console.log("It's valid!");
+					isFormValid();
+					$('#errors').hide();
+				} else {
+					$('#errors').show();
+				}
+			});
+		}
+	})
+}
+
+
+
+function initResultsPage() {
+	$.ajax({
+		type: 'get',
+		url: "https://who-targets-me.herokuapp.com/user/",
+		headers: {"Access-Token": userStorage.access_token}
+	}).done(function(response) {
+		response = JSON.parse(response);
+		$("#constituency_name").text(response.data.constituency.name);
+
+		//Determine which share message to show the user
+		if(response.data.constituency.users === 1) {
+			$("#constituency_share").text("Congratulations! You're the first volunteer in your constituency. Can you help us find more?");
+		}else if(response.data.constituency.users < 10) {
+			$("#constituency_share").html("You're one of <b>" + response.data.constituency.users + "</b> volunteers in " + response.data.constituency.name + ", can you help us reach <b>" + roundUp(response.data.constituency.users) + "</b>?");
+		}
+
+		//Get all stats
+		$.each(response.data.all_top_advertisers, function(index, value) {
+			$("#all_advertisers_body").append("<tr><td class=\"pv1 bb b--black-20\">" + value.count + "</td><td class=\"pv1 bb b--black-20\"><img src=\"" + value.profile_photo + "\"/></td><td class=\"pv1 bb b--black-20\">" + value.advertiser + "</td></tr>")
+		});
+		$("#loading").hide();
+		$("#results").show();
+	});
+}
+
+
+
+function isFormValid() {
+	var request = {};
+	$.each($('#register').serializeArray(), function(i, field) {
+		request[field.name] = field.value;
+		userStorage.set([field.name], field.value.trim());
+	});
+	console.log(request);
+
+	$("#signup").hide();
+	$("#loading").show();
+
+	$.post("https://who-targets-me.herokuapp.com/user/", request, function(response) {
+		response = JSON.parse(response);
+
+		if(response.data.access_token) {
+			userStorage.set('access_token', response.data.access_token, function() {
+				userStorage.set('dateTokenGot', Date.now(), function() {
+					chrome.extension.sendMessage({access_token_received: userStorage.dateTokenGot});
+				});
+
+				$("#loading").hide();
+				$("#results").show();
+			});
+		}
+	});
+}
+
+
 
 function get_user_analytics_data(req_failure, req_success) {
 	$.ajax({
@@ -123,73 +226,13 @@ function show_user_analytics() {
 		});
 }
 
-
-function start() {
-	$(document).ready(function() {
-
-		$('body').on('click', 'a', function(){
-			chrome.tabs.create({url: $(this).attr('href')});
-			return false;
-		});
-
-		$('#errors').hide();
-		$("#loading").hide();
-
-		$('#data-not-ready').show();
-		$('#data-ready').hide();
-
-		if(userStorage.access_token) {
-			$("#signup").hide();
-
-			if ((browserStorage.advertArchive) && (browserStorage.advertArchive.length > 10)) {
-				$('#data-not-ready').hide();
-				$('#data-ready').show();
-
-				show_user_analytics();
-			}
-		} else {
-			$("#results").hide();
-
-			$("#register").submit(function(event) {
-				event.preventDefault();
-
-				var $form = $("#register").get(0);
-				if (!$form.checkValidity || $form.checkValidity()) {
-					console.log("It's valid!");
-					isFormValid();
-					$('#errors').hide();
-				} else {
-					$('#errors').show();
-				}
-			});
-		}
-	})
-}
-
-function isFormValid() {
-	var request = {};
-	$.each($('#register').serializeArray(), function(i, field) {
-		request[field.name] = field.value;
-		userStorage.set([field.name], field.value.trim());
-	});
-	console.log(request);
-
-	$("#signup").hide();
-	$("#loading").show();
-
-	// $.post("https://who-targets-me.herokuapp.com/user/", request, function(response) {
-	$.post("http://127.0.0.1:8001/user/", request, function(response) {
-		response = JSON.parse(response);
-
-		if(response.data.access_token) {
-			userStorage.set('access_token', response.data.access_token, function() {
-				userStorage.set('dateTokenGot', Date.now(), function() {
-					chrome.extension.sendMessage({access_token_received: userStorage.dateTokenGot});
-				});
-
-				$("#loading").hide();
-				$("#results").show();
-			});
-		}
-	});
+const roundUp = (x) => {
+    if(x < 10) {
+      return 10;
+    }
+    var y = Math.pow(10, x.toString().length-1);
+    x = (x/y);
+    x = Math.ceil(x);
+    x = x*y;
+    return x;
 }
