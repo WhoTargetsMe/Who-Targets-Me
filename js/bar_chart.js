@@ -73,7 +73,11 @@ function render_bar_chart(data) {
                     return "";
                 }
                 else {
-                    return ("" + d.percent + "%");
+                    if (d.percent !== 0) {
+                        return ("" + d.percent + "%");
+                    } else {
+                        return "";
+                    }
                 }
             })
             .style("font", "10px")
