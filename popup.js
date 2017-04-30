@@ -36,6 +36,11 @@ function show_user_demographics() {
 	age_range = "0-100";
 	constituency = "Unknown";
 
+	gender = "";
+	if (userStorage.gender !== undefined) {
+		gender = userStorage.gender;
+	}
+
 	if (userStorage.age < 30) {
 		age_range = "< 30";
 	} else if (userStorage.age < 40) {
@@ -50,7 +55,7 @@ function show_user_demographics() {
 		age_range = "80+";
 	}
 
-	$('#demographic').text("As a " + age_range + " year old " + userStorage.gender + ", voting in " + constituency + ":");
+	$('#demographic').text("As a " + age_range + " year old " + gender + ", voting in " + constituency + ":");
 }
 
 
