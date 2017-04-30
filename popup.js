@@ -1,3 +1,13 @@
+// Popup size fix
+setTimeout(() => {
+	const style = document.querySelector('#app').style;
+	style.display = 'block';
+	setTimeout(() => {
+		style.opacity = 1;
+	});
+}, 200);
+//
+
 var userStorage = new ChromeStorage({ // Collect basic targeting data across user's devices
 	access_token: null,
 	dateTokenGot: null
