@@ -17,37 +17,48 @@ chrome.extension.sendMessage({notification: "hide"});
 userStorage.onLoad({ 'access_token': start() })
 
 
-function get_user_analytics_data(failure, success) {
-	data = {
-			demographic: {
-					gender: "woman",
-					age_range: "64-75",
-					constituency: "Clacton"
-				},
-			ads: {
-					breakdown: [
-							{
-								party: "Conservatives",
-								count: 10
-							},
-							{
-								party: "Labour",
-								count: 7
-							},
-							{
-								party: "Liberal Democrats",
-								count: 2
-							},
-							{
-								party: "UKIP",
-								count: 4
-							}
-						],
-					total: 401,
-					ad_cost: 2,
-				}
-		};
-	success(data);
+function get_user_analytics_data(req_failure, req_success) {
+	console.log("Requesting analytics data.");
+	$.ajax({
+		type: 'get',
+		url: "http://192.168.1.198:8001/analytics/",
+		dataType: 'json',
+		headers: {"Access-Token": userStorage.access_token},
+		success: function(res) {
+				req_success(res);
+			}
+	});
+
+	// data = {
+	// 		demographic: {
+	// 				gender: "woman",
+	// 				age_range: "64-75",
+	// 				constituency: "Clacton"
+	// 			},
+	// 		ads: {
+	// 				breakdown: [
+	// 						{
+	// 							party: "Conservatives",
+	// 							count: 10
+	// 						},
+	// 						{
+	// 							party: "Labour",
+	// 							count: 7
+	// 						},
+	// 						{
+	// 							party: "Liberal Democrats",
+	// 							count: 2
+	// 						},
+	// 						{
+	// 							party: "UKIP",
+	// 							count: 4
+	// 						}
+	// 					],
+	// 				total: 401,
+	// 				ad_cost: 2,
+	// 			}
+	// 	};
+	// success(data);
 }
 
 
@@ -58,11 +69,15 @@ function show_user_demographics(data) {
 
 function show_user_ad_info(data) {
 	ad_count = 0;
-	$.each(data.breakdown, function (idx, data) {
-			ad_count += data.count;
+
+	// TODO: Make sure we add all of the default parties here if they are
+	//       missing. At least then the bar chart is consistently displayed.
+
+	$.each(data, function (idx, ad_data) {
+			ad_count += ad_data.count;
 		});
-	$.each(data.breakdown, function (idx, data) {
-			data.percent = ((data.count / ad_count) * 100).toFixed(1);
+	$.each(data, function (idx, ad_data) {
+			ad_data.percent = ((ad_data.count / ad_count) * 100).toFixed(1);
 		});
 	percent = ((ad_count / data.total) * 100).toFixed(1);
 
@@ -78,11 +93,13 @@ function show_user_ad_info(data) {
 function show_user_analytics() {
 	get_user_analytics_data(function(err) {
 			console.log(err);
+
+			// TODO: Do something with this later.
 		},
 		function(data) {
-			show_user_demographics(data.demographic);
-			show_user_ad_info(data.ads);
-			render_bar_chart(data.ads.breakdown);
+			// show_user_demographics(data.demographic);
+			show_user_ad_info(data);
+			render_bar_chart(data.breakdown);
 		});
 }
 

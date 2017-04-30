@@ -1,8 +1,10 @@
 function render_bar_chart(data) {
-var svg = d3.select("#bar-chart"),
-    margin = {top: 10, right: 10, bottom: 10, left: 120},
-    width = + svg.attr("width") - margin.left - margin.right,
-    height = + svg.attr("height") - margin.top - margin.bottom;
+    console.log(data);
+
+    var svg = d3.select("#bar-chart"),
+        margin = {top: 10, right: 10, bottom: 10, left: 120},
+        width = + svg.attr("width") - margin.left - margin.right,
+        height = + svg.attr("height") - margin.top - margin.bottom;
 
     var tooltip = d3.select("body").append("div").attr("class", "toolTip");
 
