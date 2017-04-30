@@ -20,7 +20,6 @@ $(document).ready(function() {
 			var advertiserHTML = $(this).closest('div').prev().find('a:first-of-type').first();
 			var top_level_post_id = /\[top_level_post_id\]=([0-9]+)/.exec(advertiserHTML.attr('href'));
 			var advertiserName = advertiserHTML.text();
-			var advertiserID = advertiserHTML.attr('data-hovercard-obj-id');
 			var adContent = advertiserHTML.closest('.fbUserContent');
 
 			// Check that it's an identifiable post
@@ -34,7 +33,8 @@ $(document).ready(function() {
 				var snapshot = {
 					meta: {
 						entity: advertiserName,
-						entityID: parseInt(advertiserID),
+						entityID: parseInt(advertiserHTML.attr('data-hovercard-obj-id')),
+						entity_vanity: advertiserHTML.attr('href').split(/\/\?|\?/)[0].split('https://www.facebook.com/')[1],
 						top_level_post_id: parseInt(top_level_post_id),
 						timestamp_created: parseInt(adContent.closest('[data-timestamp]').attr('data-timestamp')),
 						// Divide by 1000 to match FB's `timestamp` property (^), which is in seconds, compatibility for PHP

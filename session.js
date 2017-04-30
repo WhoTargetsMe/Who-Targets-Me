@@ -20,13 +20,10 @@ thisChromeStorage.onChange({
 });
 */
 
-// For firefox compatibility
-var api = navigator.userAgent.indexOf('Chrome') >= 0 ? chrome : browser;
-
-var ChromeStorage = function(sessionProperties, method = "sync", initCb) {
+var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
     var ChromeStorage = this
 
-	ChromeStorage.api = method
+	ChromeStorage.api = api
     ChromeStorage.callbacks = {}
     ChromeStorage.initFuncs = {}
 
