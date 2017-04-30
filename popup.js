@@ -21,44 +21,13 @@ function get_user_analytics_data(req_failure, req_success) {
 	$.ajax({
 		type: 'get',
 		// url: "http://192.168.1.198:8001/analytics/",
-		url: "http://127.0.0.1:8001/analytics/",
+		url: "https://who-targets-me.herokuapp.com/analytics/",
 		dataType: 'json',
 		headers: {"Access-Token": userStorage.access_token},
 		success: function(res) {
 				req_success(res);
 			}
 	});
-
-	// data = {
-	// 		demographic: {
-	// 				gender: "woman",
-	// 				age_range: "64-75",
-	// 				constituency: "Clacton"
-	// 			},
-	// 		ads: {
-	// 				breakdown: [
-	// 						{
-	// 							party: "Conservatives",
-	// 							count: 10
-	// 						},
-	// 						{
-	// 							party: "Labour",
-	// 							count: 7
-	// 						},
-	// 						{
-	// 							party: "Liberal Democrats",
-	// 							count: 2
-	// 						},
-	// 						{
-	// 							party: "UKIP",
-	// 							count: 4
-	// 						}
-	// 					],
-	// 				total: 401,
-	// 				ad_cost: 2,
-	// 			}
-	// 	};
-	// success(data);
 }
 
 
