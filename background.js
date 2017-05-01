@@ -10,6 +10,7 @@ var userStorage = new ChromeStorage({ // Collect basic targeting data across use
 }, {
 	api: "sync",
 	initCb: function() {
+		// userStorage.nuke();
 		// Separate interval for backups, every hour.
 		// E.g. if user is temporarily offline and new ads are locally backed up
 		// 		AND user doesn't regularly re-open Chrome, so won't get the initial backup check.
@@ -77,13 +78,18 @@ function stopNotifications() {
 	}
 }
 
+var currentlyBackingUp = false;
 function backupAdverts() {
+	if(currentlyBackingUp == true) return console.log("Currently backing up, don't double the efforts"); // Prevent double-recording of data
+	else currentlyBackingUp = true; // Lock the function
+
 	// Consider backing data up, if there's an access_token
 	var browserStorage = new ChromeStorage({ // Maintain a record of advert snapshots on this device
 		notServerSavedAds: []
 	}, {
 		api: "local",
 		initCb: function() {
+			// browserStorage.nuke();
 			// If there are ads to backup...
 			if(browserStorage.notServerSavedAds == null
 			|| browserStorage.notServerSavedAds.constructor != Array
@@ -99,7 +105,6 @@ function backupAdverts() {
 
 			// Then backup!
 			browserStorage.notServerSavedAds.forEach(function(wholeShabang, index, theArray) {
-				theArray.splice(index, 1);
 				console.log("Now backing up:",wholeShabang);
 				console.log("Remaining ads to back up, right now:",theArray);
 				$.ajax({
@@ -110,16 +115,43 @@ function backupAdverts() {
 					headers: {"Access-Token": userStorage.access_token}
 				}).done(function(data) {
 					console.log(data.status);
-					console.log("[SERVER SYNC'D] Backloaded Old ad; Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id)
-					browserStorage.set('notServerSavedAds', theArray);
+					console.log("[SERVER SYNC'D] Backloaded Old ad; Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id);
+					registerResults(wholeShabang,"success", theArray);
 				}).fail(function(data) {
 					console.log(data.status);
 					console.log("[SERVER FAILURE] Could not backup data, keeping "+wholeShabang.entity,wholeShabang.top_level_post_id+" for future backup");
+					registerResults(wholeShabang,"failure", theArray);
 				});
 			});
+			browserStorage.set('notServerSavedAds',[]); // clear these backups (new ones might come whilst we're working)
+
+			// Save failed backups for another try.
+			var count = 0;
+			var failedBackups = [];
+			function registerResults(item,status,theArray) {
+				count++;
+				if(status=="failure") failedBackups.push(item);
+				console.log(status," - tried backing up Ad #"+count+" of "+theArray.length)
+
+				if(count == theArray.length) {
+					console.log("All backups attempted!");
+					if(failedBackups.length > 0) console.log("Some backups failed :( ",failedBackups);
+					else console.log("All backups successful :) ",failedBackups);
+
+					// Combine the ads that didn't successfully backup, with any new backup ads that haven't been processed yet
+					browserStorage.set('notServerSavedAds', browserStorage.notServerSavedAds.concat(failedBackups), function() {
+						console.log("New backup list = ",browserStorage.notServerSavedAds);
+						currentlyBackingUp = false; // Unlock the function
+					});
+				}
+			}
 		}
 	});
 }
+
+// oldBackup -> foreach
+// oldBackup.clear();
+// newBackup + failedBackup = oldBackup
 
 /* ----
 	Utils
