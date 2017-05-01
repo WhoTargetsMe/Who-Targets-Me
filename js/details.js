@@ -76,5 +76,8 @@ $(document).ready(function() {
 
     browserStorage = new ChromeStorage({
             advertArchive: [],
-        }, "local", show_details);
+        }, {
+            api: "local",
+            initCb: show_details
+        });
 })
