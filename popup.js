@@ -229,12 +229,12 @@ function show_user_analytics() {
 
 			// TODO: Do something with this later.
 		},
-		function(data) {
-			process_data(data);
+		function(result) {
+			process_data(result.data);
 
 			show_user_demographics();
-			show_user_ad_info(data);
-			render_bar_chart(data.breakdown);
+			show_user_ad_info(result.data);
+			render_bar_chart(result.data.breakdown);
 		});
 }
 
