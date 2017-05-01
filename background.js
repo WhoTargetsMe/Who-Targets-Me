@@ -10,21 +10,23 @@ var userStorage = new ChromeStorage({ // Collect basic targeting data across use
 }, {
 	api: "sync",
 	initCb: function() {
-		// userStorage.nuke();
+		// Separate interval for backups, every hour.
+		// E.g. if user is temporarily offline and new ads are locally backed up
+		// 		AND user doesn't regularly re-open Chrome, so won't get the initial backup check.
+		setInterval(backupAdverts, 1 * 60 * 60 * 1000);
+		checkAccessToken();
 
-		// If access_token is set later, close any open notification requesting it
+		// If access_token is retrieved later...
 		userStorage.onChange({'access_token': function(newValue,oldValue) {
 			console.log("I heard access_token changed from "+oldValue+" to ",newValue,userStorage.access_token);
-			manageAccessToken();
+			checkAccessToken();
 		}});
 
-		// If popup opens, close this access_token notification
+		// If popup opens, close any access_token notification prompts
 		chrome.extension.onMessage.addListener(function(request,sender,sendResponse) {
-		    if(request.notification === "hide") manageAccessToken();
-		    if(request.access_token_received) manageAccessToken(request.access_token_received);
+		    if(request.notification === "hide") checkAccessToken();
+		    if(request.access_token_received) checkAccessToken(request.access_token_received);
 		})
-
-		manageAccessToken();
 	}
 })
 
@@ -32,8 +34,8 @@ var notificationId = null;
 var checkInterval = 2 * 60 * 60 * 1000 // hrs
 var regularAccessTokenPrompt;
 
-function manageAccessToken(access_token_received) {
-	regularAccessTokenPrompt = setInterval(manageAccessToken, checkInterval-100); // Push a notification every couple of hours, if user doesn't have access_token
+function checkAccessToken(access_token_received) {
+	regularAccessTokenPrompt = setInterval(checkAccessToken, checkInterval-100); // Push a notification every couple of hours, if user doesn't have access_token
 
 	if(userStorage.access_token == undefined || userStorage.access_token == null) {
 		console.log("No valid userStorage.access_token",userStorage.access_token);
