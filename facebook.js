@@ -4,7 +4,6 @@ var userStorage = new ChromeStorage({ // Collect basic targeting data across use
 }, "sync")
 
 var browserStorage = new ChromeStorage({ // Maintain a record of advert snapshots on this device
-	advertArchive: [],
 	notServerSavedAds: []
 }, "local")
 
@@ -105,12 +104,9 @@ $(document).ready(function() {
 			if(newSessionHistory.length < 1) { return false; }
 
 			newSessionHistory.forEach(function(ad, index) {
-				var browserSnapshot = Object.assign({}, ad.meta, ad.content);
-				browserStorage.add('advertArchive', browserSnapshot);
-				console.log("New ad [USER SYNC'D] Advertiser: "+browserSnapshot.entity+" - Advert ID: "+browserSnapshot.top_level_post_id, browserSnapshot);
-
 				// Save the whole shabang to server
 				var wholeShabang = Object.assign({}, ad.meta, ad.content, ad.blobs);
+				console.log("Archiving new ad:",wholeShabang);
 
 				if(userStorage.dateTokenGot != null) {
 					console.log("Saving to server");
@@ -121,7 +117,12 @@ $(document).ready(function() {
 						data: wholeShabang,
 					    headers: {"Access-Token": userStorage.access_token}
 					}).done(function(data) {
+						console.log(data.status);
 						console.log("This new ad [SERVER SYNC'D] Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id)
+					}).fail(function(data) {
+						console.log(data.status);
+						console.log("Error saving this ad, backing up for later server save: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id);
+						browserStorage.add('notServerSavedAds',wholeShabang);
 					});
 				} else {
 					console.log("Backing up for server save, once access_token is received");

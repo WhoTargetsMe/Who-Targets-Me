@@ -1,3 +1,13 @@
+// Popup size fix
+setTimeout(() => {
+	const style = document.querySelector('#app').style;
+	style.display = 'block';
+	setTimeout(() => {
+		style.opacity = 1;
+	});
+}, 200);
+//
+
 var userStorage = new ChromeStorage({ // Collect basic targeting data across user's devices
 	access_token: null,
 	dateTokenGot: null
@@ -26,9 +36,6 @@ function start() {
 
 		$('#errors').hide();
 		$("#loading").hide();
-
-		$('#data-not-ready').show();
-		$('#data-ready').hide();
 
 		if(userStorage.access_token) {
 			$("#signup").hide();
@@ -84,6 +91,11 @@ function initResultsPage() {
 		$.each(response.data.all_top_advertisers, function(index, value) {
 			$("#all_advertisers_body").append("<tr><td class=\"pv1 bb b--black-20\">" + value.count + "</td><td class=\"pv1 bb b--black-20\"><img src=\"" + value.profile_photo + "\"/></td><td class=\"pv1 bb b--black-20\">" + value.advertiser + "</td></tr>")
 		});
+
+		if(response.data.all_top_advertisers.length == 0) {
+			$("#all_advertisers_body").append("<tr><td class=\"pv1 bb b--black-20\" colspan=\"3\">Looks like we haven't detected any ads yet!</td></tr>")
+		}
+
 		$("#loading").hide();
 		$("#results").show();
 	});
@@ -112,7 +124,7 @@ function isFormValid() {
 				});
 
 				$("#loading").hide();
-				$("#results").show();
+				initResultsPage();
 			});
 		}
 	});

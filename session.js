@@ -20,37 +20,62 @@ thisChromeStorage.onChange({
 });
 */
 
-var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
+/* Possible `options` (all optional)
+	"sync"
+	"local"
+	{
+		api: "sync" | "local",
+		initCb: function
+	}
+*/
+var ChromeStorage = function(sessionProperties, options = "sync") {
     var ChromeStorage = this
 
-	ChromeStorage.api = api
-    ChromeStorage.callbacks = {}
+	ChromeStorage.api = options === Object(options) ? options.api : options;
+	ChromeStorage.initCb = (options === Object(options) && typeof options.initCb === 'function') ? options.initCb : null;
+	ChromeStorage.callbacks = {}
     ChromeStorage.initFuncs = {}
-
-	// Use when you need to nuke, during testing
-	// chrome.storage[ChromeStorage.api].clear()
+    ChromeStorage.properties = []
 
     /* ----
-        Class methods
+        Public methods
     */
 
-    ChromeStorage.set = function(property,value,cb,method = "set") {
+    ChromeStorage.onChange = function(callbackObj) {
         var ChromeStorage = this
-        ChromeStorage[property] = value
-
-        var keyValue = {}
-        keyValue[property] = value
-
-        chrome.storage[ChromeStorage.api].set(
-            keyValue,
-            function sentToStorage() {
-                console.log("[storage."+ChromeStorage.api+"] SET ChromeStorage."+ChromeStorage.api+"."+property+" = ",value)
-                // if(typeof ChromeStorage.callbacks[property] === 'function') ChromeStorage.callbacks[property](value,method)
-                if(typeof cb === 'function') cb(value)
-            }
-        )
-        return ChromeStorage[property]
+		Object.assign(ChromeStorage.callbacks, callbackObj)
     }
+
+	ChromeStorage.onLoad = function(callbackObj) {
+		var ChromeStorage = this
+		Object.assign(ChromeStorage.initFuncs, callbackObj)
+	}
+
+    ChromeStorage.get = function(property,cb,method = "get") {
+        var ChromeStorage = this
+        chrome.storage[ChromeStorage.api].get(property, function receivedPropertyFromStorage(requestedStorage) {
+            console.log("[storage."+ChromeStorage.api+"] GET "+ChromeStorage.api+"."+property+" = ",requestedStorage[property])
+            ChromeStorage[property] = requestedStorage[property]
+            if(typeof cb === 'function') cb(ChromeStorage[property])
+        })
+    }
+
+	ChromeStorage.set = function(property,value,cb,method = "set") {
+		var ChromeStorage = this
+		ChromeStorage[property] = value
+
+		var keyValue = {}
+		keyValue[property] = value
+
+		chrome.storage[ChromeStorage.api].set(
+			keyValue,
+			function sentToStorage() {
+				console.log("[storage."+ChromeStorage.api+"] SET "+ChromeStorage.api+"."+property+" = ",value)
+				if(typeof cb === 'function') cb(value)
+			}
+		)
+		return ChromeStorage[property]
+	}
 
 	ChromeStorage.add = function(property,newValue,cb) {
         var ChromeStorage = this;
@@ -59,42 +84,44 @@ var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
 		ChromeStorage.set(property, updatedArray, cb);
 	}
 
-    ChromeStorage.get = function(property,cb,method = "get") {
-        var ChromeStorage = this
-        chrome.storage[ChromeStorage.api].get(property, function receivedPropertyFromStorage(requestedStorage) {
-            console.log("[storage."+ChromeStorage.api+"] GET ChromeStorage."+ChromeStorage.api+"."+property+" = ",requestedStorage[property])
-            ChromeStorage[property] = requestedStorage[property]
-            if(typeof cb === 'function') cb(ChromeStorage[property])
-        })
-    }
+	ChromeStorage.nuke = function() {
+		// Use when you need to nuke, during testing
+		console.log("!!!!!!!!!!!!!!!!! NUKING all values back to the stone age.")
+		chrome.storage[ChromeStorage.api].clear();
+	}
 
-	ChromeStorage.init = function(property,defaultValue) {
+	/* ----
+		Private methods
+	*/
+
+	ChromeStorage.initProperty = function(property,defaultValue,i,N) {
         var ChromeStorage = this;
 		ChromeStorage.get(property, function(storageValue) {
 			if(storageValue != undefined) {
-				console.log("[storage."+ChromeStorage.api+"] Synced "+property+" with server: ",storageValue)
-				if(typeof ChromeStorage.initFuncs[property] === 'function') {
-					ChromeStorage.initFuncs[property](ChromeStorage[property],"init_restore");
-				}
+				console.log("[storage."+ChromeStorage.api+"] Loaded EXISTING property "+property+": ",storageValue)
+				initCheck(i,N,property,"init_restore");
 			} else {
-				console.log("[storage."+ChromeStorage.api+"] Resetting "+property+" to ",defaultValue)
 				ChromeStorage.set(property,defaultValue,function() {
-					if(typeof ChromeStorage.initFuncs[property] === 'function') {
-						ChromeStorage.initFuncs[property](ChromeStorage[property],"init_new");
-					}
+					console.log("[storage."+ChromeStorage.api+"] Created NEW property "+property+": ",defaultValue)
+					initCheck(i,N,property,"init_new");
 				});
 			}
-
-            if ((initCb !== undefined) && (initCb !== null)) {
-                initCb();
-            }
 		});
+
+		function initCheck(i,N,property,method) {
+			// Check if property has an `onLoad` listener function
+			if(typeof ChromeStorage.initFuncs[property] === 'function') ChromeStorage.initFuncs[property](ChromeStorage[property],method);
+			// If all properties have been loaded, check for a global `onLoad` function
+			if(i+1 == N) {
+				console.log("[storage."+ChromeStorage.api+"] All properties initialised!");
+				if(typeof ChromeStorage.initCb === 'function') ChromeStorage.initCb();
+			}
+		}
 	}
 
-    ChromeStorage.onChange = function(callbackObj) {
-        var ChromeStorage = this
-		Object.assign(ChromeStorage.callbacks, callbackObj)
-    }
+    /* ----
+        Constructor
+    */
 
 	chrome.storage.onChanged.addListener(function(changedProperties,api) {
 		if(api == ChromeStorage.api) {
@@ -110,20 +137,14 @@ var ChromeStorage = function(sessionProperties, api = "sync", initCb) {
 		}
 	});
 
-	ChromeStorage.onLoad = function(callbackObj) {
-		var ChromeStorage = this
-		Object.assign(ChromeStorage.initFuncs, callbackObj)
-	}
-
-    /* ----
-        Constructor
-    */
-
-	console.log("[storage."+ChromeStorage.api+"] --- Loading from chrome.storage."+ChromeStorage.api)
 	for (var property in sessionProperties) {
 		if(sessionProperties.hasOwnProperty(property) ) {
-			console.log("[storage."+ChromeStorage.api+"] ----- syncing "+ChromeStorage.api+"."+property)
-	        ChromeStorage.init(property, sessionProperties[property]);
+			ChromeStorage.properties.push(property);
 		}
 	}
+	console.log("[storage."+ChromeStorage.api+"] --- Loading the following from chrome.storage."+ChromeStorage.api,ChromeStorage.properties)
+	ChromeStorage.properties.forEach(function(property, i, props) {
+		console.log("[storage."+ChromeStorage.api+"] ----- loading "+ChromeStorage.api+"."+property)
+		ChromeStorage.initProperty(property, sessionProperties[property], i, props.length);
+	})
 }
