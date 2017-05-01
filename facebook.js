@@ -105,8 +105,8 @@ $(document).ready(function() {
 
 			newSessionHistory.forEach(function(ad, index) {
 				// Save the whole shabang to server
-				console.log("Archiving new ad:",wholeShabang);
 				var wholeShabang = Object.assign({}, ad.meta, ad.content, ad.blobs);
+				console.log("Archiving new ad:",wholeShabang);
 
 				if(userStorage.dateTokenGot != null) {
 					console.log("Saving to server");
@@ -117,7 +117,12 @@ $(document).ready(function() {
 						data: wholeShabang,
 					    headers: {"Access-Token": userStorage.access_token}
 					}).done(function(data) {
+						console.log(data.status);
 						console.log("This new ad [SERVER SYNC'D] Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id)
+					}).fail(function(data) {
+						console.log(data.status);
+						console.log("Error saving this ad, backing up for later server save: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id);
+						browserStorage.add('notServerSavedAds',wholeShabang);
 					});
 				} else {
 					console.log("Backing up for server save, once access_token is received");

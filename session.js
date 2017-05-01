@@ -37,9 +37,6 @@ var ChromeStorage = function(sessionProperties, options = "sync") {
     ChromeStorage.initFuncs = {}
     ChromeStorage.properties = []
 
-	// Use when you need to nuke, during testing
-	// chrome.storage[ChromeStorage.api].clear()
-
     /* ----
         Public methods
     */
@@ -85,6 +82,12 @@ var ChromeStorage = function(sessionProperties, options = "sync") {
 		var updatedArray = ChromeStorage[property];
 		updatedArray.push(newValue);
 		ChromeStorage.set(property, updatedArray, cb);
+	}
+
+	ChromeStorage.nuke = function() {
+		// Use when you need to nuke, during testing
+		console.log("!!!!!!!!!!!!!!!!! NUKING all values back to the stone age.")
+		chrome.storage[ChromeStorage.api].clear();
 	}
 
 	/* ----
