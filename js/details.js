@@ -1,8 +1,9 @@
-var browserStorage = null;
+var browserStorage = null,
+    userStorage = null;
 
 function show_data_flare(data) {
-    var width = 960,
-        height = 500,
+    var width = 500,
+        height = 400,
         radius = Math.min(width, height) / 2;
 
     var color = d3.scaleOrdinal(d3.schemeCategory10);
@@ -78,6 +79,14 @@ $(document).ready(function() {
             advertArchive: [],
         }, {
             api: "local",
-            initCb: show_details
+            initCb: function() { show_details(); }
+        });
+
+    userStorage = new ChromeStorage({ // Collect basic targeting data across user's devices
+            targetingHistory: [],
+            access_token: null
+        }, {
+            api: "sync",
+            initCb: function() { show_user_analytics(); }
         });
 })

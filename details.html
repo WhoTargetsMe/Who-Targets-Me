@@ -6,9 +6,12 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/d3.v4.min.js"></script>
     <script type="text/javascript" src="session.js"></script>
+    <script type="text/javascript" src="js/bar_chart.js"></script>
+    <script type="text/javascript" src="js/analytics.js"></script>
     <script type="text/javascript" src="js/details.js"></script>
     <script type="text/javascript" src="js/utils.js"></script>
     <link rel="stylesheet" type="text/css" href="css/details.css">
+    <link rel="stylesheet" type="text/css" href="tachyons.min.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 </head>
 <body>
@@ -16,7 +19,7 @@
     <div id='isLoading' class='loading'>Loading</div>
     <div class="container">
         <div class="row">
-            <div class="col-xs-5">
+            <div class="col-xs-3">
                 <table class="table table-striped table-bordered table-condensed">
                     <thead>
                         <tr>
@@ -27,8 +30,20 @@
                     <tbody id="adverts"></tbody>
                 </table>
             </div>
-            <div class="col-xs-7">
+            <div class="col-xs-5">
                 <svg id="flare" width="960" height="600"></svg>
+            </div>
+            <div class="col-xs-4" class='bg-light-gray b center pa4 tc br3 poppins'>
+                <div id="demographic" class='f6'>xxxx</div>
+                <div>
+                    <div style="float:left;"><div id="ad-percentage" class="b f4">27%</div><div>of my feed is political ads</div></div>
+                    <div style="float:right"><div id="ad-cost" class="b f4">£2.45</div><div>has been spent on me so far</div></div>
+                </div>
+                <div id="summary-header" class="f4">Proportion of ads I've seen by party:</div>
+                <div>
+                    <svg id="bar-chart" width="450" height="200"></svg>
+                </div>
+                <div id="ad-summary" class="f10">YYYY</div>
             </div>
         </div>
     </div>
