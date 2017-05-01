@@ -16,16 +16,17 @@
 		"*://*.facebook.com/*",
 		"http://fonts.googleapis.com/",
 		"https://fonts.googleapis.com/",
-		"*://who-targets-me.herokuapp.com/*"
+		"*://who-targets-me.herokuapp.com/*",
+		"*://who-targets-me-staging.herokuapp.com/*"
 	],
 	"content_scripts": [
 		{
 			"matches": ["*://*.facebook.com/*"],
-			"js": ["jquery-3.2.1.min.js", "session.js", "facebook.js"]
+			"js": ["jquery-3.2.1.min.js", "session.js", "config.js", "facebook.js"]
 		}
 	],
 	"background": {
-		"scripts": ["jquery-3.2.1.min.js", "session.js", "background.js"]
+		"scripts": ["jquery-3.2.1.min.js", "session.js", "config.js", "background.js"]
 	},
 	"icons": {
 		"128": "logo-128.png"

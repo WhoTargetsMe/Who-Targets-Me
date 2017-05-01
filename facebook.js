@@ -112,7 +112,7 @@ $(document).ready(function() {
 					console.log("Saving to server");
 					$.ajax({
 						type: 'post',
-						url: "https://who-targets-me.herokuapp.com/track/",
+						url: config.APIURL+"/track/",
 						dataType: 'json',
 						data: wholeShabang,
 					    headers: {"Access-Token": userStorage.access_token}
