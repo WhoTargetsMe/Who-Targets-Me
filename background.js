@@ -109,7 +109,7 @@ function backupAdverts() {
 				console.log("Remaining ads to back up, right now:",theArray);
 				$.ajax({
 					type: 'post',
-					url: "https://who-targets-me.herokuapp.com/track/",
+					url: config.APIURL+"/track/",
 					dataType: 'json',
 					data: wholeShabang,
 					headers: {"Access-Token": userStorage.access_token}

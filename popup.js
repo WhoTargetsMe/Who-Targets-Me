@@ -74,7 +74,7 @@ function start() {
 function initResultsPage() {
 	$.ajax({
 		type: 'get',
-		url: "https://who-targets-me.herokuapp.com/user/",
+		url: config.APIURL+"/user/",
 		headers: {"Access-Token": userStorage.access_token}
 	}).done(function(response) {
 		response = JSON.parse(response);
@@ -114,7 +114,7 @@ function isFormValid() {
 	$("#signup").hide();
 	$("#loading").show();
 
-	$.post("https://who-targets-me.herokuapp.com/user/", request, function(response) {
+	$.post(config.APIURL+"/user/", request, function(response) {
 		response = JSON.parse(response);
 
 		if(response.data.access_token) {
@@ -135,7 +135,9 @@ function isFormValid() {
 function get_user_analytics_data(req_failure, req_success) {
 	$.ajax({
 		type: 'get',
-		url: "https://who-targets-me.herokuapp.com/analytics/",
+		// url: "http://192.168.1.198:8001/analytics/",
+		url: "http://127.0.0.1:8001/analytics/",
+		// url: config.APIURL+"/analytics/",
 		dataType: 'json',
 		headers: {"Access-Token": userStorage.access_token},
 		success: function(res) {
