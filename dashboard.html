@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="tachyons.min.css">
+  <link rel="stylesheet" type="text/css" src="master.css">
+</style>
+<style>
+  main {
+    border: 1px black solid;
+  }
+
+  main {
+    padding: 10px;
+  }
+
+  .hidden {
+    visibility: hidden;
+  }
+
+  .map_container {
+    align-items: center;
+  }
+
+  #more_info_wrapper {
+    width: 100%;
+    text-align: center;
+    color: #23282B;
+    min-height: 120px;
+  }
+
+  #more_info {
+    line-height: 0.5em;
+  }
+
+  #more_info #constituency_name {
+    line-height: 1.1em;
+  }
+
+  #map_frame {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #download_count {
+    font-size: 2em;
+  }
+
+  .constituency {
+    cursor: pointer;
+  }
+
+  #stats_bar {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .stat_item {
+    text-align: center;
+    padding: 10px;
+    flex-basis: 0;
+    flex-grow: 1;
+  }
+
+  .center {
+    text-align: center;
+  }
+
+  a {
+    color: #7A8C96;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+
+</style>
+</head>
+<body>
+<main style="width:400px">
+  <div id='stats_bar' class='inset'>
+    <div class='stat_item' style="color: #219BCC">
+      <h1>1721</h1>
+      <h4>extension downloads</h4>
+    </div>
+    <div class='stat_item' style="color: #EA4C4B">
+      <h1>305</h1>
+      <h4>constituencies represented</h4>
+    </div>
+    <div class='stat_item' style="color: #E5B335">
+      <h1>49.8k</h1>
+      <h4>ads tracked</h4>
+    </div>
+  </div>
+
+  <div id="map_frame"></div>
+  <div id="more_info_wrapper">
+    <div id="more_info" class="hidden">
+      <h2 id="download_count"></h2>
+      <p>downloads in</p>
+      <h1 id="constituency_name"></h3>
+    </div>
+    <div id='more_info_backup'>
+      <h3>click on a constituency to see more</h3>
+    </div>
+  </div>
+
+  <footer class="center">
+    <p><a href="#"> < Go Back To Results Page </a></p>
+  </footer>
+</main>
+
+<script src="js/d3.v4.min.js"></script>
+<script src="uk.electionmap.d3.min.js"></script>
+<script src="results.js"></script>
+
+<script>
+  // Credit to http://bl.ocks.org/timcraft/5866773 for this map
+  var base_color = '#2D4357'
+  var max_downloads = Math.max.apply(null, Object.values(UK_GENERAL_ELECTION_RESULTS_2010))
+  var color_scale = d3.scaleLinear().domain([0,90]).range(['white', base_color])
+
+  var svg = d3.select('#map_frame').append('svg')
+    .attr('width', 300)
+    .attr('height', 400);
+
+  var map = UK.ElectionMap()
+    .fill(function (constituency) { return color_scale(UK_GENERAL_ELECTION_RESULTS_2010[constituency]) || 'white'; })
+    .origin({x: 40, y: 380});
+
+  map(svg);
+
+  svg.on('click', function() {
+    more_info = d3.select("#more_info")
+    more_info.classed('hidden', true)
+    d3.select('#more_info_backup').classed('hidden', false)
+    more_info.select("#constituency_name").text("")
+    more_info.select("#download_count").text("")
+  })
+
+  d3.selectAll(".constituency")
+    .append('title')
+    .text(function(constituency) {return constituency[2] + ": " + UK_GENERAL_ELECTION_RESULTS_2010[constituency[2]]})
+
+  d3.selectAll(".constituency").on('click', function(constituency) {
+      more_info = d3.select("#more_info")
+      more_info.classed('hidden', false)
+      d3.select('#more_info_backup').classed('hidden', true)
+      more_info.select("#constituency_name").text(constituency[2])
+      more_info.select("#download_count").text(UK_GENERAL_ELECTION_RESULTS_2010[constituency[2]])
+      d3.event.stopPropagation();
+    })
+
+</script>
+
+</body>
+</html>
