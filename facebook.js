@@ -112,7 +112,7 @@ $(document).ready(function() {
 					config.devlog("Saving to server");
 					$.ajax({
 						type: 'post',
-						url: config.devAPIURL+"/track/",
+						url: config.APIURL+"/track/",
 						dataType: 'json',
 						data: wholeShabang,
 					    headers: {"Access-Token": userStorage.access_token}
