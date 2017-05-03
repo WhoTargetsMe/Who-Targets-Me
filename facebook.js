@@ -23,7 +23,7 @@ $(document).ready(function() {
 
 			// Check that it's an identifiable post
 			if(!advertiserName || top_level_post_id == null || top_level_post_id.constructor !== Array) {
-				console.log("- Disregarding suspected non-advert, No."+uiIndex+" of "+thisBatchN);
+				config.devlog("- Disregarding suspected non-advert, No."+uiIndex+" of "+thisBatchN);
 				inspectNextAd();
 			} else {
 				top_level_post_id = top_level_post_id[1];
@@ -41,7 +41,7 @@ $(document).ready(function() {
 					}
 				}
 
-				// console.log("Inspecting suspected advert No."+uiIndex+" of "+thisBatchN, snapshot.meta.entity, snapshot.meta.top_level_post_id);
+				// config.devlog("Inspecting suspected advert No."+uiIndex+" of "+thisBatchN, snapshot.meta.entity, snapshot.meta.top_level_post_id);
 
 				// Get image/video thumbnail URL
 				if(adContent.find('.fbStoryAttachmentImage'))
@@ -77,11 +77,11 @@ $(document).ready(function() {
 
 			function saveSnapshot(adContent, snapshot) {
 				if (typeof adContent.attr('WTM_timestamp_snapshot') == typeof undefined || adContent.attr('WTM_timestamp_snapshot') == false) {
-					console.log("+ Deemed a new ad",snapshot.meta.entity, snapshot.meta.top_level_post_id);
+					config.devlog("+ Deemed a new ad",snapshot.meta.entity, snapshot.meta.top_level_post_id);
 					newSessionHistory.push(snapshot);
 					adContent.attr('WTM_timestamp_snapshot', snapshot.meta.timestamp_snapshot);
 				} else {
-					console.log("! Already archived", snapshot.meta.entity, snapshot.meta.top_level_post_id);
+					config.devlog("! Already archived", snapshot.meta.entity, snapshot.meta.top_level_post_id);
 				}
 
 				inspectNextAd();
@@ -91,10 +91,10 @@ $(document).ready(function() {
 				if(uiIndex < thisBatchN) {
 					// inspect next ad
 				} else if(newSessionHistory.length > 0) {
-					console.log("Sync'ing ads just found ("+newSessionHistory.length+")");
+					config.devlog("Sync'ing ads just found ("+newSessionHistory.length+")");
 					synchronise(newSessionHistory);
 				} else {
-					console.log("--No new adverts--");
+					config.devlog("--No new adverts--");
 				}
 			}
 		})
@@ -106,26 +106,26 @@ $(document).ready(function() {
 			newSessionHistory.forEach(function(ad, index) {
 				// Save the whole shabang to server
 				var wholeShabang = Object.assign({}, ad.meta, ad.content, ad.blobs);
-				console.log("Archiving new ad:",wholeShabang);
+				config.devlog("Archiving new ad:",wholeShabang);
 
 				if(userStorage.dateTokenGot != null) {
-					console.log("Saving to server");
+					config.devlog("Saving to server");
 					$.ajax({
 						type: 'post',
-						url: config.APIURL+"/track/",
+						url: config.devAPIURL+"/track/",
 						dataType: 'json',
 						data: wholeShabang,
 					    headers: {"Access-Token": userStorage.access_token}
 					}).done(function(data) {
-						console.log(data.status);
-						console.log("This new ad [SERVER SYNC'D] Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id)
+						config.devlog(data.status);
+						config.devlog("This new ad [SERVER SYNC'D] Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id)
 					}).fail(function(data) {
-						console.log(data.status);
-						console.log("Error saving this ad, backing up for later server save: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id);
+						config.devlog(data.status);
+						config.devlog("Error saving this ad, backing up for later server save: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id);
 						browserStorage.add('notServerSavedAds',wholeShabang);
 					});
 				} else {
-					console.log("Backing up for server save, once access_token is received");
+					config.devlog("Backing up for server save, once access_token is received");
 					browserStorage.add('notServerSavedAds',wholeShabang);
 				}
 			})
