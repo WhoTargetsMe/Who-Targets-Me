@@ -83,7 +83,7 @@ function initResultsPage() {
 		//Determine which share message to show the user
 		if(response.data.constituency.users === 1) {
 			$("#constituency_share").text("Congratulations! You're the first volunteer in your constituency. Can you help us find more?");
-		}else if(response.data.constituency.users < 10) {
+		}else if(response.data.constituency.users > 1) {
 			$("#constituency_share").html("You're one of <b>" + response.data.constituency.users + "</b> volunteers in " + response.data.constituency.name + ", can you help us reach <b>" + roundUp(response.data.constituency.users) + "</b>?");
 		}
 
