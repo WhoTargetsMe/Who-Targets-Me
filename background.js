@@ -24,7 +24,7 @@ var userStorage = new ChromeStorage({ // Collect basic targeting data across use
 		}});
 
 		// If popup opens, close any access_token notification prompts
-		chrome.extension.onMessage.addListener(function(request,sender,sendResponse) {
+		chrome.runtime.onMessage.addListener(function(request,sender,sendResponse) {
 		    if(request.notification === "hide") checkAccessToken();
 		    if(request.access_token_received) checkAccessToken(request.access_token_received);
 		})
