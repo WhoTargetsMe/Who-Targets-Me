@@ -28,12 +28,20 @@ $(document).ready(function() {
 			} else {
 				top_level_post_id = top_level_post_id[1];
 
+				if(adContent.find('video').length > 0)
+					var postType = "video"
+				else if(adContent.find('[data-tooltip-content][href^="/events/"]'))
+					var postType = "event"
+				else
+					var postType = "other"
+
 				// Snapshots are sent to storage, and kept in user session history too.
 				var snapshot = {
 					meta: {
 						entity: advertiserName,
 						entityID: parseInt(advertiserHTML.attr('data-hovercard-obj-id')),
 						entity_vanity: advertiserHTML.attr('href').split(/\/\?|\?/)[0].split('https://www.facebook.com/')[1],
+						post_type: postType, /* other (default) | video | event */
 						top_level_post_id: parseInt(top_level_post_id),
 						timestamp_created: parseInt(adContent.closest('[data-timestamp]').attr('data-timestamp')),
 						// Divide by 1000 to match FB's `timestamp` property (^), which is in seconds, compatibility for PHP
