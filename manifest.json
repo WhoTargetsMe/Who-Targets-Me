@@ -16,8 +16,7 @@
 		"*://*.facebook.com/*",
 		"http://fonts.googleapis.com/",
 		"https://fonts.googleapis.com/",
-		"*://who-targets-me.herokuapp.com/*",
-		"*://who-targets-me-staging.herokuapp.com/*"
+		"*://who-targets-me.herokuapp.com/*"
 	],
 	"content_scripts": [
 		{
