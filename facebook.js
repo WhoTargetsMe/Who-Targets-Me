@@ -35,21 +35,7 @@ $(document).ready(function() {
 				else
 					var postType = "other"
 
-				// Snapshots are sent to storage, and kept in user session history too.
-				var snapshot = {
-					meta: {
-						entity: advertiserName,
-						entityID: parseInt(advertiserHTML.attr('data-hovercard-obj-id')),
-						entity_vanity: advertiserHTML.attr('href').split(/\/\?|\?/)[0].split('https://www.facebook.com/')[1],
-						post_type: postType, /* other (default) | video | event */
-						top_level_post_id: parseInt(top_level_post_id),
-						timestamp_created: parseInt(adContent.closest('[data-timestamp]').attr('data-timestamp')),
-						// Divide by 1000 to match FB's `timestamp` property (^), which is in seconds, compatibility for PHP
-						timestamp_snapshot: parseInt(adContent.attr('WTM_timestamp_snapshot')) || parseInt((Date.now() / 1000).toFixed()),
-					}
-				}
-
-				// config.devlog("Inspecting suspected advert No."+uiIndex+" of "+thisBatchN, snapshot.meta.entity, snapshot.meta.top_level_post_id);
+				// config.devlog("Inspecting suspected advert No."+uiIndex+" of "+thisBatchN, snapshot.entity, snapshot.top_level_post_id);
 
 				// Get image/video thumbnail URL
 				if(adContent.find('.fbStoryAttachmentImage'))
@@ -63,33 +49,61 @@ $(document).ready(function() {
 				var linkTo = adContent.find('.userContent').next().find('a').attr('href');
 				linkTo = linkTo.includes("l.facebook.com/l.php?") ? getParameterByName('u',linkTo) : decodeURIComponent(linkTo);
 
-				snapshot.content = {
-					// May need to go through Facebook gateway, to get REAL url?
+				// Snapshots are sent to storage, and kept in user session history too.
+				var snapshot = {
+					entity: advertiserName,
+					entityID: parseInt(advertiserHTML.attr('data-hovercard-obj-id')),
+					entity_vanity: advertiserHTML.attr('href').split(/\/\?|\?/)[0].split('https://www.facebook.com/')[1],
+					post_type: postType, /* other (default) | video | event */
+					top_level_post_id: parseInt(top_level_post_id),
+					timestamp_created: parseInt(adContent.closest('[data-timestamp]').attr('data-timestamp')),
+					timestamp_snapshot: parseInt(adContent.attr('WTM_timestamp_snapshot')) || parseInt((Date.now() / 1000).toFixed()),
 					linkTo: linkTo,
 					postText: adContent.find('.userContent').text(),
-					// the big/small text beneath thumbnail images; captures the majority of cases, but not all
 					fbStory_headline: adContent.find('.mbs._6m6._2cnj._5s6c, ._275z._5s6c').text(), // selectors for image, video
 					fbStory_subtitle: adContent.find('._6m7._3bt9, ._5q4r').text(),
-					// Maybe we want to download and save these on our server?
-					// Images are easy to store... but what about fb-locked videos?
 					thumbnailMedia: thumbnailMedia,
+					html: adContent.html(),
+					comments: parseFBnumber(adContent.find('[data-intl-translation^="{count} Comment"]').first().text().replace(/ Comments?/,"")),
+					shares: parseFBnumber(adContent.find('[data-intl-translation^="{count} Share"]').first().text().replace(/ Shares?/,"")),
+					views: parseFBnumber(adContent.find('[data-intl-translation^="{count} Views"]').first().text().replace(/ Views?/,"")),
+					reactions: parseFBnumber(adContent.find('[aria-label="See who reacted to this"] + [href="/ufi/reaction] [data-tooltip-uri]').first().text())
 				}
 
-				// snapshot.blobs are for server storage only.
-				snapshot.blobs = {
-					html: adContent.html()
-				};
+				var reactionTypes = ['Like','Love','Wow','Sad','Haha','Angry'];
+				var reactions = 0;
+				reactionTypes.forEach(function(reaction) {
+					reactionCount = adContent.find(`[aria-label$="${reaction}"]`).text();
+					reactionCount = parseFBnumber(reactionCount);
+					snapshot["reactions_"+reaction] = reactionCount;
+					reactions += reactionCount;
+				});
 
 				saveSnapshot(adContent, snapshot);
 			}
 
+			function parseFBnumber(string) {
+				if(!string || typeof string != 'string' || string == '') return null;
+
+				string = string.trim().replace(/,/g, '');
+
+				if(string.endsWith("k")) {
+					string = parseFloat(string.slice(0,-1));
+					string *= 1000;
+				} else if(string.endsWith("M")) {
+					string = parseFloat(string.slice(0,-1));
+					string *= 1000000;
+				}
+				return parseInt(string);
+			}
+
 			function saveSnapshot(adContent, snapshot) {
 				if (typeof adContent.attr('WTM_timestamp_snapshot') == typeof undefined || adContent.attr('WTM_timestamp_snapshot') == false) {
-					config.devlog("+ Deemed a new ad",snapshot.meta.entity, snapshot.meta.top_level_post_id);
+					config.devlog("+ Deemed a new ad",snapshot.entity, snapshot.top_level_post_id);
 					newSessionHistory.push(snapshot);
-					adContent.attr('WTM_timestamp_snapshot', snapshot.meta.timestamp_snapshot);
+					adContent.attr('WTM_timestamp_snapshot', snapshot.timestamp_snapshot);
 				} else {
-					config.devlog("! Already archived", snapshot.meta.entity, snapshot.meta.top_level_post_id);
+					config.devlog("! Already archived", snapshot.entity, snapshot.top_level_post_id);
 				}
 
 				inspectNextAd();
@@ -111,10 +125,9 @@ $(document).ready(function() {
 		function synchronise(newSessionHistory) {
 			if(newSessionHistory.length < 1) { return false; }
 
-			newSessionHistory.forEach(function(ad, index) {
+			newSessionHistory.forEach(function(snapshot, index) {
 				// Save the whole shabang to server
-				var wholeShabang = Object.assign({}, ad.meta, ad.content, ad.blobs);
-				config.devlog("Archiving new ad:",wholeShabang);
+				config.devlog("Archiving new ad:",snapshot);
 
 				if(userStorage.dateTokenGot != null) {
 					config.devlog("Saving to server");
@@ -122,19 +135,19 @@ $(document).ready(function() {
 						type: 'post',
 						url: config.APIURL+"/track/",
 						dataType: 'json',
-						data: wholeShabang,
+						data: snapshot,
 					    headers: {"Access-Token": userStorage.access_token}
 					}).done(function(data) {
 						config.devlog(data.status);
-						config.devlog("This new ad [SERVER SYNC'D] Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id)
+						config.devlog("This new ad [SERVER SYNC'D] Advertiser: "+snapshot.entity+" - Advert ID: "+snapshot.top_level_post_id)
 					}).fail(function(data) {
 						config.devlog(data.status);
-						config.devlog("Error saving this ad, backing up for later server save: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id);
-						browserStorage.add('notServerSavedAds',wholeShabang);
+						config.devlog("Error saving this ad, backing up for later server save: "+snapshot.entity+" - Advert ID: "+snapshot.top_level_post_id);
+						browserStorage.add('notServerSavedAds',snapshot);
 					});
 				} else {
 					config.devlog("Backing up for server save, once access_token is received");
-					browserStorage.add('notServerSavedAds',wholeShabang);
+					browserStorage.add('notServerSavedAds',snapshot);
 				}
 			})
 			oldSessionHistory.push(newSessionHistory);
