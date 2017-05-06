@@ -75,7 +75,7 @@ $(document).ready(function() {
 				reactionTypes.forEach(function(reaction) {
 					reactionCount = adContent.find(`[aria-label$="${reaction}"]`).text();
 					reactionCount = parseFBnumber(reactionCount);
-					snapshot["reactions_"+reaction] = reactionCount;
+					snapshot["reactions"+reaction)] = reactionCount;
 					reactions += reactionCount;
 				});
 
