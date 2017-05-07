@@ -67,7 +67,7 @@ $(document).ready(function() {
 					comments: parseFBnumber(adContent.find('[data-intl-translation^="{count} Comment"]').first().text().replace(/ Comments?/,"")),
 					shares: parseFBnumber(adContent.find('[data-intl-translation^="{count} Share"]').first().text().replace(/ Shares?/,"")),
 					views: parseFBnumber(adContent.find('[data-intl-translation^="{count} Views"]').first().text().replace(/ Views?/,"")),
-					reactions: parseFBnumber(adContent.find('[aria-label="See who reacted to this"] + [href="/ufi/reaction] [data-tooltip-uri]').first().text())
+					reactions: parseFBnumber(adContent.find('[aria-label="See who reacted to this"] + [href^="/ufi/reaction"] [data-tooltip-uri]').first().text())
 				}
 
 				var reactionTypes = ['Like','Love','Wow','Sad','Haha','Angry'];
@@ -75,7 +75,7 @@ $(document).ready(function() {
 				reactionTypes.forEach(function(reaction) {
 					reactionCount = adContent.find(`[aria-label$="${reaction}"]`).text();
 					reactionCount = parseFBnumber(reactionCount);
-					snapshot["reactions_"+reaction] = reactionCount;
+					snapshot["reactions"+reaction] = reactionCount;
 					reactions += reactionCount;
 				});
 
