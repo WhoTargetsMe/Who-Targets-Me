@@ -88,12 +88,28 @@ function initResultsPage() {
 		}
 
 		//Get all stats
-		$.each(response.data.all_top_advertisers, function(index, value) {
-			$("#all_advertisers_body").append("<tr><td class=\"pv1 bb b--black-20\">" + value.count + "</td><td class=\"pv1 bb b--black-20\"><img src=\"" + value.profile_photo + "\"/></td><td class=\"pv1 bb b--black-20\">" + value.advertiser + "</td></tr>")
-		});
+		// $.each(response.data.all_top_advertisers, function(index, value) {
+		// 	$("#all_advertisers_body").append("<tr><td class=\"pv1 bb b--black-20\">" + value.count + "</td><td class=\"pv1 bb b--black-20\"><img src=\"" + value.profile_photo + "\"/></td><td class=\"pv1 bb b--black-20\">" + value.advertiser + "</td></tr>")
+		// });
+		//
+		// if(response.data.all_top_advertisers.length == 0) {
+		// 	$("#all_advertisers_body").append("<tr><td class=\"pv1 bb b--black-20\" colspan=\"3\">Looks like we haven't detected any ads yet!</td></tr>")
+		// }
 
-		if(response.data.all_top_advertisers.length == 0) {
-			$("#all_advertisers_body").append("<tr><td class=\"pv1 bb b--black-20\" colspan=\"3\">Looks like we haven't detected any ads yet!</td></tr>")
+		if(response.data.my_party_advertisers.length == 0) {
+			$("#my_party_advertisers_table").append("<tr><td class=\"pv1 bb b--black-20\" colspan=\"3\">Looks like we haven't detected any ads yet!</td></tr>")
+		}else {
+			$.each(response.data.my_party_advertisers, function(index, value) {
+				$("#my_party_advertisers_table").append("<tr><td class=\"pv1 bb b--black-20\">" + value.count + "</td><td class=\"pv1 bb b--black-20\"><img src=\"" + value.profile_photo + "\"/></td><td class=\"pv1 bb b--black-20\">" + value.advertiser + "</td></tr>")
+			});
+		}
+
+		if(response.data.all_party_advertisers.length == 0) {
+			$("#all_party_advertisers_table").append("<tr><td class=\"pv1 bb b--black-20\" colspan=\"3\">Looks like we haven't detected any ads yet!</td></tr>")
+		}else {
+			$.each(response.data.all_party_advertisers, function(index, value) {
+				$("#all_party_advertisers_table").append("<tr><td class=\"pv1 bb b--black-20\">" + value.count + "</td><td class=\"pv1 bb b--black-20\"><img src=\"" + value.profile_photo + "\"/></td><td class=\"pv1 bb b--black-20\">" + value.advertiser + "</td></tr>")
+			});
 		}
 
 		$("#loading").hide();
