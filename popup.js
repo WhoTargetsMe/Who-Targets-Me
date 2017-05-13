@@ -55,15 +55,7 @@ function start() {
 
 			$("#register").submit(function(event) {
 				event.preventDefault();
-
-				var $form = $("#register").get(0);
-				if (!$form.checkValidity || $form.checkValidity()) {
-					console.log("It's valid!");
-					isFormValid();
-					$('#errors').hide();
-				} else {
-					$('#errors').show();
-				}
+				isFormValid()
 			});
 		}
 	})
@@ -133,20 +125,26 @@ function isFormValid() {
 	$("#signup").hide();
 	$("#loading").show();
 
-	$.post(config.APIURL+"/user/", request, function(response) {
-		response = JSON.parse(response);
+	$.post(config.APIURL+"/user/", request)
+		.done(function(response) {
+				response = JSON.parse(response);
+				if(response.data.access_token) {
+					userStorage.set('access_token', response.data.access_token, function() {
+						userStorage.set('dateTokenGot', Date.now(), function() {
+							chrome.extension.sendMessage({access_token_received: userStorage.dateTokenGot});
+						});
 
-		if(response.data.access_token) {
-			userStorage.set('access_token', response.data.access_token, function() {
-				userStorage.set('dateTokenGot', Date.now(), function() {
-					chrome.extension.sendMessage({access_token_received: userStorage.dateTokenGot});
-				});
-
-				$("#loading").hide();
-				initResultsPage();
-			});
-		}
-	});
+						$("#loading").hide();
+						initResultsPage();
+					});
+				}
+		})
+		.fail(function($xhr) {
+			$("#signup").show();
+			$("#loading").hide();
+			error =  $.parseJSON($xhr.responseText);
+			$("#registration_errors").text(error.reason);
+		})
 }
 
 
