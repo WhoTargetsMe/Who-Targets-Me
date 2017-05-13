@@ -250,12 +250,5 @@ function show_user_analytics() {
 }
 
 const roundUp = (x) => {
-    if(x < 10) {
-      return 10;
-    }
-    var y = Math.pow(10, x.toString().length-1);
-    x = (x/y);
-    x = Math.ceil(x);
-    x = x*y;
-    return x;
+		return Math.ceil((x + 1) / 10) * 10;
 }
