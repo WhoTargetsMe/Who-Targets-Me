@@ -254,7 +254,7 @@ const roundUp = (x) => {
       return 10;
     }
     var y = Math.pow(10, x.toString().length-1);
-    x = (x/y);
+    x = ((x+1)/y);
     x = Math.ceil(x);
     x = x*y;
     return x;
