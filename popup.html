@@ -79,29 +79,23 @@
 
 		</div>
 
-		<div id='loading' class='measure center tc' style="width: 400px">
+		<div id='loading' class='measure center tc' style="width: 300px">
 			<div class='pv6 dotdotdot f3 lh-title poppins b mb3 tc'>One sec</div>
 		</div>
 
 		<!-- SIGNUP VIEW START -->
-		<div id="signup" style="width: 200px" class="pv2 ph2">
+		<div id="signup" style="width: 300px" class="ph3">
 			<div class="black-80">
-				<div class="tc mv2">
-					<img src="./logo-128.png" height="100"/>
-				<div>
+				<div class="tc mv4">
+					<img src="./logo-128.png" height="120"/>
+				</div>
 				<div class="mv2">
 					<form id="register">
 						<div>
-							<!-- <label for="signup_age" class="f6 b db mb2">Age <span class="normal black-60">(years)</span></label> -->
 							<input placeholder='Age in years (between 13-90)' name="age" id="signup_age" class="validify input-reset ba b--black-20 pa2 mb2 db w-100" type="number" aria-describedby="name-desc" autocomplete="off" autocorrect="off">
 						</div>
 
-						<div>
-							<!-- <label for="signup_postcode" class="f6 b db mb2">Postcode</label> -->
-							<input placeholder='Your postcode' name="postcode" id="signup_postcode" class="validify input-reset ba b--black-20 pa2 mb2 db w-100" type="text" aria-describedby="name-desc" autocomplete="off" autocorrect="off">
-						</div>
-
-						<div class="items-center mb2 cf">
+						<div class="items-center mb2 cf tc">
 							<div class="fl w-third pointer">
 								<input id='male' class="pointer mr2" type="radio" name="gender" value=1><label for="male" class="lh-copy pointer">Male</label>
 							</div>
@@ -113,14 +107,28 @@
 							</div>
 						</div>
 
+						<div>
+							<input placeholder='Your postcode' name="postcode" id="signup_postcode" class="validify input-reset ba b--black-20 pa2 mb2 db w-100" type="text" aria-describedby="name-desc" autocomplete="off" autocorrect="off">
+						</div>
+
+
+						<div class="mv2 cf tc">
+							<div class="fl w-10">
+								<input type="checkbox" name="agree_terms" value="yes">
+							</div>
+							<div class="fl w-90">
+								I have read and agree to the <a href="https://whotargets.me/terms/">terms and conditions</a> and <a href="https://whotargets.me/privacy-policy/">privacy policy</a>
+							</div>
+						</div>
+
 						<input class="w-100 dib white b ph3 pv2 input-reset ba bg-blue pointer f6 b-none" type="submit" value="Get Started" id="submit">
 						<div style="color: red" class="mv2" id="registration_errors"></div>
 					</form>
 				</div>
-				<p class="justify">Thanks for volunteering, you're moments away from discovering which of the parties are targeting you this election.</p>
-				<div class="cf">
-				  <p class="fl mv0"><a href="https://whotargets.me/">Website</a></p>
-				  <p class="fr mv0"><a href="https://whotargets.me/privacy-policy/">Privacy Policy</a></p>
+				<p class="justify">Thank you for volunteering, you're moments away from discovering how you're being targeted this election. The information you provide about your basic demographics will be used anonymously to help us establish which groups are being targeted.</p>
+				<div class="tc mv4">
+					<p>Copyright Who Targets Me? Limited 2017</p>
+				  <p class=""><a href="https://whotargets.me/">Website</a> | <a href="https://whotargets.me/privacy-policy/">Privacy Policy</a></p>
 				</div>
 			</div>
 		</div>

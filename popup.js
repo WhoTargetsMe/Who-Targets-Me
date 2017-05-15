@@ -122,6 +122,11 @@ function isFormValid() {
 	});
 	console.log(request);
 
+	if(!request.agree_terms || request.agree_terms != "yes") {
+		$("#registration_errors").text("Please read and agree to the terms and conditions and privacy policy!")
+		return
+	}
+
 	$("#signup").hide();
 	$("#loading").show();
 
