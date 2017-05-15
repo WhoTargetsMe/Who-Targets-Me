@@ -19,7 +19,7 @@ $(document).ready(function() {
 			var advertiserHTML = $(this).closest('div').prev().find('a:first-of-type').first();
 			var top_level_post_id = /\[top_level_post_id\]=([0-9]+)/.exec(advertiserHTML.attr('href'));
 			var advertiserName = advertiserHTML.text();
-			var adContent = advertiserHTML.closest('.fbUserContent');
+			var adContent = advertiserHTML.closest('._1dwg');
 
 			// Check that it's an identifiable post
 			if(!advertiserName || top_level_post_id == null || top_level_post_id.constructor !== Array) {
@@ -55,7 +55,7 @@ $(document).ready(function() {
 					entityID: parseInt(advertiserHTML.attr('data-hovercard-obj-id')),
 					entity_vanity: advertiserHTML.attr('href').split(/\/\?|\?/)[0].split('https://www.facebook.com/')[1],
 					post_type: postType, /* other (default) | video | event */
-					top_level_post_id: parseInt(top_level_post_id),
+					top_level_post_id: top_level_post_id,
 					timestamp_created: parseInt(adContent.closest('[data-timestamp]').attr('data-timestamp')),
 					timestamp_snapshot: parseInt(adContent.attr('WTM_timestamp_snapshot')) || parseInt((Date.now() / 1000).toFixed()),
 					linkTo: linkTo,
