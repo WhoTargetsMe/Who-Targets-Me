@@ -1,5 +1,5 @@
 {
-	"version": "0.1.4",
+	"version": "0.1.8",
 	"name": "Who Targets Me",
 	"manifest_version": 2,
 	"description": "Track which entities are targeting you with adverts",

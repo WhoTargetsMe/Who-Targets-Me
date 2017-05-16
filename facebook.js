@@ -19,7 +19,7 @@ $(document).ready(function() {
 			var advertiserHTML = $(this).closest('div').prev().find('a:first-of-type').first();
 			var top_level_post_id = /\[top_level_post_id\]=([0-9]+)/.exec(advertiserHTML.attr('href'));
 			var advertiserName = advertiserHTML.text();
-			var adContent = advertiserHTML.closest('._1dwg');
+			var adContent = advertiserHTML.closest('.fbUserContent');
 
 			// Check that it's an identifiable post
 			if(!advertiserName || top_level_post_id == null || top_level_post_id.constructor !== Array) {
@@ -63,7 +63,7 @@ $(document).ready(function() {
 					fbStory_headline: adContent.find('.mbs._6m6._2cnj._5s6c, ._275z._5s6c').text(), // selectors for image, video
 					fbStory_subtitle: adContent.find('._6m7._3bt9, ._5q4r').text(),
 					thumbnailMedia: thumbnailMedia,
-					html: adContent.html(),
+					html: adContent.find('._1dwg').html(),
 					comments: parseFBnumber(adContent.find('[data-intl-translation^="{count} Comment"]').first().text().replace(/ Comments?/,"")),
 					shares: parseFBnumber(adContent.find('[data-intl-translation^="{count} Share"]').first().text().replace(/ Shares?/,"")),
 					views: parseFBnumber(adContent.find('[data-intl-translation^="{count} Views"]').first().text().replace(/ Views?/,"")),
