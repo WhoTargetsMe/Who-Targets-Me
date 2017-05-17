@@ -12,12 +12,23 @@ $(document).ready(function() {
 
 	window.setInterval(function() {
 		var newSessionHistory = []
+		var postType = null
 
 		var thisBatchN = $("a:contains('Sponsored')").length;
 		$("a:contains('Sponsored')").each(function(index) {
+			var advert_type_detect = $(this).closest('div');
+			if(advert_type_detect.hasClass("_3dp")) {
+				var advertiserHTML = $(this).closest('div').find('a:first-of-type').first();
+				var top_level_post_id = /\[mf_story_key\]=([0-9]+)/.exec(advertiserHTML.attr('href'));
+				postType = "page"
+			}else if(advert_type_detect.hasClass("_5pcp")) {
+				var advertiserHTML = $(this).closest('div').prev().find('.fwb').find('a:first-of-type').first();
+				var top_level_post_id = /\[top_level_post_id\]=([0-9]+)/.exec(advertiserHTML.attr('href'));
+			}
+
+
+
 			var uiIndex = index+1;
-			var advertiserHTML = $(this).closest('div').prev().find('a:first-of-type').first();
-			var top_level_post_id = /\[top_level_post_id\]=([0-9]+)/.exec(advertiserHTML.attr('href'));
 			var advertiserName = advertiserHTML.text();
 			var adContent = advertiserHTML.closest('.fbUserContent');
 
@@ -28,12 +39,14 @@ $(document).ready(function() {
 			} else {
 				top_level_post_id = top_level_post_id[1];
 
-				if(adContent.find('video').length > 0)
-					var postType = "video"
-				else if(adContent.find('[data-tooltip-content][href^="/events/"]'))
-					var postType = "event"
-				else
-					var postType = "other"
+				if(postType == null) {
+					if(adContent.find('video').length > 0)
+						postType = "video"
+					else if(adContent.find('[data-tooltip-content][href^="/events/"]'))
+						postType = "event"
+					else
+						postType = "other"
+				}
 
 				// config.devlog("Inspecting suspected advert No."+uiIndex+" of "+thisBatchN, snapshot.entity, snapshot.top_level_post_id);
 
