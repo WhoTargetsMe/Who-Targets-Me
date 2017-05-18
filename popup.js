@@ -55,15 +55,7 @@ function start() {
 
 			$("#register").submit(function(event) {
 				event.preventDefault();
-
-				var $form = $("#register").get(0);
-				if (!$form.checkValidity || $form.checkValidity()) {
-					console.log("It's valid!");
-					isFormValid();
-					$('#errors').hide();
-				} else {
-					$('#errors').show();
-				}
+				isFormValid()
 			});
 		}
 	})
@@ -97,7 +89,7 @@ function initResultsPage() {
 		// }
 
 		if(response.data.my_party_advertisers.length == 0) {
-			$("#my_party_advertisers_table").append("<tr><td class=\"pv1 bb b--black-20\" colspan=\"3\">Looks like we haven't detected any ads yet!</td></tr>")
+			$("#my_party_advertisers_table").append("<tr><td class=\"pv1 bb b--black-20\" colspan=\"3\">Looks like we haven't detected any ads yet! Patience is a virtue, just you wait until the last few weeks of the election...</td></tr>")
 		}else {
 			$.each(response.data.my_party_advertisers, function(index, value) {
 				$("#my_party_advertisers_table").append("<tr><td class=\"pv1 bb b--black-20\">" + value.count + "</td><td class=\"pv1 bb b--black-20\"><img src=\"" + value.profile_photo + "\"/></td><td class=\"pv1 bb b--black-20\">" + value.advertiser + "</td></tr>")
@@ -107,10 +99,13 @@ function initResultsPage() {
 		if(response.data.all_party_advertisers.length == 0) {
 			$("#all_party_advertisers_table").append("<tr><td class=\"pv1 bb b--black-20\" colspan=\"3\">Looks like we haven't detected any ads yet!</td></tr>")
 		}else {
-			$.each(response.data.all_party_advertisers, function(index, value) {
-				$("#all_party_advertisers_table").append("<tr><td class=\"pv1 bb b--black-20\">" + value.count + "</td><td class=\"pv1 bb b--black-20\"><img src=\"" + value.profile_photo + "\"/></td><td class=\"pv1 bb b--black-20\">" + value.advertiser + "</td></tr>")
+			$.each(response.data.all_party_advertisers.results, function(index, value) {
+				$("#all_party_advertisers_table").append("<tr><td class=\"pv1 bb b--black-20\">" + value.percentage + "</td><td class=\"pv1 bb b--black-20\"><img src=\"" + value.profile_photo + "\"/></td><td class=\"pv1 bb b--black-20\">" + value.name + "</td></tr>")
 			});
 		}
+
+		$("#my_party_advertisers_adverts").text(response.data.all_party_advertisers.advert_count);
+		$("#my_party_advertisers_users").text(response.data.all_party_advertisers.people_count);
 
 		$("#loading").hide();
 		$("#results").show();
@@ -127,23 +122,34 @@ function isFormValid() {
 	});
 	console.log(request);
 
+	if(!request.agree_terms || request.agree_terms != "yes") {
+		$("#registration_errors").text("Please read and agree to the terms and conditions and privacy policy!")
+		return
+	}
+
 	$("#signup").hide();
 	$("#loading").show();
 
-	$.post(config.APIURL+"/user/", request, function(response) {
-		response = JSON.parse(response);
+	$.post(config.APIURL+"/user/", request)
+		.done(function(response) {
+				response = JSON.parse(response);
+				if(response.data.access_token) {
+					userStorage.set('access_token', response.data.access_token, function() {
+						userStorage.set('dateTokenGot', Date.now(), function() {
+							chrome.extension.sendMessage({access_token_received: userStorage.dateTokenGot});
+						});
 
-		if(response.data.access_token) {
-			userStorage.set('access_token', response.data.access_token, function() {
-				userStorage.set('dateTokenGot', Date.now(), function() {
-					chrome.extension.sendMessage({access_token_received: userStorage.dateTokenGot});
-				});
-
-				$("#loading").hide();
-				initResultsPage();
-			});
-		}
-	});
+						$("#loading").hide();
+						initResultsPage();
+					});
+				}
+		})
+		.fail(function($xhr) {
+			$("#signup").show();
+			$("#loading").hide();
+			error =  $.parseJSON($xhr.responseText);
+			$("#registration_errors").text(error.reason);
+		})
 }
 
 
@@ -261,7 +267,7 @@ const roundUp = (x) => {
       return 10;
     }
     var y = Math.pow(10, x.toString().length-1);
-    x = (x/y);
+    x = ((x+1)/y);
     x = Math.ceil(x);
     x = x*y;
     return x;

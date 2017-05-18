@@ -12,12 +12,23 @@ $(document).ready(function() {
 
 	window.setInterval(function() {
 		var newSessionHistory = []
+		var postType = null
 
 		var thisBatchN = $("a:contains('Sponsored')").length;
 		$("a:contains('Sponsored')").each(function(index) {
+			var advert_type_detect = $(this).closest('div');
+			if(advert_type_detect.hasClass("_3dp")) {
+				var advertiserHTML = $(this).closest('div').find('a:first-of-type').first();
+				var top_level_post_id = /\[mf_story_key\]=([0-9]+)/.exec(advertiserHTML.attr('href'));
+				postType = "page"
+			}else if(advert_type_detect.hasClass("_5pcp")) {
+				var advertiserHTML = $(this).closest('div').prev().find('.fwb').find('a:first-of-type').first();
+				var top_level_post_id = /\[top_level_post_id\]=([0-9]+)/.exec(advertiserHTML.attr('href'));
+			}
+
+
+
 			var uiIndex = index+1;
-			var advertiserHTML = $(this).closest('div').prev().find('a:first-of-type').first();
-			var top_level_post_id = /\[top_level_post_id\]=([0-9]+)/.exec(advertiserHTML.attr('href'));
 			var advertiserName = advertiserHTML.text();
 			var adContent = advertiserHTML.closest('.fbUserContent');
 
@@ -28,12 +39,14 @@ $(document).ready(function() {
 			} else {
 				top_level_post_id = top_level_post_id[1];
 
-				if(adContent.find('video').length > 0)
-					var postType = "video"
-				else if(adContent.find('[data-tooltip-content][href^="/events/"]'))
-					var postType = "event"
-				else
-					var postType = "other"
+				if(postType == null) {
+					if(adContent.find('video').length > 0)
+						postType = "video"
+					else if(adContent.find('[data-tooltip-content][href^="/events/"]'))
+						postType = "event"
+					else
+						postType = "other"
+				}
 
 				// config.devlog("Inspecting suspected advert No."+uiIndex+" of "+thisBatchN, snapshot.entity, snapshot.top_level_post_id);
 
@@ -55,7 +68,7 @@ $(document).ready(function() {
 					entityID: parseInt(advertiserHTML.attr('data-hovercard-obj-id')),
 					entity_vanity: advertiserHTML.attr('href').split(/\/\?|\?/)[0].split('https://www.facebook.com/')[1],
 					post_type: postType, /* other (default) | video | event */
-					top_level_post_id: parseInt(top_level_post_id),
+					top_level_post_id: top_level_post_id,
 					timestamp_created: parseInt(adContent.closest('[data-timestamp]').attr('data-timestamp')),
 					timestamp_snapshot: parseInt(adContent.attr('WTM_timestamp_snapshot')) || parseInt((Date.now() / 1000).toFixed()),
 					linkTo: linkTo,
@@ -63,7 +76,7 @@ $(document).ready(function() {
 					fbStory_headline: adContent.find('.mbs._6m6._2cnj._5s6c, ._275z._5s6c').text(), // selectors for image, video
 					fbStory_subtitle: adContent.find('._6m7._3bt9, ._5q4r').text(),
 					thumbnailMedia: thumbnailMedia,
-					html: adContent.html(),
+					html: adContent.find('._1dwg').html(),
 					comments: parseFBnumber(adContent.find('[data-intl-translation^="{count} Comment"]').first().text().replace(/ Comments?/,"")),
 					shares: parseFBnumber(adContent.find('[data-intl-translation^="{count} Share"]').first().text().replace(/ Shares?/,"")),
 					views: parseFBnumber(adContent.find('[data-intl-translation^="{count} Views"]').first().text().replace(/ Views?/,"")),
