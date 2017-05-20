@@ -13,20 +13,20 @@ var userStorage = new ChromeStorage({ // Collect basic targeting data across use
 	dateTokenGot: null
 }, "sync")
 
-
-var browserStorage = new ChromeStorage({ // Collect basic targeting data across user's devices
-	advertArchive: [],
-	notServerSavedAds: []
-}, "local")
-
-
-// Hide notification for access_token, if it has been set
-chrome.runtime.sendMessage({notification: "hide"});
-
-// Can't access var until it's sync'd
-userStorage.onLoad({ 'access_token': start() })
+// Delegated userStorage to persistent `background.js`,
+// as Firefox has trouble loading it fast enough from popup
+chrome.runtime.sendMessage({access_token_request: "please"});
+chrome.runtime.onMessage.addListener(function(request,sender,sendResponse) {
+	console.log("[POPUP] Message received")
+	if(request.access_token_sent[0]) {
+		console.log("[POPUP] Background sent Dobby an access_token: ",request.access_token_sent[1]);
+		userStorage.set('access_token', request.access_token_sent[1]);
+		start();
+	}
+});
 
 function start() {
+	console.log("[POPUP] Starting up")
 	$(document).ready(function() {
 
 		$('body').on('click', 'a', function(){
@@ -36,11 +36,11 @@ function start() {
 
 		$('#errors').hide();
 		$("#loading").hide();
+		$("#results").hide();
 
+		console.log("[POPUP] Init UI resolution on access_token "+userStorage.access_token)
 		if(userStorage.access_token) {
-			$("#signup").hide();
-			$("#loading").show();
-			$("#results").hide();
+			console.log("[POPUP] User has access token "+userStorage.access_token)
 			initResultsPage();
 			// 	$('#data-not-ready').hide();
 			// 	$('#data-ready').show();
@@ -51,11 +51,10 @@ function start() {
 			// 	show_user_analytics();
 			// }
 		} else {
-			$("#results").hide();
-
+			console.log("[POPUP] User ain't got no access token "+userStorage.access_token)
 			$("#register").submit(function(event) {
 				event.preventDefault();
-				isFormValid()
+				processForm()
 			});
 		}
 	})
@@ -64,6 +63,10 @@ function start() {
 
 
 function initResultsPage() {
+	$("#signup").hide();
+	$("#loading").show();
+	$("#results").hide();
+
 	$.ajax({
 		type: 'get',
 		url: config.APIURL+"/user/",
@@ -107,14 +110,14 @@ function initResultsPage() {
 		$("#my_party_advertisers_adverts").text(response.data.all_party_advertisers.advert_count);
 		$("#my_party_advertisers_users").text(response.data.all_party_advertisers.people_count);
 
-		$("#loading").hide();
 		$("#results").show();
+		$("#loading").hide();
 	});
 }
 
 
 
-function isFormValid() {
+function processForm() {
 	var request = {};
 	$.each($('#register').serializeArray(), function(i, field) {
 		request[field.name] = field.value;
@@ -129,7 +132,6 @@ function isFormValid() {
 
 	$("#signup").hide();
 	$("#loading").show();
-
 	$.post(config.APIURL+"/user/", request)
 		.done(function(response) {
 				response = JSON.parse(response);

@@ -27,6 +27,7 @@ var userStorage = new ChromeStorage({ // Collect basic targeting data across use
 		chrome.runtime.onMessage.addListener(function(request,sender,sendResponse) {
 		    if(request.notification === "hide") checkAccessToken();
 		    if(request.access_token_received) checkAccessToken(request.access_token_received);
+			if(request.access_token_request) chrome.runtime.sendMessage({access_token_sent: [true,userStorage.access_token]});
 		})
 	}
 })
