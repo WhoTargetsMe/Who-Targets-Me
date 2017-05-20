@@ -172,29 +172,39 @@ function get_user_analytics_data(req_failure, req_success) {
 
 
 function show_user_demographics() {
-	age_range = "0-100";
-	constituency = "Unknown";
+	$.ajax({
+		type: 'get',
+		url: "https://who-targets-me.herokuapp.com/user/",
+		dataType: 'json',
+		headers: {"Access-Token": userStorage.access_token},
+		success: function(res) {
+				if (res.status === "success") {
+					gender = "person";
+					if (res.data.demographics.gender === 1) {
+						gender = "male";
+					} else if (res.data.demographics.gender === 2) {
+						gender = "female";
+					}
 
-	gender = "";
-	if (userStorage.gender !== undefined) {
-		gender = userStorage.gender;
-	}
+					age_range = "";
+					if (res.data.demographics.age < 30) {
+						age_range = "< 30";
+					} else if (res.data.demographics.age < 40) {
+						age_range = "30-40";
+					} else if (res.data.demographics.age < 50) {
+						age_range = "40-50";
+					} else if (res.data.demographics.age < 60) {
+						age_range = "50-60";
+					} else if (res.data.demographics.age < 70) {
+						age_range = "60-70";
+					} else {
+						age_range = "80+";
+					}
 
-	if (userStorage.age < 30) {
-		age_range = "< 30";
-	} else if (userStorage.age < 40) {
-		age_range = "< 30-40";
-	} else if (userStorage.age < 50) {
-		age_range = "< 40-50";
-	} else if (userStorage.age < 60) {
-		age_range = "< 50-60";
-	} else if (userStorage.age < 70) {
-		age_range = "< 60-70";
-	} else {
-		age_range = "80+";
-	}
-
-	$('#demographic').text("As a " + age_range + " year old " + gender + ", voting in " + constituency + ":");
+					$('#demographic').text("As a " + age_range + " year old " + gender + ", voting in " + res.data.constituency.name + ":");
+				}
+		}
+	});
 }
 
 
@@ -245,12 +255,12 @@ function show_user_analytics() {
 
 			// TODO: Do something with this later.
 		},
-		function(data) {
-			process_data(data);
+		function(result) {
+			process_data(result.data);
 
 			show_user_demographics();
-			show_user_ad_info(data);
-			render_bar_chart(data.breakdown);
+			show_user_ad_info(result.data);
+			render_bar_chart(result.data.breakdown);
 		});
 }
 
