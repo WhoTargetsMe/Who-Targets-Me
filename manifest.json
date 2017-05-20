@@ -29,10 +29,5 @@
 	},
 	"icons": {
 		"128": "logo-128.png"
-	},
-	"applications": {
-		"gecko": {
-			"id": "info@whotargets.me"
-		}
 	}
 }

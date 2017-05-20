@@ -53,7 +53,7 @@ var ChromeStorage = function(sessionProperties, options = "sync") {
 
     ChromeStorage.get = function(property,cb,method = "get") {
         var ChromeStorage = this
-        browser.storage[ChromeStorage.api].get(property, function receivedPropertyFromStorage(requestedStorage) {
+        chrome.storage[ChromeStorage.api].get(property, function receivedPropertyFromStorage(requestedStorage) {
             console.log("[storage."+ChromeStorage.api+"] GET "+ChromeStorage.api+"."+property+" = ",requestedStorage[property])
             ChromeStorage[property] = requestedStorage[property]
             if(typeof cb === 'function') cb(ChromeStorage[property])
@@ -67,7 +67,7 @@ var ChromeStorage = function(sessionProperties, options = "sync") {
 		var keyValue = {}
 		keyValue[property] = value
 
-		browser.storage[ChromeStorage.api].set(
+		chrome.storage[ChromeStorage.api].set(
 			keyValue,
 			function sentToStorage() {
 				console.log("[storage."+ChromeStorage.api+"] SET "+ChromeStorage.api+"."+property+" = ",value)
@@ -87,7 +87,7 @@ var ChromeStorage = function(sessionProperties, options = "sync") {
 	ChromeStorage.nuke = function() {
 		// Use when you need to nuke, during testing
 		console.log("!!!!!!!!!!!!!!!!! NUKING all values back to the stone age.")
-		browser.storage[ChromeStorage.api].clear();
+		chrome.storage[ChromeStorage.api].clear();
 	}
 
 	/* ----
@@ -123,7 +123,7 @@ var ChromeStorage = function(sessionProperties, options = "sync") {
         Constructor
     */
 
-	browser.storage.onChanged.addListener(function(changedProperties,api) {
+	chrome.storage.onChanged.addListener(function(changedProperties,api) {
 		if(api == ChromeStorage.api) {
 			// console.log("[storage."+ChromeStorage.api+"] changes",changedProperties)
 			for (var property in changedProperties) {
@@ -142,7 +142,7 @@ var ChromeStorage = function(sessionProperties, options = "sync") {
 			ChromeStorage.properties.push(property);
 		}
 	}
-	console.log("[storage."+ChromeStorage.api+"] --- Loading the following from browser.storage."+ChromeStorage.api,ChromeStorage.properties)
+	console.log("[storage."+ChromeStorage.api+"] --- Loading the following from chrome.storage."+ChromeStorage.api,ChromeStorage.properties)
 	ChromeStorage.properties.forEach(function(property, i, props) {
 		console.log("[storage."+ChromeStorage.api+"] ----- loading "+ChromeStorage.api+"."+property)
 		ChromeStorage.initProperty(property, sessionProperties[property], i, props.length);
