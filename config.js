@@ -66,7 +66,7 @@ function FbAdCheck(test = false, defer) {
 
 				// This is the whole advert box, with comments/likes/shares etc.
 				// Finding from here, especially meta-data like the above
-				$advertBox: $(this).closest('.fbUserContent'),
+				$adContent: $(this).closest('.fbUserContent'),
 
 				// No user data, except MAYBE 'X was also interested in this event'
 				// This is the one to store
@@ -110,23 +110,23 @@ function FbAdCheck(test = false, defer) {
 			// "interactive" (like some uni popup ads)
 			// "message_cta"
 		postType = []; // Posts could be a video linking to an event, tbf...
-		if(ad.$advertBox.find('video').length > 0)
+		if(ad.$adContent.find('video').length > 0)
 			postType.push("video") // confirmed, working
-		if(ad.$advertBox.find('a[ajaxify^="/events/"]').length > 0)
+		if(ad.$adContent.find('a[ajaxify^="/events/"]').length > 0)
 			postType.push("fbevent") // renamed from 'event' to differentiate from faulty data
-		if(ad.$advertBox.find('[data-testid="multishare_pager_prev"],[data-testid="multishare_pager_next"]').length > 0)
+		if(ad.$adContent.find('[data-testid="multishare_pager_prev"],[data-testid="multishare_pager_next"]').length > 0)
 			postType.push("multishare") // carousel of multiple mini-image/links
-		if(ad.$advertBox.find('.userContent').length < 1)
+		if(ad.$adContent.find('.userContent').length < 1)
 			postType.push("page")
 
 	/* -- Get image/video thumbnail URL -- */
 		var thumbnailMedia = []
 		if(postType.includes('video'))
-			thumbnailMedia.push(ad.$advertBox.find('video').attr('src'));
-		if(ad.$advertBox.find('img.scaledImageFitWidth')) // most posts will just have an image
-			thumbnailMedia.push(ad.$advertBox.find('img.scaledImageFitWidth').attr('src'));
+			thumbnailMedia.push(ad.$adContent.find('video').attr('src'));
+		if(ad.$adContent.find('img.scaledImageFitWidth')) // most posts will just have an image
+			thumbnailMedia.push(ad.$adContent.find('img.scaledImageFitWidth').attr('src'));
 		if(postType.includes('multishare')) { // That carousel thingy
-			ad.$advertBox.find('ul li').map(function() {
+			ad.$adContent.find('ul li').map(function() {
 				var item = {
 					image: $(this).find('img').attr('src'),
 					text: $(this).text(), // multishare text (probably includes button...)
@@ -139,7 +139,7 @@ function FbAdCheck(test = false, defer) {
 			});
 		}
 		if(postType.includes('page')) // Just has a different structure, unfortunately...
-			thumbnailMedia.push(ad.$advertBox.find("._5ypk._5pbu img").attr('src'));
+			thumbnailMedia.push(ad.$adContent.find("._5ypk._5pbu img").attr('src'));
 		// Remove empty values from 0 searches
 		thumbnailMedia = thumbnailMedia.filter(function(e){return e});
 
@@ -151,8 +151,8 @@ function FbAdCheck(test = false, defer) {
 		var links = new Set();
 		var anchors = [];
 		// Turns out, `page`-type ads don't have links. Just a button to like the page, hah.
-		/* a warning to ye */ // if(postType.includes('page')) anchors.concat(ad.$advertBox.find("._5ypk._5pbu a").toArray());
-		anchors = ad.$advertBox.find('.userContent + * a').toArray();
+		/* a warning to ye */ // if(postType.includes('page')) anchors.concat(ad.$adContent.find("._5ypk._5pbu a").toArray());
+		anchors = ad.$adContent.find('.userContent + * a').toArray();
 		if(anchors.length) {
 			anchors.forEach(function(link) {
 				var url = parseFBlink($(link).attr('href'));
@@ -172,31 +172,33 @@ function FbAdCheck(test = false, defer) {
 			entityID: ad.$entity.attr('data-hovercard-obj-id'),
 			entity_vanity: ad.$entity.attr('href').split(/\/\?|\?/)[0].split('https://www.facebook.com/')[1],
 
-			// Between these two, we can dedupe things
-			top_level_post_id: /\[top_level_post_id\]=([0-9]+)/.exec(ad.$entity.attr('href')) ? /\[top_level_post_id\]=([0-9]+)/.exec(ad.$entity.attr('href'))[1] : null,
+			// Unique to the advert
+			top_level_post_id: /\[top_level_post_id\]=([0-9]+)/.exec(ad.$entity.attr('href'))
+				? /\[top_level_post_id\]=([0-9]+)/.exec(ad.$entity.attr('href'))[1] // it's important to have the below, because there are odd cases where one or the other works
+				: ad.$adContent.find('input[name="ft_ent_identifier"]').first().attr('value'), // `ft_ent_identifier` is an alias, in comment sys + 'saved links' page
 			mf_story_key: /\[mf_story_key\]=([0-9]+)/.exec(ad.$entity.attr('href')) ? /\[mf_story_key\]=([0-9]+)/.exec(ad.$entity.attr('href'))[1] : null,
 			hyperfeed_story_id: hyperfeed_story_id,
 
 			// Timestamps
-			timestamp_created: ad.$advertBox.closest('[data-timestamp]').attr('data-timestamp'),
-			timestamp_snapshot: ad.$advertBox.attr('WTM_timestamp_snapshot') || (Date.now() / 1000).toFixed(),
+			timestamp_created: ad.$adContent.closest('[data-timestamp]').attr('data-timestamp'),
+			timestamp_snapshot: ad.$adContent.attr('WTM_timestamp_snapshot') || (Date.now() / 1000).toFixed(),
 
 			post_type: postType,
 			thumbnailMedia: thumbnailMedia,
 			linkTo: links,
-			postText: ad.$advertBox.find('.userContent,._5ypk._5pbu').text(), // latter selector is for page ads
+			postText: ad.$adContent.find('.userContent,._5ypk._5pbu').text(), // latter selector is for page ads
 
 			// Different selectors for image, video
-			fbStory_headline: ad.$advertBox.find('.mbs._6m6._2cnj._5s6c, ._275z._5s6c').text(),
-			fbStory_subtitle: ad.$advertBox.find('._6m7._3bt9, ._5q4r').text(),
+			fbStory_headline: ad.$adContent.find('.mbs._6m6._2cnj._5s6c, ._275z._5s6c').text(),
+			fbStory_subtitle: ad.$adContent.find('._6m7._3bt9, ._5q4r').text(),
 
 			// Weird and whacky formats that I try and interpret with parseFBnumber
 			// 1 1000 1,000 1k 5M etc.
 			// NB: These may not work right on static HTML, because Facebook JS stuffs
-			comments: parseFBnumber(ad.$advertBox.find('[data-intl-translation^="{count} Comment"]').first().text().replace(/ Comments?/,"")),
-			shares: parseFBnumber(ad.$advertBox.find('[data-intl-translation^="{count} Share"]').first().text().replace(/ Shares?/,"")),
-			views: parseFBnumber(ad.$advertBox.find('[data-intl-translation^="{count} Views"]').first().text().replace(/ Views?/,"")),
-			reactions: parseFBnumber(ad.$advertBox.find('[aria-label="See who reacted to this"] + [href^="/ufi/reaction"] [data-tooltip-uri]').first().text())
+			comments: parseFBnumber(ad.$adContent.find('[data-intl-translation^="{count} Comment"]').first().text().replace(/ Comments?/,"")),
+			shares: parseFBnumber(ad.$adContent.find('[data-intl-translation^="{count} Share"]').first().text().replace(/ Shares?/,"")),
+			views: parseFBnumber(ad.$adContent.find('[data-intl-translation^="{count} Views"]').first().text().replace(/ Views?/,"")),
+			reactions: parseFBnumber(ad.$adContent.find('[aria-label="See who reacted to this"] + [href^="/ufi/reaction"] [data-tooltip-uri]').first().text())
 		}
 
 	/* -- Specific reactions -- */
@@ -204,7 +206,7 @@ function FbAdCheck(test = false, defer) {
 		// NB: These may not work right on static HTML, because Facebook JS stuffs
 		var reactionTypes = ['Like','Love','Wow','Sad','Haha','Angry'];
 		reactionTypes.forEach(function(reaction) {
-			reactionCount = ad.$advertBox.find(`[aria-label$="${reaction}"]`).text();
+			reactionCount = ad.$adContent.find(`[aria-label$="${reaction}"]`).text();
 			reactionCount = parseFBnumber(reactionCount);
 			ad.snapshot["reactions"+reaction] = reactionCount;
 		});
@@ -304,7 +306,7 @@ function FbAdCheck(test = false, defer) {
 
 	function parseFBlink(url) {
 		if(!url || typeof url != 'string' || url == '')
-			return console.log("Non-string URL",url);
+			return config.devlog("Non-string URL",url);
 
 		return url.includes("l.facebook.com/l.php?") ? (
 					getParameterByName('u',url).includes("http") ?
