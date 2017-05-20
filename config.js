@@ -172,8 +172,10 @@ function FbAdCheck(test = false, defer) {
 			entityID: ad.$entity.attr('data-hovercard-obj-id'),
 			entity_vanity: ad.$entity.attr('href').split(/\/\?|\?/)[0].split('https://www.facebook.com/')[1],
 
-			// Between these two, we can dedupe things
-			top_level_post_id: /\[top_level_post_id\]=([0-9]+)/.exec(ad.$entity.attr('href')) ? /\[top_level_post_id\]=([0-9]+)/.exec(ad.$entity.attr('href'))[1] : null,
+			// Unique to the advert
+			top_level_post_id: /\[top_level_post_id\]=([0-9]+)/.exec(ad.$entity.attr('href'))
+				? /\[top_level_post_id\]=([0-9]+)/.exec(ad.$entity.attr('href'))[1] // it's important to have the below, because there are odd cases where one or the other works
+				: ad.$fbUserContent.find('input[name="ft_ent_identifier"]').first().attr('value'), // `ft_ent_identifier` is an alias, in comment sys + 'saved links' page
 			mf_story_key: /\[mf_story_key\]=([0-9]+)/.exec(ad.$entity.attr('href')) ? /\[mf_story_key\]=([0-9]+)/.exec(ad.$entity.attr('href'))[1] : null,
 			hyperfeed_story_id: hyperfeed_story_id,
 
