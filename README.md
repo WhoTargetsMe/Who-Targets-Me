@@ -11,4 +11,5 @@
 * The [facebook parser](https://github.com/WhoTargetsMe/Who-Targets-Me/blob/master/config.js#L11), the main event, is an independent Function constructor, which allows it to be loaded by extension content scripts (for actual parsing), but also for testing.
 * Loading [/testsuite/](https://github.com/WhoTargetsMe/Who-Targets-Me/blob/master/testsuite) in the browser displays a static sample facebook timeline, and a visible display of the parser's output.
 * **You're advised to test _all parser changes_ here, before pushing to production.**
+
 ![Imgur](http://i.imgur.com/qIKZ10v.jpg)
