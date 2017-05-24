@@ -52,8 +52,6 @@ function FbAdCheck(test = false, defer) {
 	FbAdCheck.getAds = function (cb) {
 		WTMdata.newAds = new Set();
 
-		// TO DO: Collect sidebar adverts, other FB ad formats outside the timeline
-
 		// Timeline adverts
 		$("a:contains('Sponsored')").each(function(index) {
 			// ## Start by specifying specific, reliable elements for examination
@@ -82,26 +80,87 @@ function FbAdCheck(test = false, defer) {
 			};
 
 			ad.hyperfeed_story_id = ad.$timelineContainer.attr('id');
+			FbAdCheck.addAdvertToWTMdata(ad, WTMdata)
 
-			// Check if this advert has been previously dealt with, to prevent duplication
-			if(typeof ad.hyperfeed_story_id !== 'undefined'
-				&& !WTMdata.oldAds.has(ad.hyperfeed_story_id)
-				&& !WTMdata.newAds.has(ad.hyperfeed_story_id)
-			) {
-				// Note this as a new, unique ad instance
-				WTMdata.newAds.add(ad.hyperfeed_story_id);
-				WTMdata.archives[ad.hyperfeed_story_id] = ad;
-				config.devlog("New advert instance identified: "+ad.hyperfeed_story_id)
-			}
 		});
 
+		// Sidebar adverts
+		$('.ego_section .ego_unit').each(function(index) {
+			var ad = {
+				sidebarAd: true,
+				// the sidebar has the format .ego_section > .ego_unit_container > .ego_unit
+				// as far as I can tell, all of the advert is contained in 'ego_unit'
+				$adContainer: $(this),
+				$adContent: $(this),
+				$advertNoUI: $(this),
+				$entity: $(this).find('div > div > a > div > div > div').eq(2)
+			}
+
+			// this is not strictly a 'hyperfeed_story_id', but it does uniquely identify
+			// the advert; I'll stick with the naming convention for feed ads.
+			ad.hyperfeed_story_id = ad.$adContainer.children('div').first().attr('id')
+			FbAdCheck.addAdvertToWTMdata(ad, WTMdata)
+		})
+
 		cb(WTMdata.newAds);
+	}
+
+	FbAdCheck.addAdvertToWTMdata = function(ad, WTMdata) {
+		// Check if this advert has been previously dealt with, to prevent duplication
+		if(typeof ad.hyperfeed_story_id !== 'undefined'
+			&& !WTMdata.oldAds.has(ad.hyperfeed_story_id)
+			&& !WTMdata.newAds.has(ad.hyperfeed_story_id)
+		) {
+			// Note this as a new, unique ad instance
+			WTMdata.newAds.add(ad.hyperfeed_story_id);
+			WTMdata.archives[ad.hyperfeed_story_id] = ad;
+			config.devlog("New advert instance identified: "+ad.hyperfeed_story_id)
+		}
+	}
+
+	FbAdCheck.parseSidebarAd = function (ad) {
+
+		links = ad.$adContent.find('a').map(function() { return $(this).attr('href') }).toArray()
+
+		ad.snapshot = {
+			entity: ad.$entity.text(),
+			entityId: ad.$adContent.attr('data-ego-fbid'),
+			entity_vanity: ad.$adContainer.find('div > div > a').eq(1).attr('href'),
+			hyperfeed_story_id: ad.hyperfeed_story_id,
+
+			// we don't have a way of knowing when the ad was created (unlike posts, which have a 'data-timestamp' attribute)
+			timestamp_created: undefined,
+			timestamp_snapshot: (Date.now() / 1000).toFixed(),
+
+			post_type: 'sidebar',
+			imageURL: ad.$adContainer.find('img').first().attr('src'),
+			linkTo: links,
+
+			headline: ad.$adContent.find('div > div > a > div > div > div').eq(1).text(),
+			subtitle: ad.$adContent.find('div > div > a > div > div > div > span').text(),
+
+			// someone should confirm that are not collecting any user data here.
+			// as far as I can tell, no user data is ever contained in the sidebar ads
+			// so this operation should be safe.
+			html: ad.$advertNoUI.html()
+		}
+
+		// also, @Jan - as far as I can tell, the purporse of parseAd is to add the 'snapshot'
+		// field to the ad object, and then the actual saving is done later. So this function
+		// should be fine and doesn't need to return anything. Let me know if I'm missing something
 	}
 
 	FbAdCheck.parseAd = function (hyperfeed_story_id) {
 		// config.devlog("Parsing advert "+hyperfeed_story_id);
 		// Get the referenced snapshot
 		var ad = WTMdata.archives[hyperfeed_story_id];
+
+		if (ad.sidebarAd) {
+			// sidebar ads are much less complex than timeline ads, and so there is much less
+			// information we can collect about them
+			FbAdCheck.parseSidebarAd( ad )
+			return
+		}
 
 	/* -- Get postType -- */
 		// A WTM project property, interpreted by how the ad looks/functions
