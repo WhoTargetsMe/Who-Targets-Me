@@ -116,11 +116,11 @@ function backupAdverts() {
 					headers: {"Access-Token": userStorage.access_token}
 				}).done(function(data) {
 					console.log(data.status);
-					console.log("[SERVER SYNC'D] Backloaded Old ad; Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.top_level_post_id);
+					console.log("[SERVER SYNC'D] Backloaded Old ad; Advertiser: "+wholeShabang.entity+" - Advert ID: "+wholeShabang.hyperfeed_story_id);
 					registerResults(wholeShabang,"success", theArray);
 				}).fail(function(data) {
 					console.log(data.status);
-					console.log("[SERVER FAILURE] Could not backup data, keeping "+wholeShabang.entity,wholeShabang.top_level_post_id+" for future backup");
+					console.log("[SERVER FAILURE] Could not backup data, keeping "+wholeShabang.entity,wholeShabang.hyperfeed_story_id+" for future backup");
 					registerResults(wholeShabang,"failure", theArray);
 				});
 			});

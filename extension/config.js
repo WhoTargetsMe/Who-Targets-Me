@@ -1,7 +1,6 @@
 var config = { DEV_ENV: typeof chrome.runtime.getManifest !== 'function' || typeof chrome.runtime.getManifest().update_url === 'undefined' }
 
 config.APIURL = "https://who-targets-me.herokuapp.com";
-//config.APIURL = "http://whotargetsme";
 
 config.devlog = function() {
 	if(config.DEV_ENV) console.log.apply(null, arguments);
@@ -36,14 +35,22 @@ function FbAdCheck(test = false, defer) {
 		WTMdata.newAds = [];
 
 		// Identify sponsored posts
-		FbAdCheck.getAds((ads) => {
-			if(ads && ads.size == 0) return config.devlog("--- No new adverts to parse "+ads)
+		FbAdCheck.getAds(() => {
+			if(WTMdata.newAds && WTMdata.newAds.size == 0) return config.devlog("--- No new adverts to parse "+WTMdata.newAds)
 
-			config.devlog("Parsing new adverts "+ads);
+			config.devlog("Parsing new adverts "+WTMdata.newAds);
 			// Parse each sponsored post found, add to newAds
-			ads.forEach((hyperfeed_story_id) => FbAdCheck.parseAd(hyperfeed_story_id));
+			WTMdata.newAds.forEach((hyperfeed_story_id) => {
+				// Get the referenced snapshot
+				var ad = WTMdata.archives[hyperfeed_story_id];
+
+				if(ad.displayPosition == 'sidebar')
+					FbAdCheck.parseSidebarAd(ad)
+				else if(ad.displayPosition == 'timeline')
+					FbAdCheck.parseTimelineAd(ad)
+			});
 			// Synchronise with DB
-			if(!test) FbAdCheck.save(ads);
+			if(!test) FbAdCheck.save(WTMdata.newAds);
 		});
 	}
 
@@ -56,6 +63,7 @@ function FbAdCheck(test = false, defer) {
 		$("a:contains('Sponsored')").each(function(index) {
 			// ## Start by specifying specific, reliable elements for examination
 			var ad = {
+				displayPosition: 'timeline',
 				$initial: $(this),
 				// This is the root timeline box that the advert appears in
 				// but the specific ad content may be nested inside, e.g. [friends [advert]]
@@ -80,32 +88,31 @@ function FbAdCheck(test = false, defer) {
 			};
 
 			ad.hyperfeed_story_id = ad.$timelineContainer.attr('id');
-			FbAdCheck.addAdvertToWTMdata(ad, WTMdata)
-
+			FbAdCheck.registerInArchive(ad, WTMdata)
 		});
 
 		// Sidebar adverts
 		$('.ego_section .ego_unit').each(function(index) {
 			var ad = {
-				sidebarAd: true,
+				displayPosition: 'sidebar',
 				// the sidebar has the format .ego_section > .ego_unit_container > .ego_unit
 				// as far as I can tell, all of the advert is contained in 'ego_unit'
+				$initial: $(this),
 				$adContainer: $(this),
 				$adContent: $(this),
-				$advertNoUI: $(this),
-				$entity: $(this).find('div > div > a > div > div > div').eq(2)
+				$advertNoUI: $(this)
 			}
 
 			// this is not strictly a 'hyperfeed_story_id', but it does uniquely identify
 			// the advert; I'll stick with the naming convention for feed ads.
 			ad.hyperfeed_story_id = ad.$adContainer.children('div').first().attr('id')
-			FbAdCheck.addAdvertToWTMdata(ad, WTMdata)
+			FbAdCheck.registerInArchive(ad, WTMdata)
 		})
 
-		cb(WTMdata.newAds);
+		cb();
 	}
 
-	FbAdCheck.addAdvertToWTMdata = function(ad, WTMdata) {
+	FbAdCheck.registerInArchive = function(ad, WTMdata) {
 		// Check if this advert has been previously dealt with, to prevent duplication
 		if(typeof ad.hyperfeed_story_id !== 'undefined'
 			&& !WTMdata.oldAds.has(ad.hyperfeed_story_id)
@@ -119,49 +126,69 @@ function FbAdCheck(test = false, defer) {
 	}
 
 	FbAdCheck.parseSidebarAd = function (ad) {
+		// sidebar ads are much less complex than timeline ads, and so there is much less
+		// information we can collect about them
 
-		links = ad.$adContent.find('a').map(function() { return $(this).attr('href') }).toArray()
+		var postType = [];
+		if(ad.$adContent.find('a').length > 2) {
+			// if the ad has split images, it uses different HTML structure, so you won't get the name/text the same as with simple ads
+			postType.push('multiimg')
+			var headline = ad.$adContent.find('a').eq(3).find('div > div:first-child').text();
+			var entity = ad.$adContent.find('a').eq(3).find('div > div:last-child').text();  // facebook-defined: the display URL
+			var subtitle = ad.$adContent.find('a').eq(4).text();
+		} else {
+			postType.push('singleimg')
+			var headline = ad.$adContent.find('div > div > a > div > div > div').eq(1).text();
+			var entity = ad.$initial.find('div > div > a > div > div > div').eq(2).text();
+			var subtitle = ad.$adContent.find('div > div > a > div > div > div > span').text();
+		}
+
+		if(!headline && !entity && !subtitle) {
+			config.devlog("Sidebar wasn't scanned properly (might be a FB UI refresh issue).");
+			WTMdata.newAds.delete(ad.hyperfeed_story_id);
+			return false;
+		}
+
+		var links = new Set();
+		var anchors = [];
+		anchors = ad.$adContent.find('a').toArray();
+		if(anchors.length) {
+			anchors.forEach(function(link) {
+				var url = parseFBlink($(link).attr('href'));
+				links.add(url);
+			});
+		}
+		links = Array.from(links);
+
+		// Sometimes there are dual-image adverts
+		var images = ad.$adContainer.find('img').map(function() { return $(this).attr('src') }).toArray();
 
 		ad.snapshot = {
-			entity: ad.$entity.text(),
-			entityId: ad.$adContent.attr('data-ego-fbid'),
-			entity_vanity: ad.$adContainer.find('div > div > a').eq(1).attr('href'),
+			displayPosition: ad.displayPosition,
+			post_type: postType,
+			entity: entity,
+			entityId: ad.$adContent.attr('data-ego-fbid'), // this seems to be consistent for the same advertiser, but it's not a facebook profile
 			hyperfeed_story_id: ad.hyperfeed_story_id,
 
 			// we don't have a way of knowing when the ad was created (unlike posts, which have a 'data-timestamp' attribute)
 			timestamp_created: undefined,
 			timestamp_snapshot: (Date.now() / 1000).toFixed(),
 
-			post_type: 'sidebar',
-			imageURL: ad.$adContainer.find('img').first().attr('src'),
+			// Sometimes there are dual-image adverts
+			imageURL: ad.$adContainer.find('img').map(function() { return $(this).attr('src') }).toArray(),
 			linkTo: links,
 
-			headline: ad.$adContent.find('div > div > a > div > div > div').eq(1).text(),
-			subtitle: ad.$adContent.find('div > div > a > div > div > div > span').text(),
+			headline: headline,
+			subtitle: subtitle,
 
 			// someone should confirm that are not collecting any user data here.
 			// as far as I can tell, no user data is ever contained in the sidebar ads
 			// so this operation should be safe.
 			html: ad.$advertNoUI.html()
 		}
-
-		// also, @Jan - as far as I can tell, the purporse of parseAd is to add the 'snapshot'
-		// field to the ad object, and then the actual saving is done later. So this function
-		// should be fine and doesn't need to return anything. Let me know if I'm missing something
 	}
 
-	FbAdCheck.parseAd = function (hyperfeed_story_id) {
-		// config.devlog("Parsing advert "+hyperfeed_story_id);
-		// Get the referenced snapshot
-		var ad = WTMdata.archives[hyperfeed_story_id];
-
-		if (ad.sidebarAd) {
-			// sidebar ads are much less complex than timeline ads, and so there is much less
-			// information we can collect about them
-			FbAdCheck.parseSidebarAd( ad )
-			return
-		}
-
+	FbAdCheck.parseTimelineAd = function(ad) {
 	/* -- Get postType -- */
 		// A WTM project property, interpreted by how the ad looks/functions
 		// TO DO: more granular/varied advert types
@@ -223,6 +250,7 @@ function FbAdCheck(test = false, defer) {
 	/* -- What to save to the server -- */
 		// This needs to be purged of all user data.
 		ad.snapshot = {
+			displayPosition: ad.displayPosition,
 			// Clearfix is the right-floating Name/Sponsored/Headline of the advert.
 			// We only want the :first-of-type, because
 			//	e.g. "International Students House at International Students House"
@@ -236,7 +264,7 @@ function FbAdCheck(test = false, defer) {
 				? /\[top_level_post_id\]=([0-9]+)/.exec(ad.$entity.attr('href'))[1] // it's important to have the below, because there are odd cases where one or the other works
 				: ad.$adContent.find('input[name="ft_ent_identifier"]').first().attr('value'), // `ft_ent_identifier` is an alias, in comment sys + 'saved links' page
 			mf_story_key: /\[mf_story_key\]=([0-9]+)/.exec(ad.$entity.attr('href')) ? /\[mf_story_key\]=([0-9]+)/.exec(ad.$entity.attr('href'))[1] : null,
-			hyperfeed_story_id: hyperfeed_story_id,
+			hyperfeed_story_id: ad.hyperfeed_story_id,
 
 			// Timestamps
 			timestamp_created: ad.$adContent.closest('[data-timestamp]').attr('data-timestamp'),
@@ -311,11 +339,11 @@ function FbAdCheck(test = false, defer) {
 					headers: {"Access-Token": userStorage.access_token}
 				}).done(function(data) {
 					config.devlog(data.status);
-					config.devlog("This new ad [SERVER SYNC'D] Advertiser: "+snapshot.entity+" - Advert ID: "+(snapshot.top_level_post_id||snapshot.mf_story_key))
+					config.devlog("This new ad [SERVER SYNC'D] Advertiser: "+snapshot.entity+" - Advert ID: "+(snapshot.hyperfeed_story_id))
 					WTMdata.oldAds.add(hyperfeed_story_id);
 				}).fail(function(data) {
 					config.devlog(data.status);
-					config.devlog("Error saving this ad, backing up for later server save: "+snapshot.entity+" - Advert ID: "+(snapshot.top_level_post_id||snapshot.mf_story_key));
+					config.devlog("Error saving this ad, backing up for later server save: "+snapshot.entity+" - Advert ID: "+(snapshot.hyperfeed_story_id));
 					browserStorage.add('notServerSavedAds',snapshot);
 				});
 			} else {
