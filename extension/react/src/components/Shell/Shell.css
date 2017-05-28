@@ -1,0 +1,25 @@
+/* BASE STYLES */
+
+body {
+  background: url('./background.jpg');
+  background-size: cover;
+}
+
+#root {
+  width: 800px;
+  height: 600px;
+  background-color: rgba(0,0,0,0.7);
+}
+
+.middle-outer {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.middle-inner {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
