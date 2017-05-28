@@ -1,0 +1,6 @@
+{
+    "commands": [
+        "extension/react/src/**/*.js : npm run build --prefix extension/react",
+        "extension/react/src/**/*.less : npm run build --prefix extension/react"
+    ]
+}
