@@ -10,7 +10,7 @@ var config = {
   output: {
     path: BUILD_DIR,
     filename: 'build.js',
-    publicPath: '/react/build/'
+    publicPath: 'react/build/'
   },
   module : {
     loaders : [
@@ -24,36 +24,27 @@ var config = {
         ],
         loader: 'file-loader',
         options: {
-          name: '[path][name].[hash].[ext]',
+          name: 'assets/[name].[hash].[ext]',
         },
       },
       {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract({use: "css-loader"})
-        // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
+        test: /\.(css|less)$/,
+        loader: ExtractTextPlugin.extract({use: [{loader: "css-loader"}, {loader: "less-loader"}]})
       },
       {
         exclude: /\.(jpg|png|svg)$/,
         test : /\.js?/,
         include : APP_DIR,
         loader : 'babel-loader'
-      },
-      {
-        exclude: /\.(jpg|png|svg)$/,
-        test: /\.less$/,
-        use: [{
-            loader: "style-loader" // creates style nodes from JS strings
-        }, {
-            loader: "css-loader" // translates CSS into CommonJS
-        }, {
-            loader: "less-loader" // compiles Less to CSS
-        }]
       }
     ]
   },
   plugins: [
     new ExtractTextPlugin("styles.css"),
-  ]
+  ],
+  devServer: {
+    compress: true,
+  }
 };
 
 module.exports = config;

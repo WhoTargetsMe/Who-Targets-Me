@@ -3,6 +3,11 @@
 body {
   background: url('./background.jpg');
   background-size: cover;
+  font-size: 15px;
+}
+
+hr {
+  border-top: 1px solid #fff !important;
 }
 
 #root {
