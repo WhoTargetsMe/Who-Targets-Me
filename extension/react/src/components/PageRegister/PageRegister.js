@@ -13,7 +13,8 @@ export default class PageRegister extends Component {
       inputPostcode: null,
       inputGender: null,
       inputTerms: false,
-      error: null
+      error: null,
+      awaitingResponse: false
     }
 
     this.handleFormChange = this.handleFormChange.bind(this)
@@ -54,7 +55,7 @@ export default class PageRegister extends Component {
               <Button type="link" href="https://whotargets.me/privacy-policy/">Privacy Policy</Button>
             </div>
             <div style={{float: 'left', width: '50%', marginTop: '20px', textAlign: 'right'}}>
-              <Button type="hollow-success" onClick={this.attemptRegistration}>Get Started {String.fromCharCode("187")}</Button>
+              <Button type="hollow-success" onClick={this.attemptRegistration}>{!this.state.awaitingResponse ? "Get Started " + String.fromCharCode("187") : "Awaiting Response..."}</Button>
             </div>
           </div>
         </div>
@@ -69,27 +70,36 @@ export default class PageRegister extends Component {
   }
 
   attemptRegistration() {
+    if(this.state.awaitingResponse) {
+      return
+    }
+
     if(!this.state.inputTerms) { // Check T&Cs
       this.setState({error: 'Please make sure you have read and agree to the terms and conditions, as well as the privacy policy.'})
       return false
     }
 
-    axios.post('/user/', {age: this.state.inputAge, postcode: this.state.inputPostcode, gender: this.state.inputGender})
+    this.setState({awaitingResponse: true})
+
+    window.API.post('/user/', {age: this.state.inputAge, postcode: this.state.inputPostcode, gender: this.state.inputGender})
       .then((response) => { // The rest of the validation is down to the server
         let token = response.data.data.access_token
-        userStorage.set('access_token', token, function() {
-          userStorage.set('dateTokenGot', Date.now(), function() {
-            chrome.runtime.sendMessage({access_token_received: userStorage.dateTokenGot});
-            console.log("saved")
-            //DO NEXT ACTION HERE?
+        var userStorage = new ChromeStorage({ // Collect basic targeting data across user's devices
+        	access_token: token,
+        	dateTokenGot: null
+        }, "sync")
+        userStorage.set('access_token', token, () => {
+          userStorage.set('dateTokenGot', Date.now(), () => {
+            chrome.runtime.sendMessage({access_token_received: token});
+            this.props.registrationComplete()
           });
         });
       })
       .catch((error) => {
         if(error.response) {
-          this.setState({error: error.response.data.reason})
+          this.setState({error: error.response.data.reason, awaitingResponse: false})
         }else {
-          this.setState({error: error.toString()})
+          this.setState({error: error.toString(), awaitingResponse: false})
         }
       })
 
