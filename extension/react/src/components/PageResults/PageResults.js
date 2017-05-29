@@ -18,7 +18,8 @@ export default class PageRegister extends Component {
   }
 
   componentWillMount() {
-    axios.get('/user/')
+    console.log("REQUESTING")
+    window.API.get('/user/')
       .then((response) => {
         console.log(response.data.data)
         this.setState({userData: response.data.data})
