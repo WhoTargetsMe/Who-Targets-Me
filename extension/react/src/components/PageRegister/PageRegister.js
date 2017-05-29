@@ -81,6 +81,7 @@ export default class PageRegister extends Component {
           userStorage.set('dateTokenGot', Date.now(), function() {
             chrome.runtime.sendMessage({access_token_received: userStorage.dateTokenGot});
             console.log("saved")
+            //DO NEXT ACTION HERE?
           });
         });
       })

@@ -29,7 +29,7 @@ var config = {
       },
       {
         test: /\.(css|less)$/,
-        loader: ExtractTextPlugin.extract({use: [{loader: "css-loader"}, {loader: "less-loader"}]})
+        loader: ExtractTextPlugin.extract({use: [{loader: "css-loader"}, {loader: "less-loader"}], publicPath: './'})
       },
       {
         exclude: /\.(jpg|png|svg)$/,
