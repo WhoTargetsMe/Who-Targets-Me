@@ -53,7 +53,7 @@ export default class PageRegister extends Component {
                   <hr/>
                   <p>Your top advertiser is {this.state.userData.my_party_advertisers[0].advertiser}. We tracked {this.state.userData.my_party_advertisers[0].count} adverts making up {this.state.userData.my_party_advertisers[0].percentage}{"% of the political advertising you've seen."}</p>
                   <hr/>
-                  <Button type="hollow-success" style={{color: '#3b5998', borderColor: '#3b5998'}} href={shareLinkFB(this.state.userData.my_party_advertisers[0].percentage + "% of political ads I see are from " + this.state.userData.my_party_advertisers[0].advertiser + "!")} target="_blank">Share on FB</Button> <Button type="hollow-success" style={{color: '#00aced', borderColor: '#00aced'}}>Share on Twitter</Button>
+                  <Button type="hollow-success" style={{color: '#3b5998', borderColor: '#3b5998'}} href={shareLinkFB(this.state.userData.my_party_advertisers[0].percentage + "% of political ads I've seen this election are from " + this.state.userData.my_party_advertisers[0].advertiser + "!")}>Share on FB</Button> <Button type="hollow-success" style={{color: '#00aced', borderColor: '#00aced'}} href={shareLinkTwitter(this.state.userData.my_party_advertisers[0].percentage + "% of political ads I've seen this election are from " + this.state.userData.my_party_advertisers[0].advertiser + ". Find out your stats at https://whotargets.me @WhoTargetsMe #GE2017")}>Share on Twitter</Button>
                   <img src={IMGFirstPlace} className="first_place" />
                 </span>
               : <p>As soon as your extension picks up political advertising, your personalised stats will be displayed here.</p>}
@@ -65,6 +65,19 @@ export default class PageRegister extends Component {
               {this.state.userData.my_party_advertisers.length > 0 ? <AdvertiserBarChart data={this.state.userData.my_party_advertisers}/> : <p><i>{"It looks like we haven't tracked any political ads on your newsfeed yet. If you're just getting started - this is perfectly normal. Try browsing Facebook!"}</i></p>}
               <p>The chart above shows the number of political adverts the extension has logged in your newsfeed.</p>
             </div>
+            <div className="statbox inverted an-or-2">
+              <img src={IMGLogo} style={{height: '150px'}} />
+              <div style={{width: '100%'}}>
+                <Button type="link" href="https://whotargets.me/">Website</Button>
+                <Button type="link" href="https://whotargets.me/terms/">Terms</Button>
+                <Button type="link" href="https://whotargets.me/privacy-policy/">Privacy Policy</Button>
+              </div>
+              <div style={{width: '100%'}}>
+                <Button type="link" href="https://www.facebook.com/whotargetsme/" style={{color: '#6d84b4'}}>Facebook</Button>
+                <Button type="link" href="https://twitter.com/whotargetsme" style={{color: '#00aced'}}>Twitter</Button>
+              </div>
+              <p>Copyright 2017 Who Targets Me? Limited</p>
+            </div>
           </Col>
           <Col sm="1/2" style={{overflow: 'scroll'}}>
               <div className="statbox">
@@ -72,7 +85,7 @@ export default class PageRegister extends Component {
                 <h4>My Contituency</h4>
                 <hr/>
                 <p>{this.state.userData.constituency.users === 1 ? "Congratulations! You're the first volunteer in your constituency. Can you help us find more?" : "You're one of "}<b>{this.state.userData.constituency.users}</b>{" volunteers in " + this.state.userData.constituency.name + ", can you help us reach "}<b>{roundUp(this.state.userData.constituency.users)}</b>{"?"}</p>
-                <Button type="hollow-success" style={{color: '#3b5998', borderColor: '#3b5998'}}  href={shareLinkFB()} target="_blank">Share on FB</Button> <Button type="hollow-success" style={{color: '#00aced', borderColor: '#00aced'}}>Share on Twitter</Button>
+                <Button type="hollow-success" style={{color: '#3b5998', borderColor: '#3b5998'}} href={shareLinkFB()}>Share on FB</Button> <Button type="hollow-success" style={{color: '#00aced', borderColor: '#00aced'}} href={shareLinkTwitter()} >Share on Twitter</Button>
                 <p>Share Who Targets Me with your friends to support fair and transparent campaigning.</p>
               </div>
               <div className="statbox an-or-1">
@@ -88,24 +101,7 @@ export default class PageRegister extends Component {
     )
   }
 
-  //Determine which share message to show the user
-  // if(response.data.constituency.users === 1) {
-  //   $("#constituency_share").text("Congratulations! You're the first volunteer in your constituency. Can you help us find more?");
-  // }else if(response.data.constituency.users > 1) {
-  //   $("#constituency_share").html("You're one of <b>" + response.data.constituency.users + "</b> volunteers in " + response.data.constituency.name + ", can you help us reach <b>" + roundUp(response.data.constituency.users) + "</b>?");
-  // }
-
 }
-
-// <div className="photo">
-//   <img src={"https://graph.facebook.com/" + advertiser_id + "/picture?width=9999"} className="advertiser_photo" />
-//   <img src={IMGFirstPlace} className="firstplace_photo" />
-// </div>
-
-// <h5><i>Your top advertiser...</i></h5>
-// <h2>{this.props.data[0].advertiser}<span style={{position: 'relative'}}><img src={IMGFirstPlace} className="first_place"/></span></h2>
-// <p>{"You've been shown"} <b>{this.props.data[0].count}</b> adverts by {this.props.data[0].advertiser}</p>
-
 class TopAdvertisers extends Component {
 
   render() {
@@ -132,7 +128,7 @@ class AdvertiserBarChart extends Component {
       <ResponsiveContainer width="100%" height={200}>
         <BarChart width={300} height={200} margin={{top: 50, right: 0, bottom: 0, left: 0}} data={this.props.data}>
          <Bar dataKey='count' fill='#02e0c9' shape={<PartyBar/>}/>
-         <Tooltip label={"percentage"} />
+         {/*}<Tooltip label={"percentage"} />*/}
        </BarChart>
      </ResponsiveContainer>
     )
@@ -179,4 +175,8 @@ const roundUp = (x) => {
 
 const shareLinkFB = (title = "Tracking political Facebook ads in the 2017 General Election - Who Targets Me?") => {
   return "http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwhotargets.me&title=" + encodeURIComponent(title) ;
+}
+
+const shareLinkTwitter = (title = "@WhoTargetsMe is lifting the veil on dark ads this #GE2017 Find out which parties are targeting you https://whotargets.me") => {
+  return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(title) ;
 }

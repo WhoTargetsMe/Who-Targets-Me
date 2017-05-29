@@ -10,8 +10,8 @@ import 'elemental/less/elemental.less'
 //axios.defaults.headers.common['access-token'] = '283b2da7e6ae3df6312792fd25369768ffc5f42581f6102ac56a62916f1740ec';
 
 window.API = axios.create({
-  //baseURL: "https://who-targets-me.herokuapp.com"
-  baseURL: "http://whotargetsme"
+  baseURL: "https://who-targets-me.herokuapp.com"
+  //baseURL: "http://whotargetsme"
 });
 
 ReactDOM.render(

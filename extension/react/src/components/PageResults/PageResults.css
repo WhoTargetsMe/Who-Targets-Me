@@ -27,6 +27,19 @@
   position: relative;
 }
 
+.statbox:last-child {
+  margin-bottom: 0;
+}
+
+.statbox.inverted {
+  background-color: transparent;
+  border: 2px solid white;
+}
+
+.statbox.inverted * {
+  color: white;
+}
+
 .statbox h2 {
   margin-bottom: 0;
 }
@@ -54,6 +67,10 @@
 
 .statbox.an-or-1 {
   animation-delay: 0.1s;
+}
+
+.statbox.an-or-1 {
+  animation-delay: 0.2s;
 }
 
 @keyframes statbox-animation {
