@@ -17,6 +17,7 @@ function FbAdCheck(test = false, defer) {
 	// 		(which is important: the same advert might pop up twice, right?)
 	WTMdata.oldAds = new Set();
 	WTMdata.newAds = new Set();
+	WTMdata.fetchedAdIds = new Set();
 
 	// This is where we store the advert data, index by hyperfeed_story_id
 	WTMdata.archives = {};
@@ -63,6 +64,7 @@ function FbAdCheck(test = false, defer) {
 		$("a:contains('Sponsored')").each(function(index) {
 			// ## Start by specifying specific, reliable elements for examination
 			var ad = {
+				alreadyClicked: false,
 				displayPosition: 'timeline',
 				$initial: $(this),
 				// This is the root timeline box that the advert appears in
@@ -85,6 +87,8 @@ function FbAdCheck(test = false, defer) {
 					.filter(function() { return $(this).text().length > 0 }) // i.e. not the profile image
 					.first(), // e.g. "International Students House at International Students House"
 					// only the bit before the 'at', not *all* the anchor link text concatenated
+
+				$chevronButton: $(this).closest('[data-testid="fbfeed_story"]').find('[data-testid="post_chevron_button"]')
 			};
 
 			ad.hyperfeed_story_id = ad.$timelineContainer.attr('id');
@@ -247,6 +251,56 @@ function FbAdCheck(test = false, defer) {
 		}
 		links = Array.from(links);
 
+		// Why Am I seeing this
+		// The code below relates to the 'Why am I seeing this?' dialog box, where our goal is to collect information
+		// about why facebook think certain people are being targeted with certain ads.
+		if (!ad.alreadyClicked) {
+			if (ad.$chevronButton[0]) {
+				// Click the chevron button twice to show and then hide the dialog box. It will now appear in the DOM
+				config.devlog(`Click the chevron button twice on ad: ${ad.hyperfeed_story_id}`)
+				ad.$chevronButton.get(0).click()
+				ad.$chevronButton.get(0).click()
+			}
+
+			ad.alreadyClicked = true
+		}
+
+		setTimeout(function() {
+			var ad_id = null
+			var why_am_i_seeing_this = null
+
+			var popups = $("div.uiContextualLayer")
+			if (popups.length > 0) {
+				popups.each(function(index, object) {
+					var ajaxify = $(this).find("[ajaxify^='/ads/preferences/']").attr('ajaxify') || null
+					if (!ajaxify) {
+						return
+					}
+
+					// MAKE THE REQUEST (SYNCHRONOUSLY - so it may be very slow)
+					var ad_id_reg_ex = new RegExp("ad_id=\s*(.*?)\s*&")
+					ad_id = ad_id_reg_ex.exec(ajaxify)[1] // get the ad id
+
+					// there should only ever be one ad_id which we haven't seen before, and that's the one which corresponds to the ad we just clicked on
+					if (!WTMdata.fetchedAdIds.has(ad_id)) {
+						var url = `https://www.facebook.com/ads/preferences/dialog/?ad_id=${ad_id}&optout_url=http%3A%2F%2Fwww.facebook.com%2Fabout%2Fads&page_type=16&show_ad_choices=0&dpr=1&__a=1`
+						config.devlog(`making HTTP request to: ${url}`)
+						var xhr = new XMLHttpRequest();
+						// This is bad, we shouldn't be making synchronous requests, soon we should fix this to make it async
+						xhr.open("GET", url, false);
+						xhr.send()
+
+						if (xhr.status === 200) {
+							config.devlog("HTTP request returned status: %s", xhr.status)
+							WTMdata.fetchedAdIds.add(ad_id)
+							response = JSON.parse(xhr.response.slice(9))
+							why_am_i_seeing_this = JSON.stringify(response.jsmods.markup)
+							config.devlog(`Got why am I seeing this information: ${why_am_i_seeing_this}`)
+						}
+					}
+				})
+			}
+
 	/* -- What to save to the server -- */
 		// This needs to be purged of all user data.
 		ad.snapshot = {
@@ -265,6 +319,10 @@ function FbAdCheck(test = false, defer) {
 				: ad.$adContent.find('input[name="ft_ent_identifier"]').first().attr('value'), // `ft_ent_identifier` is an alias, in comment sys + 'saved links' page
 			mf_story_key: /\[mf_story_key\]=([0-9]+)/.exec(ad.$entity.attr('href')) ? /\[mf_story_key\]=([0-9]+)/.exec(ad.$entity.attr('href'))[1] : null,
 			hyperfeed_story_id: ad.hyperfeed_story_id,
+
+			// Why am I seeing this
+			ad_id: ad_id,
+			why_am_i_seeing_this: why_am_i_seeing_this,
 
 			// Timestamps
 			timestamp_created: ad.$adContent.closest('[data-timestamp]').attr('data-timestamp'),
@@ -314,7 +372,11 @@ function FbAdCheck(test = false, defer) {
 			h5:contains('is interested in this event.')
 		`).remove();
 		ad.snapshot.html = ad.snapshot.html.html();
-	}
+
+	}, 1500); // this (settimeout) is necessary because otherwise we can't see the dialog box in the DOM
+			  // It needs to be this long to be able to reliably retrieve this information
+			  // I agree though that this is a terrible way to do this
+}
 
 	/* =====
 		Syncing things, not applicable to the core, testable stuff.
