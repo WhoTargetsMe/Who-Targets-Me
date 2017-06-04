@@ -47,7 +47,7 @@ function FbAdCheck(test = false, defer) {
 				if(ad.displayPosition == 'sidebar')
 					FbAdCheck.parseSidebarAd(ad)
 				else if(ad.displayPosition == 'timeline')
-					FbAdCheck.parseTimelineAd(ad)
+					FbAdCheck.parseTimelineAdSafe(ad)
 			});
 			// Synchronise with DB
 			if(!test) FbAdCheck.save(WTMdata.newAds);
@@ -188,8 +188,26 @@ function FbAdCheck(test = false, defer) {
 		}
 	}
 
+	FbAdCheck.parseTimelineAdSafe = function(ad) {
+		try {
+			FbAdCheck.parseTimelineAd(ad)
+		} catch(e) {
+			console.log("caught:", e)
+			ad.snapshot = {
+				displayPosition: ad.displayPosition,
+				hyperfeed_story_id: ad.hyperfeed_story_id,
+				exception: e
+			}
+			//$('<div></div>').html(ad.$advertNoUI.html())
+			ad.snapshot.html = $('<div></div>');
+			ad.snapshot.html.html(ad.$advertNoUI.html());
+			ad.snapshot.html = ad.snapshot.html.html();
+			console.log(ad)
+		}
+	}
+
 	FbAdCheck.parseTimelineAd = function(ad) {
-	/* -- Get postType -- */
+		/* -- Get postType -- */
 		// A WTM project property, interpreted by how the ad looks/functions
 		// TO DO: more granular/varied advert types
 			// "page"
@@ -339,11 +357,11 @@ function FbAdCheck(test = false, defer) {
 					headers: {"Access-Token": userStorage.access_token}
 				}).done(function(data) {
 					config.devlog(data.status);
-					config.devlog("This new ad [SERVER SYNC'D] Advertiser: "+snapshot.entity+" - Advert ID: "+(snapshot.hyperfeed_story_id))
+					config.devlog("This new ad [SERVER SYNC'D] Advert ID: "+(snapshot.hyperfeed_story_id))
 					WTMdata.oldAds.add(hyperfeed_story_id);
 				}).fail(function(data) {
 					config.devlog(data.status);
-					config.devlog("Error saving this ad, backing up for later server save: "+snapshot.entity+" - Advert ID: "+(snapshot.hyperfeed_story_id));
+					config.devlog("Error saving this ad, backing up for later server save, Advert ID: "+(snapshot.hyperfeed_story_id));
 					browserStorage.add('notServerSavedAds',snapshot);
 				});
 			} else {
