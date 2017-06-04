@@ -117,6 +117,7 @@ function FbAdCheck(test = false, defer) {
 		if(typeof ad.hyperfeed_story_id !== 'undefined'
 			&& !WTMdata.oldAds.has(ad.hyperfeed_story_id)
 			&& !WTMdata.newAds.has(ad.hyperfeed_story_id)
+			&& !WTMdata.archives[ad.hyperfeed_story_id]
 		) {
 			// Note this as a new, unique ad instance
 			WTMdata.newAds.add(ad.hyperfeed_story_id);
