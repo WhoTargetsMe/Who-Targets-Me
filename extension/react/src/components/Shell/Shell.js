@@ -21,8 +21,8 @@ export default class Shell extends Component {
 
   componentWillMount() {
     if(!chrome.runtime.id) { // Dev vs prod
-      this.setState({access_token: 'efd09e98baac5cd126e827cb008039e82fc21caa8cd26a810759fb2e0f38b6ff', token_loaded: true})
-      window.API.defaults.headers.common['access-token'] = 'efd09e98baac5cd126e827cb008039e82fc21caa8cd26a810759fb2e0f38b6ff'
+      this.setState({access_token: 'ff1c7cf31c7db5be95f981f94b3d5ad4fcf3ea03b260cda9f563317894847ebb', token_loaded: true})
+      window.API.defaults.headers.common['access-token'] = 'ff1c7cf31c7db5be95f981f94b3d5ad4fcf3ea03b260cda9f563317894847ebb'
     }else {
       this.checkToken()
     }

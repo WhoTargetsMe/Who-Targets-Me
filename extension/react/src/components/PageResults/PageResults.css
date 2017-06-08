@@ -77,3 +77,7 @@
     from {margin-top: -20px; opacity: 0;}
     to {margin-top: 0px; opacity: 1;}
 }
+
+.FormSelect__arrows {
+  margin-bottom: 12px;
+}

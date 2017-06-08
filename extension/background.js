@@ -6,7 +6,8 @@ var userStorage = new ChromeStorage({ // Collect basic targeting data across use
 	'dateInstalled': Date.now(),
 	'dateTokenGot': null,
 	'dateLastUserDetailsNotification': null,
-	'access_token': null
+	'access_token': null,
+	'hasShownElectionNotification': false
 }, {
 	api: "sync",
 	initCb: function() {
@@ -45,6 +46,7 @@ function checkAccessToken(access_token_received) {
 	} else {
 		console.log("User got userStorage.access_token on ",new Date(userStorage.dateTokenGot),userStorage.access_token);
 		stopNotifications();
+		startNotificationElectionDay();
 		backupAdverts();
 	}
 }
@@ -64,6 +66,25 @@ function startNotification() {
 			}, function callback(thisNoteID) {
 				console.log("Notification pushed: "+thisNoteID);
 				notificationId = thisNoteID;
+			}
+		)
+	}
+}
+
+function startNotificationElectionDay() {
+	console.log("Starting election day notification creator.");
+	// Make notification asking for user details. Check if we've asked before, within a few hours.
+	if(userStorage.hasShownElectionNotification) {
+		console.log("User has been shown election notification")
+	} else {
+		userStorage.set('hasShownElectionNotification', true);
+		chrome.notifications.create({
+				type: "basic",
+				iconUrl: "logo-128.png",
+				title: "Find out who targeted you this election!",
+				message: "Click the browser-bar icon to see your stats"
+			}, function callback(thisNoteID) {
+				console.log("Notification pushed: "+thisNoteID);
 			}
 		)
 	}
