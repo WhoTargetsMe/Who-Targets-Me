@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PageRegister from '../PageRegister'
 import PageResults from '../PageResults'
 import axios from 'axios'
+import 'chrome-storage-promise'
 
 import './Shell.css'
 
@@ -20,12 +21,17 @@ export default class Shell extends Component {
   }
 
   componentWillMount() {
-    if(!chrome.runtime.id) { // Dev vs prod
-      this.setState({access_token: 'ff1c7cf31c7db5be95f981f94b3d5ad4fcf3ea03b260cda9f563317894847ebb', token_loaded: true})
-      window.API.defaults.headers.common['access-token'] = 'ff1c7cf31c7db5be95f981f94b3d5ad4fcf3ea03b260cda9f563317894847ebb'
-    }else {
-      this.checkToken()
-    }
+    chrome.storage.promise.local.get('general-token')
+      .then((result) => {
+        if(result) {
+          this.setState({ access_token: result.token, token_loaded: true })
+        }else {
+          this.setState({ token_loaded: true })
+        }
+      }).catch((error) => {
+        console.log(error)
+        this.setState({ token_loaded: true })
+      });
   }
 
   render() {

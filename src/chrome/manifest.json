@@ -1,0 +1,30 @@
+{
+	"version": "1.0.0",
+	"name": "Who Targets Me",
+	"manifest_version": 2,
+	"description": "Discover which campaigns are targeting you with adverts and why",
+	"browser_action": {
+		"default_title": "Who Targets Me",
+		"default_popup": "frontend/index.html",
+		"default_icon": "logo-128.png"
+	},
+	"permissions": [
+		"contextMenus",
+		"tabs",
+		"storage",
+		"notifications",
+		"<all_urls>"
+	],
+	"content_scripts": [
+		{
+			"matches": ["<all_urls>"],
+			"js": ["daemon/index.js"]
+		}
+	],
+	"background": {
+		"scripts": ["daemon/index.js"]
+	},
+	"icons": {
+		"128": "logo-128.png"
+	}
+}

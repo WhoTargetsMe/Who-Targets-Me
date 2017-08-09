@@ -1,16 +1,17 @@
 var webpack = require('webpack');
 var path = require('path');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
-var BUILD_DIR = path.resolve(__dirname, 'build');
-var APP_DIR = path.resolve(__dirname, 'src');
+var BUILD_DIR = path.resolve(__dirname, '../../build/chrome/frontend');
+var APP_DIR = path.resolve(__dirname, '../frontend');
 
 var config = {
   entry: APP_DIR + '/index.js',
   output: {
     path: BUILD_DIR,
-    filename: 'build.js',
-    publicPath: 'react/build/'
+    filename: 'index.js',
+    publicPath: '/frontend'
   },
   module : {
     loaders : [
@@ -24,12 +25,12 @@ var config = {
         ],
         loader: 'file-loader',
         options: {
-          name: 'assets/[name].[hash].[ext]',
+          name: '/assets/[name].[hash].[ext]',
         },
       },
       {
         test: /\.(css|less)$/,
-        loader: ExtractTextPlugin.extract({use: [{loader: "css-loader"}, {loader: "less-loader"}], publicPath: './'})
+        loader: ExtractTextPlugin.extract({use: [{loader: "css-loader"}, {loader: "less-loader"}]})
       },
       {
         exclude: /\.(jpg|png|svg)$/,
@@ -40,7 +41,10 @@ var config = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin("styles.css"),
+    new ExtractTextPlugin("assets/styles.css"),
+    new CopyWebpackPlugin([
+      { from: APP_DIR + '/index.html', to: BUILD_DIR + '/index.html' },
+    ])
   ],
   devServer: {
     compress: true,

@@ -1,0 +1,41 @@
+{
+  "name": "who-targets-me",
+  "version": "1.0.0",
+  "description": "Track the extent of digital political advertising, discover which parties are targeting you",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-chrome": "webpack --config src/chrome/webpack.daemon.config.js; webpack --config src/chrome/webpack.frontend.config.js",
+    "build-firefox": "echo coming soon!"
+  },
+  "author": "",
+  "license": "No License",
+  "dependencies": {
+    "axios": "^0.16.1",
+    "chrome-storage-promise": "^0.1.0",
+    "elemental": "^0.6.1",
+    "react": "^15.5.4",
+    "react-addons-css-transition-group": "^15.5.2",
+    "react-dom": "^15.5.4",
+    "recharts": "^0.22.4"
+  },
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.16",
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.28.4",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "file-loader": "^0.11.2",
+    "less": "^2.7.2",
+    "less-loader": "^4.0.5",
+    "webpack": "^3.5.2"
+  },
+  "babel": {
+    "presets": [
+      "react"
+    ]
+  }
+}

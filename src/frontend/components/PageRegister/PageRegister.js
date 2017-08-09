@@ -9,8 +9,8 @@ export default class PageRegister extends Component {
   constructor() {
     super()
     this.state = {
-      inputAge: null,
-      inputPostcode: null,
+      inputAge: '',
+      inputPostcode: '',
       inputGender: null,
       inputTerms: false,
       error: null,
@@ -45,7 +45,7 @@ export default class PageRegister extends Component {
               <p style={{textAlign: 'center', color: '#d64242'}}>{this.state.error}</p>
             </div>
             <div style={{width: '50%', float: 'left', padding: '0 10px'}}>
-              <p style={{marginTop: 0, textAlign: 'justify'}}>Thank you for volunteering for the Who Targets Me? project. You're moments away from discovering how you're being targeted this election.<br/><br/>The information you provide about your basic demographics will be used anonymously to help us establish which groups are being targeted.</p>
+              <p style={{marginTop: 0, textAlign: 'justify'}}>Vielen Dank für die Freiwilligenarbeit für das, was mich zielt? Projekt. Sie sind Momente weg von der Entdeckung, wie Sie diese Wahl gezielt werden.<br/><br/>Die Informationen, die Sie über Ihre grundlegenden Demographie zur Verfügung stellen, werden anonym verwendet, um uns zu helfen, festzustellen, welche Gruppen gezielt werden.</p>
             </div>
           </div>
           <div style={{width: '600px', textAlign: 'left', margin: '0px auto', overflow: 'hidden'}}>

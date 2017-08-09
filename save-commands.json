@@ -1,6 +1,0 @@
-{
-    "commands": [
-        "extension/react/src/**/*.js : npm run build --prefix extension/react",
-        "extension/react/src/**/*.js : terminal-notifier -message \"Built\""
-    ]
-}

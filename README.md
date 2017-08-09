@@ -1,16 +1,15 @@
 [![Who Targets You?](https://raw.githubusercontent.com/WhoTargetsMe/Who-Targets-Me/master/extension/logo-128.png)](https://whotargets.me)
-* A [chrome](https://chrome.google.com/webstore/detail/who-targets-me/epdelclkhoghpihbfmhndbkcjigglaci)/[firefox](https://addons.mozilla.org/en-US/firefox/addon/whotargetsme/) extension that tracks which entities are targeting which demographics with adverts
-* Read more about how it works at [whotargets.me/the-problem](https://whotargets.me/the-problem)
+
+
+* A web browser extension that detects advertising, transmits the adverts to a central database and informs the user of the extent they are being targeted by different political entites
+* The project has covered elections in the UK and Germany
+* There is a good chance we will be involved in an election near you, [get in touch](https://whotargets.me/get-in-touch/) to see how we can work together
+* Read more about how it works at [whotargets.me](https://whotargets.me)
 * (*This project is not endorsed by Facebook or any political party. The purpose of the project is to raise awareness of the use of targeted political advertising in UK elections.*)
 
-## Deploy
-* Only distribute the [/extension/](https://github.com/WhoTargetsMe/Who-Targets-Me/blob/master/extension) dir.
-* Ignore the other stuff.
+## Build & Deploy
+* `npm run build-chrome`
+* `npm run build-firefox`
+* Zip up and upload the correct folder in `/build` to the extension store
 
-## Test
-* The [facebook parser](https://github.com/WhoTargetsMe/Who-Targets-Me/blob/master/config.js#L11), the main event, is an independent Function constructor, which allows it to be loaded by extension content scripts (for actual parsing), but also for testing.
-* Loading [/testsuite/](https://github.com/WhoTargetsMe/Who-Targets-Me/blob/master/testsuite) in the browser displays a static sample facebook timeline, and a visible display of the parser's output.
-* **You're advised to test _all parser changes_ here, before pushing to production.**
-* Please add weird new advert formats to [/testsuite/index.html](https://github.com/WhoTargetsMe/Who-Targets-Me/blob/master/testsuite/index.html) so we can test against more ads.
-
-![Imgur](http://i.imgur.com/qIKZ10v.jpg)
+Copyright Who Targets Me? Limited 2017 All Rights Reserved
