@@ -42,7 +42,8 @@ export default class PageRegister extends Component {
         <div className="middle-outer">
           <div className="middle-inner">
             <img src={IMGLogo} style={{height: '250px'}} />
-            <p>Loading, thank you for your patience.</p>
+            <p>Das Projekt "Wer bezahlt für meine Stimme?" ist gestartet. Wir werden diese Seite aktualisieren, sobald wir neue Erkenntnisse haben.</p>
+            <p>Who Targets Me is now working. This page will update as we collect political adverts.</p>
           </div>
         </div>
       )

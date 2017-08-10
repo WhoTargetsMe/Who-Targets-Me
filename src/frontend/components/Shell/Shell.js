@@ -21,10 +21,10 @@ export default class Shell extends Component {
   }
 
   componentWillMount() {
-    chrome.storage.promise.local.get('general-token')
+    chrome.storage.promise.local.get('general_token')
       .then((result) => {
         if(result) {
-          this.setState({ access_token: result.token, token_loaded: true })
+          this.setState({ access_token: result.general_token, token_loaded: true })
         }else {
           this.setState({ token_loaded: true })
         }
@@ -48,14 +48,18 @@ export default class Shell extends Component {
   }
 
   checkToken() {
-    console.log("Checking token...")
-    chrome.runtime.sendMessage({access_token_request: "please"});
-    chrome.runtime.onMessage.addListener((request,sender,sendResponse) => {
-      if(request.access_token_sent[0]) {
-        console.log(request.access_token_sent[1])
-        window.API.defaults.headers.common['access-token'] = request.access_token_sent[1]
-        this.setState({access_token: request.access_token_sent[1], token_loaded: true})
-      }
-    });
+    chrome.storage.promise.local.get('general_token')
+      .then((result) => {
+        if(result) {
+          console.log(result.general_token)
+          this.setState({ access_token: result.general_token, token_loaded: true })
+          window.API.defaults.headers.common['access-token'] = result.general_token
+        }else {
+          this.setState({ token_loaded: true })
+        }
+      }).catch((error) => {
+        console.log(error)
+        this.setState({ token_loaded: true })
+      });
   }
 }
