@@ -44,8 +44,8 @@ export default class PageRegister extends Component {
               		<FormInput type="text" placeholder="Postleitzahl" onChange={(e) => this.handleFormChange('inputPostcode', e.target.value)} value={this.state.inputPostcode} />
               	</FormField>
                 <div className="inline-controls">
-                  <Radio name="inline_radios" label="Männlich" value="1" onChange={(e) => this.handleFormChange('inputGender', e.target.value)} checked={this.state.inputGender === "1"} />
                   <Radio name="inline_radios" label="Weiblich" value="2" onChange={(e) => this.handleFormChange('inputGender', e.target.value)} checked={this.state.inputGender === "2"} />
+                  <Radio name="inline_radios" label="Männlich" value="1" onChange={(e) => this.handleFormChange('inputGender', e.target.value)} checked={this.state.inputGender === "1"} />
                   <Radio name="inline_radios" label="Andere" value="0" onChange={(e) => this.handleFormChange('inputGender', e.target.value)} checked={this.state.inputGender === "0"} />
                 </div>
               	<span className="multiline"><Checkbox label="Ich habe die AGB und Privatsphäre-Bedingungen gelesen und akzeptiere diese" onChange={(e) => this.handleFormChange('inputTerms', e.target.checked)}/></span>
