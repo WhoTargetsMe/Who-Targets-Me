@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-chrome": "webpack --config src/chrome/webpack.daemon.config.js; webpack --config src/chrome/webpack.frontend.config.js",
-    "build-firefox": "echo coming soon!"
+    "build-firefox": "webpack --config src/firefox/webpack.daemon.config.js; webpack --config src/firefox/webpack.frontend.config.js"
   },
   "author": "",
   "license": "No License",
