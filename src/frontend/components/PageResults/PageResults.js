@@ -14,17 +14,15 @@ export default class PageRegister extends Component {
     super()
     this.state = {
       userData: null,
-      electionMode: true
     }
     this.updateUser = this.updateUser.bind(this)
   }
 
   refreshUserData() {
-    console.log("REQUESTING")
-    window.API.get('/user/')
+    console.log("REQUESTING USER DATA")
+    this.props.api.get('user')
       .then((response) => {
-        console.log(response.data.data)
-        this.setState({userData: response.data.data})
+        this.setState({userData: response.jsonData.data})
       })
       .catch((error) => {
         console.log(error)
@@ -42,8 +40,8 @@ export default class PageRegister extends Component {
         <div className="middle-outer">
           <div className="middle-inner">
             <img src={IMGLogo} style={{height: '250px'}} />
-            <p>Das Projekt "Wer bezahlt für meine Stimme?" ist gestartet. Wir werden diese Seite aktualisieren, sobald wir neue Erkenntnisse haben.</p>
-            <p>Who Targets Me is now working. This page will update as we collect political adverts.</p>
+            <p>Vielen Dank für Ihre Geduld</p>
+            <p>Loading results, thank you for your patience</p>
           </div>
         </div>
       )
@@ -53,27 +51,11 @@ export default class PageRegister extends Component {
       <div>
         <Row style={{height: '100%', paddingTop: '20px', paddingBottom: '20px', margin: 'auto 10px'}}>
           <Col sm="1/2" style={{overflow: 'scroll'}}>
-            <div className="statbox">
-              {this.state.userData.my_party_advertisers.length > 0 ?
-                <span>
-                  <h2><span className="title_percentage">{this.state.userData.my_party_advertisers[0].percentage}%</span>{this.state.userData.my_party_advertisers[0].advertiser}</h2>
-                  <hr/>
-                  <p>Your top advertiser is {this.state.userData.my_party_advertisers[0].advertiser}. We tracked {this.state.userData.my_party_advertisers[0].count} adverts making up {this.state.userData.my_party_advertisers[0].percentage}{"% of the political advertising you've seen."}</p>
-                  <hr/>
-                  <Button type="hollow-success" style={{color: '#3b5998', borderColor: '#3b5998'}} href={shareLinkFB(this.state.userData.my_party_advertisers[0].percentage + "% of political ads I've seen this election are from " + this.state.userData.my_party_advertisers[0].advertiser + "!")}>Share on FB</Button> <Button type="hollow-success" style={{color: '#00aced', borderColor: '#00aced'}} href={shareLinkTwitter(this.state.userData.my_party_advertisers[0].percentage + "% of political ads I've seen this election are from " + this.state.userData.my_party_advertisers[0].advertiser + ". Find out your stats at https://whotargets.me @WhoTargetsMe #GE2017")}>Share on Twitter</Button>
-                  <img src={IMGFirstPlace} className="first_place" />
-                </span>
-              : <p>As soon as your extension picks up political advertising, your personalised stats will be displayed here.</p>}
-            </div>
-            <div className="statbox an-or-1">
-              <h2>Your Statistics</h2>
-              <hr/>
-              <p>How the parties have targeted you</p>
-              {this.state.userData.my_party_advertisers.length > 0 ? <AdvertiserBarChart data={this.state.userData.my_party_advertisers}/> : <p><i>{"It looks like we haven't tracked any political ads on your newsfeed yet. If you're just getting started - this is perfectly normal. Try browsing Facebook!"}</i></p>}
-              <p>The chart above shows the number of political adverts the extension has logged in your newsfeed.</p>
-            </div>
             <div className="statbox inverted an-or-2">
               <img src={IMGLogo} style={{height: '150px'}} />
+              <div style={{width: '100%'}}>
+                <p>{"Who Targets Me arbeitet im Hintergrund, um zu bestimmen, welche Werbung du siehst. Diese Seite wird mit Statistiken aktualisiert, sobald wir Daten gesammelt haben."}</p>
+              </div>
               <div style={{width: '100%'}}>
                 <Button type="link" href="https://whotargets.me/">Website</Button>
                 <Button type="link" href="https://whotargets.me/terms/">Terms</Button>
@@ -87,31 +69,13 @@ export default class PageRegister extends Component {
             </div>
           </Col>
           <Col sm="1/2" style={{overflow: 'scroll'}}>
-              {this.state.electionMode &&
-                <div className="statbox inverted">
-                <h2>Election Day</h2>
-                <h4>June 8th, 2017</h4>
-                <hr/>
-                <p>{"I have no doubt that by now you've already voted, or are planning to shortly! To help our data more accurately reflect the demographics of the UK could you please tell us (anonymously) how you voted this election."}</p>
-                <ChooseParty done={this.state.userData.demographics.party ? true : false} value={this.state.userData.demographics.party || undefined} updateUser={this.updateUser} />
-                <p>{"Our research partners at The LSE Department of Media & Communications are following up with some of our volunteers to assess in more detail the demographics that affect digital advertising. If this is something you'd be interested in, please enter your email address into the box below and we'll be in touch with more details!"}</p>
-                <ChooseEmail done={this.state.userData.demographics.email ? true : false} value={this.state.userData.demographics.email || ''} updateUser={this.updateUser}/>
-                </div>
-              }
               <div className="statbox">
                 <h2>{this.state.userData.constituency.name}</h2>
-                <h4>My Contituency</h4>
+                <h4>Mein Bundestagswahlkreis</h4>
                 <hr/>
-                <p>{this.state.userData.constituency.users === 1 ? "Congratulations! You're the first volunteer in your constituency. Can you help us find more?" : "You're one of "}<b>{this.state.userData.constituency.users}</b>{" volunteers in " + this.state.userData.constituency.name + ", can you help us reach "}<b>{roundUp(this.state.userData.constituency.users)}</b>{"?"}</p>
+                <p>{this.state.userData.constituency.users === 1 ? "Congratulations! You're the first volunteer in your constituency. Can you help us find more?" : "Du bist einer von "}<b>{this.state.userData.constituency.users}</b>{" Freiwilligen in " + this.state.userData.constituency.name + ", kannst du uns helfen "}<b>{roundUp(this.state.userData.constituency.users)}</b>{" zu erreichen?"}</p>
                 <Button type="hollow-success" style={{color: '#3b5998', borderColor: '#3b5998'}} href={shareLinkFB()}>Share on FB</Button> <Button type="hollow-success" style={{color: '#00aced', borderColor: '#00aced'}} href={shareLinkTwitter()} >Share on Twitter</Button>
-                <p>Share Who Targets Me with your friends to support fair and transparent campaigning.</p>
-              </div>
-              <div className="statbox an-or-1">
-                <h2>National Statistics</h2>
-                <hr/>
-                <p>How parties targeted the whole country over the last 7 days.</p>
-                <AdvertiserBarChart data={this.state.userData.all_party_advertisers.results}/>
-                <p>The results above are based on {this.state.userData.all_party_advertisers.advert_count} impressions, shown to {this.state.userData.all_party_advertisers.people_count} volunteers. The results are influenced to the demographics of our volunteers and are may not be representative.</p>
+                <p>Teilen Sie Who Targets Me mit Ihren Freunden, um faire und transparente Kampagnen zu unterstützen.</p>
               </div>
           </Col>
         </Row>

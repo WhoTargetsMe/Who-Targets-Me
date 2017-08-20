@@ -17,14 +17,6 @@ export default class PageRegister extends Component {
       genderNum: null,
       awaitingResponse: false
     }
-    // this.state = {
-    //   inputAge: '19',
-    //   inputPostcode: '67433',
-    //   inputGender: 1,
-    //   inputTerms: true,
-    //   error: null,
-    //   awaitingResponse: false
-    // }
 
     this.handleFormChange = this.handleFormChange.bind(this)
     this.attemptRegistration = this.attemptRegistration.bind(this)
@@ -102,8 +94,9 @@ export default class PageRegister extends Component {
 
     this.setState({awaitingResponse: true})
 
-    window.API.post('/user/create', {age: this.state.inputAge, postcode: this.state.inputPostcode, gender: this.state.inputGender, country: 'DE'})
+    this.props.api.post('user/create', {age: this.state.inputAge, postcode: this.state.inputPostcode, gender: this.state.inputGender, country: 'DE'})
       .then((response) => { // The rest of the validation is down to the server
+        console.log(response)
         if(response.data.errorMessage !== undefined) {
           throw new Error(response.data.errorMessage);
         }

@@ -24,6 +24,7 @@ export default class Shell extends Component {
     chrome.storage.promise.local.get('general_token')
       .then((result) => {
         if(result) {
+          this.props.api.addMiddleware(request => {request.options.headers['Authorization'] = result.general_token});
           this.setState({ access_token: result.general_token, token_loaded: true })
         }else {
           this.setState({ token_loaded: true })
@@ -41,9 +42,9 @@ export default class Shell extends Component {
     }
 
     if(this.state.access_token) {
-      return <PageResults />
+      return <PageResults api={this.props.api} />
     }else {
-      return <PageRegister registrationComplete={this.checkToken}/>
+      return <PageRegister api={this.props.api} registrationComplete={this.checkToken}/>
     }
   }
 

@@ -1,17 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import axios from 'axios'
+import FetchHttpClient, { json } from 'fetch-http-client';
 
 import Shell from './components/Shell'
 
 import 'elemental/less/elemental.less'
 
-window.API = axios.create({
-  baseURL: "https://b53fh4tb0h.execute-api.eu-central-1.amazonaws.com/dev"
-  //baseURL: "http://whotargetsme"
-});
+const api = new FetchHttpClient('https://b53fh4tb0h.execute-api.eu-central-1.amazonaws.com/dev/');
+api.addMiddleware(json());
 
 ReactDOM.render(
-  <Shell/>,
+  <Shell api={api}/>,
   document.getElementById('root')
 );
