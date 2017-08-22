@@ -9,12 +9,13 @@
     "build-firefox": "webpack --config src/firefox/webpack.daemon.config.js; webpack --config src/firefox/webpack.frontend.config.js"
   },
   "author": "",
-  "license": "No License",
+  "license": "UNLICENSED",
   "dependencies": {
     "axios": "^0.16.2",
     "chrome-storage-promise": "^0.1.0",
     "elemental": "^0.6.1",
     "fetch-http-client": "^1.0.1",
+    "jquery": "^3.2.1",
     "react": "^15.5.4",
     "react-addons-css-transition-group": "^15.5.2",
     "react-dom": "^15.5.4",

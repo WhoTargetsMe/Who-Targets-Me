@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Form, FormField, FormInput, Button, Checkbox, FormRow, Radio } from 'elemental'
-import axios from 'axios'
 
 import IMGLogo from './logo.svg'
 
@@ -94,13 +93,12 @@ export default class PageRegister extends Component {
 
     this.setState({awaitingResponse: true})
 
-    this.props.api.post('user/create', {age: this.state.inputAge, postcode: this.state.inputPostcode, gender: this.state.inputGender, country: 'DE'})
+    this.props.api.post('user/create', {json: {age: this.state.inputAge, postcode: this.state.inputPostcode, gender: this.state.inputGender, country: 'DE'}})
       .then((response) => { // The rest of the validation is down to the server
-        console.log(response)
-        if(response.data.errorMessage !== undefined) {
-          throw new Error(response.data.errorMessage);
+        if(response.jsonData.errorMessage !== undefined) {
+          throw new Error(response.jsonData.errorMessage);
         }
-        chrome.storage.promise.local.set({'general_token': response.data.data.token})
+        chrome.storage.promise.local.set({'general_token': response.jsonData.data.token})
           .then(() => {
             this.props.registrationComplete()
           })

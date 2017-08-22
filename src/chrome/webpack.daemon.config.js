@@ -10,6 +10,7 @@ module.exports = {
         path: build_dir + '/daemon',
         filename: "index.js"
     },
+    devtool: 'source-map',
     plugins: [
       new CleanWebpackPlugin([ build_dir + '/*' ], {root: build_dir}),
       new CopyWebpackPlugin([

@@ -1,0 +1,29 @@
+{
+  "extends": "crockford",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+  },
+  "rules": {
+    "semi": 2,
+    "indent": ["error", 2],
+    "no-process-env": 0,
+    "one-var": [2, { var: "always", let: "always", const: "never" }],
+    "object-curly-spacing": 2,
+    "no-var": 2,
+    "no-plusplus": [2, {"allowForLoopAfterthoughts": true}],
+    "new-cap": 0,
+    "prefer-arrow-callback": 2,
+  },
+  "globals": {
+    "chrome": true
+  }
+}
