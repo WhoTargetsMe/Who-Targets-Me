@@ -265,10 +265,10 @@ const roundUp = (x) => {
     return x;
 }
 
-const shareLinkFB = (title = "Tracking political Facebook ads in the 2017 General Election - Who Targets Me?") => {
+const shareLinkFB = (title = '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finden Sie heraus, welche Parteien auf Sie zielen https://whotargets.me/de') => {
   return "http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwhotargets.me&title=" + encodeURIComponent(title) ;
 }
 
-const shareLinkTwitter = (title = "@WhoTargetsMe is lifting the veil on dark ads this #GE2017 Find out which parties are targeting you https://whotargets.me") => {
+const shareLinkTwitter = (title = '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finden Sie heraus, welche Parteien auf Sie zielen https://whotargets.me/de') => {
   return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(title) ;
 }
