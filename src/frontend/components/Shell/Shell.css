@@ -10,16 +10,20 @@ hr {
   border-top: 1px solid #fff !important;
 }
 
+p {
+  margin: .5em 0;
+}
+
 #root {
-  width: 800px;
+  width: 500px;
   height: 600px;
   color: white;
 }
 
 .middle-outer {
-    display: table;
-    height: 100%;
-    width: 100%;
+  display: table;
+  height: 100%;
+  width: 100%;
 }
 
 .middle-inner {
