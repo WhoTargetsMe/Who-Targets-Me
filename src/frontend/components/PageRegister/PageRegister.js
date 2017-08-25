@@ -65,9 +65,9 @@ export default class PageRegister extends Component {
           </div>
           <div style={{width: '450px', textAlign: 'left', margin: '0 auto 5px', overflow: 'hidden'}}>
             <div className="RegistrationButtons">
-              <Button type="link" href="https://whotargets.me/">Webseite</Button>
-              <Button type="link" href="https://whotargets.me/terms/">Bedingungen</Button>
-              <Button type="link" href="https://whotargets.me/privacy-policy/">Privatsphäre</Button>
+              <Button type="link" href="https://whotargets.me/de/">Webseite</Button>
+              <Button type="link" href="https://whotargets.me/de/terms/">Bedingungen</Button>
+              <Button type="link" href="https://whotargets.me/de/privacy-policy/">Privatsphäre</Button>
               <Button type="hollow-success" style={{float: 'right'}} onClick={this.attemptRegistration}>{!this.state.awaitingResponse ? "Start " + String.fromCharCode("187") : "Laden..."}</Button>
             </div>
           </div>

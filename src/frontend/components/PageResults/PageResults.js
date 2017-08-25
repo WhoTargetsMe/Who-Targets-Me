@@ -57,9 +57,9 @@ export default class PageRegister extends Component {
                 <p>{"Who Targets Me arbeitet im Hintergrund, um zu bestimmen, welche Werbung du siehst. Diese Seite wird mit Statistiken aktualisiert, sobald wir Daten gesammelt haben."}</p>
               </div>
               <div style={{width: '100%'}}>
-                <Button type="link" href="https://whotargets.me/">Website</Button>
-                <Button type="link" href="https://whotargets.me/terms/">Terms</Button>
-                <Button type="link" href="https://whotargets.me/privacy-policy/">Privacy Policy</Button>
+                <Button type="link" href="https://whotargets.me/de/">Webseite</Button>
+                <Button type="link" href="https://whotargets.me/de/terms/">Bedingungen</Button>
+                <Button type="link" href="https://whotargets.me/de/privacy-policy/">Privatsphäre</Button>
               </div>
               <div style={{width: '100%'}}>
                 <Button type="link" href="https://www.facebook.com/whotargetsme/" style={{color: '#6d84b4'}}>Facebook</Button>
