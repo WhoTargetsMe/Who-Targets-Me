@@ -38,17 +38,17 @@ export default class PageRegister extends Component {
           <div style={{width: '450px', margin: '5px auto 0', overflow: 'hidden'}}>
             <div style={{padding: '0 10px'}}>
               <p style={{textAlign: 'left', color: 'white'}}><strong>Wer bezahlt für meine Stimme?</strong></p>
-              <p style={{textAlign: 'justify'}}>Vielen Dank Ihnen für die Mitarbeit an unserem Projekt. Sie können hier dabei helfen, herauszufinden, wer bei dieser Bundestagswahl wie Einfluss nimmt – auf Sie, aber auch auf alle anderen Wähler in Deutschland.</p>
+              <p style={{textAlign: 'justify'}}>Vielen Dank für die Mitarbeit an unserem Projekt. Du kannst hier dabei helfen, herauszufinden, wer bei dieser Bundestagswahl Einfluss nimmt – auf dich, aber auch auf alle anderen Wähler in Deutschland.</p>
             </div>
             <div style={{textAlign: 'left', marginTop: '1em', padding: '0 10px'}}>
               <p style={{color: 'white'}}><strong>Was wir von Ihnen noch brauchen</strong></p>
               <p style={{textAlign: 'justify'}}>
-                Wir brauchen von Ihnen ein paar Details, um Zielgruppen identifizieren zu können.
-                Die grundlegenden Informationen, die Sie uns hier zur Verfügung stellen, werden lediglich anonymisiert verwendet. Sie helfen uns bei der Recherche und werden ansonsten vertraulich behandelt.
+                Wir brauchen von dir ein paar Details, um Zielgruppen identifizieren zu können.
+                Die grundlegenden Informationen, die du uns hier zur Verfügung stellst, werden lediglich anonymisiert verwendet. Sie helfen uns bei der Recherche und werden ansonsten vertraulich behandelt.
               </p>
               <Form style={{marginTop: '1em'}}>
                 <FormField>
-                  <FormInput autoFocus type="number" placeholder="Ihr Alter (in Jahren)" onChange={(e) => this.handleFormChange('inputAge', e.target.value)} value={this.state.inputAge} />
+                  <FormInput autoFocus type="number" placeholder="Dein Alter (in Jahren)" onChange={(e) => this.handleFormChange('inputAge', e.target.value)} value={this.state.inputAge} />
                 </FormField>
                 <FormField>
                   <FormInput type="text" placeholder="Postleitzahl" onChange={(e) => this.handleFormChange('inputPostcode', e.target.value)} value={this.state.inputPostcode} />
@@ -88,7 +88,7 @@ export default class PageRegister extends Component {
     }
 
     if(!this.state.inputTerms) { // Check T&Cs
-      this.setState({error: 'Bitte stellen Sie sicher, dass sie die AGB und Privatsphäre-Bedingungen gelesen und akzeptiert haben.'})
+      this.setState({error: 'Bitte stelle sicher, dass du die AGB und Privatsphäre-Bedingungen gelesen und akzeptiert hast.'})
       return false
     }
 
@@ -104,7 +104,7 @@ export default class PageRegister extends Component {
             this.props.registrationComplete()
           })
           .catch(() => {
-            this.setState({error: "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.", awaitingResponse: false})
+            this.setState({error: "Ein Fehler ist aufgetreten. Bitte versuche es später erneut.", awaitingResponse: false})
           });
       })
       .catch((error) => {

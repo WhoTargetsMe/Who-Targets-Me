@@ -40,8 +40,8 @@ export default class PageRegister extends Component {
         <div className="middle-outer">
           <div className="middle-inner">
             <img src={IMGLogo} style={{height: '250px'}} />
-            <p>Vielen Dank für Ihre Geduld</p>
-            <p>Loading results, thank you for your patience</p>
+            <p>Daten werden geladen</p>
+            <p>Vielen Dank für deine Geduld</p>
           </div>
         </div>
       )
@@ -75,7 +75,7 @@ export default class PageRegister extends Component {
                 <hr/>
                 <p>{this.state.userData.constituency.users === 1 ? "Congratulations! You're the first volunteer in your constituency. Can you help us find more?" : "Du bist einer von "}<b>{this.state.userData.constituency.users}</b>{" Freiwilligen in " + this.state.userData.constituency.name + ", kannst du uns helfen "}<b>{roundUp(this.state.userData.constituency.users)}</b>{" zu erreichen?"}</p>
                 <Button type="hollow-success" style={{color: '#3b5998', borderColor: '#3b5998'}} href={shareLinkFB()}>Share on FB</Button> <Button type="hollow-success" style={{color: '#00aced', borderColor: '#00aced'}} href={shareLinkTwitter()} >Share on Twitter</Button>
-                <p>Teilen Sie Who Targets Me mit Ihren Freunden, um faire und transparente Kampagnen zu unterstützen.</p>
+                <p>Teile Who Targets Me mit deinen Freunden, um faire und transparente Kampagnen zu unterstützen.</p>
               </div>
           </Col>
         </Row>
@@ -265,10 +265,10 @@ const roundUp = (x) => {
     return x;
 }
 
-const shareLinkFB = (title = '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finden Sie heraus, welche Parteien auf Sie zielen https://whotargets.me/de') => {
+const shareLinkFB = (title = '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finde heraus, welche Parteien auf dich zielen https://whotargets.me/de') => {
   return "http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwhotargets.me&title=" + encodeURIComponent(title) ;
 }
 
-const shareLinkTwitter = (title = '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finden Sie heraus, welche Parteien auf Sie zielen https://whotargets.me/de') => {
+const shareLinkTwitter = (title = '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finde heraus, welche Parteien auf dich zielen https://whotargets.me/de') => {
   return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(title) ;
 }
