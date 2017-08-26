@@ -40,8 +40,8 @@ export default class PageRegister extends Component {
         <div className="middle-outer">
           <div className="middle-inner">
             <img src={IMGLogo} style={{height: '250px'}} />
-            <p>Vielen Dank für Ihre Geduld</p>
-            <p>Loading results, thank you for your patience</p>
+            <p>Daten werden geladen</p>
+            <p>Vielen Dank für deine Geduld</p>
           </div>
         </div>
       )
@@ -49,23 +49,13 @@ export default class PageRegister extends Component {
 
     return (
       <div>
-        <Row style={{height: '100%', paddingTop: '20px', paddingBottom: '20px', margin: 'auto 10px'}}>
+        <Row style={{paddingTop: '20px', paddingBottom: '20px', margin: 'auto 10px'}}>
           <Col sm="1/2" style={{overflow: 'scroll'}}>
             <div className="statbox inverted an-or-2">
               <img src={IMGLogo} style={{height: '150px'}} />
               <div style={{width: '100%'}}>
-                <p>{"Who Targets Me arbeitet im Hintergrund, um zu bestimmen, welche Werbung du siehst. Diese Seite wird mit Statistiken aktualisiert, sobald wir Daten gesammelt haben."}</p>
+                <p>{"Who Targets Me arbeitet im Hintergrund, um zu ermitteln, welche Werbung du siehst. Diese Seite wird mit Statistiken aktualisiert, sobald wir genug Daten gesammelt haben."}</p>
               </div>
-              <div style={{width: '100%'}}>
-                <Button type="link" href="https://whotargets.me/">Website</Button>
-                <Button type="link" href="https://whotargets.me/terms/">Terms</Button>
-                <Button type="link" href="https://whotargets.me/privacy-policy/">Privacy Policy</Button>
-              </div>
-              <div style={{width: '100%'}}>
-                <Button type="link" href="https://www.facebook.com/whotargetsme/" style={{color: '#6d84b4'}}>Facebook</Button>
-                <Button type="link" href="https://twitter.com/whotargetsme" style={{color: '#00aced'}}>Twitter</Button>
-              </div>
-              <p>Copyright 2017 Who Targets Me? Limited</p>
             </div>
           </Col>
           <Col sm="1/2" style={{overflow: 'scroll'}}>
@@ -73,11 +63,19 @@ export default class PageRegister extends Component {
                 <h2>{this.state.userData.constituency.name}</h2>
                 <h4>Mein Bundestagswahlkreis</h4>
                 <hr/>
-                <p>{this.state.userData.constituency.users === 1 ? "Congratulations! You're the first volunteer in your constituency. Can you help us find more?" : "Du bist einer von "}<b>{this.state.userData.constituency.users}</b>{" Freiwilligen in " + this.state.userData.constituency.name + ", kannst du uns helfen "}<b>{roundUp(this.state.userData.constituency.users)}</b>{" zu erreichen?"}</p>
-                <Button type="hollow-success" style={{color: '#3b5998', borderColor: '#3b5998'}} href={shareLinkFB()}>Share on FB</Button> <Button type="hollow-success" style={{color: '#00aced', borderColor: '#00aced'}} href={shareLinkTwitter()} >Share on Twitter</Button>
-                <p>Teilen Sie Who Targets Me mit Ihren Freunden, um faire und transparente Kampagnen zu unterstützen.</p>
+                <p>{this.state.userData.constituency.users === 1 ? "Glückwünsch! Du bist der/die erste/r Freiwillige in deinem Bundestagswahlkreis. Kannst du uns helfen, noch mehr zu finden?" : "Du bist einer von "}<b>{this.state.userData.constituency.users}</b>{" Freiwilligen in " + this.state.userData.constituency.name + ", kannst du uns helfen "}<b>{roundUp(this.state.userData.constituency.users)}</b>{" zu erreichen?"}</p>
+                <Button type="hollow-success" style={{color: '#3b5998', borderColor: '#3b5998'}} href={shareLinkFB()}>Auf FB teilen</Button> <Button type="hollow-success" style={{color: '#00aced', borderColor: '#00aced'}} href={shareLinkTwitter()} >Auf Twitter teilen</Button>
+                <p>Teile Who Targets Me mit deinen Freunden, um faire und transparente Kampagnen zu unterstützen.</p>
               </div>
           </Col>
+        </Row>
+        <Row style={{position: 'absolute', 'bottom': '0', textAlign: 'center', fontSize: '12px', paddingTop: '20px', marginLeft: '10px', marginRight: '10px'}}>
+          <p>Copyright 2017 Who Targets Me? Limited</p>
+          <Button type="link" href="https://whotargets.me/de/">Webseite</Button>
+          <Button type="link" href="https://whotargets.me/de/terms/">Bedingungen</Button>
+          <Button type="link" href="https://whotargets.me/de/privacy-policy/">Privatsphäre</Button>
+          <Button type="link" href="https://www.facebook.com/whotargetsme/" style={{color: '#6d84b4'}}>Facebook</Button>
+          <Button type="link" href="https://twitter.com/whotargetsme" style={{color: '#00aced'}}>Twitter</Button>
         </Row>
       </div>
     )
@@ -265,10 +263,10 @@ const roundUp = (x) => {
     return x;
 }
 
-const shareLinkFB = (title = '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finden Sie heraus, welche Parteien auf Sie zielen https://whotargets.me/de') => {
+const shareLinkFB = (title = '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finde heraus, welche Parteien auf dich zielen https://whotargets.me/de') => {
   return "http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwhotargets.me&title=" + encodeURIComponent(title) ;
 }
 
-const shareLinkTwitter = (title = '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finden Sie heraus, welche Parteien auf Sie zielen https://whotargets.me/de') => {
+const shareLinkTwitter = (title = '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finde heraus, welche Parteien auf dich zielen https://whotargets.me/de') => {
   return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(title) ;
 }

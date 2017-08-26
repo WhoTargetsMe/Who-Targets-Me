@@ -10,6 +10,10 @@ hr {
   border-top: 1px solid #fff !important;
 }
 
+p {
+  margin: .5em 0;
+}
+
 #root {
   width: 800px;
   height: 600px;
@@ -17,9 +21,9 @@ hr {
 }
 
 .middle-outer {
-    display: table;
-    height: 100%;
-    width: 100%;
+  display: table;
+  height: 100%;
+  width: 100%;
 }
 
 .middle-inner {

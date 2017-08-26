@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { Form, FormField, FormInput, Button, Checkbox, FormRow, Radio } from 'elemental'
 
-import IMGLogo from './logo.svg'
-
 export default class PageRegister extends Component {
 
   constructor() {
@@ -37,37 +35,40 @@ export default class PageRegister extends Component {
     return (
       <div className="middle-outer">
         <div className="middle-inner">
-          <img src={IMGLogo} style={{width: '180px'}} />
-          <div style={{width: '600px', textAlign: 'left', margin: '20px auto', overflow: 'hidden'}}>
-            <div style={{width: '50%', float: 'left', padding: '0 10px'}}>
-              <Form>
-              	<FormField>
-              		<FormInput autoFocus type="number" placeholder="Ihr Alter (in Jahren)" onChange={(e) => this.handleFormChange('inputAge', e.target.value)} value={this.state.inputAge} />
-              	</FormField>
-              	<FormField>
-              		<FormInput type="text" placeholder="Postleitzahl" onChange={(e) => this.handleFormChange('inputPostcode', e.target.value)} value={this.state.inputPostcode} />
-              	</FormField>
+          <div style={{width: '450px', margin: '5px auto 0', overflow: 'hidden'}}>
+            <div style={{padding: '0 10px'}}>
+              <p style={{textAlign: 'left', color: 'white'}}><strong>Wer bezahlt für meine Stimme?</strong></p>
+              <p style={{textAlign: 'justify'}}>Vielen Dank für die Mitarbeit an unserem Projekt. Du kannst hier dabei helfen, herauszufinden, wer bei dieser Bundestagswahl Einfluss nimmt – auf dich, aber auch auf alle anderen Wähler in Deutschland.</p>
+            </div>
+            <div style={{textAlign: 'left', marginTop: '1em', padding: '0 10px'}}>
+              <p style={{color: 'white'}}><strong>Was wir von dir noch brauchen</strong></p>
+              <p style={{textAlign: 'justify'}}>
+                Wir brauchen von dir ein paar Details, um Zielgruppen identifizieren zu können.
+                Die grundlegenden Informationen, die du uns hier zur Verfügung stellst, werden ausschließlich anonymisiert verwendet. Sie helfen uns bei der Recherche und werden ansonsten vertraulich behandelt.
+              </p>
+              <Form style={{marginTop: '1em'}}>
+                <FormField>
+                  <FormInput autoFocus type="number" placeholder="Dein Alter (in Jahren)" onChange={(e) => this.handleFormChange('inputAge', e.target.value)} value={this.state.inputAge} />
+                </FormField>
+                <FormField>
+                  <FormInput type="text" placeholder="Postleitzahl" onChange={(e) => this.handleFormChange('inputPostcode', e.target.value)} value={this.state.inputPostcode} />
+                </FormField>
                 <div className="inline-controls">
                   {gender[0]}
                   {gender[1]}
-                  <Radio name="inline_radios" label="Andere" value="0" onChange={(e) => this.handleFormChange('inputGender', e.target.value)} checked={this.state.inputGender === "0"} />
+                  <Radio name="inline_radios" label="Anderes" value="0" onChange={(e) => this.handleFormChange('inputGender', e.target.value)} checked={this.state.inputGender === "0"} />
                 </div>
-              	<span className="multiline"><Checkbox label="Ich habe die AGB und Privatsphäre-Bedingungen gelesen und akzeptiere diese" onChange={(e) => this.handleFormChange('inputTerms', e.target.checked)}/></span>
+                <span className="multiline"><Checkbox label="Ich habe die AGB und Privatsphäre-Bedingungen gelesen und akzeptiere diese" onChange={(e) => this.handleFormChange('inputTerms', e.target.checked)}/></span>
               </Form>
               <p style={{textAlign: 'center', color: '#d64242'}}>{this.state.error}</p>
             </div>
-            <div style={{width: '50%', float: 'left', padding: '0 10px'}}>
-              <p style={{marginTop: 0, textAlign: 'justify'}}>Vielen Dank Ihnen für die Mitarbeit an unserem Projekt "Wer bezahlt für meine Stimme?". Sie können hier dabei helfen, herauszufinden, wer bei dieser Bundestagswahl wie Einfluss nimmt – auf Sie, aber auch auf alle anderen Wähler in Deutschland.<br/><br/>Die grundlegenden Informationen, die Sie uns hier zur Verfügung stellen, werden lediglich anonymisiert verwendet. Sie helfen uns bei der Recherche und werden ansonsten vertraulich behandelt.</p>
-            </div>
           </div>
-          <div style={{width: '600px', textAlign: 'left', margin: '0px auto', overflow: 'hidden'}}>
-            <div style={{float: 'left', width: '50%'}} className="RegistrationButtons">
-              <Button type="link" href="https://whotargets.me/">Webseite</Button>
-              <Button type="link" href="https://whotargets.me/terms/">Bedingungen</Button>
-              <Button type="link" href="https://whotargets.me/privacy-policy/">Privatsphäre</Button>
-            </div>
-            <div style={{float: 'left', width: '50%', textAlign: 'right'}}>
-              <Button type="hollow-success" onClick={this.attemptRegistration}>{!this.state.awaitingResponse ? "Start " + String.fromCharCode("187") : "Laden..."}</Button>
+          <div style={{width: '450px', textAlign: 'left', margin: '0 auto 5px', overflow: 'hidden'}}>
+            <div className="RegistrationButtons">
+              <Button type="link" href="https://whotargets.me/de/">Webseite</Button>
+              <Button type="link" href="https://whotargets.me/de/terms/">Bedingungen</Button>
+              <Button type="link" href="https://whotargets.me/de/privacy-policy/">Privatsphäre</Button>
+              <Button type="hollow-success" style={{float: 'right'}} onClick={this.attemptRegistration}>{!this.state.awaitingResponse ? "Start " + String.fromCharCode("187") : "Laden..."}</Button>
             </div>
           </div>
         </div>
@@ -87,7 +88,7 @@ export default class PageRegister extends Component {
     }
 
     if(!this.state.inputTerms) { // Check T&Cs
-      this.setState({error: 'Please make sure you have read and agree to the terms and conditions, as well as the privacy policy.'})
+      this.setState({error: 'Bitte stelle sicher, dass du die AGB und Privatsphäre-Bedingungen gelesen und akzeptiert hast.'})
       return false
     }
 
@@ -103,7 +104,7 @@ export default class PageRegister extends Component {
             this.props.registrationComplete()
           })
           .catch(() => {
-            this.setState({error: "Something went wrong, please try again later or contact support", awaitingResponse: false})
+            this.setState({error: "Ein Fehler ist aufgetreten. Bitte versuche es später erneut.", awaitingResponse: false})
           });
       })
       .catch((error) => {
