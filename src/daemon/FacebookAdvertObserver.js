@@ -34,7 +34,8 @@ export default new Observer({
   cycle: (storage) => {
     let {persistant, temp} = storage, payload = [];
     const lang = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en';
-    $(`a:contains(${sponsoredText[lang]})`).each((index, advert) => {
+    const text = sponsoredText[lang] || sponsoredText['en'];
+    $(`a:contains(${text})`).each((index, advert) => {
       let container = $(advert).closest('[data-testid="fbfeed_story"]'), fbStoryId = container.attr('id');
       if (container.length < 1 || temp.saved.includes(fbStoryId)) {
         return;
