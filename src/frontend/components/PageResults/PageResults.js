@@ -54,7 +54,7 @@ export default class PageRegister extends Component {
             <div className="statbox inverted an-or-2">
               <img src={IMGLogo} style={{height: '150px'}} />
               <div style={{width: '100%'}}>
-                <p>{"Who Targets Me arbeitet im Hintergrund, um zu bestimmen, welche Werbung du siehst. Diese Seite wird mit Statistiken aktualisiert, sobald wir Daten gesammelt haben."}</p>
+                <p>{"Who Targets Me arbeitet im Hintergrund, um zu ermitteln, welche Werbung du siehst. Diese Seite wird mit Statistiken aktualisiert, sobald wir genug Daten gesammelt haben."}</p>
               </div>
             </div>
           </Col>
@@ -63,7 +63,7 @@ export default class PageRegister extends Component {
                 <h2>{this.state.userData.constituency.name}</h2>
                 <h4>Mein Bundestagswahlkreis</h4>
                 <hr/>
-                <p>{this.state.userData.constituency.users === 1 ? "Glückwünsch! Du bist der/die erste/r Freiwillige in deiner Bundestagswahlkreis. Kannst du uns helfen, noch mehr zu finden?" : "Du bist einer von "}<b>{this.state.userData.constituency.users}</b>{" Freiwilligen in " + this.state.userData.constituency.name + ", kannst du uns helfen "}<b>{roundUp(this.state.userData.constituency.users)}</b>{" zu erreichen?"}</p>
+                <p>{this.state.userData.constituency.users === 1 ? "Glückwünsch! Du bist der/die erste/r Freiwillige in deinem Bundestagswahlkreis. Kannst du uns helfen, noch mehr zu finden?" : "Du bist einer von "}<b>{this.state.userData.constituency.users}</b>{" Freiwilligen in " + this.state.userData.constituency.name + ", kannst du uns helfen "}<b>{roundUp(this.state.userData.constituency.users)}</b>{" zu erreichen?"}</p>
                 <Button type="hollow-success" style={{color: '#3b5998', borderColor: '#3b5998'}} href={shareLinkFB()}>Auf FB teilen</Button> <Button type="hollow-success" style={{color: '#00aced', borderColor: '#00aced'}} href={shareLinkTwitter()} >Auf Twitter teilen</Button>
                 <p>Teile Who Targets Me mit deinen Freunden, um faire und transparente Kampagnen zu unterstützen.</p>
               </div>

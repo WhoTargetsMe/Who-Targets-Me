@@ -41,10 +41,10 @@ export default class PageRegister extends Component {
               <p style={{textAlign: 'justify'}}>Vielen Dank für die Mitarbeit an unserem Projekt. Du kannst hier dabei helfen, herauszufinden, wer bei dieser Bundestagswahl Einfluss nimmt – auf dich, aber auch auf alle anderen Wähler in Deutschland.</p>
             </div>
             <div style={{textAlign: 'left', marginTop: '1em', padding: '0 10px'}}>
-              <p style={{color: 'white'}}><strong>Was wir von Ihnen noch brauchen</strong></p>
+              <p style={{color: 'white'}}><strong>Was wir von dir noch brauchen</strong></p>
               <p style={{textAlign: 'justify'}}>
                 Wir brauchen von dir ein paar Details, um Zielgruppen identifizieren zu können.
-                Die grundlegenden Informationen, die du uns hier zur Verfügung stellst, werden lediglich anonymisiert verwendet. Sie helfen uns bei der Recherche und werden ansonsten vertraulich behandelt.
+                Die grundlegenden Informationen, die du uns hier zur Verfügung stellst, werden ausschließlich anonymisiert verwendet. Sie helfen uns bei der Recherche und werden ansonsten vertraulich behandelt.
               </p>
               <Form style={{marginTop: '1em'}}>
                 <FormField>
@@ -56,7 +56,7 @@ export default class PageRegister extends Component {
                 <div className="inline-controls">
                   {gender[0]}
                   {gender[1]}
-                  <Radio name="inline_radios" label="Andere" value="0" onChange={(e) => this.handleFormChange('inputGender', e.target.value)} checked={this.state.inputGender === "0"} />
+                  <Radio name="inline_radios" label="Anderes" value="0" onChange={(e) => this.handleFormChange('inputGender', e.target.value)} checked={this.state.inputGender === "0"} />
                 </div>
                 <span className="multiline"><Checkbox label="Ich habe die AGB und Privatsphäre-Bedingungen gelesen und akzeptiere diese" onChange={(e) => this.handleFormChange('inputTerms', e.target.checked)}/></span>
               </Form>
