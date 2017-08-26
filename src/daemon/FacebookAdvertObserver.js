@@ -11,7 +11,7 @@ export default new Observer({
   },
   cycle: (storage) => {
     let {persistant, temp} = storage, payload = [];
-    $("a:contains('Sponsored')").each((index, advert) => {
+    $("a:contains('Sponsored'), a:contains('Gesponsert')").each((index, advert) => {
       let container = $(advert).closest('[data-testid="fbfeed_story"]'), fbStoryId = container.attr('id');
       if (container.length < 1 || temp.saved.includes(fbStoryId)) {
         return;
