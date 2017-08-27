@@ -1,4 +1,4 @@
-[![Who Targets You?](https://raw.githubusercontent.com/WhoTargetsMe/Who-Targets-Me/master/extension/logo-128.png)](https://whotargets.me)
+[![Who Targets Me?](https://raw.githubusercontent.com/WhoTargetsMe/Who-Targets-Me/master/src/chrome/logo-128.png)](https://whotargets.me)
 
 
 * A web browser extension that detects advertising, transmits the adverts to a central database and informs the user of the extent they are being targeted by different political entites
