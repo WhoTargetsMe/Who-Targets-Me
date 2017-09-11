@@ -44,11 +44,8 @@ export default new Observer({
 
       console.log("Found ad",fbStoryId);
 
-      ////
-      // Building on Awais' work in https://github.com/WhoTargetsMe/Who-Targets-Me/commit/2515443542798bf0fafecdfcfad2333380ac71ae
-  		// The code below relates to the 'Why am I seeing this?' dialog box, where our goal is to collect information
-  		// about why facebook think certain people are being targeted with certain ads.
-
+  		// Collect 'Why am I seeing this?' rationale
+      // (building on Awais' work in https://github.com/WhoTargetsMe/Who-Targets-Me/commit/2515443542798bf0fafecdfcfad2333380ac71ae)
       var $chevronButton = container.find('[data-testid="post_chevron_button"]'),
           chevronID = $chevronButton.attr("id");
 
@@ -75,11 +72,10 @@ export default new Observer({
         var url = `https://www.facebook.com/ads/preferences/dialog/?id=${id}&optout_url=http%3A%2F%2Fwww.facebook.com%2Fabout%2Fads&page_type=16&show_ad_choices=0&dpr=1&__a=1`
         console.log(`${fbStoryId} => ${id}. Making HTTP request to ${url}`);
 
-        // Maybe just give URL to server for fetching later?
         console.group("Fetch rationale");
         console.log("Attempting to fetch rationale from",url)
+        // TODO: Consider making URL fetch + payload push asynchronous.
         var xhr = new XMLHttpRequest();
-        // // This is bad, we shouldn't be making synchronous requests, soon we should fix this to make it async
         xhr.open("GET", url, false);
         xhr.send()
 
@@ -93,18 +89,16 @@ export default new Observer({
         }
         console.groupEnd();
 
-        // Finally...
         temp.saved[fbStoryId].advertID = id;
         temp.saved[fbStoryId].rationale = rationale;
 			}
-      ////
 
       payload.push({
         clientTimeObserved: Date.now(),
         html: container.html(),
+        rationale,
         fbStoryId,
         advertID: id,
-        rationale: rationale
       });
     });
 
