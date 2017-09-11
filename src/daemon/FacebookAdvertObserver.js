@@ -41,7 +41,7 @@ export default new Observer({
       if (container.length < 1 || temp.saved[fbStoryId]) {
         return;
       }
-      console.log("Parsed ads",temp.saved)
+
       console.log("Found ad",fbStoryId);
 
       ////
@@ -52,7 +52,7 @@ export default new Observer({
       var $chevronButton = container.find('[data-testid="post_chevron_button"]'),
           chevronID = $chevronButton.attr("id");
 
-			if ($chevronButton[0]) {
+			if ($chevronButton[0] && !temp.saved[fbStoryId]) {
 				// Click the chevron button twice to show and then hide the dialog box. It will now appear in the DOM
 				console.log(`Click chevron #${chevronID} twice on ad: ${fbStoryId}`)
 				$chevronButton.get(0).click()
@@ -76,29 +76,36 @@ export default new Observer({
         console.log(`${fbStoryId} => ${id}. Making HTTP request to ${url}`);
 
         // Maybe just give URL to server for fetching later?
-        // console.log("Attempting to fetch rationale from",url)
-        // var xhr = new XMLHttpRequest();
+        console.group("Fetch rationale");
+        console.log("Attempting to fetch rationale from",url)
+        var xhr = new XMLHttpRequest();
         // // This is bad, we shouldn't be making synchronous requests, soon we should fix this to make it async
-        // xhr.open("GET", url, false);
-        // xhr.send()
-        //
-        // if (xhr.status === 200) {
-        //   console.log("HTTP request returned status: %s", xhr.status)
-        //   var response = JSON.parse(xhr.response.slice(9))
-        //   console.log("HTTP raw response",xhr.response);
-        //   console.info("HTTP response",response);
-        //   var why_am_i_seeing_this = JSON.stringify(response.jsmods.markup)
-        //   console.info("Why am I seeing this information?",why_am_i_seeing_this)
-        // } else {
-        //   console.warn("HTTP response",xhr.status)
-        // }
+        xhr.open("GET", url, false);
+        xhr.send()
+
+        if (xhr.status === 200) {
+          console.log("HTTP request returned status: %s", xhr.status)
+          var response = JSON.parse(xhr.response.slice(9))
+          var rationale = JSON.stringify(response.jsmods.markup)
+          console.info("Why am I seeing this information?",rationale)
+        } else {
+          console.warn("HTTP response",xhr.status)
+        }
+        console.groupEnd();
 
         // Finally...
         temp.saved[fbStoryId].advertID = id;
+        temp.saved[fbStoryId].rationale = rationale;
 			}
       ////
 
-      payload.push({clientTimeObserved: Date.now(), html: container.html()});
+      payload.push({
+        clientTimeObserved: Date.now(),
+        html: container.html(),
+        fbStoryId,
+        advertID: id,
+        rationale: rationale
+      });
     });
 
     if (payload.length === 0) {
