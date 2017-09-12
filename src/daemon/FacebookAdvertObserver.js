@@ -25,7 +25,7 @@ const sponsoredText = {
 
 export default new Observer({
   typeId: 'FBADVERT',
-  urls: [/.*facebook\.com.*/, /.*whotargets.*/],
+  urls: [/^http(s|):\/\/(www\.|)facebook.com/],
   interval: 3000,
   storageDefaults: {
     persistant: {},
