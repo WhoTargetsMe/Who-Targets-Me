@@ -64,7 +64,7 @@ export default new Observer({
           xhr;
 
         try { // get the ad id
-          let id = id_reg_ex.exec(ajaxify)[1];
+          id = id_reg_ex.exec(ajaxify)[1];
         } catch (e) { // The popup may not have spawned straight away, meaning no Ad ID.
           return false;
         }
