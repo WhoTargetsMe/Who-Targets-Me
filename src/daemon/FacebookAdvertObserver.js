@@ -88,7 +88,7 @@ export default new Observer({
         if (xhr.status === 200) {
           console.log("HTTP request returned status: %s", xhr.status);
           let response = JSON.parse(xhr.response.slice(9));
-          rationale = JSON.stringify(response.jsmods.markup);
+          rationale = JSON.stringify(response.jsmods.markup[0][1]['__html' + '']); // [] + to avoid linter hissyfit over double underscore
           console.info("Why am I seeing this information?", rationale);
         } else {
           console.warn("HTTP response", xhr.status);
@@ -101,10 +101,7 @@ export default new Observer({
 
       payload.push({
         clientTimeObserved: Date.now(),
-        html: container.html(),
-        rationale,
-        fbStoryId,
-        advertID: id
+        html: container.html() + "<!-- WTM:Begin Rationale -->" + rationale
       });
     });
 
