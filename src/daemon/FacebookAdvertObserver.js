@@ -87,8 +87,8 @@ export default new Observer({
 
         if (xhr.status === 200) {
           console.log("HTTP request returned status: %s", xhr.status);
-          let response = JSON.parse(xhr.response.slice(9)),
-            rationale = JSON.stringify(response.jsmods.markup);
+          let response = JSON.parse(xhr.response.slice(9));
+          rationale = JSON.stringify(response.jsmods.markup);
           console.info("Why am I seeing this information?", rationale);
         } else {
           console.warn("HTTP response", xhr.status);
