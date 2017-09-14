@@ -71,7 +71,7 @@ const parseAdvert = ({container, fbStoryId}, {persistant, temp, payload}) => { /
     let payload = [], advertId;
 
     if (!temp.saved[fbStoryId].advertParsed) { // Send advert payload for the first time
-      payload.push({type: "FBADVERT", fbStoryId, html: container.html()});
+      payload.push({type: "FBADVERT", related: fbStoryId, html: container.html()});
     }
 
     parseAdvertId(container) // Extract advertId for the rationale
@@ -79,7 +79,7 @@ const parseAdvert = ({container, fbStoryId}, {persistant, temp, payload}) => { /
         fetchRationale(advertId)
           .then((rationaleHTML) => {
             if (rationaleHTML) {
-              payload.push({type: "FBADVERTRATIONALE", advertId, fbStoryId, html: rationaleHTML});
+              payload.push({type: "FBADVERTRATIONALE", related: fbStoryId, html: rationaleHTML});
             }
             temp.saved[fbStoryId] = {advertParsed: true, rationaleParsed: true};
             resolve(payload);
