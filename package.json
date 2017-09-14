@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-chrome": "webpack --config src/chrome/webpack.daemon.config.js --watch; webpack --config src/chrome/webpack.frontend.config.js --watch",
-    "build-firefox": "webpack --config src/firefox/webpack.daemon.config.js --watch; webpack --config src/firefox/webpack.frontend.config.js --watch"
+    "build-chrome": "webpack --config src/chrome/webpack.daemon.config.js --watch & webpack --config src/chrome/webpack.frontend.config.js --watch",
+    "build-firefox": "webpack --config src/firefox/webpack.daemon.config.js --watch & webpack --config src/firefox/webpack.frontend.config.js --watch"
   },
   "author": "",
   "license": "UNLICENSED",
@@ -14,6 +14,7 @@
     "axios": "^0.16.2",
     "chrome-storage-promise": "^0.1.0",
     "elemental": "^0.6.1",
+    "es6-promise-pool": "^2.5.0",
     "fetch-http-client": "^1.0.1",
     "jquery": "^3.2.1",
     "react": "^15.5.4",

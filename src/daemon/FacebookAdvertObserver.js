@@ -1,5 +1,7 @@
 import $ from "jquery";
 import Observer from './Observer.js';
+import {sprintf} from 'sprintf-js';
+import PromisePool from 'es6-promise-pool';
 
 const sponsoredText = {
   'cs': 'Sponzorováno',
@@ -23,6 +25,130 @@ const sponsoredText = {
   'tr': 'Sponsorlu'
 };
 
+const fetchRationale = (advertId) => {
+  return new Promise((resolve, reject) => {
+    const fbRationaleURL = sprintf('https://www.facebook.com/ads/preferences/dialog/?id=%s&optout_url=http%%3A%%2F%%2Fwww.facebook.com%%2Fabout%%2Fads&page_type=16&show_ad_choices=0&dpr=1&__a=1', advertId);
+    fetch(fbRationaleURL)
+      .then((response) => {
+        response.text().then((text) => {
+          resolve(text);
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+        resolve(null);
+      });
+  });
+};
+
+const parseAdvertId = (container) => { // Logic to trigger the "Why am I seeing this?" pane
+  return new Promise((resolve, reject) => {
+    let advertId = null;
+    const $chevronButton = container.find('[data-testid="post_chevron_button"]');
+    const chevronID = $chevronButton.attr("id");
+
+    $chevronButton.get(0).click(); // Click the button twice to render the pane
+    $chevronButton.get(0).click();
+
+    const $rationaleButton = $(`[data-ownerid='${chevronID}']`).find("a[data-feed-option-name='FeedAdSeenReasonOption']"); // Each chevron (popup spawn btn) has an ID referenced by the popup ('data-ownwerid' property)
+    const ajaxify = $rationaleButton.attr('ajaxify');
+    const advertIdRegex = new RegExp("id=\s*(.*?)\s*&");
+
+    try { // get the ad id
+      advertId = advertIdRegex.exec(ajaxify)[1];
+      if (advertId) {
+        resolve(advertId);
+      }
+    } catch (e) { // The popup may not have spawned straight away, meaning no Ad ID.
+      reject();
+    }
+
+  });
+};
+
+const parseAdvert = ({container, fbStoryId}, {persistant, temp, payload}) => { // Resolves an array to append to payload
+  return new Promise((resolve, reject) => {
+    let payload = [], advertId;
+
+    if (!temp.saved[fbStoryId].advertParsed) { // Send advert payload for the first time
+      payload.push({type: "FBADVERT", fbStoryId, html: container.html()});
+    }
+
+    parseAdvertId(container) // Extract advertId for the rationale
+      .then((advertId) => {
+        fetchRationale(advertId)
+          .then((rationaleHTML) => {
+            if (rationaleHTML) {
+              payload.push({type: "FBADVERTRATIONALE", advertId, fbStoryId, html: rationaleHTML});
+            }
+            temp.saved[fbStoryId] = {advertParsed: true, rationaleParsed: true};
+            resolve(payload);
+          });
+      })
+      .catch(() => { // Failed to parse rationale
+        temp.saved[fbStoryId] = {advertParsed: true, rationaleParsed: false};
+        resolve(payload);
+      });
+  });
+};
+
+const cycle = ({persistant, temp}) => {
+  return new Promise((resolve, reject) => {
+    let payload = [], rawAdverts = [], promisePoolIndex = 0;
+
+    const lang = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en';
+    const sponsoredValue = sponsoredText[lang] || sponsoredText.en;
+    $(sprintf('a:contains(%s)', sponsoredValue)).each((index, advert) => {
+      const container = $(advert).closest('[data-testid="fbfeed_story"]');
+      const fbStoryId = container.attr('id');
+
+      if (!fbStoryId) { // Error getting fbStoryId
+        return;
+      }
+
+      if (temp.saved[fbStoryId] === undefined) { // First time coming across advert
+        temp.saved[fbStoryId] = {advertParsed: false, rationaleParsed: false};
+      }
+
+      if (!temp.saved[fbStoryId].advertParsed || !temp.saved[fbStoryId].rationaleParsed) { // Either advert or rationale not yet parsed
+        rawAdverts.push({
+          container,
+          fbStoryId
+        });
+      }
+    });
+
+    if (rawAdverts.length < 1) {
+      resolve({persistant, temp, payload: null});
+      return;
+    }
+
+    const pool = new PromisePool(() => {
+      if (rawAdverts[promisePoolIndex]) {
+        const promise = parseAdvert(rawAdverts[promisePoolIndex], {persistant, temp, payload});
+        promisePoolIndex = promisePoolIndex + 1;
+        return promise;
+      } else {
+        return null;
+      }
+    }, 1);
+
+    pool.addEventListener('fulfilled', (event) => {
+      payload = payload.concat(event.data.result);
+    });
+
+
+    pool.start()
+      .then(() => {
+        resolve({persistant, temp, payload});
+      })
+      .catch((e) => {
+        console.log('error', e);
+        resolve({persistant, temp, payload: null});
+      });
+  });
+};
+
 export default new Observer({
   typeId: 'FBADVERT',
   urls: [/.*facebook\.com.*/, /.*whotargets.*/],
@@ -31,83 +157,5 @@ export default new Observer({
     persistant: {},
     temp: {saved: {}}
   },
-  cycle: (storage) => {
-    let {persistant, temp} = storage, payload = [];
-    const lang = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en';
-    const text = sponsoredText[lang] || sponsoredText.en;
-    $(`a:contains(${text})`).each((index, advert) => {
-      let container = $(advert).closest('[data-testid="fbfeed_story"]'),
-        fbStoryId = container.attr('id'),
-        $chevronButton = container.find('[data-testid="post_chevron_button"]'),
-        chevronID = $chevronButton.attr("id"),
-        id,
-        rationale;
-      if (container.length < 1 || temp.saved[fbStoryId]) {
-        return;
-      }
-
-      console.log("Found ad", fbStoryId);
-
-      // Collect 'Why am I seeing this?' rationale
-      // (building on Awais' work in https://github.com/WhoTargetsMe/Who-Targets-Me/commit/2515443542798bf0fafecdfcfad2333380ac71ae)
-      if ($chevronButton[0] && !temp.saved[fbStoryId]) {
-        // Click the chevron button twice to show and then hide the dialog box. It will now appear in the DOM
-        console.log(`Click chevron #${chevronID} twice on ad: ${fbStoryId}`);
-        $chevronButton.get(0).click();
-        $chevronButton.get(0).click();
-
-        // Each chevron (popup spawn btn) has an ID referenced by the popup ('data-ownwerid' property).
-        let $rationaleButton = $(`[data-ownerid='${chevronID}']`).find("a[data-feed-option-name='FeedAdSeenReasonOption']"),
-          ajaxify = $rationaleButton.attr('ajaxify'),
-          id_reg_ex = new RegExp("id=\s*(.*?)\s*&"),
-          url,
-          xhr;
-
-        try { // get the ad id
-          id = id_reg_ex.exec(ajaxify)[1];
-        } catch (e) { // The popup may not have spawned straight away, meaning no Ad ID.
-          return false;
-        }
-        temp.saved[fbStoryId] = {chevronID};
-
-        // Now fetch the URL.
-        if (temp.saved[fbStoryId].advertID) {
-          return false;
-        }
-
-        url = `https://www.facebook.com/ads/preferences/dialog/?id=${id}&optout_url=http%3A%2F%2Fwww.facebook.com%2Fabout%2Fads&page_type=16&show_ad_choices=0&dpr=1&__a=1`;
-        console.log(`${fbStoryId} => ${id}. Making HTTP request to ${url}`);
-
-        console.group("Fetch rationale");
-        console.log("Attempting to fetch rationale from", url);
-        // TODO: Consider making URL fetch + payload push asynchronous.
-        xhr = new XMLHttpRequest();
-        xhr.open("GET", url, false);
-        xhr.send();
-
-        if (xhr.status === 200) {
-          console.log("HTTP request returned status: %s", xhr.status);
-          let response = JSON.parse(xhr.response.slice(9));
-          rationale = JSON.stringify(response.jsmods.markup[0][1]['__html' + '']); // [] + to avoid linter hissyfit over double underscore
-          console.info("Why am I seeing this information?", rationale);
-        } else {
-          console.warn("HTTP response", xhr.status);
-        }
-        console.groupEnd();
-
-        temp.saved[fbStoryId].advertID = id;
-        temp.saved[fbStoryId].rationale = rationale;
-      }
-
-      payload.push({
-        clientTimeObserved: Date.now(),
-        html: container.html() + "<!-- WTM:Begin Rationale -->" + rationale
-      });
-    });
-
-    if (payload.length === 0) {
-      payload = null;
-    }
-    return {persistant, temp, payload};
-  }
+  cycle
 });
