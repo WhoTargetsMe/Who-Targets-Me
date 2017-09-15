@@ -1,0 +1,35 @@
+{
+	"version": "1.0.7",
+	"name": "Wer bezahlt für meine Stimme?",
+	"manifest_version": 2,
+	"description": "Finden Sie heraus, welche politischen Parteien dafür bezahlen, dass Ihnen gezielte Werbung angezeigt wird – und warum.",
+	"browser_action": {
+		"default_title": "Wer bezahlt für meine Stimme?",
+		"default_popup": "frontend/index.html",
+		"default_icon": "logo-128.png"
+	},
+	"permissions": [
+		"contextMenus",
+		"tabs",
+		"storage",
+		"notifications",
+		"<all_urls>"
+	],
+	"content_scripts": [
+		{
+			"matches": ["<all_urls>"],
+			"js": ["daemon/index.js"]
+		}
+	],
+	"background": {
+		"scripts": ["daemon/index.js"]
+	},
+	"icons": {
+		"128": "logo-128.png"
+	},
+	"applications": {
+		"gecko": {
+			"id": "info@whotargets.me"
+		}
+	}
+}
