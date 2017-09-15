@@ -28,7 +28,7 @@ const sponsoredText = {
 const fetchRationale = (advertId) => {
   return new Promise((resolve, reject) => {
     const fbRationaleURL = sprintf('https://www.facebook.com/ads/preferences/dialog/?id=%s&optout_url=http%%3A%%2F%%2Fwww.facebook.com%%2Fabout%%2Fads&page_type=16&show_ad_choices=0&dpr=1&__a=1', advertId);
-    fetch(fbRationaleURL)
+    fetch(fbRationaleURL, {credentials: 'include'}) // credentials enables use of cookies
       .then((response) => {
         response.text().then((text) => {
           resolve(text);

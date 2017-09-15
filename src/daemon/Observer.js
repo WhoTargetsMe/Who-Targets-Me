@@ -26,10 +26,10 @@ export default class Observer {
     return new Promise((resolve, reject) => {
       for (let pattern of this.config.urls) {
         if (url.match(pattern)) {
-          resolve();
+          resolve("No match found");
         }
       }
-      reject("URL match not found");
+      reject();
     });
   }
 
@@ -77,7 +77,7 @@ export default class Observer {
     };
     api.post('log/raw', {json: finalPayload})
       .then((response) => {
-        console.log(response.jsonData);
+        // response completed, no log
       });
   }
 

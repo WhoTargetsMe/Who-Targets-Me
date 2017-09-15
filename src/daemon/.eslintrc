@@ -24,6 +24,7 @@
     "prefer-arrow-callback": 2,
   },
   "globals": {
-    "chrome": true
+    "chrome": true,
+    "API_URL": true,
   }
 }
