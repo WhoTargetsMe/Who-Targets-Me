@@ -26,10 +26,10 @@ export default class Observer {
     return new Promise((resolve, reject) => {
       for (let pattern of this.config.urls) {
         if (url.match(pattern)) {
-          resolve();
+          resolve("No match found");
         }
       }
-      reject("URL match not found");
+      reject();
     });
   }
 
@@ -55,12 +55,18 @@ export default class Observer {
   cycle() { // Called every interval when observing
     this.running = true;
     this.timeout = setTimeout(this.cycle, this.config.interval);
-    let newStorage = this.config.cycle({persistant: Object.assign({}, this.persistantStorage), temp: Object.assign({}, this.tempStorage)});
-    this.persistantStorage = newStorage.persistant;
-    this.tempStorage = newStorage.temp;
-    if (newStorage.payload) {
-      this.transmitPayload(newStorage.payload);
-    }
+    this.config.cycle({persistant: Object.assign({}, this.persistantStorage), temp: Object.assign({}, this.tempStorage)}) // Immutable
+      .then((result) => {
+        const {persistant, temp, payload} = result;
+        this.persistantStorage = persistant;
+        this.tempStorage = temp;
+        if (payload !== null && payload.length > 0) {
+          this.transmitPayload(payload);
+        }
+      })
+      .catch((e) => { // No payload
+        console.log("Err", e);
+      });
   }
 
   transmitPayload(payload) { // Send data to server
@@ -71,7 +77,7 @@ export default class Observer {
     };
     api.post('log/raw', {json: finalPayload})
       .then((response) => {
-        console.log(response.jsonData);
+        // response completed, no log
       });
   }
 

@@ -2,8 +2,10 @@ var webpack = require('webpack');
 var path = require('path');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var package = require('../../package.json');
 
-var BUILD_DIR = path.resolve(__dirname, '../../build/firefox/frontend');
+var browser = process.env.BROWSER || 'chrome';
+var BUILD_DIR = path.resolve(__dirname, '../../build/' + browser + '/frontend');
 var APP_DIR = path.resolve(__dirname, '../frontend');
 
 var config = {
@@ -44,7 +46,10 @@ var config = {
     new ExtractTextPlugin("assets/styles.css"),
     new CopyWebpackPlugin([
       { from: APP_DIR + '/index.html', to: BUILD_DIR + '/index.html' },
-    ])
+    ]),
+    new webpack.DefinePlugin({
+      API_URL: (process.env.OFFLINE === "true") ? JSON.stringify(package.apiUrlLocal) : JSON.stringify(package.apiUrl)
+    }),
   ],
   devServer: {
     compress: true,
