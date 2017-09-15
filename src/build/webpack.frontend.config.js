@@ -48,7 +48,7 @@ var config = {
       { from: APP_DIR + '/index.html', to: BUILD_DIR + '/index.html' },
     ]),
     new webpack.DefinePlugin({
-      API_URL: (process.env.OFFLINE === "true") ? JSON.stringify(package.apiUrlLocal) : JSON.stringify(package.apiUrl)
+      'process.env.API_URL': process.env.OFFLINE ? JSON.stringify(package.apiUrlLocal) : JSON.stringify(package.apiUrl)
     }),
   ],
   devServer: {

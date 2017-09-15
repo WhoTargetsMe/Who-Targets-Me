@@ -6,7 +6,7 @@ import Shell from './components/Shell'
 
 import 'elemental/less/elemental.less'
 
-const api = new FetchHttpClient(API_URL);
+const api = new FetchHttpClient(process.env.API_URL);
 api.addMiddleware(json());
 
 ReactDOM.render(
