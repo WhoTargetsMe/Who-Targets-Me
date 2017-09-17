@@ -16,18 +16,22 @@
   "dependencies": {
     "axios": "^0.16.2",
     "chrome-storage-promise": "^0.1.0",
-    "elemental": "^0.6.1",
+    "elemental": "*",
     "es6-promise-pool": "^2.5.0",
     "fetch-http-client": "^1.0.1",
+    "flag-icon-css": "^2.8.0",
     "jquery": "^3.2.1",
     "react": "^15.5.4",
     "react-addons-css-transition-group": "^15.5.2",
     "react-dom": "^15.5.4",
+    "react-localization": "^0.1.2",
+    "react-transition-group": "^2.2.0",
     "recharts": "^0.22.4"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
     "clean-webpack-plugin": "^0.1.16",

@@ -1,13 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import FetchHttpClient, { json } from 'fetch-http-client';
+import 'chrome-storage-promise';
+import 'elemental/less/elemental.less'
+import api from './helpers/api.js';
 
 import Shell from './components/Shell'
-
-import 'elemental/less/elemental.less'
-
-const api = new FetchHttpClient(process.env.API_URL);
-api.addMiddleware(json());
 
 ReactDOM.render(
   <Shell api={api}/>,

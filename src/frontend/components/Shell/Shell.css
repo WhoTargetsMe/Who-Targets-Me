@@ -1,9 +1,39 @@
 /* BASE STYLES */
 
+@font-face {
+  font-family: 'Poppins';
+  font-weight: 200;
+  src: url('./Poppins-Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-weight: 400;
+  src: url('./Poppins-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-weight: 500;
+  src: url('./Poppins-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-weight: 600;
+  src: url('./Poppins-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-weight: 700;
+  src: url('./Poppins-Bold.ttf') format('truetype');
+}
+
 body {
-  background: url('./background.jpg');
-  background-size: cover;
   font-size: 15px;
+  font-family: Poppins;
+  font-weight: normal;
 }
 
 hr {
@@ -17,7 +47,6 @@ p {
 #root {
   width: 800px;
   height: 600px;
-  color: white;
 }
 
 .middle-outer {

@@ -1,0 +1,78 @@
+.LanguageSelector {
+  height: 100%;
+  transition: 2s -webkit-filter linear;
+}
+
+.LanguageSelector * {
+  transition: 0.4s -webkit-filter;
+  transition: 0.4s all;
+}
+
+.blur {
+  filter: blur(2px);
+  opacity: 0.5;
+}
+
+.LanguageSelector .flag-icon {
+  border-radius: 2px;
+  margin-right: 50px;
+  font-size: 80px;
+  cursor: pointer;
+}
+
+.LanguageSelector .flag-icon:last-child {
+  margin-right: 0;
+}
+
+.CenterContainer_outer {
+  display: table;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, #ffffff 34%,#f2f2f2 100%);
+}
+
+.CenterContainer_inner {
+  display: table-cell;
+  text-align: center;
+  text-align: -webkit-center;
+  vertical-align: middle;
+}
+
+.gender_buttons > * {
+  margin-right: 10px;
+}
+
+.gender_buttons > *:last-child {
+  margin-right: 0;
+}
+
+.fullpage_transition {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation-duration: 0.5s;
+}
+
+.fullpage_transition.entering {
+  animation-name: fp_entering;
+}
+
+.fullpage_transition.exiting {
+  animation-name: fp_leaving;
+}
+
+.fullpage_transition.exited {
+  display: none;
+}
+
+@keyframes fp_entering {
+    0% {filter: blur(2px);opacity:0;top: -50px;}
+    100% {filter: blur(0px);opacity:1;top: 0;}
+}
+
+@keyframes fp_leaving {
+    0% {filter: blur(0px);opacity:1;}
+    100% {filter: blur(2px);opacity:0;}
+}

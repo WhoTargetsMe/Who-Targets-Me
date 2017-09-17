@@ -46,7 +46,10 @@ var config = {
         exclude: /\.(jpg|png|svg)$/,
         test : /\.js?/,
         include : APP_DIR,
-        loader : 'babel-loader'
+        loader : 'babel-loader',
+        options: {
+          "plugins": ["transform-object-rest-spread"]
+        }
       }
     ]
   },

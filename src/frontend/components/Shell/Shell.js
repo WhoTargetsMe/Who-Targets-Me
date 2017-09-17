@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import PageRegister from '../PageRegister'
-import PageResults from '../PageResults'
-import 'chrome-storage-promise'
+import React, { Component } from 'react';
+import PageRegister from '../PageRegister';
+import PageResults from '../PageResults';
+import 'flag-icon-css/css/flag-icon.min.css';
 
 import './Shell.css'
 
@@ -21,6 +21,7 @@ export default class Shell extends Component {
 
   componentWillMount() {
     this.checkToken();
+    //this.checkLanguage();
   }
 
   render() {
