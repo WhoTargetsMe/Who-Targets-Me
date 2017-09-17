@@ -6,7 +6,8 @@
   "apiUrl": "https://b53fh4tb0h.execute-api.eu-central-1.amazonaws.com/dev/",
   "apiUrlLocal": "https://localhost:8080/",
   "scripts": {
-    "dev": "OFFLINE=true BROWSER=chrome webpack --config src/build/webpack.daemon.config.js --watch & OFFLINE=true BROWSER=chrome webpack --config src/build/webpack.frontend.config.js --watch",
+    "dev-frontend": "BROWSER=chrome OFFLINE=true webpack-dev-server --config src/build/webpack.frontend.config.js",
+    "dev-daemon": "OFFLINE=true BROWSER=chrome webpack --config src/build/webpack.daemon.config.js --watch",
     "build-chrome": "BROWSER=chrome webpack --config src/build/webpack.daemon.config.js & BROWSER=chrome webpack --config src/build/webpack.frontend.config.js",
     "build-firefox": "BROWSER=firefox webpack --config src/build/webpack.daemon.config.js & BROWSER=firefox webpack --config src/build/webpack.frontend.config.js"
   },
@@ -32,12 +33,14 @@
     "clean-webpack-plugin": "^0.1.16",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.4",
+    "eslint-config-airbnb": "^15.1.0",
     "eslint-config-crockford": "^1.0.0",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
     "less": "^2.7.2",
     "less-loader": "^4.0.5",
-    "webpack": "^3.5.2"
+    "webpack": "^3.5.2",
+    "webpack-dev-server": "^2.8.2"
   },
   "babel": {
     "presets": [
