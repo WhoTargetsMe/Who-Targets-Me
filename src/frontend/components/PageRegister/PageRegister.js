@@ -11,7 +11,7 @@ export default class PageRegister extends Component {
   constructor() {
     super()
     this.state = {
-      signupStage: 0
+      signupStage: 7
     }
 
     this.attemptRegistration = this.attemptRegistration.bind(this);

@@ -21,8 +21,14 @@ let strings = new LocalizedStrings({
      years_of_age: 'How old are you (in years)?',
      age: 'Age',
      confirming: 'Confirming your details',
-     request_error: 'The server responded with the following error:',
+     request_error: 'The server responded with the following message:',
      unknown_error: 'Unknown error, if this persists please get in touch!',
+     share: 'Share Who Targets Me with your friends to support digital transparency',
+     shareOnFacebook: 'Share on Facebook',
+     shareOnTwitter: 'Share on Twitter',
+     skip: 'Skip',
+     shareFacebook: '@WhoTargetsMe is investigating dark advertising, find out who targets you https://whotargets.me/',
+     shareTwitter: '@WhoTargetsMe is investigating dark advertising, find out who targets you https://whotargets.me/',
    }
  },
  de: {
@@ -47,6 +53,12 @@ let strings = new LocalizedStrings({
      confirming: 'Bestätigen Sie Ihre Angaben',
      request_error: 'Der Server antwortete mit folgendem Fehler:',
      unknown_error: 'Unbekannter Fehler, falls anhalten Sie bitte in Kontakt!',
+     share: 'Share Who Targets Me mit Ihren Freunden, um digitale Transparenz zu unterstützen',
+     shareOnFacebook: 'Auf Facebook teilen',
+     shareOnTwitter: 'Auf Twitter teilen',
+     skip: 'Überspringen',
+     shareFacebook: '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finde heraus, welche Parteien auf dich zielen https://whotargets.me/de',
+     shareTwitter: '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finde heraus, welche Parteien auf dich zielen https://whotargets.me/de',
    }
  }
 });

@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import strings from '../../helpers/localization.js';
-import {Button, InputGroup, FormInput, Spinner} from 'elemental';
+import {Button, InputGroup, FormInput, Spinner, Row, Card, Col} from 'elemental';
 import api from '../../helpers/api.js';
 import countries from './countries.js';
+import FacebookIcon from './icon_facebook.svg';
+import TwitterIcon from './icon_twitter.svg';
 
 /* CONTAINS THE SIGNUP STAGES */
 
@@ -416,6 +418,51 @@ class AttemptSignup extends Component {
   }
 }
 
+const shareLinkFB = (title = strings.register.shareFacebook) => {
+  return "http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwhotargets.me&title=" + encodeURIComponent(title) ;
+}
+
+const shareLinkTwitter = (title = strings.register.shareTwitter) => {
+  return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(title) ;
+}
+
+class PostSignupShare extends Component {
+
+  render() {
+    const {next} = this.props;
+    return (
+      <Container>
+        <div className="fullwidth" style={{marginBottom: '40px'}}>
+          <h2>{strings.register.share}</h2>
+        </div>
+        <div className="fullwidth gender_buttons" style={{marginBottom: '20px'}}>
+          <Row style={{margin: '10px'}}>
+            <Col sm="1/2">
+              <a href={shareLinkFB()}>
+                <Card>
+                  <img src={FacebookIcon} style={{width: '200px'}}/>
+                  <p>{strings.register.shareOnFacebook}</p>
+                </Card>
+              </a>
+            </Col>
+            <Col sm="1/2">
+              <a href={shareLinkTwitter()}>
+                <Card>
+                  <img src={TwitterIcon} style={{width: '200px'}} />
+                  <p>{strings.register.shareOnTwitter}</p>
+                </Card>
+              </a>
+            </Col>
+          </Row>
+        </div>
+        <div className="fullwidth">
+          <Button onClick={next} type="hollow-primary" style={{float: 'right', marginRight: '20px'}}>{strings.register.skip} {String.fromCharCode("187")}</Button>
+        </div>
+      </Container>
+    );
+  }
+}
+
 const signupStages = [
   {
     component: <LanguageSelector/>,
@@ -437,6 +484,9 @@ const signupStages = [
   },
   {
     component: <AttemptSignup/>,
+  },
+  {
+    component: <PostSignupShare/>,
   }
 ];
 
