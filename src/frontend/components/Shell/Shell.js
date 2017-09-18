@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PageRegister from '../PageRegister';
 import PageResults from '../PageResults';
-import 'flag-icon-css/css/flag-icon.min.css';
-
 import './Shell.css'
 
 import { Button } from 'elemental'

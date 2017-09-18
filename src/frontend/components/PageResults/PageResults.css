@@ -1,3 +1,9 @@
+.PageResults {
+  background-color: #2d2d2d;
+  min-height: 100%;
+  color: white;
+}
+
 .TopAdvertiser {
   padding: 10px;
   width: 100%;

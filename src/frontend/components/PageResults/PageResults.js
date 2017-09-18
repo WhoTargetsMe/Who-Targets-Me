@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
+import {sprintf} from 'sprintf-js';
 import { Form, FormField, FormInput, FormSelect, Col, Row, Button, InputGroup } from 'elemental'
 import axios from 'axios'
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts'
+import strings, {changeLocale} from '../../helpers/localization.js';
 
 import IMGLogo from './logo.svg'
 import IMGFirstPlace from './firstplace.png'
@@ -37,24 +39,23 @@ export default class PageRegister extends Component {
 
     if(!this.state.userData) {
       return (
-        <div className="middle-outer">
+        <div className="middle-outer" style={{backgroundColor: '#2d2d2d', color: 'white'}}>
           <div className="middle-inner">
             <img src={IMGLogo} style={{height: '250px'}} />
-            <p>Daten werden geladen</p>
-            <p>Vielen Dank für deine Geduld</p>
+            <p>{strings.loading}</p>
           </div>
         </div>
       )
     }
 
     return (
-      <div>
+      <div className="PageResults">
         <Row style={{paddingTop: '20px', paddingBottom: '20px', margin: 'auto 10px'}}>
           <Col sm="1/2" style={{overflow: 'scroll'}}>
             <div className="statbox inverted an-or-2">
               <img src={IMGLogo} style={{height: '150px'}} />
               <div style={{width: '100%'}}>
-                <p>{"Who Targets Me arbeitet im Hintergrund, um zu ermitteln, welche Werbung du siehst. Diese Seite wird mit Statistiken aktualisiert, sobald wir genug Daten gesammelt haben."}</p>
+                <p>{strings.results.no_results_explanation}</p>
               </div>
             </div>
           </Col>
@@ -63,23 +64,28 @@ export default class PageRegister extends Component {
                 {this.state.userData.constituency &&
                 <div>
                   <h2>{this.state.userData.constituency.name}</h2>
-                  <h4>Mein Bundestagswahlkreis</h4>
+                  <h4>{strings.results.my_constituency}</h4>
                   <hr/>
-                  <p>{this.state.userData.constituency.users === 1 ? "Glückwünsch! Du bist der/die erste/r Freiwillige in deinem Bundestagswahlkreis. Kannst du uns helfen, noch mehr zu finden?" : "Du bist einer von "}<b>{this.state.userData.constituency.users}</b>{" Freiwilligen in " + this.state.userData.constituency.name + ", kannst du uns helfen "}<b>{roundUp(this.state.userData.constituency.users)}</b>{" zu erreichen?"}</p>
+                  <p>{this.state.userData.constituency.users === 1 ?
+                    sprintf(strings.results.constituency_size_one, this.state.userData.constituency.name)
+                    : sprintf(strings.results.constituency_size, this.state.userData.constituency.users, this.state.userData.constituency.name, roundUp(this.state.userData.constituency.users))
+                  }</p>
                 </div>
                 }
-                <Button type="hollow-success" style={{color: '#3b5998', borderColor: '#3b5998'}} href={shareLinkFB()}>Auf FB teilen</Button> <Button type="hollow-success" style={{color: '#00aced', borderColor: '#00aced'}} href={shareLinkTwitter()} >Auf Twitter teilen</Button>
-                <p>Teile Who Targets Me mit deinen Freunden, um faire und transparente Kampagnen zu unterstützen.</p>
+                <Button type="hollow-success" style={{color: '#3b5998', borderColor: '#3b5998'}} href={shareLinkFB()}>{strings.register.shareOnFacebook}</Button> <Button type="hollow-success" style={{color: '#00aced', borderColor: '#00aced'}} href={shareLinkTwitter()} >{strings.register.shareOnTwitter}</Button>
+                <p>{strings.register.share}</p>
               </div>
           </Col>
         </Row>
         <Row style={{position: 'absolute', 'bottom': '0', textAlign: 'center', fontSize: '12px', paddingTop: '20px', marginLeft: '10px', marginRight: '10px'}}>
-          <p>Copyright 2017 Who Targets Me? Limited</p>
-          <Button type="link" href="https://whotargets.me/de/">Webseite</Button>
-          <Button type="link" href="https://whotargets.me/de/terms/">Bedingungen</Button>
-          <Button type="link" href="https://whotargets.me/de/privacy-policy/">Privatsphäre</Button>
-          <Button type="link" href="https://www.facebook.com/whotargetsme/" style={{color: '#6d84b4'}}>Facebook</Button>
-          <Button type="link" href="https://twitter.com/whotargetsme" style={{color: '#00aced'}}>Twitter</Button>
+          <p>Copyright Who Targets Me? Ltd</p>
+          <Button type="link" href={strings.links.website.url}>{strings.links.website.title}</Button>
+          <Button type="link" href={strings.links.terms.url}>{strings.links.terms.title}</Button>
+          <Button type="link" href={strings.links.privacy.url}>{strings.links.privacy.title}</Button>
+          <Button type="link" href={strings.links.facebook.url} style={{color: '#6d84b4'}}>{strings.links.facebook.title}</Button>
+          <Button type="link" href={strings.links.twitter.url} style={{color: '#00aced'}}>{strings.links.twitter.title}</Button>
+          <Button type="link" onClick={() => changeLocale('en')}>English</Button>
+          <Button type="link" onClick={() => changeLocale('de')}>German</Button>
         </Row>
       </div>
     )
@@ -267,10 +273,10 @@ const roundUp = (x) => {
     return x;
 }
 
-const shareLinkFB = (title = '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finde heraus, welche Parteien auf dich zielen https://whotargets.me/de') => {
+const shareLinkFB = (title = strings.register.shareFacebook) => {
   return "http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwhotargets.me&title=" + encodeURIComponent(title) ;
 }
 
-const shareLinkTwitter = (title = '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finde heraus, welche Parteien auf dich zielen https://whotargets.me/de') => {
+const shareLinkTwitter = (title = strings.register.shareTwitter) => {
   return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(title) ;
 }

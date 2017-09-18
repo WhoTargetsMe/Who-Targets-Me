@@ -11,7 +11,7 @@ export default class PageRegister extends Component {
   constructor() {
     super()
     this.state = {
-      signupStage: 7
+      signupStage: 0
     }
 
     this.attemptRegistration = this.attemptRegistration.bind(this);
@@ -48,6 +48,11 @@ export default class PageRegister extends Component {
 
   next(stateChange = {}) { // Change which stage is shown, updating the state
     const {signupStage} = this.state;
+    const {registrationComplete} = this.props;
+    if(signupStage + 1 >= signupStages.length) {
+      registrationComplete();
+      return;
+    }
     if(signupStage + 1 >= 0) {
       this.setState({...stateChange, signupStage: signupStage + 1})
     }

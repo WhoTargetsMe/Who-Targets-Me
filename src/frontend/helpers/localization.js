@@ -3,6 +3,7 @@ import LocalizedStrings from 'react-localization';
 let strings = new LocalizedStrings({
  en:{
    who_targets_me: "Who Targets Me?",
+   loading: 'Loading, thank you for your patience',
    register: {
      select_language: "Please select your preferred language",
      terms: "<span>By continuing you agree to the <a href=\"https://whotargets.me/en/terms/\">terms and conditions</a> and <a href=\"https://whotargets.me/en/privacy-policy/\">privacy policy</a></span>",
@@ -29,10 +30,39 @@ let strings = new LocalizedStrings({
      skip: 'Skip',
      shareFacebook: '@WhoTargetsMe is investigating dark advertising, find out who targets you https://whotargets.me/',
      shareTwitter: '@WhoTargetsMe is investigating dark advertising, find out who targets you https://whotargets.me/',
+   },
+   results: {
+     my_constituency: 'My Constituency',
+     constituency_size: 'You are one of %i volunteers in %s, can you help us reach %i?',
+     constituency_size_one: 'You are the first volunteer in %s!. Can you help us find more?',
+     no_results_explanation: 'Who Targets Me works in the background to determine what advertising you see. This page will update with statistics as soon as we have collected enough data.'
+   },
+   links: {
+     website: {
+       title: 'Website',
+       url: 'https://whotargets.me'
+     },
+     terms: {
+       title: 'Terms',
+       url: 'https://whotargets.me/terms'
+     },
+     privacy: {
+       title: 'Privacy',
+       url: 'https://whotargets.me/privacy-policy'
+     },
+     facebook: {
+       title: 'Facebook',
+       url: 'https://www.facebook.com/whotargetsme/'
+     },
+     twitter: {
+       title: 'Twitter',
+       url: 'https://twitter.com/whotargetsme'
+     }
    }
  },
  de: {
    who_targets_me: "Wer bezahlt für meine Stimme?",
+   loading: 'Daten werden geladen, vielen Dank für deine Geduld',
    register: {
      select_language: "Bitte wählen Sie Ihre bevorzugte Sprache aus",
      terms: "<span>By continuing you agree to the <a href=\"https://whotargets.me/en/terms/\">terms and conditions</a> and <a href=\"https://whotargets.me/en/privacy-policy/\">privacy policy</a></span>",
@@ -59,9 +89,42 @@ let strings = new LocalizedStrings({
      skip: 'Überspringen',
      shareFacebook: '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finde heraus, welche Parteien auf dich zielen https://whotargets.me/de',
      shareTwitter: '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finde heraus, welche Parteien auf dich zielen https://whotargets.me/de',
+   },
+   results: {
+     my_constituency: 'Mein Bundestagswahlkreis',
+     constituency_size: 'Du bist einer von %i Freiwilligen in %s, kannst du uns helfen %i zu erreichen?',
+     constituency_size_one: 'Glückwünsch! Du bist der/die erste/r Freiwillige in %s. Kannst du uns helfen, noch mehr zu finden?',
+     no_results_explanation: 'Who Targets Me arbeitet im Hintergrund, um zu ermitteln, welche Werbung du siehst. Diese Seite wird mit Statistiken aktualisiert, sobald wir genug Daten gesammelt haben.'
+   },
+   links: {
+     website: {
+       title: 'Webseite',
+       url: 'https://whotargets.me'
+     },
+     terms: {
+       title: 'Bedingungen',
+       url: 'https://whotargets.me/terms'
+     },
+     privacy: {
+       title: 'Privatsphäre',
+       url: 'https://whotargets.me/privacy-policy'
+     },
+     facebook: {
+       title: 'Facebook',
+       url: 'https://www.facebook.com/whotargetsme/'
+     },
+     twitter: {
+       title: 'Twitter',
+       url: 'https://twitter.com/whotargetsme'
+     }
    }
  }
 });
+
+export const changeLocale = (locale) => {
+  chrome.storage.promise.local.set({language: locale});
+  strings.setLanguage(locale);
+}
 
 chrome.storage.promise.local.get('language')
   .then((result) => {
