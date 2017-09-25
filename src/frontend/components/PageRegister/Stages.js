@@ -30,7 +30,7 @@ class LanguageSelector extends Component {
   render() {
     const {hovering} = this.state;
     return (
-      <span className={"LanguageSelector " + (hovering !== null ? 'blur' : '')}>
+      <span className={"LanguageSelector"}>
         <Container>
           <div className="fullwidth" style={{marginBottom: '20px'}}>
             <span className={"flag-icon flag-icon-gb " + (hovering !== null && hovering !== 'en' ? 'blur' : '')} onMouseEnter={() => this.setState({hovering: 'en'})} onMouseLeave={() => this.setState({hovering: null})} onClick={() => this.handleSelect('en')}></span>
@@ -122,7 +122,7 @@ class CountrySelector extends Component {
       <span>
         <Container>
           <div className="fullwidth">
-            <div style={{width: '500px', overflow: 'hidden'}}>
+            <div style={{width: '500px', overflow: 'hidden', margin: '0 auto'}}>
               <div style={{width: '100px', float: 'left'}}>
                 <Button type="hollow-primary" style={{color: '#b2b2b2', borderColor: '#b2b2b2'}} onClick={back}>{strings.register.back}</Button>
               </div>
@@ -208,7 +208,7 @@ class PostcodeSelector extends Component {
       <span>
         <Container>
           <div className="fullwidth">
-            <div style={{width: '500px', overflow: 'hidden'}}>
+            <div style={{width: '500px', overflow: 'hidden', margin: '0 auto'}}>
               <div style={{width: '100px', float: 'left'}}>
                 <Button type="hollow-primary" style={{color: '#b2b2b2', borderColor: '#b2b2b2'}} onClick={back}>{strings.register.back}</Button>
               </div>
@@ -314,7 +314,7 @@ class AgeSelector extends Component {
           <h3>{strings.register.years_of_age}</h3>
         </div>
         <div className="fullwidth" style={{marginBottom: '20px'}}>
-          <div style={{width: '270px'}}>
+          <div style={{width: '270px', margin: '0 auto'}}>
             <InputGroup contiguous>
               <InputGroup.Section grow>
                 <FormInput type="text" placeholder={strings.register.age} value={inputValue} ref={(input) => {this.ageInput = input}} onChange={(e) => this.inputChange(e.target.value)} onKeyPress={this.handleKeyPress}/>

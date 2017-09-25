@@ -1,14 +1,14 @@
-import React, { Component } from 'react'
-import {sprintf} from 'sprintf-js';
+import React, { Component } from 'react';
+import { sprintf } from 'sprintf-js';
 import { Form, FormField, FormInput, FormSelect, Col, Row, Button, InputGroup } from 'elemental'
-import axios from 'axios'
+import axios from 'axios';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts'
 import strings, {changeLocale} from '../../helpers/localization.js';
 
-import IMGLogo from './logo.svg'
-import IMGFirstPlace from './firstplace.png'
+import IMGLogo from './logo.svg';
+import IMGFirstPlace from './firstplace.png';
 
-import './PageResults.css'
+import './PageResults.css';
 
 export default class PageRegister extends Component {
 
@@ -263,6 +263,7 @@ const PartyBar = (props) => {
 }
 
 const roundUp = (x) => {
+    x = parseInt(x);
     if(x < 10) {
       return 10;
     }
