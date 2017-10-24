@@ -18,6 +18,7 @@ module.exports = {
       new CleanWebpackPlugin([ build_dir + '/*' ], {root: build_dir}),
       new CopyWebpackPlugin([
         { from: __dirname + '/' + browser + '.manifest.json', to: build_dir + '/manifest.json' },
+        { from: __dirname + '/_locales', to: build_dir + '/_locales' },
         { from: __dirname + '/logo-128.png', to: build_dir + '/logo-128.png' },
       ]),
       new webpack.DefinePlugin({

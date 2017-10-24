@@ -1,10 +1,11 @@
 {
-	"version": "1.1.0",
-	"name": "Wer bezahlt für meine Stimme?",
+	"version": "1.1.2",
+	"name": "__MSG_appName__",
 	"manifest_version": 2,
-	"description": "Finden Sie heraus, welche politischen Parteien dafür bezahlen, dass Ihnen gezielte Werbung angezeigt wird – und warum.",
+	"description": "__MSG_appDesc__",
+	"default_locale": "en",
 	"browser_action": {
-		"default_title": "Wer bezahlt für meine Stimme?",
+		"default_title": "__MSG_appName__",
 		"default_popup": "frontend/index.html",
 		"default_icon": "logo-128.png"
 	},
