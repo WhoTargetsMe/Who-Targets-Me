@@ -30,7 +30,12 @@
   src: url('./Poppins-Bold.ttf') format('truetype');
 }
 
-/* FLAGS */
+/*
+
+FLAGS
+DOWNLOAD NEW FROM flag-icon-css
+
+*/
 .flag-icon-background {
   background-size: contain;
   background-position: 50%;
@@ -51,6 +56,7 @@
 .flag-icon.flag-icon-squared {
   width: 1em;
 }
+
 .flag-icon-gb {
   background-image: url('./flags/4x3/gb.svg');
 }
@@ -63,6 +69,13 @@
 }
 .flag-icon-de.flag-icon-squared {
   background-image: url('./flags/1x1/de.svg');
+}
+
+.flag-icon-es {
+  background-image: url('./flags/4x3/es.svg');
+}
+.flag-icon-es.flag-icon-squared {
+  background-image: url('./flags/1x1/es.svg');
 }
 
 

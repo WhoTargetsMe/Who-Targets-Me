@@ -19,7 +19,6 @@
     "elemental": "*",
     "es6-promise-pool": "^2.5.0",
     "fetch-http-client": "^1.0.1",
-    "flag-icon-css": "^2.8.0",
     "jquery": "^3.2.1",
     "react": "^15.5.4",
     "react-addons-css-transition-group": "^15.5.2",
