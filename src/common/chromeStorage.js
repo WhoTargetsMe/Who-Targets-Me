@@ -1,3 +1,5 @@
+const Promise = require("bluebird"); // Promise standard
+
 try {
   if (typeof chrome !== 'undefined' && typeof chrome.storage !== 'undefined') {
     chrome.storage.promise = {

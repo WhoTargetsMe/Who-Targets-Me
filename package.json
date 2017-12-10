@@ -16,6 +16,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "axios": "^0.16.2",
+    "bluebird": "^3.5.1",
     "elemental": "*",
     "es6-promise-pool": "^2.5.0",
     "fetch-http-client": "^1.0.1",
