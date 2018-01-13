@@ -31,8 +31,8 @@ const strings = new LocalizedStrings({
       shareFacebook: '@WhoTargetsMe is investigating dark advertising, find out who targets you https://whotargets.me/',
       shareTwitter: '@WhoTargetsMe is investigating dark advertising, find out who targets you https://whotargets.me/',
       political_affiliation: 'Please choose your political affiliation',
-      us_labels: ['Very liberal', 'Moderately liberal', 'Slightly liberal', 'Center', 'Slightly conservative', 'Moderately conservative', 'Very conservative', 'No affiliation'],
-      non_us_labels: ['Very left wing', 'Moderately left wing', 'Slightly left wing', 'Center', 'Slightly right wing', 'Moderately right wing', 'Very right wing', 'No affiliation'],
+      us_labels: ['No affiliation', 'Very liberal', 'Moderately liberal', 'Slightly liberal', 'Center', 'Slightly conservative', 'Moderately conservative', 'Very conservative'],
+      non_us_labels: ['No affiliation', 'Very left wing', 'Moderately left wing', 'Slightly left wing', 'Center', 'Slightly right wing', 'Moderately right wing', 'Very right wing'],
       would_rather_not_say: 'Would rather not say',
     },
     results: {

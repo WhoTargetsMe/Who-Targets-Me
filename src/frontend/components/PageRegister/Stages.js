@@ -357,16 +357,25 @@ class AgeSelector extends Component {
   }
 }
 
-
+// Slider (0 - 7) where 0 is 'rather not say',
+// For US 1-7: 1-`Very liberal` to 6-`Very conservative`
+// For non US countries 1-7: 1-`Very left wing` to 6-`Very right wing`
 class PoliticalAffiliationSelector extends Component {
 
   constructor() {
     super();
     this.state = {
-      inputValue: 0,
+      inputValue: 1,
     }
 
     this.inputChange = this.inputChange.bind(this);
+    this.setNoAffiliation = this.setNoAffiliation.bind(this);
+  }
+  componentDidMount(){
+    let inputValue = this.props.signupState.political_affiliation;
+    if (inputValue){
+      this.setState({inputValue})
+    }
   }
 
   render() {
@@ -378,10 +387,10 @@ class PoliticalAffiliationSelector extends Component {
       labels = strings.register.us_labels;
     }
     // if user goes back to slider and his choise was 'rather not say'
-    // drop the slider to 0
+    // drop the slider to initial state
     let {inputValue} = this.state;
-    if (inputValue === labels.length - 1){
-      inputValue = 0;
+    if (inputValue === 0){
+      inputValue = 1;
     }
 
     return (
@@ -393,13 +402,13 @@ class PoliticalAffiliationSelector extends Component {
           <div style={{minWidth: '270px', margin: '0 auto'}}>
             <InputGroup contiguous>
               <InputGroup.Section grow>
-                <div style={{display: 'inline-block', margin: '10px'}}>{labels[0]}</div>
-                <input type="range" value={inputValue} min={0} max={labels.length - 2}
+                <div style={{display: 'inline-block', margin: '10px'}}>{labels[1]}</div>
+                <input type="range" value={inputValue} min={1} max={labels.length - 1}
                   ref={(input) => {this.affiliationInput = input}}
                   onChange={(e) => this.inputChange(e.target.value)}
                   style={{display: 'inline-block', margin: '10px'}}
                 />
-                <div style={{display: 'inline-block', margin: '10px'}}>{labels[labels.length - 2]}</div>
+                <div style={{display: 'inline-block', margin: '10px'}}>{labels[labels.length - 1]}</div>
               </InputGroup.Section>
             </InputGroup>
 
@@ -408,13 +417,13 @@ class PoliticalAffiliationSelector extends Component {
                 <Button type="hollow-primary" style={{color: '#b2b2b2', borderColor: '#b2b2b2', width: '100px', margin: '20px'}}
                   onClick={back}>{strings.register.back}
                 </Button>
-                <Button style={{margin: '20px'}} onClick={() => next({political_affiliation: labels[inputValue]})}
+                <Button style={{margin: '20px'}} onClick={() => next({political_affiliation: parseInt(inputValue)})}
                   type="hollow-success">
                   {labels[inputValue]} {String.fromCharCode("187")}
                 </Button>
               </div>
-              <a style={{textDecoration: 'underline', color: 'blue'}}
-                onClick={() => next({political_affiliation: labels[labels.length - 1]})}>{strings.register.would_rather_not_say}
+              <a style={{color: '#1385e5'}}
+                onClick={() => this.setNoAffiliation()}>{strings.register.would_rather_not_say}
               </a>
             </div>
           </div>
@@ -425,7 +434,11 @@ class PoliticalAffiliationSelector extends Component {
   }
 
   inputChange(newValue) {
-    this.setState({inputValue: newValue});
+    this.setState({inputValue: parseInt(newValue)});
+  }
+  setNoAffiliation() {
+    this.setState({inputValue: 0});
+    this.props.next({political_affiliation: 0})
   }
 }
 
