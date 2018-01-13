@@ -357,6 +357,78 @@ class AgeSelector extends Component {
   }
 }
 
+
+class PoliticalAffiliationSelector extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      inputValue: 0,
+    }
+
+    this.inputChange = this.inputChange.bind(this);
+  }
+
+  render() {
+    const {back, next} = this.props;
+
+    // if country == US - us_labels, else - non_us_labels
+    let labels = strings.register.non_us_labels;
+    if (this.props.signupState.country && this.props.signupState.country.countryCode === 'US'){
+      labels = strings.register.us_labels;
+    }
+    // if user goes back to slider and his choise was 'rather not say'
+    // drop the slider to 0
+    let {inputValue} = this.state;
+    if (inputValue === labels.length - 1){
+      inputValue = 0;
+    }
+
+    return (
+      <Container>
+        <div className="fullwidth" style={{marginBottom: '20px'}}>
+          <h3>{strings.register.political_affiliation}</h3>
+        </div>
+        <div className="fullwidth" style={{marginBottom: '20px'}}>
+          <div style={{minWidth: '270px', margin: '0 auto'}}>
+            <InputGroup contiguous>
+              <InputGroup.Section grow>
+                <div style={{display: 'inline-block', margin: '10px'}}>{labels[0]}</div>
+                <input type="range" value={inputValue} min={0} max={labels.length - 2}
+                  ref={(input) => {this.affiliationInput = input}}
+                  onChange={(e) => this.inputChange(e.target.value)}
+                  style={{display: 'inline-block', margin: '10px'}}
+                />
+                <div style={{display: 'inline-block', margin: '10px'}}>{labels[labels.length - 2]}</div>
+              </InputGroup.Section>
+            </InputGroup>
+
+            <div className="fullwidth" style={{marginBottom: '20px'}}>
+              <div className="fullwidth" style={{textAlign: 'center'}}>
+                <Button type="hollow-primary" style={{color: '#b2b2b2', borderColor: '#b2b2b2', width: '100px', margin: '20px'}}
+                  onClick={back}>{strings.register.back}
+                </Button>
+                <Button style={{margin: '20px'}} onClick={() => next({political_affiliation: labels[inputValue]})}
+                  type="hollow-success">
+                  {labels[inputValue]} {String.fromCharCode("187")}
+                </Button>
+              </div>
+              <a style={{textDecoration: 'underline', color: 'blue'}}
+                onClick={() => next({political_affiliation: labels[labels.length - 1]})}>{strings.register.would_rather_not_say}
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </Container>
+    );
+  }
+
+  inputChange(newValue) {
+    this.setState({inputValue: newValue});
+  }
+}
+
 class AttemptSignup extends Component {
 
   constructor() {
@@ -475,14 +547,17 @@ const signupStages = [
   {
     component: <CountrySelector/>,
   },
-  {
-    component: <PostcodeSelector/>,
-  },
+  // {
+  //   component: <PostcodeSelector/>,
+  // },
   {
     component: <GenderSelector/>,
   },
   {
     component: <AgeSelector/>,
+  },
+  {
+    component: <PoliticalAffiliationSelector/>,
   },
   {
     component: <AttemptSignup/>,
