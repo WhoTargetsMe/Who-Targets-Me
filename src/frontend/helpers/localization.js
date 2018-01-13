@@ -31,6 +31,7 @@ const strings = new LocalizedStrings({
       shareFacebook: '@WhoTargetsMe is investigating dark advertising, find out who targets you https://whotargets.me/',
       shareTwitter: '@WhoTargetsMe is investigating dark advertising, find out who targets you https://whotargets.me/',
       political_affiliation: 'Please choose your political affiliation',
+      political_affiliation_description: 'Most people think of politics as having a \'left\' and a \'right\'. How would you describe your own views?',
       us_labels: ['No affiliation', 'Very liberal', 'Moderately liberal', 'Slightly liberal', 'Center', 'Slightly conservative', 'Moderately conservative', 'Very conservative'],
       non_us_labels: ['No affiliation', 'Very left wing', 'Moderately left wing', 'Slightly left wing', 'Center', 'Slightly right wing', 'Moderately right wing', 'Very right wing'],
       would_rather_not_say: 'Would rather not say',

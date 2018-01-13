@@ -365,7 +365,7 @@ class PoliticalAffiliationSelector extends Component {
   constructor() {
     super();
     this.state = {
-      inputValue: 1,
+      inputValue: 4,
     }
 
     this.inputChange = this.inputChange.bind(this);
@@ -397,6 +397,7 @@ class PoliticalAffiliationSelector extends Component {
       <Container>
         <div className="fullwidth" style={{marginBottom: '20px'}}>
           <h3>{strings.register.political_affiliation}</h3>
+          <p>{strings.register.political_affiliation_description}</p>
         </div>
         <div className="fullwidth" style={{marginBottom: '20px'}}>
           <div style={{minWidth: '270px', margin: '0 auto'}}>
@@ -412,17 +413,17 @@ class PoliticalAffiliationSelector extends Component {
               </InputGroup.Section>
             </InputGroup>
 
-            <div className="fullwidth" style={{marginBottom: '20px'}}>
-              <div className="fullwidth" style={{textAlign: 'center'}}>
-                <Button type="hollow-primary" style={{color: '#b2b2b2', borderColor: '#b2b2b2', width: '100px', margin: '20px'}}
-                  onClick={back}>{strings.register.back}
-                </Button>
-                <Button style={{margin: '20px'}} onClick={() => next({political_affiliation: parseInt(inputValue)})}
-                  type="hollow-success">
-                  {labels[inputValue]} {String.fromCharCode("187")}
-                </Button>
-              </div>
-              <a style={{color: '#1385e5'}}
+            <div className="fullwidth" style={{textAlign: 'center', marginBottom: '10px'}}>
+              <Button type="hollow-primary" style={{color: '#b2b2b2', borderColor: '#b2b2b2', width: '100px', marginRight: '10px'}}
+                onClick={back}>{strings.register.back}
+              </Button>
+              <Button onClick={() => next({political_affiliation: parseInt(inputValue)})}
+                type="hollow-success">
+                {labels[inputValue]} {String.fromCharCode("187")}
+              </Button>
+            </div>
+            <div className="fullwidth" style={{textAlign: 'center'}}>
+              <a style={{color: '#1385e5', margin: '10px'}}
                 onClick={() => this.setNoAffiliation()}>{strings.register.would_rather_not_say}
               </a>
             </div>
