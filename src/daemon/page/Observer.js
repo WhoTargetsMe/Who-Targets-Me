@@ -1,4 +1,10 @@
 import api from '../api.js';
+import '../../common/chromeStorage.js';
+
+const persistantStorageDefaults = {
+  fbAdvertRationaleQueue: [],
+  fbAdvertRationaleExtractQueue: []
+};
 
 export default class Observer {
 
@@ -36,13 +42,40 @@ export default class Observer {
   start() { // Starts the observation loop
     return new Promise((resolve, reject) => {
       if (!this.running) {
-        this.persistantStorage = this.config.storageDefaults.persistant; // Set default permanant storage
-        this.tempStorage = this.config.storageDefaults.temp; // Set default temp storage
-        this.cycle();
-        resolve();
+        this.loadPersistantStorage()
+          .then(() => {
+            this.tempStorage = this.config.storageDefaults.temp; // Set default temp storage
+            this.cycle();
+            resolve();
+          });
       } else {
         reject();
       }
+    });
+  }
+
+  loadPersistantStorage() {
+    return new Promise((resolve, reject) => {
+      chrome.storage.promise.local.get('observer_persistant_storage')
+        .then((persistant) => {
+          if (persistant.observer_persistant_storage) {
+            this.persistantStorage = JSON.parse(persistant.observer_persistant_storage);
+            return resolve();
+          } else {
+            this.persistantStorage = persistantStorageDefaults; // Set default permanant storage
+            return resolve();
+          }
+          resolve();
+        });
+    });
+  }
+
+  setPersistantStorage() {
+    return new Promise((resolve, reject) => {
+      chrome.storage.promise.local.set({'observer_persistant_storage': JSON.stringify(this.persistantStorage)})
+        .then(() => {
+          resolve();
+        });
     });
   }
 
@@ -55,12 +88,19 @@ export default class Observer {
   cycle() { // Called every interval when observing
     this.running = true;
     this.timeout = setTimeout(this.cycle, this.config.interval);
-    this.config.cycle({persistant: Object.assign({}, this.persistantStorage), temp: Object.assign({}, this.tempStorage)}) // Immutable
-      .then((result) => {
-        const {persistant, temp, payload} = result;
-        this.persistantStorage = persistant;
+    this.loadPersistantStorage() // Get latest permanant storage
+      .then(() => this.config.cycle({persistant: this.persistantStorage, temp: this.tempStorage}))
+      .then((result = {}) => {
+        const {persistant, temp = {}, payload} = result;
+
+        /* Merge new values for persistant storage, and save to localstorage */
+        if (persistant) {
+          this.persistantStorage = Object.assign(this.persistantStorage, persistant);
+          this.setPersistantStorage();
+        }
+
         this.tempStorage = temp;
-        if (payload !== null && payload.length > 0) {
+        if (payload && payload.length > 0) {
           this.transmitPayload(payload);
         }
       })
@@ -87,7 +127,6 @@ export default class Observer {
       urls: [],
       interval: 5000,
       storageDefaults: {
-        persistant: {},
         temp: {}
       },
       cycle: () => {}

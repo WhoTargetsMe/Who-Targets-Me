@@ -1,10 +1,14 @@
 import FacebookAdvertObserver from './page/FacebookAdvertObserver.js';
+import FacebookAdvertRationaleObserver from './page/FacebookAdvertRationaleObserver.js';
+import FacebookAdvertRationaleExtractObserver from './page/FacebookAdvertRationaleExtractObserver.js';
 import '../common/chromeStorage.js';
 import initBackground from './background';
 import api from './api.js';
 
 const initPage = () => {
   FacebookAdvertObserver.run();
+  FacebookAdvertRationaleObserver.run();
+  FacebookAdvertRationaleExtractObserver.run();
 };
 
 chrome.storage.promise.local.get('general_token')
@@ -13,11 +17,6 @@ chrome.storage.promise.local.get('general_token')
       api.addMiddleware(request => {
         request.options.headers.Authorization = result.general_token;
       });
-      if (window.location.protocol === 'chrome-extension:') { // Determine whether daemon is running in context of webpage, or in the background
-        initBackground();
-      } else {
-        initPage();
-      }
     } else {
       // No auth token found
     }

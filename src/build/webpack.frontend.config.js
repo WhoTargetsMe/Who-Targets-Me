@@ -48,7 +48,7 @@ var config = {
         include : APP_DIR,
         loader : 'babel-loader',
         options: {
-          "plugins": ["transform-object-rest-spread"]
+          plugins: ['transform-object-rest-spread']
         }
       }
     ]
