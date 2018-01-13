@@ -547,9 +547,9 @@ const signupStages = [
   {
     component: <CountrySelector/>,
   },
-  // {
-  //   component: <PostcodeSelector/>,
-  // },
+  {
+    component: <PostcodeSelector/>,
+  },
   {
     component: <GenderSelector/>,
   },
