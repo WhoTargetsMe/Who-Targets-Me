@@ -13,9 +13,9 @@ var CopyWebpackConfig = [
   { from: APP_DIR + '/index.html', to: BUILD_DIR + '/index.html' },
 ];
 
-if(process.env.OFFLINE) {
+// if(process.env.OFFLINE) {
   CopyWebpackConfig.push({ from: __dirname + '/dev.html', to: BUILD_DIR + '/dev.html' }, { from: __dirname + '/grid.png', to: BUILD_DIR + '/grid.png' })
-}
+// }
 
 var config = {
   entry: APP_DIR + '/index.js',
