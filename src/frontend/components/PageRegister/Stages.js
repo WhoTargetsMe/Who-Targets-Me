@@ -460,10 +460,10 @@ class AttemptSignup extends Component {
   }
 
   register() {
-    const {age, gender, postcode, country} = this.props.signupState;
+    const {age, gender, postcode, country, political_affiliation} = this.props.signupState;
     const {next} = this.props;
     this.setState({awaitingResponse: true, error: null});
-    api.post('user/create', {json: {age, gender, postcode, country: country.countryCode}})
+    api.post('user/create', {json: {age, gender, postcode, country: country.countryCode, political_affiliation}})
       .then((response) => { // The rest of the validation is down to the server
         if(response.jsonData.errorMessage !== undefined) {
           throw new Error(response.jsonData.errorMessage);
