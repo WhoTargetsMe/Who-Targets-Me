@@ -78,6 +78,13 @@ DOWNLOAD NEW FROM flag-icon-css
   background-image: url('./flags/1x1/es.svg');
 }
 
+.flag-icon-it {
+  background-image: url('./flags/4x3/it.svg');
+}
+.flag-icon-it.flag-icon-squared {
+  background-image: url('./flags/1x1/it.svg');
+}
+
 
 body {
   font-size: 15px;
