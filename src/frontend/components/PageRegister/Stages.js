@@ -36,11 +36,13 @@ class LanguageSelector extends Component {
             <span className={"flag-icon flag-icon-gb " + (hovering !== null && hovering !== 'en' ? 'blur' : '')} onMouseEnter={() => this.setState({hovering: 'en'})} onMouseLeave={() => this.setState({hovering: null})} onClick={() => this.handleSelect('en')}></span>
             <span className={"flag-icon flag-icon-es " + (hovering !== null && hovering !== 'es' ? 'blur' : '')} onMouseEnter={() => this.setState({hovering: 'es'})} onMouseLeave={() => this.setState({hovering: null})} onClick={() => this.handleSelect('es')}></span>
             <span className={"flag-icon flag-icon-de " + (hovering !== null && hovering !== 'de' ? 'blur' : '')} onMouseEnter={() => this.setState({hovering: 'de'})} onMouseLeave={() => this.setState({hovering: null})} onClick={() => this.handleSelect('de')}></span>
+            <span className={"flag-icon flag-icon-it " + (hovering !== null && hovering !== 'it' ? 'blur' : '')} onMouseEnter={() => this.setState({hovering: 'it'})} onMouseLeave={() => this.setState({hovering: null})} onClick={() => this.handleSelect('it')}></span>
           </div>
           <div className={"fullwidth " + (hovering !== null ? 'blur' : '')}>
             <p>Please select your preferred language</p>
             <p>Por favor seleccione su idioma</p>
             <p>Bitte wählen Sie Ihre bevorzugte Sprache aus</p>
+            <p>Seleziona la tua lingua preferita</p>
           </div>
         </Container>
       </span>
