@@ -30,6 +30,11 @@ const strings = new LocalizedStrings({
       skip: 'Skip',
       shareFacebook: '@WhoTargetsMe is investigating dark advertising, find out who targets you https://whotargets.me/',
       shareTwitter: '@WhoTargetsMe is investigating dark advertising, find out who targets you https://whotargets.me/',
+      political_affiliation: 'Please choose your political affiliation',
+      political_affiliation_description: 'Most people think of politics as having a \'left\' and a \'right\'. How would you describe your own views?',
+      us_labels: ['No affiliation', 'Very liberal', 'Moderately liberal', 'Slightly liberal', 'Center', 'Slightly conservative', 'Moderately conservative', 'Very conservative'],
+      non_us_labels: ['No affiliation', 'Very left wing', 'Moderately left wing', 'Slightly left wing', 'Center', 'Slightly right wing', 'Moderately right wing', 'Very right wing'],
+      would_rather_not_say: 'Would rather not say',
     },
     results: {
       my_constituency: 'My Constituency',
@@ -89,6 +94,7 @@ const strings = new LocalizedStrings({
       skip: 'Überspringen',
       shareFacebook: '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finde heraus, welche Parteien auf dich zielen https://whotargets.me/de',
       shareTwitter: '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finde heraus, welche Parteien auf dich zielen https://whotargets.me/de',
+      political_affiliation: 'Please choose your political affiliation',
     },
     results: {
       my_constituency: 'Mein Bundestagswahlkreis',
