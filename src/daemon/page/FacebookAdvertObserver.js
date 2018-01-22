@@ -35,7 +35,7 @@ const fetchRationale = (advertId) => {
         });
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
         resolve(null);
       });
   });
@@ -57,7 +57,7 @@ const triggerMenu = (fbStoryId) => {
           fbAdvertId: /id=\s*(.*?)\s*&/.exec(ajaxify)[1]
         }); // Extract the advert ID using regex
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         return Promise.reject(new Error(['Could not extract advert ID', fbStoryId]));
       }
     });
@@ -181,7 +181,7 @@ const cycle = ({persistant, temp}) => {
       return Promise.resolve({persistant, temp, payload});
     })
     .catch(err => {
-      console.log(err);
+      // console.log(err);
     });
 };
 
