@@ -41,7 +41,7 @@ export default class Observer {
         this.cycle();
         resolve();
       } else {
-        reject();
+        reject(new Error('Already running'));
       }
     });
   }
