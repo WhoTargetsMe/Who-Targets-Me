@@ -4,25 +4,25 @@ import {sprintf} from 'sprintf-js';
 import PromisePool from 'es6-promise-pool';
 
 const sponsoredText = {
-  'cs': 'Sponzorováno',
-  'da': 'Sponsoreret',
-  'de': 'Gesponsert',
-  'en': 'Sponsored',
-  'es': 'Publicidad',
-  'fr': 'Sponsorisé',
-  'hu': 'Hirdetés',
-  'it': 'Sponsorizzata',
-  'ja': '広告',
-  'nb': 'Sponset',
-  'nl': 'Gesponsord',
-  'nn': 'Sponsa',
-  'pl': 'Sponsorowane',
-  'pt': 'Patrocinado',
-  'ru': 'Реклама',
-  'sk': 'Sponzorované',
-  'sr': 'Спонзорисано',
-  'sv': 'Sponsrad',
-  'tr': 'Sponsorlu'
+  'cs': 'Spo', //nzorováno',
+  'da': 'Spo', //nsoreret',
+  'de': 'Ges', //ponsert',
+  'en': 'Spo', //nsored',
+  'es': 'Pub',//licidad',
+  'fr': 'Spo', //nsorisé',
+  'hu': 'Hir',//detés',
+  'it': 'Spo', //, //nsonrizzata',
+  'ja': '広',// '告',
+  'nb': 'Spo', //nset',
+  'nl': 'Ges', //ponsord',
+  'nn': 'Spo', //nsa',
+  'pl': 'Spo', //nsorowane',
+  'pt': 'Pat', //rocinado',
+  'ru': 'Рек', //'лама',
+  'sk': 'Spo', //nzorované',
+  'sr': 'Спо', //'нзорисано',
+  'sv': 'Spo', //nsrad',
+  'tr': 'Spo', //nsorlu'
 };
 
 const fetchRationale = (advertId) => {
@@ -64,26 +64,32 @@ const triggerMenu = (fbStoryId) => {
 };
 
 const adsOnPage = () => {
+
   let adverts = []; // Pass adverts back to cycle
 
   const lang = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; // Extract the language preferance of the client
   const sponsoredValue = sponsoredText[lang] || sponsoredText.en; // Using the language, determine the correct word for 'sponsored', default to english
 
+
   $(sprintf('a.fbPrivacyAudienceIndicator', sponsoredValue)).each((index, advert) => { // Loop over every advert
 
     try { // ENSURE THIS IS AN ADVERT
-      const domSponsored = $(advert).parent().children().first().find('a')[0]; // Get the DOM element of the 'sponsored' text
-      const sponsoredValue = window.getComputedStyle(domSponsored, ':after').getPropertyValue('content').replace(/"/g, ''); // Calculate the :after value, and clean
+      // const domSponsored = $(advert).parent().children().first().find('a')[0]; // Get the DOM element of the 'sponsored' text
+      // const sponsoredValue = window.getComputedStyle(domSponsored, ':after').getPropertyValue('content').replace(/"/g, ''); // Calculate the :after value, and clean
+      const domSponsored = $(advert).parent().children().first().find('._14bf').first();
+      const sponsoredValue = domSponsored.text().slice(0,3);
+      // console.log('sponsoredValue',sponsoredValue)
       if (Object.values(sponsoredText).indexOf(sponsoredValue) === -1) { // Check if the value matches our list of 'sponsored' translations
         return; // This is not a sponsored post
       }
     } catch (err) {
+      //console.log('Some err, RETURN', err)
       return;
     }
 
     const container = $(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
     const fbStoryId = container.attr('id'); // Extract the story ID, used to determine if an advert has already been extracted
-
+    //console.log('adsOnPage - fbStoryId=', fbStoryId)
     if (!fbStoryId || container.hasClass('hidden_elem')) { // Don't proceed if there is an error getting fbStoryId or if the advert is hidden
       return;
     }
@@ -100,7 +106,6 @@ const adsOnPage = () => {
 
 const newAds = (fbStoryIds) => adsOnPage()
   .then(_adverts => {
-
     const adverts = _adverts.filter(advert => fbStoryIds.indexOf(advert.related) === -1); // Filter out previously parsed adverts
 
     return Promise.all(adverts.map(advert => triggerMenu(advert.related))) // Trigger the menu to open for each advert
