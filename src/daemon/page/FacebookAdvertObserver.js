@@ -78,8 +78,11 @@ const adsOnPage = () => {
       // const sponsoredValue = window.getComputedStyle(domSponsored, ':after').getPropertyValue('content').replace(/"/g, ''); // Calculate the :after value, and clean
       const domSponsored = $(advert).parent().children().first().find('._14bf').first();
       const sponsoredValue = domSponsored.text().slice(0,3);
-      // console.log('sponsoredValue',sponsoredValue)
-      if (Object.values(sponsoredText).indexOf(sponsoredValue) === -1) { // Check if the value matches our list of 'sponsored' translations
+      //console.log('sponsoredValue-', sponsoredValue)
+
+      // Check if the value matches our list of 'sponsored' translations
+      if (sponsoredValue === '' || Object.values(sponsoredText).filter(s => s.indexOf(sponsoredValue) > -1).length === 0) { // Check if the value matches our list of 'sponsored' translations
+        //console.log('Is not sponsored')
         return; // This is not a sponsored post
       }
     } catch (err) {
