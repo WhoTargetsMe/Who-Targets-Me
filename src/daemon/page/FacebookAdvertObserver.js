@@ -8,11 +8,11 @@ const sponsoredText = {
   'da': 'Spo', //nsoreret',
   'de': 'Ges', //ponsert',
   'en': 'Spo', //nsored',
-  'es': 'Pub',//licidad',
+  'es': 'Pub', //licidad',
   'fr': 'Spo', //nsorisé',
-  'hu': 'Hir',//detés',
+  'hu': 'Hir', //detés',
   'it': 'Spo', //, //nsonrizzata',
-  'ja': '広',// '告',
+  'ja': '広', // '告',
   'nb': 'Spo', //nset',
   'nl': 'Ges', //ponsord',
   'nn': 'Spo', //nsa',
@@ -22,7 +22,7 @@ const sponsoredText = {
   'sk': 'Spo', //nzorované',
   'sr': 'Спо', //'нзорисано',
   'sv': 'Spo', //nsrad',
-  'tr': 'Spo', //nsorlu'
+  'tr': 'Spo' //nsorlu'
 };
 
 const fetchRationale = (advertId) => {
@@ -77,7 +77,7 @@ const adsOnPage = () => {
       // const domSponsored = $(advert).parent().children().first().find('a')[0]; // Get the DOM element of the 'sponsored' text
       // const sponsoredValue = window.getComputedStyle(domSponsored, ':after').getPropertyValue('content').replace(/"/g, ''); // Calculate the :after value, and clean
       const domSponsored = $(advert).parent().children().first().find('._14bf').first();
-      const sponsoredValue = domSponsored.text().slice(0,3);
+      const sponsoredValue = domSponsored.text().slice(0, 3);
       //console.log('sponsoredValue-', sponsoredValue)
 
       // Check if the value matches our list of 'sponsored' translations
