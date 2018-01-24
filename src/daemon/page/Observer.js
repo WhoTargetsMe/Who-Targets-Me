@@ -41,7 +41,7 @@ export default class Observer {
         this.cycle();
         resolve();
       } else {
-        reject(new Error('Already running'));
+        reject();
       }
     });
   }
@@ -65,7 +65,7 @@ export default class Observer {
         }
       })
       .catch((e) => { // No payload
-        console.log("Err", e);
+        // console.log("Err", e);
       });
   }
 
