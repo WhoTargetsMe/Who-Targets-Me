@@ -85,7 +85,7 @@ export default class PageRegister extends Component {
           <Button type="link" href={strings.links.facebook.url} style={{color: '#6d84b4'}}>{strings.links.facebook.title}</Button>
           <Button type="link" href={strings.links.twitter.url} style={{color: '#00aced'}}>{strings.links.twitter.title}</Button>
           <Button type="link" onClick={() => changeLocale('en')}>English</Button>
-          <Button type="link" onClick={() => changeLocale('de')}>German</Button>
+          <Button type="link" onClick={() => changeLocale('de')}>Deutsch</Button>
         </Row>
       </div>
     )

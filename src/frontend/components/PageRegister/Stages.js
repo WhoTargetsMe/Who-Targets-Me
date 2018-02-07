@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import strings from '../../helpers/localization.js';
-import {Button, InputGroup, FormInput, Spinner, Row, Card, Col} from 'elemental';
+import {Button, InputGroup, FormInput, Spinner, Row, Card, Col, Checkbox} from 'elemental';
 import api from '../../helpers/api.js';
 import countries from './countries.js';
 import FacebookIcon from './icon_facebook.svg';
@@ -65,16 +65,43 @@ class LanguageSelector extends Component {
 }
 
 class TermsPrivacy extends Component {
+  constructor(){
+    super()
+    this.state={
+      consent1: false,
+      consent2: false,
+      consent3: false,
+    }
+    this.onCheck = this.onCheck.bind(this);
+  }
+  onCheck(consent){
+    const value = !this.state[consent];
+    this.setState({[consent]:value});
+  }
   render() {
     const {back, next} = this.props;
     return (
       <span>
         <Container>
-          <div className="fullwidth" style={{marginBottom: '20px'}}>
-            <p dangerouslySetInnerHTML={{__html: strings.register.terms}}></p>
-          </div>
           <div className="fullwidth">
-            <Button type="hollow-primary" style={{color: '#b2b2b2', borderColor: '#b2b2b2'}} onClick={back}>{strings.register.back}</Button> <Button type="hollow-success" onClick={next}>{strings.register.agree} {String.fromCharCode("187")}</Button>
+          <h3>Privacy and security</h3>
+          <div style={{margin: '20px 30px', fontSize: '14px'}}>
+            <p>Who Targets Me collects no personally identifiable information. There are two types of information we are interested in that make our service possible:</p>
+            <p>Facebook adverts. These contain your Facebook ID, which we remove from the ad and do not collect. We do not collect any other data from the page - particularly personal posts.</p>
+            <p>A small anonymous personal profile containing your age, gender, location and a general sense of where you think your views sit on the political spectrum. We will never attempt to reverse engineer this data.</p>
+            <h4 style={{marginTop: '20px'}}>To participate in Who Targets Me, please confirm the following:</h4>
+          </div>
+          <div className='inline-controls' style={{margin: '20px 50px', textAlign: 'left'}}>
+            <Checkbox onChange={() => this.onCheck('consent1')} /><span dangerouslySetInnerHTML={{__html: strings.register.consent1}}></span><br/>
+            <Checkbox onChange={() => this.onCheck('consent2')} /><span dangerouslySetInnerHTML={{__html: strings.register.consent2}}></span><br/>
+            <Checkbox onChange={() => this.onCheck('consent3')} /><span dangerouslySetInnerHTML={{__html: strings.register.consent3}}></span><br/>
+          </div>
+
+          </div>
+
+          <div className="fullwidth">
+            <Button type="hollow-primary" style={{color: '#b2b2b2', borderColor: '#b2b2b2', marginRight: 20}} onClick={back}>{strings.register.back}</Button>
+            <Button type="hollow-success" onClick={() => next({consent: this.state})} disabled={!this.state.consent1 || !this.state.consent2 || !this.state.consent3}>{strings.register.agree} {String.fromCharCode("187")}</Button>
           </div>
         </Container>
       </span>
@@ -463,10 +490,11 @@ class AttemptSignup extends Component {
   }
 
   register() {
-    const {age, gender, postcode, country, political_affiliation} = this.props.signupState;
+    const {age, gender, postcode, country, political_affiliation, consent} = this.props.signupState;
     const {next} = this.props;
     this.setState({awaitingResponse: true, error: null});
-    api.post('user/create', {json: {age, gender, postcode, country: country.countryCode, political_affiliation}})
+    api.post('user/create', {json: {age, gender, postcode, country: country.countryCode,
+      political_affiliation, consent1: consent.consent1, consent2: consent.consent2, consent3: consent.consent3}})
       .then((response) => { // The rest of the validation is down to the server
         if(response.jsonData.errorMessage !== undefined) {
           throw new Error(response.jsonData.errorMessage);
