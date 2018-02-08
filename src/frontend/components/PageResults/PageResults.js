@@ -35,7 +35,7 @@ export default class PageRegister extends Component {
 
 
   requestForDelete() {
-    const userId = this.state.userData ? this.state.userData.id ? this.state.userData.id : null : null;
+    const userToken = this.state.userData ? this.state.userData.token ? this.state.userData.token : null : null;
     let display = '';
     let subject = 'Request to delete user profile';
     let body = '';
@@ -45,10 +45,22 @@ export default class PageRegister extends Component {
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
+    function hash(token){
+        const hash1 = getRandomIntInclusive(12345,67891).toString()
+        const hash2 = getRandomIntInclusive(67891,99999).toString()
 
-    if (userId) {
+        const letters = 'abcdefghijklmnopqrstuvwxyz'
+        let res1 = ''
+        let res2 = ''
+        for (let i=0; i<5; i++) {
+          res1 = res1 + hash2[i] + letters[parseInt(hash1[i])]
+          res2 = res2 + letters[parseInt(hash2[i])] + hash1[i]
+        }
+        return (res1.slice(5)+ token+ res2.slice(5)).toString();
+    }
+    if (userToken) {
       // script to call mailto client agent if userId is available
-      const cypherId = `${getRandomIntInclusive(12345,67891)}${userId}${getRandomIntInclusive(67892,99999)}`
+      const cypherId = hash(userToken)
       body = `Please permanently delete my profile from your database. Reference No.: ${cypherId}`
       try {
         window.open(`mailto:privacy@whotargets.me?subject=${subject}&body=${body}`)
