@@ -16,8 +16,10 @@ export default class PageRegister extends Component {
     super()
     this.state = {
       userData: null,
+      display: '',
     }
-    this.updateUser = this.updateUser.bind(this)
+    this.updateUser = this.updateUser.bind(this);
+    this.requestForDelete = this.requestForDelete.bind(this);
   }
 
   refreshUserData() {
@@ -29,6 +31,45 @@ export default class PageRegister extends Component {
       .catch((error) => {
         console.log(error)
       })
+  }
+
+
+  requestForDelete() {
+    const userId = this.state.userData ? this.state.userData.id ? this.state.userData.id : null : null;
+    let display = '';
+    let subject = 'Request to delete user profile';
+    let body = '';
+
+    function getRandomIntInclusive(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    if (userId) {
+      // script to call mailto client agent if userId is available
+      const cypherId = `${getRandomIntInclusive(12345,67891)}${userId}${getRandomIntInclusive(67892,99999)}`
+      body = `Please permanently delete my profile from your database. Reference No.: ${cypherId}`
+      try {
+        window.open(`mailto:privacy@whotargets.me?subject=${subject}&body=${body}`)
+        display = 'Thank you!'
+      } catch (err) {
+        console.log(err)
+        display = 'Something went wrong, pls try again.'
+      }
+    } else {
+      // if userId is undefined, ask to send link to FB profile
+      body = `Please permanently delete my profile from your database. Link to my FB profile: /your link here/`
+      try {
+        window.open(`mailto:privacy@whotargets.me?subject=${subject}&body=${body}`)
+        display = 'To help us remove your data and avoid mistake please send email to privacy@whotargets.me and include the link to your FB profile.'
+      } catch (err) {
+        console.log(err)
+        display = 'Something went wrong, pls try again.'
+      }
+    }
+    this.setState({display})
+
   }
 
   componentWillMount() {
@@ -75,6 +116,18 @@ export default class PageRegister extends Component {
                 <Button type="hollow-success" style={{color: '#3b5998', borderColor: '#3b5998'}} href={shareLinkFB()}>{strings.register.shareOnFacebook}</Button> <Button type="hollow-success" style={{color: '#00aced', borderColor: '#00aced'}} href={shareLinkTwitter()} >{strings.register.shareOnTwitter}</Button>
                 <p>{strings.register.share}</p>
               </div>
+          </Col>
+        </Row>
+        <Row style={{paddingTop: '20px', paddingBottom: '20px', margin: 'auto 10px'}}>
+          <Col sm="1/2" style={{overflow: 'hidden'}}>
+            <div className="statbox inverted an-or-2">
+              <div style={{width: '100%'}}>
+                <p>To stop participating in Who Targets Me, uninstall the extension by right-clicking the icon in your browser toolbar and selecting "Remove from Chrome/Firefox.
+                  If you want to delete your data from our servers, </p>
+                <p style={{textDecoration: 'underline', cursor: 'pointer', color: '#0099ff'}} onClick={this.requestForDelete}>click here to let us know</p>
+                <p style={{fontSize: '12px'}}>{this.state.display}</p>
+              </div>
+            </div>
           </Col>
         </Row>
         <Row style={{position: 'absolute', 'bottom': '0', textAlign: 'center', fontSize: '12px', paddingTop: '20px', marginLeft: '10px', marginRight: '10px'}}>
