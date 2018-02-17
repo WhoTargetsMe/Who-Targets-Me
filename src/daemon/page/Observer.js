@@ -65,7 +65,7 @@ export default class Observer {
         }
       })
       .catch((e) => { // No payload
-        console.log("Err", e);
+        // console.log("Err", e);
       });
   }
 

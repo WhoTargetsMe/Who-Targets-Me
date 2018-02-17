@@ -21,25 +21,25 @@ const initBackground = () => {
 
   /* 'PHONE HOME' to server and determine if client needs to generate an auth token or not */
 
-  api.get('general/authvalid')
-    .then((response) => {
-      const {jsonData: {data}} = response;
-      if (!data.authvalid) { // Client needs a new auth token
-        createBlankUser()
-          .then((token) => {
-            chrome.storage.promise.local.set({'general_token': token})
-              .then((res) => {
-                console.log(token, res);
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-          });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  // api.get('general/authvalid')
+  //   .then((response) => {
+  //     const {jsonData: {data}} = response;
+  //     if (!data.authvalid) { // Client needs a new auth token
+  //       createBlankUser()
+  //         .then((token) => {
+  //           chrome.storage.promise.local.set({'general_token': token})
+  //             .then((res) => {
+  //               console.log(token, res);
+  //             })
+  //             .catch((error) => {
+  //               console.log(error);
+  //             });
+  //         });
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
 
 };
 

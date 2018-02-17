@@ -359,6 +359,92 @@ class AgeSelector extends Component {
   }
 }
 
+// Slider (0 - 7) where 0 is 'rather not say',
+// For US 1-7: 1-`Very liberal` to 6-`Very conservative`
+// For non US countries 1-7: 1-`Very left wing` to 6-`Very right wing`
+class PoliticalAffiliationSelector extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      inputValue: 4,
+    }
+
+    this.inputChange = this.inputChange.bind(this);
+    this.setNoAffiliation = this.setNoAffiliation.bind(this);
+  }
+  componentDidMount(){
+    let inputValue = this.props.signupState.political_affiliation;
+    if (inputValue){
+      this.setState({inputValue})
+    }
+  }
+
+  render() {
+    const {back, next} = this.props;
+
+    // if country == US - us_labels, else - non_us_labels
+    let labels = strings.register.non_us_labels;
+    if (this.props.signupState.country && this.props.signupState.country.countryCode === 'US'){
+      labels = strings.register.us_labels;
+    }
+    // if user goes back to slider and his choise was 'rather not say'
+    // drop the slider to initial state
+    let {inputValue} = this.state;
+    if (inputValue === 0){
+      inputValue = 1;
+    }
+
+    return (
+      <Container>
+        <div className="fullwidth" style={{marginBottom: '20px'}}>
+          <h3>{strings.register.political_affiliation}</h3>
+          <p>{strings.register.political_affiliation_description}</p>
+        </div>
+        <div className="fullwidth" style={{marginBottom: '20px'}}>
+          <div style={{minWidth: '270px', margin: '0 auto'}}>
+            <InputGroup contiguous>
+              <InputGroup.Section grow>
+                <div style={{display: 'inline-block', margin: '10px'}}>{labels[1]}</div>
+                <input type="range" value={inputValue} min={1} max={labels.length - 1}
+                  ref={(input) => {this.affiliationInput = input}}
+                  onChange={(e) => this.inputChange(e.target.value)}
+                  style={{display: 'inline-block', margin: '10px'}}
+                />
+                <div style={{display: 'inline-block', margin: '10px'}}>{labels[labels.length - 1]}</div>
+              </InputGroup.Section>
+            </InputGroup>
+
+            <div className="fullwidth" style={{textAlign: 'center', marginBottom: '10px'}}>
+              <Button type="hollow-primary" style={{color: '#b2b2b2', borderColor: '#b2b2b2', width: '100px', marginRight: '10px'}}
+                onClick={back}>{strings.register.back}
+              </Button>
+              <Button onClick={() => next({political_affiliation: parseInt(inputValue)})}
+                type="hollow-success">
+                {labels[inputValue]} {String.fromCharCode("187")}
+              </Button>
+            </div>
+            <div className="fullwidth" style={{textAlign: 'center'}}>
+              <a style={{color: '#1385e5', margin: '10px'}}
+                onClick={() => this.setNoAffiliation()}>{strings.register.would_rather_not_say}
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </Container>
+    );
+  }
+
+  inputChange(newValue) {
+    this.setState({inputValue: parseInt(newValue)});
+  }
+  setNoAffiliation() {
+    this.setState({inputValue: 0});
+    this.props.next({political_affiliation: 0})
+  }
+}
+
 class AttemptSignup extends Component {
 
   constructor() {
@@ -377,10 +463,10 @@ class AttemptSignup extends Component {
   }
 
   register() {
-    const {age, gender, postcode, country} = this.props.signupState;
+    const {age, gender, postcode, country, political_affiliation} = this.props.signupState;
     const {next} = this.props;
     this.setState({awaitingResponse: true, error: null});
-    api.post('user/create', {json: {age, gender, postcode, country: country.countryCode}})
+    api.post('user/create', {json: {age, gender, postcode, country: country.countryCode, political_affiliation}})
       .then((response) => { // The rest of the validation is down to the server
         if(response.jsonData.errorMessage !== undefined) {
           throw new Error(response.jsonData.errorMessage);
@@ -485,6 +571,9 @@ const signupStages = [
   },
   {
     component: <AgeSelector/>,
+  },
+  {
+    component: <PoliticalAffiliationSelector/>,
   },
   {
     component: <AttemptSignup/>,
