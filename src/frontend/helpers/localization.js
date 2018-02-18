@@ -35,6 +35,7 @@ const strings = new LocalizedStrings({
       us_labels: ['No affiliation', 'Very liberal', 'Moderately liberal', 'Slightly liberal', 'Center', 'Slightly conservative', 'Moderately conservative', 'Very conservative'],
       non_us_labels: ['No affiliation', 'Very left wing', 'Moderately left wing', 'Slightly left wing', 'Center', 'Slightly right wing', 'Moderately right wing', 'Very right wing'],
       would_rather_not_say: 'Would rather not say',
+      county: 'County',
     },
     results: {
       my_constituency: 'My Constituency',

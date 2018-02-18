@@ -206,8 +206,9 @@ class PostcodeSelector extends Component {
   }
 
   render() {
-    const {back, next} = this.props;
+    const {back, next, signupState: {country = {}}} = this.props;
     const {inputValue, checkingPostcode, postcodeError} = this.state;
+    const {countryCode} = country
     return (
       <span>
         <Container>
@@ -219,7 +220,7 @@ class PostcodeSelector extends Component {
               <div style={{width: '400px', float: 'left'}}>
                 <InputGroup contiguous style={{width: '400px'}}>
                   <InputGroup.Section grow>
-                    <FormInput disabled={checkingPostcode} type="text" placeholder={strings.register.postcode} value={inputValue} ref={(input) => {this.postcodeInput = input}} onChange={(e) => this.inputChange(e.target.value)} onKeyPress={this.handleKeyPress}/>
+                    <FormInput disabled={checkingPostcode} type="text" placeholder={countryCode === 'IE' ?  strings.register.county : strings.register.postcode} value={inputValue} ref={(input) => {this.postcodeInput = input}} onChange={(e) => this.inputChange(e.target.value)} onKeyPress={this.handleKeyPress}/>
                   </InputGroup.Section>
                   <InputGroup.Section>
                     <Button onClick={this.check} disabled={checkingPostcode} type="hollow-success">{checkingPostcode ? <Spinner /> : (strings.register.next + " " + String.fromCharCode("187"))}</Button>
