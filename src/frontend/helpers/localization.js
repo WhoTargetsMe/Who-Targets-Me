@@ -185,65 +185,124 @@ const strings = new LocalizedStrings({
       },
     },
   },
-  it:{
-   who_targets_me: "Who Targets Me?",
-   loading: 'In caricamento, grazie per la pazienza',
-   register: {
-     select_language: "Seleziona la tua lingua preferita",
-     terms: '<span>Procedendo con la registrazione accetti <a href=\"https://whotargets.me/en/terms/\">i termini di utilizzo</a> e <a href=\"https://whotargets.me/en/privacy-policy/\">la privacy policy</a></span>',
-     agree: 'Accetto',
-     back: 'Indietro',
-     next: 'Prossimo',
-     country: 'Paese',
-     enter_country: 'Inserisci il tuo Paese di residenza',
-     postcode: 'CAP',
-     enter_postcode: 'Inserisci il tuo CAP',
-     postcode_error: 'Il CAP inserito non sembra essere valido',
-     i_am: 'Io sono...',
-     male: 'Uomo',
-     female: 'Donna',
-     other: 'Altro',
-     years_of_age: 'Quanti anni hai?',
-     age: 'Età',
-     confirming: 'Conferma i dettagli inseriti',
-     request_error: 'Il server ha restituito il seguente messaggio:',
-     unknown_error: 'Errore sconosciuto, se dovesse accadere di nuovo non esitare a contattarci!',
-     share: 'Condividi Who Targets Me con i tuoi amici per supportare la trasparenza digitale',
-     shareOnFacebook: 'Condividi su Facebook',
-     shareOnTwitter: 'Condividi su Twitter',
-     skip: 'Salta',
-     shareFacebook: '@WhoTargetsMe svela chi sta utilizzando campagne pubblicitarie politiche oscure. Scopri chi ti sta prendendo di mira https://whotargets.me/',
-     shareTwitter: '@WhoTargetsMe svela chi sta utilizzando campagne pubblicitarie politiche oscure. Scopri chi ti sta prendendo di mira https://whotargets.me/',
-   },
-   results: {
-     my_constituency: 'La mia circoscrizione',
-     constituency_size: 'Sei uno dei %i volontari nella tua circoscrizione (%s), puoi aiutarci a raggiungerne %i?',
-     constituency_size_one: 'Tu sei il primo volontario in %s!. Puoi aiutarci a trovarne altri?',
-     no_results_explanation: 'Who Targets Me lavora in modo nascosto per determinare quali messaggi pubblicitari vedi. Questa pagina sarà aggiornata con le statistiche non appena avremo collezionato dati a sufficienza.'
-   },
-   links: {
-     website: {
-       title: 'Sito web',
-       url: 'https://whotargets.me'
-     },
-     terms: {
-       title: 'Termini di utilizzo',
-       url: 'https://whotargets.me/terms'
-     },
-     privacy: {
-       title: 'Privacy',
-       url: 'https://whotargets.me/privacy-policy'
-     },
-     facebook: {
-       title: 'Facebook',
-       url: 'https://www.facebook.com/whotargetsme/'
-     },
-     twitter: {
-       title: 'Twitter',
-       url: 'https://twitter.com/whotargetsme'
-     }
-   }
- }
+  it: {
+    who_targets_me: 'Who Targets Me?',
+    loading: 'In caricamento, grazie per la pazienza',
+    register: {
+      select_language: 'Seleziona la tua lingua preferita',
+      terms: '<span>Procedendo con la registrazione accetti <a href="https://whotargets.me/en/terms/">i termini di utilizzo</a> e <a href="https://whotargets.me/en/privacy-policy/">la privacy policy</a></span>',
+      agree: 'Accetto',
+      back: 'Indietro',
+      next: 'Prossimo',
+      country: 'Paese',
+      enter_country: 'Inserisci il tuo Paese di residenza',
+      postcode: 'CAP',
+      enter_postcode: 'Inserisci il tuo CAP',
+      postcode_error: 'Il CAP inserito non sembra essere valido',
+      i_am: 'Io sono...',
+      male: 'Uomo',
+      female: 'Donna',
+      other: 'Altro',
+      years_of_age: 'Quanti anni hai?',
+      age: 'Età',
+      confirming: 'Conferma i dettagli inseriti',
+      request_error: 'Il server ha restituito il seguente messaggio:',
+      unknown_error: 'Errore sconosciuto, se dovesse accadere di nuovo non esitare a contattarci!',
+      share: 'Condividi Who Targets Me con i tuoi amici per supportare la trasparenza digitale',
+      shareOnFacebook: 'Condividi su Facebook',
+      shareOnTwitter: 'Condividi su Twitter',
+      skip: 'Salta',
+      shareFacebook: '@WhoTargetsMe svela chi sta utilizzando campagne pubblicitarie politiche oscure. Scopri chi ti sta prendendo di mira https://whotargets.me/',
+      shareTwitter: '@WhoTargetsMe svela chi sta utilizzando campagne pubblicitarie politiche oscure. Scopri chi ti sta prendendo di mira https://whotargets.me/',
+    },
+    results: {
+      my_constituency: 'La mia circoscrizione',
+      constituency_size: 'Sei uno dei %i volontari nella tua circoscrizione (%s), puoi aiutarci a raggiungerne %i?',
+      constituency_size_one: 'Tu sei il primo volontario in %s!. Puoi aiutarci a trovarne altri?',
+      no_results_explanation: 'Who Targets Me lavora in modo nascosto per determinare quali messaggi pubblicitari vedi. Questa pagina sarà aggiornata con le statistiche non appena avremo collezionato dati a sufficienza.',
+    },
+    links: {
+      website: {
+        title: 'Sito web',
+        url: 'https://whotargets.me',
+      },
+      terms: {
+        title: 'Termini di utilizzo',
+        url: 'https://whotargets.me/terms',
+      },
+      privacy: {
+        title: 'Privacy',
+        url: 'https://whotargets.me/privacy-policy',
+      },
+      facebook: {
+        title: 'Facebook',
+        url: 'https://www.facebook.com/whotargetsme/',
+      },
+      twitter: {
+        title: 'Twitter',
+        url: 'https://twitter.com/whotargetsme',
+      },
+    },
+  },
+  hu: {
+    who_targets_me: 'Célkeresztben',
+    loading: 'Az oldal töltődik, kis türelmet kérünk',
+    register: {
+      select_language: 'Válasszon nyelvet',
+      terms: '<span>A folytatással elfogadja a <a href="https://whotargets.me/en/terms/">felhasználási feltételeket</a> és <a href="https://whotargets.me/en/privacy-policy/">az adatkezelési irányelveket</a></span>',
+      agree: 'Elfogadom',
+      back: 'Vissza',
+      next: 'Tovább',
+      country: 'Ország',
+      enter_country: 'Tartózkodási ország',
+      postcode: 'Irányítószám',
+      enter_postcode: 'Adja meg az irányítószámát',
+      postcode_error: 'Az irányítószám formátuma nem megfelelő',
+      i_am: 'Nemem',
+      male: 'Férfi',
+      female: 'Nő',
+      other: 'Egyéb',
+      years_of_age: 'Hány éves?',
+      age: 'Kor',
+      confirming: 'Adataim megerősítése',
+      request_error: 'A szerver a következő üzenettel tért vissza:',
+      unknown_error: 'Ismeretlen hiba, ha továbbra is ezt tapasztalja, lépjen velünk kapcsolatba!',
+      share: 'Segítsen növelni a digitális átláthatóságot! Ossza meg a Célkeresztben alkalmazást az ismerőseivel.',
+      shareOnFacebook: 'Megosztom a Facebookon',
+      shareOnTwitter: 'Megosztom a Twitteren',
+      skip: 'Ezt most kihagyom',
+      shareFacebook: 'A @WhoTargetsMe az online hirdetések sötét oldalát vizsgálja. Nézze meg, Önnek ki üzen. https://whotargets.me/',
+      shareTwitter: 'A @WhoTargetsMe az online hirdetések sötét oldalát vizsgálja. Nézze meg, Önnek ki üzen. https://whotargets.me/',
+    },
+    results: {
+      my_constituency: 'Választókörzetem',
+      constituency_size: '%s körzetben %i önkéntesünk van, segítsen nekünk elérni, hogy ennyi legyen: %i!',
+      constituency_size_one: 'Ön az első önkéntes itt: %s. Hívjon meg másokat is!',
+      no_results_explanation: 'A Célkeresztben alkalmazás a háttérben fut, hogy azonosítsa, milyen hirdetéseket mutat Önnek a Facebook. Ezen az oldalon jelennek meg a statisztikák, amint elég adatot gyűjtöttünk.',
+    },
+    links: {
+      website: {
+        title: 'Honlap',
+        url: 'https://whotargets.me',
+      },
+      terms: {
+        title: 'Felhasználási feltételek',
+        url: 'https://whotargets.me/terms',
+      },
+      privacy: {
+        title: 'Adatvédelem',
+        url: 'https://whotargets.me/privacy-policy',
+      },
+      facebook: {
+        title: 'Facebook',
+        url: 'https://www.facebook.com/whotargetsme/',
+      },
+      twitter: {
+        title: 'Twitter',
+        url: 'https://twitter.com/whotargetsme',
+      },
+    },
+  },
 });
 
 export const changeLocale = (locale) => {
