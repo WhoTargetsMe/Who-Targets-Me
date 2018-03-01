@@ -122,6 +122,7 @@ class CountrySelector extends Component {
   render() {
     const {back, next} = this.props;
     const {loadingLocation, country, inputValue, suggest} = this.state;
+    
     return (
       <span>
         <Container>
@@ -149,21 +150,52 @@ class CountrySelector extends Component {
       </span>
     )
   }
-
+  //
+  // inputChange(newValue) {
+  //   let newState = {inputValue: newValue, suggest: null, country: null};
+  //   if(newValue.length > 1) {
+  //     for(let countryCode in countries) {
+  //       if(countryCode.toLowerCase() === newValue.toLowerCase()) {
+  //         newState.suggest = {countryCode, country: countries[countryCode]}
+  //         break;
+  //       }else if(newValue.length > 2 && countries[countryCode].toLowerCase() === newValue.toLowerCase()) {
+  //         newState.country = {countryCode, country: countries[countryCode]};
+  //         newState.suggest = {countryCode, country: countries[countryCode]};
+  //         break;
+  //       }else if(newValue.length > 2 && countries[countryCode].toLowerCase().includes(newValue.toLowerCase())) {
+  //         newState.suggest = {countryCode, country: countries[countryCode]}
+  //         break;
+  //       }
+  //     }
+  //   }
+  //   this.setState(newState, );
+  // }
   inputChange(newValue) {
     let newState = {inputValue: newValue, suggest: null, country: null};
-    if(newValue.length > 1) {
+    const languageSequence = ['en', 'es', 'de', 'it'];
+    const index = languageSequence.indexOf(strings.getLanguage()) || 0;
+
+    if (newValue.length > 1) {
       for(let countryCode in countries) {
-        if(countryCode.toLowerCase() === newValue.toLowerCase()) {
-          newState.suggest = {countryCode, country: countries[countryCode]}
+        if (countryCode.toLowerCase() === newValue.toLowerCase()) {
+          newState.suggest = {countryCode, country: countries[countryCode][index] || countries[countryCode][0]}
           break;
-        }else if(newValue.length > 2 && countries[countryCode].toLowerCase() === newValue.toLowerCase()) {
-          newState.country = {countryCode, country: countries[countryCode]};
-          newState.suggest = {countryCode, country: countries[countryCode]};
-          break;
-        }else if(newValue.length > 2 && countries[countryCode].toLowerCase().includes(newValue.toLowerCase())) {
-          newState.suggest = {countryCode, country: countries[countryCode]}
-          break;
+        } else if (newValue.length > 2) {
+          if (countries[countryCode][index].length > 0 && countries[countryCode][index].toLowerCase() === newValue.toLowerCase()){
+            newState.country = {countryCode, country: countries[countryCode][0]};
+            newState.suggest = {countryCode, country: countries[countryCode][index]};
+            break;
+          } else if (countries[countryCode][index].length === 0 && countries[countryCode][0].toLowerCase() === newValue.toLowerCase()) {
+            newState.country = {countryCode, country: countries[countryCode][0]};
+            newState.suggest = {countryCode, country: countries[countryCode][index]};
+            break;
+          } else {
+            const countryMatch = countries[countryCode].filter(c => c.toLowerCase().indexOf(newValue.toLowerCase()) === 0);
+            if (countryMatch.length > 0) {
+              newState.suggest = {countryCode, country: countries[countryCode][index] || countries[countryCode][0]}
+              break;
+            }
+          }
         }
       }
     }
