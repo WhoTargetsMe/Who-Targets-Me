@@ -77,22 +77,23 @@ const adsOnPage = () => {
       // const domSponsored = $(advert).parent().children().first().find('a')[0]; // Get the DOM element of the 'sponsored' text
       // const sponsoredValue = window.getComputedStyle(domSponsored, ':after').getPropertyValue('content').replace(/"/g, ''); // Calculate the :after value, and clean
       const domSponsored = $(advert).parent().children().first().find('._14bf').first();
-      const sponsoredValue = domSponsored.text().slice(0, 3);
-      //console.log('sponsoredValue-', sponsoredValue)
+      const sponsoredValue = domSponsored.text().length > 0;
+      // console.log('sponsoredValue-', sponsoredValue)
 
       // Check if the value matches our list of 'sponsored' translations
-      if (sponsoredValue === '' || Object.values(sponsoredText).filter(s => s.indexOf(sponsoredValue) > -1).length === 0) { // Check if the value matches our list of 'sponsored' translations
-        //console.log('Is not sponsored')
+      // if (sponsoredValue === '' || Object.values(sponsoredText).filter(s => s.indexOf(sponsoredValue) > -1).length === 0) { // Check if the value matches our list of 'sponsored' translations
+      if (!sponsoredValue) {
+        // console.log('Is not sponsored')
         return; // This is not a sponsored post
       }
     } catch (err) {
-      //console.log('Some err, RETURN', err)
+      // console.log('Some err, RETURN', err)
       return;
     }
 
     const container = $(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
     const fbStoryId = container.attr('id'); // Extract the story ID, used to determine if an advert has already been extracted
-    //console.log('adsOnPage - fbStoryId=', fbStoryId)
+    // console.log('adsOnPage - fbStoryId=', fbStoryId)
     if (!fbStoryId || container.hasClass('hidden_elem')) { // Don't proceed if there is an error getting fbStoryId or if the advert is hidden
       return;
     }
