@@ -273,6 +273,11 @@ const strings = new LocalizedStrings({
       skip: 'Ezt most kihagyom',
       shareFacebook: 'A @WhoTargetsMe az online hirdetések sötét oldalát vizsgálja. Nézze meg, Önnek ki üzen. https://whotargets.me/',
       shareTwitter: 'A @WhoTargetsMe az online hirdetések sötét oldalát vizsgálja. Nézze meg, Önnek ki üzen. https://whotargets.me/',
+      political_affiliation: 'Melyik politikai oldal áll Önhöz a legközelebb?',
+      political_affiliation_description: 'A legtöbben jobb- és baloldalról beszélnek a politikában. Ön hogyan írná le a nézeteit?',
+      us_labels: ['No affiliation', 'Erőteljesen baloldali', 'Mérsékelten baloldali', 'Kissé baloldali', 'Centrista', 'Kissé jobboldali', 'Mérsékelten jobboldali', 'Erőteljesen jobboldali'],
+      non_us_labels: ['No affiliation', 'Erőteljesen baloldali', 'Mérsékelten baloldali', 'Kissé baloldali', 'Centrista', 'Kissé jobboldali', 'Mérsékelten jobboldali', 'Erőteljesen jobboldali'],
+      would_rather_not_say: 'Nem akarok mondani',
     },
     results: {
       my_constituency: 'Választókörzetem',
