@@ -41,6 +41,7 @@ class LanguageSelector extends Component {
           </div>
           <div className={"fullwidth " + (hovering !== null ? 'blur' : '')}>
             <p>Please select your preferred language</p>
+            <p>Válasszon nyelvet</p>
             <p>Por favor seleccione su idioma</p>
             <p>Bitte wählen Sie Ihre bevorzugte Sprache aus</p>
             <p>Seleziona la tua lingua preferita</p>
