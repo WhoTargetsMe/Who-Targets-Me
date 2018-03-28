@@ -24,9 +24,11 @@ const strings = new LocalizedStrings({
       confirming: 'Confirming your details',
       request_error: 'The server responded with the following message:',
       unknown_error: 'Unknown error, if this persists please get in touch!',
-      share: 'Share Who Targets Me with your friends to support digital transparency',
-      shareOnFacebook: 'Share on Facebook',
-      shareOnTwitter: 'Share on Twitter',
+      share: 'Share the project to help your friends learn more about the targeted political ads they see.',
+      share1: 'Share the project',
+      share2: ' to help your friends learn more about the targeted political ads they see.',
+      shareOnFacebook: 'Facebook',
+      shareOnTwitter: 'Twitter',
       skip: 'Skip',
       shareFacebook: '@WhoTargetsMe is investigating dark advertising, find out who targets you https://whotargets.me/',
       shareTwitter: '@WhoTargetsMe is investigating dark advertising, find out who targets you https://whotargets.me/',
@@ -41,7 +43,9 @@ const strings = new LocalizedStrings({
       my_constituency: 'My Constituency',
       constituency_size: 'You are one of %i volunteers in %s, can you help us reach %i?',
       constituency_size_one: 'You are the first volunteer in %s!. Can you help us find more?',
-      no_results_explanation: 'Who Targets Me works in the background to determine what advertising you see. This page will update with statistics as soon as we have collected enough data.',
+      no_results_explanation: 'Results will appear here when we have enough data. Continue to use Facebook as normal and check back in a few days.',
+      no_country_explanation1: "We'll be bringing personalised results to ",
+      no_country_explanation2: " soon. In the meanwhile, continue to use Facebook as normal and thanks for taking part in Who Targets Me.",
     },
     links: {
       website: {
@@ -49,11 +53,11 @@ const strings = new LocalizedStrings({
         url: 'https://whotargets.me',
       },
       terms: {
-        title: 'Terms',
+        title: 'T&Cs',
         url: 'https://whotargets.me/terms',
       },
       privacy: {
-        title: 'Privacy',
+        title: 'Privacy Policy',
         url: 'https://whotargets.me/privacy-policy',
       },
       facebook: {
@@ -90,8 +94,10 @@ const strings = new LocalizedStrings({
       request_error: 'Der Server antwortete mit folgendem Fehler:',
       unknown_error: 'Unbekannter Fehler, falls anhalten Sie bitte in Kontakt!',
       share: 'Share Who Targets Me mit Ihren Freunden, um digitale Transparenz zu unterstützen',
-      shareOnFacebook: 'Auf Facebook teilen',
-      shareOnTwitter: 'Auf Twitter teilen',
+      share1: 'Share the project',
+      share2: ' to help your friends learn more about the targeted political ads they see.',
+      shareOnFacebook: 'Facebook',
+      shareOnTwitter: 'Twitter',
       skip: 'Überspringen',
       shareFacebook: '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finde heraus, welche Parteien auf dich zielen https://whotargets.me/de',
       shareTwitter: '@WhoTargetsMe enthullt Dark Ads an der #BTW17 Finde heraus, welche Parteien auf dich zielen https://whotargets.me/de',
@@ -102,6 +108,8 @@ const strings = new LocalizedStrings({
       constituency_size: 'Du bist einer von %i Freiwilligen in %s, kannst du uns helfen %i zu erreichen?',
       constituency_size_one: 'Glückwünsch! Du bist der/die erste/r Freiwillige in %s. Kannst du uns helfen, noch mehr zu finden?',
       no_results_explanation: 'Who Targets Me arbeitet im Hintergrund, um zu ermitteln, welche Werbung du siehst. Diese Seite wird mit Statistiken aktualisiert, sobald wir genug Daten gesammelt haben.',
+      no_country_explanation1: "We'll be bringing personalised results to ",
+      no_country_explanation2: " soon. In the meanwhile, continue to use Facebook as normal and thanks for taking part in Who Targets Me.",
     },
     links: {
       website: {
