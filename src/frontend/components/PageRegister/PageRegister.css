@@ -16,7 +16,7 @@
 .LanguageSelector .flag-icon {
   border-radius: 2px;
   margin-right: 50px;
-  font-size: 80px;
+  font-size: 50px;
   cursor: pointer;
 }
 
@@ -108,4 +108,24 @@ input[type=range]::-webkit-slider-thumb {
 }
 input[type=range]:focus::-webkit-slider-runnable-track {
   background: #71b5ef;
+}
+.logo{
+  height: 80px;
+  width: 80px;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+.settingUp{
+  position: absolute;
+  top: 60px;
+  left: 120px;
+}
+.pageTitle{
+  margin-bottom: 20px;
+}
+.buttonBack{
+  color: #b2b2b2;
+  border-color: #b2b2b2;
 }

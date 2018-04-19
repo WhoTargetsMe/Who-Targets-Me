@@ -4,24 +4,31 @@ import { Form, FormField, FormInput, FormSelect, Col, Row, Button, InputGroup } 
 import axios from 'axios';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts'
 import strings, {changeLocale} from '../../helpers/localization.js';
-import {availableCountries, availableParties} from '../../helpers/parties.js';
+import {availableCountries, availableParties, availablePages} from '../../helpers/parties.js';
 
-import { TargetingResults, PartyChart } from './TargetingResults.js';
+import { PartyChart } from './TargetingResults.js';
+import { DeleteRequestPage } from './DeleteRequestPage.js';
 import countries from '../PageRegister/countries.js';
-import IMGLogo from './logo.svg';
+import IMGLogo from '../Shell/logo.svg';
+import Logo from '../Shell/wtm_logo_border.png';
 import IMGFirstPlace from './firstplace.png';
 
 import './PageResults.css';
 
-console.log('availableCountries, availableParties', availableCountries, availableParties)
+//console.log('availableCountries, availableParties', availableCountries, availableParties, availablePages)
 export default class PageRegister extends Component {
 
   constructor() {
     super()
     this.state = {
       userData: null,
+      view: "no_country",
+      currentView: ""
     }
-    this.updateUser = this.updateUser.bind(this)
+    this.updateUser = this.updateUser.bind(this);
+    this.requestDeleteData = this.requestDeleteData.bind(this);
+    this.confirmDeleteData = this.confirmDeleteData.bind(this);
+    this.cancelDeleteRequestPage = this.cancelDeleteRequestPage.bind(this);
   }
 
   refreshUserData() {
@@ -40,6 +47,38 @@ export default class PageRegister extends Component {
     this.refreshUserData();
   }
 
+  requestDeleteData(e, currentView) {
+    e.preventDefault();
+    this.setState({view: "delete_request", currentView})
+  }
+
+  confirmDeleteData(e) {
+    e.preventDefault();
+    console.log('Delete data request confirmed')
+    this.props.api.delete('user/delete')
+      .then((response) => {
+        if (response.status >= 200 && response.status < 300) {
+          this.setState({view: "data_deleted"})
+          console.log('USER DATA IS DELETED')
+        } else {
+          throw new Error('something went wrong!');
+          const currentView = this.state.currentView;
+          this.setState({view: currentView})
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        const currentView = this.state.currentView;
+        this.setState({view: currentView})
+      })
+  }
+
+  cancelDeleteRequestPage(e) {
+    e.preventDefault();
+    const currentView = this.state.currentView;
+    this.setState({view: currentView})
+  }
+
   render() {
 
     if(!this.state.userData) {
@@ -55,153 +94,215 @@ export default class PageRegister extends Component {
     const reduFunc = (a, b) => a + b;
     const userCountry = this.state.userData.country;
     const advertisers = this.state.userData.advertisers;
+    const displayLabels = availableParties[userCountry].map(p => p.shortName);
+
     let parties = [];
-    if (advertisers.length > 0){
+    // if there is at least one advertiser and country labels are available
+    if (advertisers.length > 0 && availableCountries.map(c => c.id).includes(userCountry)){
       advertisers.forEach(advr => {
-        const match = availableParties[userCountry].filter(p => advr.advertiserId === p.pageId)
-        console.log('match', match)
-        if (match.length > 0) { parties.push(advr) }
+        const match = availablePages[userCountry].filter(p => advr.advertiserId === p.pageId)
+        console.log('match', match, advr)
+        if (match.length > 0) {
+          const advr_object = Object.assign({},
+            advr, {
+            partyDetails: availableParties[userCountry].filter(p => match[0].entityId === p.entityId)[0],
+          })
+          parties.push(advr_object)
+        }
       })
     }
-    // View:
-    // "no_country" - if user country is not configured for political ads
-    // "no_party" - if user's advertisers don't include available political parties for user's country
-    // "display_parties" - if user's advertisers include available political parties for user's country
+    console.log('PARTIES', parties)
+
+    // Group pageOwners that belong to one party
+    let groups = [];
+    parties.forEach(p => {
+      if (groups.length === 0){
+        groups.push(
+          Object.assign({},{
+            advertiserIds:[p.advertiserId],
+            advertiserName: p.partyDetails.shortName,
+            count: p.count,
+            partyDetails: p.partyDetails
+          })
+        );
+      } else {
+        const inGroup = groups.filter(g => g.partyDetails.entityId === p.partyDetails.entityId)
+        if (inGroup.length > 0){
+          groups = groups.filter(g => g.partyDetails.entityId !== p.partyDetails.entityId)
+          let newObj = Object.assign({},
+            inGroup[0], {
+              advertiserIds:[...inGroup[0].advertiserIds, p.advertiserId],
+              count: parseInt(inGroup[0].count) + parseInt(p.count),
+            })
+          groups.push(newObj);
+        } else {
+          groups.push(
+            Object.assign({},{
+              advertiserIds:[p.advertiserId],
+              advertiserName: p.partyDetails.shortName,
+              count: p.count,
+              partyDetails: p.partyDetails
+            }))
+        }}})
+
+    // Assign "parties" to represent political groups
+    // If more than one ad belongs to the party, they will be grouped under party name
+    parties = groups;
+
     let userSeenSum = 0;
     let userSeenPartiesSum = 0;
     let party = '';
     let partyPerc = 0;
+    let partiesPercAmongAds = 0;
     let partyPercAmongParties = 0;
-    let view = "no_country";
-    if (availableCountries.map(c => c.id).includes(userCountry)){
-      view = "no_party";
-    }
-    if (parties.length > 0) {
-      view = "display_parties";
 
-      userSeenSum = advertisers.map(d => parseInt(d.count)).filter(c => c).reduce(reduFunc,0)
-      userSeenPartiesSum = parties.map(d => parseInt(d.count)).filter(c => c).reduce(reduFunc,0)
-      const arr = parties.map(d => parseInt(d.count));
-      const maxArr = Math.max(...arr);
-      let partyIndex = arr.indexOf(maxArr);
-      party = parties[partyIndex];
-      partyPerc = ((party.count/userSeenSum)*100).toFixed(0)
-      partyPercAmongParties = ((party.count/userSeenPartiesSum)*100).toFixed(0)
+    // View:
+    // "no_country" - if user country is not configured for political ads
+    // "no_party" - if user's advertisers don't include available political parties for user's country
+    // "display_parties" - if user's advertisers include available political parties for user's country
+    // "delete_request" - if user clicked request for data delete
+    // "data_deleted" - if request for data delete is fulfilled, suggest the user to remove the extension
+    let view = this.state.view;
+
+    // If this is a user with data
+    if (view !== "delete_request" && view !== "data_deleted") {
+      if (availableCountries.map(c => c.id).includes(userCountry)){
+        view = "no_party";
+      }
+      if (parties.length > 0) {
+        view = "display_parties";
+
+        userSeenSum = advertisers.map(d => parseInt(d.count)).filter(c => c).reduce(reduFunc,0)
+        userSeenPartiesSum = parties.map(d => parseInt(d.count)).filter(c => c).reduce(reduFunc,0)
+        const arr = parties.map(d => parseInt(d.count));
+        const maxArr = Math.max(...arr);
+        let partyIndex = arr.indexOf(maxArr);
+        party = parties[partyIndex];
+        partyPerc = ((party.count/userSeenSum)*100).toFixed(0)
+        partiesPercAmongAds = ((userSeenPartiesSum/userSeenSum)*100).toFixed(0)
+        partyPercAmongParties = ((party.count/userSeenPartiesSum)*100).toFixed(0)
+      }
     }
-    
+
     return (
       <div className="PageResults">
-      <Row>
-        <Col sm="1">
-          <div className="statbox">
-            <div style={{flex: 1, maxWidth: '100px'}}><img src={IMGLogo}/></div>
-            <div style={{flex: 1, minWidth: '500px'}}>
-            {
-              view === "no_country" || view === "no_party" ?
-              <h3 style={{flex: 1, marginTop: '40px', fontWeight: 'bold'}}>Gathering data...</h3> :
-
-              <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: '30px'}}>
-                <div style={{flex: 1, minHeight: '40px'}}>
-                  <h3>You are being targeted by <span className='party'>{party.advertiserName.toUpperCase()}</span></h3>
-                  <h4>In total you've seen {userSeenSum} ads
-                      of which {party.count} ({partyPerc}%) were from this Advertiser.
-                  </h4>
-                </div>
-              </div>
-            }
-
-            </div>
-          </div>
-        </Col>
-      </Row>
-
-        {/* <Row style={{paddingTop: '20px', paddingBottom: '20px', margin: 'auto 10px'}}>
+        <Row>
           <Col sm="1">
             <div className="statbox">
-              <img src={IMGLogo} style={{height: '150px'}} />
-              <div style={{width: '100%'}}>
-                <p>{strings.results.no_results_explanation}</p>
+              <div style={{flex: 1, maxWidth: '100px'}}><img src={Logo}/></div>
+              <div style={{flex: 1, minWidth: '500px'}}>
+              {
+                view === "no_country" || view === "no_party" &&
+                <h3 style={{flex: 1, marginTop: '40px', fontWeight: 'bold'}}>Gathering data...</h3>
+              }
+              {
+                view === "delete_request" &&
+                <h3 style={{flex: 1, marginTop: '40px', fontWeight: 'bold'}}>Important information</h3>
+              }
+              {
+                view === "data_deleted" &&
+                <h3 style={{flex: 1, marginTop: '40px', fontWeight: 'bold'}}>Thank you for using Who Targets Me</h3>
+              }
+              {
+                view === "display_parties" &&
+                <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: '20px'}}>
+                  <div style={{flex: 1, minHeight: '40px'}}>
+                    <h3>You are being targeted by <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span></h3>
+                    <h4 className='resultsSubHeader'>In total you've seen {userSeenSum} ads
+                        of which {userSeenPartiesSum} ({partiesPercAmongAds}%) were political <br/>
+                        and {party.count} ({partyPerc}%) were from <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span>.
+                    </h4>
+                  </div>
+                </div>
+              }
               </div>
             </div>
           </Col>
-        </Row> */}
-        {/* <Col sm="1/2" style={{overflow: 'scroll'}}>
-            <div className="statbox">
-              {this.state.userData.constituency &&
-              <div>
-                <h2>{this.state.userData.constituency.name}</h2>
-                <h4>{strings.results.my_constituency}</h4>
-                <hr/>
-                <p>{this.state.userData.constituency.users === 1 ?
-                  sprintf(strings.results.constituency_size_one, this.state.userData.constituency.name)
-                  : sprintf(strings.results.constituency_size, this.state.userData.constituency.users, this.state.userData.constituency.name, roundUp(this.state.userData.constituency.users))
-                }</p>
-              </div>
-              }
+        </Row>
 
-            </div>
-        </Col> */}
-          <Row>
-          <Col sm="1">
-            <div className="statbox" style={{backgroundColor: '#f2f2f2', minHeight: '280px'}}>
-              { view === "display_parties" && this.state.userData && this.state.userData.advertisers &&
+        <Row>
+        <Col sm="1">
+          <div className="statbox" style={{backgroundColor: '#f2f2f2', minHeight: '280px'}}>
+            { view === "display_parties" && this.state.userData && this.state.userData.advertisers &&
               <div style={{display: 'flex', alignItems: 'center', flexFlow: 'column nowrap'}}>
+                <footer>
+                  <span style={{marginRight: 20}}>Click a bar to see the ads you've seen from them &nbsp;&nbsp;&nbsp;|</span>
+                  <a className='link' target='_blank' href='https://whotargets.me/en/defining-political-ads/'>How did we calculate this?</a>
+                </footer>
                 <PartyChart
                   advertisers={parties}
-                  userSeenSum={userSeenPartiesSum}/>
-                <footer>
-                  <span style={{marginRight: 20}}>Click a bar to see the ads you've seen from them</span>
-                  <span className='link'>How did we calculate this?</span>
-                </footer>
+                  userSeenSum={userSeenPartiesSum}
+                  displayLabels={displayLabels}
+                  />
+
               </div>
-              }
-              { view === "no_party" &&
+            }
+            { view === "no_party" &&
               <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px'}}>
                 <h3 className='subMessage'>{strings.results.no_results_explanation}</h3>
               </div>
-              }
-              { view === "no_country" &&
-              <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px'}}>
-                <h3 className='subMessage'>
-                  {strings.results.no_country_explanation1}
-                  {countries[userCountry]}
-                  {strings.results.no_country_explanation2}
-                </h3>
-              </div>
-              }
+            }
+            { view === "no_country" &&
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px'}}>
+              <h3 className='subMessage'>
+                {strings.results.no_country_explanation1}
+                {countries[userCountry]}
+                {strings.results.no_country_explanation2}
+              </h3>
             </div>
-          </Col>
-        </Row>
-        <Row style={{backgroundColor: 'white', minHeight: '120px', color: 'black', paddingTop: '20px'}}>
-          <Col sm="1/2">
-              <div className="statbox" style={{justifyContent: 'space-around'}}>
-                <Button type="hollow-primary" className='buttonFB' href={shareLinkFB()}>{strings.register.shareOnFacebook}</Button>
-                <Button type="hollow-primary" className='buttonTW' href={shareLinkTwitter()} >{strings.register.shareOnTwitter}</Button>
+            }
+            { view === "delete_request" &&
+              <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px', flexFlow: 'column nowrap'}}>
+                <h3 style={{margin: '70px 100px 0px 100px', fontWeight: 'bold', lineHeight: '25px', textAlign: 'center'}}>{strings.results.delete_request}</h3>
+                <DeleteRequestPage
+                  confirmDeleteData={this.confirmDeleteData}
+                  cancelDeleteRequestPage={this.cancelDeleteRequestPage}
+                  />
               </div>
-          </Col>
-          <Col sm="1/2">
-              <div className="statbox">
-                <p>
-                  <span style={{fontWeight: 'bold'}}>{strings.register.share1}</span>
-                  <span>{strings.register.share2}</span>
-                </p>
+            }
+            { view === "data_deleted" &&
+              <div style={{display: 'flex', justifyContent: 'center', flexFlow: 'column nowrap', minHeight: '420px', paddingTop: '90px'}}>
+                <h3 className='subMessage' style={{fontWeight: 'bold'}}>{strings.results.data_deleted}</h3>
+                <h4 className='subMessage'>
+                  {strings.results.data_deleted2}
+                  <div style={{height: 20}}></div>
+                  {strings.results.data_deleted3}
+                </h4>
               </div>
-          </Col>
-        </Row>
-
-        <Row style={{position: 'absolute', left: '20px', 'bottom': '0', textAlign: 'center', fontSize: '12px'}}>
-          <div style={{padding: '10px'}}>
-            <a href={strings.links.website.url} target='_blank' style={{color: 'white'}}> &#169; Who Targets Me? Ltd |</a>
-            <a href={strings.links.privacy.url} target='_blank' style={{color: 'white'}}>{`${strings.links.privacy.title} |`}</a>
-            <a href={strings.links.terms.url} target='_blank' style={{color: 'white'}}>{`${strings.links.terms.title} |`}</a>
-            <span>To uninstall, right-click the extension icon on your toolbar | Delete data</span>
-            {/* <Button type="link" href={strings.links.facebook.url} style={{color: '#6d84b4'}}>{strings.links.facebook.title}</Button>
-            <Button type="link" href={strings.links.twitter.url} style={{color: '#00aced'}}>{strings.links.twitter.title}</Button>
-            <Button type="link" onClick={() => changeLocale('en')}>English</Button>
-            <Button type="link" onClick={() => changeLocale('de')}>German</Button>*/}
+            }
           </div>
-        </Row>
-      </div>
+        </Col>
+      </Row>
+      { view !== "delete_request" && view !== "data_deleted" && <Row style={{backgroundColor: 'white', minHeight: '120px', color: 'black', paddingTop: '20px'}}>
+        <Col sm="1/2">
+          <div className="statbox">
+            <Button style={{position: 'absolute', top: 5, left: 25}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party.partyDetails.party.toUpperCase())}>{strings.register.shareOnFacebook}</Button>
+            <Button style={{position: 'absolute', top: 5, left: 215}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(party.partyDetails.party.toUpperCase())} >{strings.register.shareOnTwitter}</Button>
+            <div style={{position: 'absolute', top: 20, left: 410, width: 380}}>
+              <span style={{fontWeight: 'bold', fontSize: '1.1rem'}}>{strings.register.share1}</span>
+              <span style={{fontSize: '1.1rem'}}>{strings.register.share2}</span>
+            </div>
+          </div>
+        </Col>
+      </Row>}
+
+      <Row style={{position: 'absolute', left: '20px', 'bottom': '0', textAlign: 'center', fontSize: '12px'}}>
+        <div style={{padding: '10px'}}>
+          <a href={strings.links.website.url} target='_blank' style={{color: 'white'}}> &#169; Who Targets Me? Ltd</a> &nbsp;|&nbsp;&nbsp;
+          <a href={strings.links.privacy.url} target='_blank' style={{color: 'white'}}>{`${strings.links.privacy.title}`}</a>&nbsp;|&nbsp;&nbsp;
+          <a href={strings.links.terms.url} target='_blank' style={{color: 'white'}}>{`${strings.links.terms.title}`}</a>&nbsp;|&nbsp;&nbsp;
+          <span>
+            <span>{strings.results.uninstall} &nbsp;|&nbsp;&nbsp;</span>
+            {view === "data_deleted" ? <span>Data deleted</span> :
+              <span className='link_underline' style={{cursor: 'pointer'}} onClick={(e) => this.requestDeleteData(e, view)}>{strings.results.delete_data}</span>}
+          </span>
+          {/* <Button type="link" href={strings.links.facebook.url} style={{color: '#6d84b4'}}>{strings.links.facebook.title}</Button>
+          <Button type="link" href={strings.links.twitter.url} style={{color: '#00aced'}}>{strings.links.twitter.title}</Button>
+          <Button type="link" onClick={() => changeLocale('en')}>English</Button>
+          <Button type="link" onClick={() => changeLocale('de')}>German</Button>*/}
+        </div>
+      </Row>
+    </div>
     )
   }
 
@@ -218,8 +319,19 @@ export default class PageRegister extends Component {
         })
     })
   }
+} // End of PageResults class
 
+
+const shareLinkFB = (party) => {
+  const title = strings.results.shareFacebook1 + party + strings.results.shareFacebook2;
+  return "http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwhotargets.me&title=" + encodeURIComponent(title) ;
 }
+
+const shareLinkTwitter = (party) => {
+  const title = strings.results.shareTwitter1 + party + strings.results.shareTwitter2;
+  return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(title) ;
+}
+
 
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -388,10 +500,29 @@ const roundUp = (x) => {
     return x;
 }
 
-const shareLinkFB = (title = strings.register.shareFacebook) => {
-  return "http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwhotargets.me&title=" + encodeURIComponent(title) ;
-}
+{/* <Row style={{paddingTop: '20px', paddingBottom: '20px', margin: 'auto 10px'}}>
+  <Col sm="1">
+    <div className="statbox">
+      <img src={Logo} style={{height: '150px'}} />
+      <div style={{width: '100%'}}>
+        <p>{strings.results.no_results_explanation}</p>
+      </div>
+    </div>
+  </Col>
+</Row> */}
+{/* <Col sm="1/2" style={{overflow: 'scroll'}}>
+    <div className="statbox">
+      {this.state.userData.constituency &&
+      <div>
+        <h2>{this.state.userData.constituency.name}</h2>
+        <h4>{strings.results.my_constituency}</h4>
+        <hr/>
+        <p>{this.state.userData.constituency.users === 1 ?
+          sprintf(strings.results.constituency_size_one, this.state.userData.constituency.name)
+          : sprintf(strings.results.constituency_size, this.state.userData.constituency.users, this.state.userData.constituency.name, roundUp(this.state.userData.constituency.users))
+        }</p>
+      </div>
+      }
 
-const shareLinkTwitter = (title = strings.register.shareTwitter) => {
-  return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(title) ;
-}
+    </div>
+</Col> */}

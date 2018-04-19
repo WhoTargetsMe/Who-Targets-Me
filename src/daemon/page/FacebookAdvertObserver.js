@@ -67,18 +67,20 @@ const adsOnPage = () => {
 
   let adverts = []; // Pass adverts back to cycle
 
-  const lang = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; // Extract the language preferance of the client
-  const sponsoredValue = sponsoredText[lang] || sponsoredText.en; // Using the language, determine the correct word for 'sponsored', default to english
+  // const lang = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; // Extract the language preferance of the client
+  // const sponsoredValue = sponsoredText[lang] || sponsoredText.en; // Using the language, determine the correct word for 'sponsored', default to english
 
 
-  $(sprintf('a.fbPrivacyAudienceIndicator', sponsoredValue)).each((index, advert) => { // Loop over every advert
+  $(sprintf('a.fbPrivacyAudienceIndicator')).each((index, advert) => { // Loop over every advert
 
     try { // ENSURE THIS IS AN ADVERT
       // const domSponsored = $(advert).parent().children().first().find('a')[0]; // Get the DOM element of the 'sponsored' text
       // const sponsoredValue = window.getComputedStyle(domSponsored, ':after').getPropertyValue('content').replace(/"/g, ''); // Calculate the :after value, and clean
-      const domSponsored = $(advert).parent().children().first().find('._14bf').first();
+      // const domSponsored = $(advert).parent().children().first().find('._14bf').first();
+
+      const domSponsored = $(advert).parent().children().first().find('.l_mmp39jdng').first();
       const sponsoredValue = domSponsored.text().length > 0;
-      // console.log('sponsoredValue-', sponsoredValue)
+      // console.log('sponsoredValue', sponsoredValue)
 
       // Check if the value matches our list of 'sponsored' translations
       // if (sponsoredValue === '' || Object.values(sponsoredText).filter(s => s.indexOf(sponsoredValue) > -1).length === 0) { // Check if the value matches our list of 'sponsored' translations

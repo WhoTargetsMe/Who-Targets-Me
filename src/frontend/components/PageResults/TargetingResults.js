@@ -1,53 +1,16 @@
 import React, { Component } from 'react';
-import IMGLogo from './logo.svg';
 import './PageResults.css';
 
 const reduFunc = (a, b) => a + b;
 
-export const TargetingResults = (props) => {
-  const userSeenSum = props.data.advertisers.map(d => parseInt(d.count)).filter(c => c).reduce(reduFunc,0)
-  const arr = props.data.advertisers.map(d => parseInt(d.count));
-  const maxArr = Math.max(...arr);
-  let partyIndex = arr.indexOf(maxArr);
-  const party = props.data.advertisers[partyIndex];
-  const partyPerc = ((party.count/userSeenSum)*100).toFixed(0)
-
-  return(
-    <div className='box'>
-      <div style={{flex: 1}}>
-        <img src={IMGLogo} /><br/>
-        <div>
-          <h3>You are being targeted by <span className='party'>{party.advertiserName.toUpperCase()}</span></h3>
-          <h3>In total you've seen {userSeenSum} ads
-              of which {party.count} ({partyPerc}%) were from this Advertiser.
-          </h3>
-          <div>More people participate in the project if you share your
-              personalised results on <span className='link'>Facebook</span> or <span className='link'>Twitter</span>
-          </div>
-        </div>
-      </div>
-      <div style={{flex: 1}}>
-        <PartyChart
-          advertisers={props.data.advertisers}
-          userSeenSum={userSeenSum}
-        />
-      </div>
-      <footer>
-        <span>Click a bar to see the ads you've seen from them</span>
-        <span className='link'>How did we calculate this?</span>
-      </footer>
-    </div>
-  )
-}
-
-
 export const PartyChart = (props) => {
-  const colors = ['blue','red','orange','purple','green','grey']
 
   let maxHeight = 200;
   let partiesDisplay = props.advertisers.sort((a,b) => parseInt(b.count)-parseInt(a.count))
   // console.log('partiesDisplay-1', partiesDisplay)
-  if (partiesDisplay.length > 5){
+
+  // group under OTHERS if there are more than 10 advertisers
+  if (partiesDisplay.length > 10){
     partiesDisplay = partiesDisplay.slice(0,5)
     const userSeenSum5 = partiesDisplay.map(d => parseInt(d.count)).reduce(reduFunc,0)
     partiesDisplay.push({
@@ -60,22 +23,33 @@ export const PartyChart = (props) => {
     partiesDisplay[i] = Object.assign({},
       partiesDisplay[i],
       {height: (partiesDisplay[i].count/props.userSeenSum*maxHeight).toFixed(0)+'px'},
-      {color: colors[i]})
+      {color: partiesDisplay[i].partyDetails.color || '#999999'})
   }
   // console.log('partiesDisplay-2', partiesDisplay)
+  for (let i=0; i<props.displayLabels.length; i++){
+    if (!partiesDisplay.map(p => p.advertiserName).includes(props.displayLabels[i])){
+      partiesDisplay.push(Object.assign({},
+        {advertiserName: props.displayLabels[i],
+        height: '0px',
+        color:'#999999',
+        count: 0
+      }))
+    }
+  }
+  // console.log('partiesDisplay-3', props.displayLabels, partiesDisplay)
   return(
     <div className='container'>
       <div className='chart'>
         {partiesDisplay.map((elt, i) =>
-          <div key={`bar-${i}`} className={`bar ${elt.color}`} style={{height: elt.height}}></div>
+          <div key={`bar-${i}`} className='bar' style={{height: elt.height, backgroundColor: elt.color}}></div>
         )}
       </div>
       <div className='labels'>
         {partiesDisplay.map((elt, i) =>
           <div key={`label-${i}`} className='label'>
             <div className="name" title={elt.advertiserName}>{elt.advertiserName.toUpperCase().slice(0,5)}</div>
-            <div className="labtext">{parseInt(elt.count) === 1 ? `${elt.count}ad` : `${elt.count}ads`}</div>
-            <div className="labtext">{`${(parseInt(elt.count)/props.userSeenSum*100).toFixed(1)}%`}</div>
+            <div className="labtext">{parseInt(elt.count) === 1 ? `${elt.count} ad` : `${elt.count} ads`}</div>
+            <div className="labtext">{`${(parseInt(elt.count)/props.userSeenSum*100).toFixed(0)}%`}</div>
           </div>
         )}
       </div>

@@ -5,12 +5,15 @@ import api from '../../helpers/api.js';
 import countries from './countries.js';
 import FacebookIcon from './icon_facebook.svg';
 import TwitterIcon from './icon_twitter.svg';
+import Logo from '../Shell/wtm_logo_border.png';
 
 /* CONTAINS THE SIGNUP STAGES */
 
 const Container = ({children}) => (
   <div className="CenterContainer_outer">
     <div className="CenterContainer_inner">
+      <img src={Logo} className='logo'/>
+      <h2 className='settingUp'>Setting up...</h2>
       <div style={{margin: '0 auto'}}>
         {children}
       </div>
@@ -32,6 +35,13 @@ class LanguageSelector extends Component {
     return (
       <span className={"LanguageSelector"}>
         <Container>
+          <div className={"fullwidth " + (hovering !== null ? 'blur' : '')}>
+            <h3>Please select your preferred language</h3>
+            <p>Válasszon nyelvet</p>
+            <p>Por favor seleccione su idioma</p>
+            <p>Bitte wählen Sie Ihre bevorzugte Sprache aus</p>
+            <p>Seleziona la tua lingua preferita</p>
+          </div>
           <div className="fullwidth" style={{marginBottom: '20px'}}>
             <span className={"flag-icon flag-icon-gb " + (hovering !== null && hovering !== 'en' ? 'blur' : '')} onMouseEnter={() => this.setState({hovering: 'en'})} onMouseLeave={() => this.setState({hovering: null})} onClick={() => this.handleSelect('en')}></span>
             <span className={"flag-icon flag-icon-hu " + (hovering !== null && hovering !== 'hu' ? 'blur' : '')} onMouseEnter={() => this.setState({hovering: 'hu'})} onMouseLeave={() => this.setState({hovering: null})} onClick={() => this.handleSelect('hu')}></span>
@@ -39,13 +49,7 @@ class LanguageSelector extends Component {
             <span className={"flag-icon flag-icon-de " + (hovering !== null && hovering !== 'de' ? 'blur' : '')} onMouseEnter={() => this.setState({hovering: 'de'})} onMouseLeave={() => this.setState({hovering: null})} onClick={() => this.handleSelect('de')}></span>
             <span className={"flag-icon flag-icon-it " + (hovering !== null && hovering !== 'it' ? 'blur' : '')} onMouseEnter={() => this.setState({hovering: 'it'})} onMouseLeave={() => this.setState({hovering: null})} onClick={() => this.handleSelect('it')}></span>
           </div>
-          <div className={"fullwidth " + (hovering !== null ? 'blur' : '')}>
-            <p>Please select your preferred language</p>
-            <p>Válasszon nyelvet</p>
-            <p>Por favor seleccione su idioma</p>
-            <p>Bitte wählen Sie Ihre bevorzugte Sprache aus</p>
-            <p>Seleziona la tua lingua preferita</p>
-          </div>
+
         </Container>
       </span>
     )
@@ -76,7 +80,7 @@ class TermsPrivacy extends Component {
             <p dangerouslySetInnerHTML={{__html: strings.register.terms}}></p>
           </div>
           <div className="fullwidth">
-            <Button type="hollow-primary" style={{color: '#b2b2b2', borderColor: '#b2b2b2'}} onClick={back}>{strings.register.back}</Button> <Button type="hollow-success" onClick={next}>{strings.register.agree} {String.fromCharCode("187")}</Button>
+            <Button type="hollow-primary" className='buttonBack' onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}</Button> <Button type="hollow-success" onClick={next}>{strings.register.agree} {String.fromCharCode("187")}</Button>
           </div>
         </Container>
       </span>
@@ -127,10 +131,13 @@ class CountrySelector extends Component {
     return (
       <span>
         <Container>
+          <div className="fullwidth pageTitle">
+            <h3>{strings.register.enter_country}</h3>
+          </div>
           <div className="fullwidth">
             <div style={{width: '500px', overflow: 'hidden', margin: '0 auto'}}>
               <div style={{width: '100px', float: 'left'}}>
-                <Button type="hollow-primary" style={{color: '#b2b2b2', borderColor: '#b2b2b2'}} onClick={back}>{strings.register.back}</Button>
+                <Button type="hollow-primary" className='buttonBack' onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}</Button>
               </div>
               <div style={{width: '400px', float: 'left'}}>
                 <InputGroup contiguous style={{width: '400px'}}>
@@ -145,7 +152,7 @@ class CountrySelector extends Component {
             </div>
           </div>
           <div className="fullwidth">
-            <p>{suggest ? suggest.country : strings.register.enter_country}</p>
+            <p>{suggest ? suggest.country : ''}</p>
           </div>
         </Container>
       </span>
@@ -214,10 +221,13 @@ class PostcodeSelector extends Component {
     return (
       <span>
         <Container>
+          <div className="fullwidth pageTitle">
+            <h3>{strings.register.enter_postcode}</h3>
+          </div>
           <div className="fullwidth">
             <div style={{width: '500px', overflow: 'hidden', margin: '0 auto'}}>
               <div style={{width: '100px', float: 'left'}}>
-                <Button type="hollow-primary" style={{color: '#b2b2b2', borderColor: '#b2b2b2'}} onClick={back}>{strings.register.back}</Button>
+                <Button type="hollow-primary" className='buttonBack' onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}</Button>
               </div>
               <div style={{width: '400px', float: 'left'}}>
                 <InputGroup contiguous style={{width: '400px'}}>
@@ -232,7 +242,7 @@ class PostcodeSelector extends Component {
             </div>
           </div>
           <div className="fullwidth">
-            <p>{postcodeError ? strings.register.postcode_error : strings.register.enter_postcode}</p>
+            <p>{postcodeError ? strings.register.postcode_error : ''}</p>
           </div>
         </Container>
       </span>
@@ -277,8 +287,8 @@ class GenderSelector extends Component {
     const {back, next} = this.props;
     return (
       <Container>
-        <div className="fullwidth" style={{marginBottom: '20px'}}>
-          <h2>{strings.register.i_am}</h2>
+        <div className="fullwidth pageTitle">
+          <h3>{strings.register.gender}</h3>
         </div>
         <div className="fullwidth gender_buttons" style={{marginBottom: '20px'}}>
           <Button type="hollow-primary" onClick={() => next({gender: 1})}>{strings.register.male}</Button>
@@ -286,7 +296,7 @@ class GenderSelector extends Component {
           <Button type="hollow-primary" onClick={() => next({gender: 0})}>{strings.register.other}</Button>
         </div>
         <div className="fullwidth">
-          <a onClick={back} style={{color: 'grey'}}>{strings.register.back}</a>
+          <Button type="hollow-primary" className='buttonBack' onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}</Button>
         </div>
       </Container>
     );
@@ -317,7 +327,7 @@ class AgeSelector extends Component {
     const {inputValue, allowContinue} = this.state;
     return (
       <Container>
-        <div className="fullwidth" style={{marginBottom: '20px'}}>
+        <div className="fullwidth pageTitle">
           <h3>{strings.register.years_of_age}</h3>
         </div>
         <div className="fullwidth" style={{marginBottom: '20px'}}>
@@ -333,7 +343,7 @@ class AgeSelector extends Component {
           </div>
         </div>
         <div className="fullwidth">
-          <a onClick={back} style={{color: 'grey'}}>{strings.register.back}</a>
+          <Button type="hollow-primary" className='buttonBack' onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}</Button>
         </div>
       </Container>
     );
@@ -400,7 +410,7 @@ class PoliticalAffiliationSelector extends Component {
 
     return (
       <Container>
-        <div className="fullwidth" style={{marginBottom: '20px'}}>
+        <div className="fullwidth pageTitle">
           <h3>{strings.register.political_affiliation}</h3>
           <p>{strings.register.political_affiliation_description}</p>
         </div>
@@ -419,8 +429,8 @@ class PoliticalAffiliationSelector extends Component {
             </InputGroup>
 
             <div className="fullwidth" style={{textAlign: 'center', marginBottom: '10px'}}>
-              <Button type="hollow-primary" style={{color: '#b2b2b2', borderColor: '#b2b2b2', width: '100px', marginRight: '10px'}}
-                onClick={back}>{strings.register.back}
+              <Button type="hollow-primary" className='buttonBack' style={{width: '100px', marginRight: '10px'}}
+                onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}
               </Button>
               <Button onClick={() => next({political_affiliation: parseInt(inputValue)})}
                 type="hollow-success">
@@ -502,7 +512,7 @@ class AttemptSignup extends Component {
           {error &&
             <span>
               <p>{strings.register.request_error}<br/>{error}</p>
-              <a onClick={back} style={{color: 'grey'}}>{String.fromCharCode("171")} {strings.register.back}</a>
+              <Button type="hollow-primary" className='buttonBack' onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}</Button>
             </span>
             }
         </div>
@@ -525,31 +535,32 @@ class PostSignupShare extends Component {
     const {next} = this.props;
     return (
       <Container>
-        <div className="fullwidth" style={{marginBottom: '40px'}}>
-          <h2>{strings.register.share}</h2>
+        <div className="fullwidth pageTitle" style={{margin: '0px 50px'}}>
+          <h3>{strings.register.share}</h3>
         </div>
-        <div className="fullwidth gender_buttons" style={{marginBottom: '20px'}}>
+        <div className="fullwidth">
           <Row style={{margin: '10px'}}>
             <Col sm="1/2">
-              <a href={shareLinkFB()}>
-                <Card>
-                  <img src={FacebookIcon} style={{width: '200px'}}/>
-                  <p>{strings.register.shareOnFacebook}</p>
-                </Card>
-              </a>
+              <Button type="hollow-primary"
+                className='buttonFB'
+                href={shareLinkFB()}
+                style={{float:'right'}}>
+                  {strings.register.shareOnFacebook}
+                </Button>
             </Col>
             <Col sm="1/2">
-              <a href={shareLinkTwitter()}>
-                <Card>
-                  <img src={TwitterIcon} style={{width: '200px'}} />
-                  <p>{strings.register.shareOnTwitter}</p>
-                </Card>
-              </a>
+              <Button
+                type="hollow-primary"
+                className='buttonTW'
+                href={shareLinkTwitter()}
+                style={{float:'left'}}>
+                  {strings.register.shareOnTwitter}
+                </Button>
             </Col>
           </Row>
         </div>
         <div className="fullwidth">
-          <Button onClick={next} type="hollow-primary" style={{float: 'right', marginRight: '20px'}}>{strings.register.skip} {String.fromCharCode("187")}</Button>
+          <Button onClick={next} type="hollow-primary" className='buttonBack'>{strings.register.skip} {String.fromCharCode("187")}</Button>
         </div>
       </Container>
     );

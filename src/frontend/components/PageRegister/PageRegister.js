@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Form, FormField, FormInput, Button, Checkbox, FormRow, Radio } from 'elemental'
-import logo from './logo.png';
+import logo from '../Shell/logo.png';
 import './PageRegister.css';
 import strings from '../../helpers/localization.js';
 import signupStages from './Stages.js';

@@ -125,36 +125,20 @@
   margin: 0px 10px;
   transition: all 1s ease;
 }
-.bar:hover{
-  opacity: 0.6;
-}
 .label{
   flex: 1;
   text-align: center;
 }
 .name{
   font-weight: bold;
-}
-.blue{
-  background-color: blue;
-}
-.red{
-  background-color: red;
-}
-.orange{
-  background-color: orange;
-}
-.purple{
-  background-color: purple;
-}
-.green{
-  background-color: green;
-}
-.grey{
-  background-color: grey;
+  margin-top: 5px;
 }
 .link{
   color: royalblue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.link_underline:hover{
   text-decoration: underline;
   cursor: pointer;
 }
@@ -175,19 +159,24 @@ img{
   line-height: 24px;
   text-align: center;
 }
-.buttonFB{
+.buttonFB, .buttonTW{
   color: white;
   background-color: #3b5998;
   border-color: #3b5998;
   width: 150px;
   margin: 10px;
+  height: 50px;
+  line-height: 50px;
+  vertical-align: middle;
+  font-size: 18px;
 }
 .buttonTW{
-  color: white;
   background-color: #00aced;
   border-color: #00aced;
-  width: 150px;
-  margin: 10px;
+}
+.resultsSubHeader{
+  margin-top: -5px;
+  line-height: 20px;
 }
 
 /* Styles related to rationales display */
@@ -209,4 +198,51 @@ th{
 }
 tr{
   border-bottom: 2px solid grey;
+}
+
+/* Styles related to DeleteRequestPage */
+.deleteRequestContainer {
+  display: flex;
+  flex: 1;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  height: 300px;
+  min-height: 300px;
+  padding: 20px 50px;
+  font-size: 0.8rem;
+}
+.column{
+  flex: 1;
+  font-size: 0.9rem;
+  text-align: center;
+  max-width: 25%;
+}
+.buttonRed, .buttonGrey, .buttonCancel{
+  color: white;
+  background-color: #999999;
+  border-color: #999999;
+  width: 160px;
+  height: 50px;
+  line-height: 50px;
+  vertical-align: middle;
+  font-size: 18px;
+  margin-bottom: 20px;
+  cursor: default;
+}
+.buttonRed{
+  background-color: red;
+  border-color: red;
+  cursor: pointer;
+}
+.buttonGrey:hover, .buttonGrey:active, .buttonGrey:focus{
+  color: white;
+  border-color: #999999;
+  background-color: #999999;
+  cursor: default;
+}
+.buttonCancel:hover, .buttonCancel:active, .buttonCancel:focus{
+  color: #999999;
+  border-color: #999999;
+  background-color: #f2f2f2;
+  cursor: pointer;
 }
