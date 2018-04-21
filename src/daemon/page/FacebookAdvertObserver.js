@@ -67,22 +67,24 @@ const adsOnPage = () => {
 
   let adverts = []; // Pass adverts back to cycle
 
-  const lang = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; // Extract the language preferance of the client
-  const sponsoredValue = sponsoredText[lang] || sponsoredText.en; // Using the language, determine the correct word for 'sponsored', default to english
+  // const lang = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; // Extract the language preferance of the client
+  // const sponsoredValue = sponsoredText[lang] || sponsoredText.en; // Using the language, determine the correct word for 'sponsored', default to english
 
 
-  $(sprintf('a.fbPrivacyAudienceIndicator', sponsoredValue)).each((index, advert) => { // Loop over every advert
+  $(sprintf('a.fbPrivacyAudienceIndicator')).each((index, advert) => { // Loop over every advert
 
     try { // ENSURE THIS IS AN ADVERT
       // const domSponsored = $(advert).parent().children().first().find('a')[0]; // Get the DOM element of the 'sponsored' text
       // const sponsoredValue = window.getComputedStyle(domSponsored, ':after').getPropertyValue('content').replace(/"/g, ''); // Calculate the :after value, and clean
-      const domSponsored = $(advert).parent().children().first().find('._14bf').first();
-      const sponsoredValue = domSponsored.text().length > 0;
-      // console.log('sponsoredValue-', sponsoredValue)
+      const classes = ['timestampContent', 'timestamp', 'livetimestamp']
+      // const domSponsored = classes.map(c => $(advert).parent().children().first().find(`abbr[class*=${c}]`)).filter(res => res.length)
+      const domSponsored = $(advert).parent().children().find("span[class*='timestamp']")
+      // console.log("?-timestampContent", $(advert).parent().children().find(".timestampContent"))
+      // console.log('domSponsored-', domSponsored)
 
       // Check if the value matches our list of 'sponsored' translations
       // if (sponsoredValue === '' || Object.values(sponsoredText).filter(s => s.indexOf(sponsoredValue) > -1).length === 0) { // Check if the value matches our list of 'sponsored' translations
-      if (!sponsoredValue) {
+      if (domSponsored.length > 0) { // if there's a timestamp, it's not an ad
         // console.log('Is not sponsored')
         return; // This is not a sponsored post
       }
