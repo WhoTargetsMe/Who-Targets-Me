@@ -24,6 +24,7 @@ export default class PageRegister extends Component {
     console.log("REQUESTING USER DATA")
     this.props.api.get('user')
       .then((response) => {
+        console.log('data', response.jsonData.data)
         this.setState({userData: response.jsonData.data})
       })
       .catch((error) => {

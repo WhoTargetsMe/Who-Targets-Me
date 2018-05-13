@@ -66,36 +66,16 @@ const triggerMenu = (fbStoryId) => {
 const adsOnPage = () => {
 
   let adverts = []; // Pass adverts back to cycle
-
-  // const lang = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; // Extract the language preferance of the client
-  // const sponsoredValue = sponsoredText[lang] || sponsoredText.en; // Using the language, determine the correct word for 'sponsored', default to english
-
-
-  $(sprintf('a.fbPrivacyAudienceIndicator')).each((index, advert) => { // Loop over every advert
-
-    try { // ENSURE THIS IS AN ADVERT
-      // const domSponsored = $(advert).parent().children().first().find('a')[0]; // Get the DOM element of the 'sponsored' text
-      // const sponsoredValue = window.getComputedStyle(domSponsored, ':after').getPropertyValue('content').replace(/"/g, ''); // Calculate the :after value, and clean
-      const classes = ['timestampContent', 'timestamp', 'livetimestamp']
-      // const domSponsored = classes.map(c => $(advert).parent().children().first().find(`abbr[class*=${c}]`)).filter(res => res.length)
-      const domSponsored = $(advert).parent().children().find("span[class*='timestamp']")
-      // console.log("?-timestampContent", $(advert).parent().children().find(".timestampContent"))
-      // console.log('domSponsored-', domSponsored)
-
-      // Check if the value matches our list of 'sponsored' translations
-      // if (sponsoredValue === '' || Object.values(sponsoredText).filter(s => s.indexOf(sponsoredValue) > -1).length === 0) { // Check if the value matches our list of 'sponsored' translations
-      if (domSponsored.length > 0) { // if there's a timestamp, it's not an ad
-        // console.log('Is not sponsored')
-        return; // This is not a sponsored post
-      }
-    } catch (err) {
-      // console.log('Some err, RETURN', err)
-      return;
-    }
-
-    const container = $(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
-    const fbStoryId = container.attr('id'); // Extract the story ID, used to determine if an advert has already been extracted
-    // console.log('adsOnPage - fbStoryId=', fbStoryId)
+  $(sprintf("div[data-report-meta]")).each((index, advert) => { // Loop over every advert
+    const container = $(advert);
+    const report = container.attr('data-report-meta'); // sample = '{"report_id":"23842799713630665","landing_page_id":"1574716462821305"}'
+    const id = container.attr('id'); // sample = 'u_30_2'
+    const reportId = report.slice(report.indexOf('report_id')+12,report.indexOf(',')-1)
+    const landPageId = report.slice(report.indexOf('landing_page_id')+18,report.indexOf('}')-1)
+    const fbStoryId = reportId + "-" + landPageId + "-" + id
+    const containerHTML = container.get(0);
+    console.log('adsOnPage - fbStoryId=', fbStoryId)
+    // console.log('adsOnPage - containerHTML=', containerHTML)
     if (!fbStoryId || container.hasClass('hidden_elem')) { // Don't proceed if there is an error getting fbStoryId or if the advert is hidden
       return;
     }
@@ -103,7 +83,7 @@ const adsOnPage = () => {
     adverts.push({ // Queue advert for server
       type: 'FBADVERT',
       related: fbStoryId,
-      html: container.html()
+      html: containerHTML
     });
   });
 
