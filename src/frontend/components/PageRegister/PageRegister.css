@@ -128,4 +128,36 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 .buttonBack{
   color: #b2b2b2;
   border-color: #b2b2b2;
+  margin-right: 20px;
+}
+
+/* Oxford survey */
+.surveyContainer{
+  overflow-y: scroll;
+  height: 380px;
+}
+.smallText{
+  font-size: 22px;
+}
+.notFilled{
+  font-size: 12px;
+  color: red;
+}
+.Radio{
+  display: inline-block;
+  margin: 0px 5px;
+  text-align: left;
+  font-size: 13px;
+}
+.formLabel{
+  text-align: left;
+  display: block;
+  color: black;
+}
+ul{
+  text-align: left;
+  list-style: none;
+}
+li{
+  margin-bottom: 20px;
 }

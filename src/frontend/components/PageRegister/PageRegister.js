@@ -20,17 +20,23 @@ export default class PageRegister extends Component {
   }
 
   render() {
-    const {signupStage} = this.state;
+    let {signupStage} = this.state;
+    // Skip Oxford survey if not from US
+    const usSignup = (this.state.country && this.state.country.countryCode === "US") && strings.getLanguage() === "en";
+    if (signupStage === 8 && !usSignup) {
+    // if (signupStage === 4 && !usSignup) { //test version
+      signupStage += 1
+    }
     const childProps = { // Clone component to inject new props
       signupState: this.state,
       back: this.back,
       next: this.next,
     };
-
+    console.log('signupState', this.state, strings.getLanguage())
     return (
       <span>
         {signupStages.map((stage, index) => {
-          //if(index > signupStage) {return null};
+          // if(index > signupStage) {return null};
           return (
               <Transition appear={true} in={index === signupStage} timeout={500} key={"stage_" + index}>
                 {(transitionState) => (

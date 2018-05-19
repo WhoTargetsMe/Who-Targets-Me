@@ -1,0 +1,30 @@
+export const fields = {
+  fields1: [
+    {label: "In general, would you say life in America today is better, worse, or about the same as it was fifty years ago for people like you?", answers: ["Better", "Worse", "About the same", "Don't know"]},
+    {label: "Do you think the future of the next generation of Americans will be better, worse, or about the same as life today?", answers: ["Better", "Worse", "About the same", "Don't know"]},
+    {label: "Do you approve or disapprove of the way Donald Trump is handling his job as President?", answers: ["Approve", "Disapprove", "Don't know"]},
+    {label: "All in all, are you satisfied or dissatisfied with the way things are going in this country today?", answers: ["Satisfied","Dissatisfied","Don't know"]},
+    {label: "Which of these statements best describes you?", answers: ["You are ABSOLUTELY CERTAIN that you are registered to vote at your current address","You are PROBABLY registered, but there is a chance your registration has lapsed","You are NOT registered to vote at your current address"]},
+    {label: "If the November mid-term elections were held today, how would you vote?", answers: ["For the Democratic candidate in your district","For the Republican candidate in your district","For a mixture of Democratic and Republican candidates","For other candidates","Don't know"]},
+    {label: "Regardless of how you feel about your own representative, would you like to see most members of Congress re-elected in the next congressional election, or not?", answers: ["Yes", "No", "Don't know"]},
+    {label: "Will the issue of which party controls Congress, the Republicans or the Democrats, be a factor in your vote for Congress this year, or not?", answers: ["Yes, it will", "No, it will not", "Don't know"]},
+    {label: "Do you think of your vote for Congress as a vote FOR Donald Trump, as a vote AGAINST Donald Trump, or isn’t Donald Trump much of a factor in your vote?", answers: ["A vote FOR Donald Trump", "A vote AGAINST Donald Trump", "Not a factor", "Don't know"]},
+    {label: "Rate your chance of voting in November on a scale of one to ten. If ten represents you being certain to vote, where would you place yourself?", answers: ["1","2","3","4","5","6","7","8","9","10", "Rather not say"]},
+    {label: "In the 2016 presidential election between Donald Trump and Hillary Clinton, did things come up that kept you from voting, or did you happen to vote?", answers: ["Voted", "Did not vote (includes too young to vote)"]},
+    {label: "Did you vote for Trump, Clinton or someone else?", answers: ["Trump", "Clinton", "Someone else"]},
+  ],
+fields2: [
+  {label: "Are you male or female?", answers: ["Male", "Female"]},
+  {label: "Which of these best describes you?", answers: ["Married", "Living with a partner", "Divorced", "Separated", "Widowed", "Never been married"]},
+  {label: "How many people, including yourself, live in your household? Include all adults and children who think of your household as their primary place of residence.", answers: ["1","2","3","4","5","6","7","8","9","10", ">10", "Don’t know", "Rather not say"]},
+  {label: "What is the highest level of school you have completed or the highest degree you have received?", answers: ["Less than high school (Grades 1-8 or no formal schooling)", "High school incomplete (Grades 9-11 or Grade 12 with NO diploma)", "High school graduate (Grade 12 with diploma or GED certificate)", "Some college, no degree (includes some community college)", "Two year associate degree from a college or university", "Four year college or university degree/Bachelor’s degree  (e.g., BS, BA, AB)", "Some postgraduate or professional schooling, no postgraduate degree (e.g. some graduate school)", "Postgraduate or professional degree, including master’s, doctorate, medical or law degree (e.g., MA, MS, PhD, MD, JD, graduate school)", "Don't know", "Rather not say"]},
+  {label: "Which of the following describes your race?", answers: ["White (e.g., Caucasian, European, Irish, Italian, Arab, Middle Eastern)", "Black or African-American (e.g., Negro, Kenyan, Nigerian, Haitian)", "Asian or Asian-American (e.g., Asian Indian, Chinese, Filipino, Vietnamese or other Asian origin groups)", "Native American/American Indian/Alaska Native", "Hispanic/Latino", "Don’t know", "Rather not say"]},
+  {label: "What is your present religion, if any?", answers: ["Protestant (Baptist, Methodist, Non-denominational, Lutheran, Presbyterian, Pentecostal, Episcopalian, Reformed, Church of Christ, Jehovah’s Witness, etc.)", "Roman Catholic (Catholic)", "Mormon (Church of Jesus Christ of Latter-day Saints/LDS)", "Orthodox (Greek, Russian, or some other orthodox church)","Jewish (Judaism)", "Muslim (Islam)", "Buddhist", "Hindu","Atheist (do not believe in God)", "Agnostic (not sure if there is a God)", "Another (not listed)", "Don’t know", "Rather not say", "Other"]},
+  {label: "Last year, in 2017, what was your total family income, before taxes?", answers: ["Less than $10,000", "10 to under $20,000", "20 to under $30,000", "30 to under $40,000", "40 to under $50,000", "50 to under $75,000", "75 to under $100,000", "100 to under $150,000", "$150,000 or more", "Don’t know", "Rather not say"]},
+  {label: "In politics today, do you consider yourself a Republican, Democrat, or independent?", answers: ["Republican", "Democrat", "Independent", "No preference", "Other party", "Don't know"]},
+],
+fields3: [
+  {label: "How often, if ever, do you notice advertisements when on Facebook?", answers: ["Often", "Sometimes", "Hardly ever","Never"]},
+  {label: "How often, if ever, do you touch or click on ads when on Facebook?", answers: ["Often", "Sometimes", "Hardly ever","Never"]},
+  {label: "Thinking about news (by news we mean information about events and issues that involve more than just your friends and family), how often do you get news from social media?", answers: ["Often", "Sometimes", "Hardly ever","Never"]},
+]}

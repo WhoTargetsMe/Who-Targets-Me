@@ -36,7 +36,7 @@ export default class PageRegister extends Component {
     this.props.api.get('user')
       .then((response) => {
         this.setState({userData: response.jsonData.data})
-        console.log('user data', response.jsonData.data)
+        console.log('user data', response, response.jsonData)
       })
       .catch((error) => {
         console.log(error)
