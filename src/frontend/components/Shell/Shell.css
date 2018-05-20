@@ -110,18 +110,21 @@ p {
 #root {
   width: 800px;
   height: 600px;
+  overflow: hidden;
 }
 
 .middle-outer {
   display: table;
   height: 100%;
   width: 100%;
+  overflow: hidden;
 }
 
 .middle-inner {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
+  overflow: hidden;
 }
 
 .multiline * {

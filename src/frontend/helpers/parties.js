@@ -2,7 +2,7 @@ export const availableCountries = [
   {id: 'GB', country: "Great Britain"},
   {id: 'DE', country: "Germany"},
   // {id: 'US', country: "USA"},
-  {id: 'HU', country: "Hungary"},
+  // {id: 'HU', country: "Hungary"},
   // {id: 'CA', country: "Canada"},
 ]
 
@@ -20,12 +20,13 @@ export const availableParties = {
       // {entityId: 1001, party:'UA1', shortName: 'SMT', color: 'red'},
       // {entityId: 1002, party:'UA2', shortName: 'KLM', color: 'green'},
     ],
-  'US': [
-    {entityId: 7, party:'Democrat', shortName: 'Dem', color: 'blue'},
-    {entityId: 8, party:'Republican', shortName: 'Rep', color: 'red'},
-    {entityId: 9, party:'Libertarian', shortName: 'Lib', color: '#ffff00'},
-    {entityId: 10, party:'Green', shortName: 'Gre', color: 'green'},
-  ],
+  'DE': [],
+  // 'US': [
+  //   {entityId: 7, party:'Democrat', shortName: 'Dem', color: 'blue'},
+  //   {entityId: 8, party:'Republican', shortName: 'Rep', color: 'red'},
+  //   {entityId: 9, party:'Libertarian', shortName: 'Lib', color: '#ffff00'},
+  //   {entityId: 10, party:'Green', shortName: 'Gre', color: 'green'},
+  // ],
   'HU': [
     {entityId: 12, party:'Fidesz', shortName: 'Fidesz', color: 'orange'},
     {entityId: 13, party:'Magyar Szocialista Párt', shortName: 'MSZP', color: 'red'},
@@ -87,9 +88,10 @@ export const availablePages = {
       {entityId: 11, pageId:"204850869545274", pageOwner:"KLM"},
       {entityId: 11, pageId:"89654856679", pageOwner:"GetSmarter"},
     ],
-    'US': [
-
-      ],
+    'DE': [],
+    // 'US': [
+    //
+    //   ],
     'HU': [
         {entityId: 12, pageId:"132847300676208", pageOwner:"Fidesz"},
         {entityId: 12, pageId:"298090296092", pageOwner:"Viktor Orban"},

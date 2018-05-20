@@ -23,7 +23,6 @@ export default class Shell extends Component {
   }
 
   render() {
-
     if(!this.state.token_loaded) {
       return null;
     }

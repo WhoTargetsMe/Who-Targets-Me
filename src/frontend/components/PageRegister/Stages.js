@@ -506,11 +506,13 @@ class AttemptSignup extends Component {
     this.setState({awaitingResponse: true, error: null});
     api.post('user/create', {json: {age, gender, postcode, country: country.countryCode, political_affiliation}})
       .then((response) => { // The rest of the validation is down to the server
+        console.log('user/create',response.jsonData.data.token)
         if(response.jsonData.errorMessage !== undefined) {
           throw new Error(response.jsonData.errorMessage);
         }
         chrome.storage.promise.local.set({'general_token': response.jsonData.data.token})
-          .then(() => {
+          .then((res) => {
+            console.log('chrome.storage.promise.local',res, response.jsonData.data.token)
             next();
           })
           .catch((e) => {
@@ -530,6 +532,7 @@ class AttemptSignup extends Component {
   render() {
     const {back, next} = this.props;
     const {awaitingResponse, error} = this.state;
+    console.log('attemptRegistration', awaitingResponse, error)
     return (
       <Container>
         <div className="fullwidth" style={{marginBottom: '20px'}}>

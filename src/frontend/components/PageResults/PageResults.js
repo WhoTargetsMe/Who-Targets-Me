@@ -91,10 +91,21 @@ export default class PageRegister extends Component {
         </div>
       )
     }
+    // View:
+    // "no_country" - if user country is not configured for political ads
+    // "no_party" - if user's advertisers don't include available political parties for user's country
+    // "display_parties" - if user's advertisers include available political parties for user's country
+    // "delete_request" - if user clicked request for data delete
+    // "data_deleted" - if request for data delete is fulfilled, suggest the user to remove the extension
+    let view = this.state.view;
+
     const reduFunc = (a, b) => a + b;
     const userCountry = this.state.userData.country;
     const advertisers = this.state.userData.advertisers;
-    const displayLabels = availableParties[userCountry].map(p => p.shortName);
+    let displayLabels = [];
+    if (availableCountries.map(c => c.id).includes(userCountry) && availableParties[userCountry].length > 0) {
+      displayLabels = availableParties[userCountry].map(p => p.shortName);
+    }
 
     let parties = [];
     // if there is at least one advertiser and country labels are available
@@ -155,14 +166,6 @@ export default class PageRegister extends Component {
     let partyPerc = 0;
     let partiesPercAmongAds = 0;
     let partyPercAmongParties = 0;
-
-    // View:
-    // "no_country" - if user country is not configured for political ads
-    // "no_party" - if user's advertisers don't include available political parties for user's country
-    // "display_parties" - if user's advertisers include available political parties for user's country
-    // "delete_request" - if user clicked request for data delete
-    // "data_deleted" - if request for data delete is fulfilled, suggest the user to remove the extension
-    let view = this.state.view;
 
     // If this is a user with data
     if (view !== "delete_request" && view !== "data_deleted") {
@@ -276,8 +279,8 @@ export default class PageRegister extends Component {
       { view !== "delete_request" && view !== "data_deleted" && <Row style={{backgroundColor: 'white', minHeight: '120px', color: 'black', paddingTop: '20px'}}>
         <Col sm="1/2">
           <div className="statbox">
-            <Button style={{position: 'absolute', top: 5, left: 25}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party.partyDetails.party.toUpperCase())}>{strings.register.shareOnFacebook}</Button>
-            <Button style={{position: 'absolute', top: 5, left: 215}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(party.partyDetails.party.toUpperCase())} >{strings.register.shareOnTwitter}</Button>
+            <Button style={{position: 'absolute', top: 5, left: 25}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party ? party.partyDetails.party.toUpperCase() : null)}>{strings.register.shareOnFacebook}</Button>
+            <Button style={{position: 'absolute', top: 5, left: 215}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(party ? party.partyDetails.party.toUpperCase() : null)} >{strings.register.shareOnTwitter}</Button>
             <div style={{position: 'absolute', top: 20, left: 410, width: 380}}>
               <span style={{fontWeight: 'bold', fontSize: '1.1rem'}}>{strings.register.share1}</span>
               <span style={{fontSize: '1.1rem'}}>{strings.register.share2}</span>
@@ -287,7 +290,7 @@ export default class PageRegister extends Component {
       </Row>}
 
       <Row style={{position: 'absolute', left: '20px', 'bottom': '0', textAlign: 'center', fontSize: '12px'}}>
-        <div style={{padding: '10px'}}>
+        <div style={{padding: '5px'}}>
           <a href={strings.links.website.url} target='_blank' style={{color: 'white'}}> &#169; Who Targets Me? Ltd</a> &nbsp;|&nbsp;&nbsp;
           <a href={strings.links.privacy.url} target='_blank' style={{color: 'white'}}>{`${strings.links.privacy.title}`}</a>&nbsp;|&nbsp;&nbsp;
           <a href={strings.links.terms.url} target='_blank' style={{color: 'white'}}>{`${strings.links.terms.title}`}</a>&nbsp;|&nbsp;&nbsp;
@@ -323,12 +326,22 @@ export default class PageRegister extends Component {
 
 
 const shareLinkFB = (party) => {
-  const title = strings.results.shareFacebook1 + party + strings.results.shareFacebook2;
+  let title = ''
+  if (party) {
+    title = strings.results.shareFacebook1 + party + strings.results.shareFacebook2;
+  } else {
+    title = strings.register.shareFacebook;
+  }
   return "http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwhotargets.me&title=" + encodeURIComponent(title) ;
 }
 
 const shareLinkTwitter = (party) => {
-  const title = strings.results.shareTwitter1 + party + strings.results.shareTwitter2;
+  let title = ''
+  if (party) {
+    title = strings.results.shareTwitter1 + party + strings.results.shareTwitter2;
+  } else {
+    title = strings.register.shareTwitter;
+  }
   return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(title) ;
 }
 
