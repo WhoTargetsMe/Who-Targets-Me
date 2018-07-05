@@ -22,17 +22,17 @@ export default class PageRegister extends Component {
   render() {
     let {signupStage} = this.state;
     // Skip Oxford survey if not from US
-    // const usSignup = (this.state.country && this.state.country.countryCode === "US") && strings.getLanguage() === "en";
-    // if (signupStage === 6 && !usSignup) {
+    const usSignup = (this.state.country && this.state.country.countryCode === "US") && strings.getLanguage() === "en";
+    if (signupStage === 8 && !usSignup) {
     // if (signupStage === 4 && !usSignup) { //test version
-    //   signupStage += 1
-    // }
+      signupStage += 1
+    }
     const childProps = { // Clone component to inject new props
       signupState: this.state,
       back: this.back,
       next: this.next,
     };
-    console.log('signupState', this.state, strings.getLanguage())
+    // console.log('signupState', this.state)
     return (
       <span style={{overflow: 'hidden'}}>
         {signupStages.map((stage, index) => {
@@ -55,7 +55,7 @@ export default class PageRegister extends Component {
   next(stateChange = {}) { // Change which stage is shown, updating the state
     const {signupStage} = this.state;
     const {registrationComplete} = this.props;
-    console.log("NEXT, signupStage to be increased", signupStage, stateChange)
+    // console.log("NEXT, signupStage to be increased", signupStage, stateChange)
     if(signupStage + 1 >= signupStages.length) {
       registrationComplete();
       return;

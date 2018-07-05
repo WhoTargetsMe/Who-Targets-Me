@@ -66,6 +66,10 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Install Who Targets Me to find out who's using political social media ads to win your vote. https://whotargets.me",
       shareTwitter1: "I'm being targeted by ",
       shareTwitter2: ". Install Who Targets Me to find out who's using political social media ads to win your vote. https://whotargets.me",
+      results_screen1: "You are being targeted by ", // You are being targeted by {party name}.
+      results_screen2: "In total you've seen ", // In total you've seen {quantity} political ads,
+      results_screen3: " political ads, of which ", //of which.
+      results_screen4: " were from ", //{quantity} were from {party name}
     },
     links: {
       website: {
@@ -141,7 +145,15 @@ const strings = new LocalizedStrings({
       remove_WTM_message2: "Preserves your data and anonymous profile for research.",
       cancel: "Cancel",
       cancel_message: "Go back to the previous screen and continue using Who Targets Me",
-      uninstall: "To uninstall, right-click the extension icon on your toolbar"
+      uninstall: "To uninstall, right-click the extension icon on your toolbar",
+      shareFacebook1: "I'm being targeted by ",
+      shareFacebook2: ". Install Who Targets Me to find out who's using political social media ads to win your vote. https://whotargets.me",
+      shareTwitter1: "I'm being targeted by ",
+      shareTwitter2: ". Install Who Targets Me to find out who's using political social media ads to win your vote. https://whotargets.me",
+      results_screen1: "You are being targeted by ", // You are being targeted by {party name}.
+      results_screen2: "In total you've seen ", // In total you've seen {quantity} political ads,
+      results_screen3: " political ads, of which ", //of which.
+      results_screen4: " were from ", //{quantity} were from {party name}
     },
     links: {
       website: {
@@ -200,7 +212,29 @@ const strings = new LocalizedStrings({
       my_constituency: 'Mi circunscripción',
       constituency_size: 'Eres uno de %i voluntario de %s, ¿Puedes ayudarnos a alcanzar %i?',
       constituency_size_one: 'Eres el primer voluntario de %s!. ¿Puedes ayudarnos a averiguar más?',
-      no_results_explanation: '¿De quién eres blanco? opera en segundo plano para determinar que publicidad ves. Esta página se actualizara con estadísticas tan pronto hayamos recopilado suficientes información.',
+      no_results_explanation: 'Results will appear here when we have enough data. Continue to use Facebook as normal and check back in a few days.',
+      no_country_explanation1: "We'll be bringing personalised results to ",
+      no_country_explanation2: " soon. In the meanwhile, continue to use Facebook as normal and thanks for taking part in Who Targets Me.",
+      delete_request: "Deleting your data will make it unavailable for research. You have three choices:",
+      data_deleted: "Your data has been deleted and no new data is being collected.",
+      data_deleted2: "You can now remove the extension by right-clicking Who Targets Me icon in your browser toolbar, and selecting 'Remove...'",
+      data_deleted3: "Thanks again for taking part. You can continue to follow updates on the project via Twitter, Facebook and our email list.",
+      delete_data: "Delete data",
+      delete_data_message: "Deletes all data you've gathered with Who Targets Me along with your anonymous profile.",
+      remove_WTM: "Remove WTM",
+      remove_WTM_message: "Right click the extension icon and select 'Remove...'",
+      remove_WTM_message2: "Preserves your data and anonymous profile for research.",
+      cancel: "Cancel",
+      cancel_message: "Go back to the previous screen and continue using Who Targets Me",
+      uninstall: "To uninstall, right-click the extension icon on your toolbar",
+      shareFacebook1: "I'm being targeted by ",
+      shareFacebook2: ". Install Who Targets Me to find out who's using political social media ads to win your vote. https://whotargets.me",
+      shareTwitter1: "I'm being targeted by ",
+      shareTwitter2: ". Install Who Targets Me to find out who's using political social media ads to win your vote. https://whotargets.me",
+      results_screen1: "You are being targeted by ", // You are being targeted by {party name}.
+      results_screen2: "In total you've seen ", // In total you've seen {quantity} political ads,
+      results_screen3: " political ads, of which ", //of which.
+      results_screen4: " were from ", //{quantity} were from {party name}
     },
     links: {
       website: {
@@ -259,7 +293,29 @@ const strings = new LocalizedStrings({
       my_constituency: 'La mia circoscrizione',
       constituency_size: 'Sei uno dei %i volontari nella tua circoscrizione (%s), puoi aiutarci a raggiungerne %i?',
       constituency_size_one: 'Tu sei il primo volontario in %s!. Puoi aiutarci a trovarne altri?',
-      no_results_explanation: 'Who Targets Me lavora in modo nascosto per determinare quali messaggi pubblicitari vedi. Questa pagina sarà aggiornata con le statistiche non appena avremo collezionato dati a sufficienza.',
+      no_results_explanation: 'Results will appear here when we have enough data. Continue to use Facebook as normal and check back in a few days.',
+      no_country_explanation1: "We'll be bringing personalised results to ",
+      no_country_explanation2: " soon. In the meanwhile, continue to use Facebook as normal and thanks for taking part in Who Targets Me.",
+      delete_request: "Deleting your data will make it unavailable for research. You have three choices:",
+      data_deleted: "Your data has been deleted and no new data is being collected.",
+      data_deleted2: "You can now remove the extension by right-clicking Who Targets Me icon in your browser toolbar, and selecting 'Remove...'",
+      data_deleted3: "Thanks again for taking part. You can continue to follow updates on the project via Twitter, Facebook and our email list.",
+      delete_data: "Delete data",
+      delete_data_message: "Deletes all data you've gathered with Who Targets Me along with your anonymous profile.",
+      remove_WTM: "Remove WTM",
+      remove_WTM_message: "Right click the extension icon and select 'Remove...'",
+      remove_WTM_message2: "Preserves your data and anonymous profile for research.",
+      cancel: "Cancel",
+      cancel_message: "Go back to the previous screen and continue using Who Targets Me",
+      uninstall: "To uninstall, right-click the extension icon on your toolbar",
+      shareFacebook1: "I'm being targeted by ",
+      shareFacebook2: ". Install Who Targets Me to find out who's using political social media ads to win your vote. https://whotargets.me",
+      shareTwitter1: "I'm being targeted by ",
+      shareTwitter2: ". Install Who Targets Me to find out who's using political social media ads to win your vote. https://whotargets.me",
+      results_screen1: "You are being targeted by ", // You are being targeted by {party name}.
+      results_screen2: "In total you've seen ", // In total you've seen {quantity} political ads,
+      results_screen3: " political ads, of which ", //of which.
+      results_screen4: " were from ", //{quantity} were from {party name}
     },
     links: {
       website: {
@@ -323,7 +379,29 @@ const strings = new LocalizedStrings({
       my_constituency: 'Választókörzetem',
       constituency_size: '%s körzetben %i önkéntesünk van, segítsen nekünk elérni, hogy ennyi legyen: %i!',
       constituency_size_one: 'Ön az első önkéntes itt: %s. Hívjon meg másokat is!',
-      no_results_explanation: 'A Célkeresztben alkalmazás a háttérben fut, hogy azonosítsa, milyen hirdetéseket mutat Önnek a Facebook. Ezen az oldalon jelennek meg a statisztikák, amint elég adatot gyűjtöttünk.',
+      no_results_explanation: 'Results will appear here when we have enough data. Continue to use Facebook as normal and check back in a few days.',
+      no_country_explanation1: "We'll be bringing personalised results to ",
+      no_country_explanation2: " soon. In the meanwhile, continue to use Facebook as normal and thanks for taking part in Who Targets Me.",
+      delete_request: "Deleting your data will make it unavailable for research. You have three choices:",
+      data_deleted: "Your data has been deleted and no new data is being collected.",
+      data_deleted2: "You can now remove the extension by right-clicking Who Targets Me icon in your browser toolbar, and selecting 'Remove...'",
+      data_deleted3: "Thanks again for taking part. You can continue to follow updates on the project via Twitter, Facebook and our email list.",
+      delete_data: "Delete data",
+      delete_data_message: "Deletes all data you've gathered with Who Targets Me along with your anonymous profile.",
+      remove_WTM: "Remove WTM",
+      remove_WTM_message: "Right click the extension icon and select 'Remove...'",
+      remove_WTM_message2: "Preserves your data and anonymous profile for research.",
+      cancel: "Cancel",
+      cancel_message: "Go back to the previous screen and continue using Who Targets Me",
+      uninstall: "To uninstall, right-click the extension icon on your toolbar",
+      shareFacebook1: "I'm being targeted by ",
+      shareFacebook2: ". Install Who Targets Me to find out who's using political social media ads to win your vote. https://whotargets.me",
+      shareTwitter1: "I'm being targeted by ",
+      shareTwitter2: ". Install Who Targets Me to find out who's using political social media ads to win your vote. https://whotargets.me",
+      results_screen1: "You are being targeted by ", // You are being targeted by {party name}.
+      results_screen2: "In total you've seen ", // In total you've seen {quantity} political ads,
+      results_screen3: " political ads, of which ", //of which.
+      results_screen4: " were from ", //{quantity} were from {party name}
     },
     links: {
       website: {
@@ -413,6 +491,10 @@ const strings = new LocalizedStrings({
       shareFacebook2: "Установите Who Targets Me, чтобы узнать, кто использует политическую рекламу в социальных сетях, чтобы получить ваш голос. https://whotargets.me",
       shareTwitter1: "Я был мишенью для ",
       shareTwitter2: ". Установите Who Targets Me, чтобы узнать, кто использует политическую рекламу в социальных сетях, чтобы получить ваш голос. https://whotargets.me",
+      results_screen1: "К вам пытается обратиться партия ", // You are being targeted by {party name}.
+      results_screen2: "В общей сложности вы видели ", // In total you've seen {quantity} political ads
+      results_screen3: " политических рекламных объявлений, из которых ", //of which.
+      results_screen4: " были от ", //{quantity} were from {party name}.
     },
     links: {
       website: {
@@ -443,7 +525,7 @@ const strings = new LocalizedStrings({
     register: {
       welcome1: 'Who Targets Me platforma palīdz saprast, kā sociālo mediju reklāma',
       welcome2: 'tiek izmantota, lai jūs ietekmētu.',
-      welcome3: 'Palīdz mums parādīt pareizo Who Targets Me versiju.',
+      welcome3: 'Palīdzi mums parādīt pareizo Who Targets Me versiju.',
       welcome4: 'Lai mēs zinātu, kad jums ir nākamās vēlēšanas.',
       select_language: 'Lūdzu, izvēlieties vēlamo valodu',
       terms: '<span>Turpinot jūs piekrītat <a href="https://whotargets.me/en/terms/">lietošanas noteikumiem</a> un <a href="https://whotargets.me/en/privacy-policy/">konfidencialitātes politikai</a></span>',
@@ -502,6 +584,10 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Instalē Who Targets Me, lai noskaidrotu kuru politisko spēku sociālo tīklu reklāmas tiek izmantotas, lai iegūtu Tavu balsi. https://whotargets.me",
       shareTwitter1: "Kā mērķauditoriju mani izvēlas ",
       shareTwitter2: ". Instalē Who Targets Me, lai noskaidrotu kuru politisko spēku sociālo tīklu reklāmas tiek izmantotas, lai iegūtu Tavu balsi. https://whotargets.me",
+      results_screen1: "You are being targeted by ", // You are being targeted by {party name}.
+      results_screen2: "In total you've seen ", // In total you've seen {quantity} political ads,
+      results_screen3: " political ads, of which ", //of which.
+      results_screen4: " were from ", //{quantity} were from {party name}
     },
     links: {
       website: {
@@ -591,6 +677,12 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Instale o Você Na Mira para descobrir quem está usando propaganda política nas redes sociais para ganhar seu voto. https://whotargets.me",
       shareTwitter1: "Eu estou na mira de ",
       shareTwitter2: ". Instale o Você Na Mira para descobrir quem está usando propaganda política nas redes sociais para ganhar seu voto. https://whotargets.me",
+      shareFacebook2BR: ". Instale o Você Na Mira para descobrir quem está usando propaganda política nas redes sociais para ganhar seu voto. https://vocenamira.org.br",
+      shareTwitter2BR: ". Instale o Você Na Mira para descobrir quem está usando propaganda política nas redes sociais para ganhar seu voto. https://vocenamira.org.br",
+      results_screen1: "You are being targeted by ", // You are being targeted by {party name}.
+      results_screen2: "In total you've seen ", // In total you've seen {quantity} political ads,
+      results_screen3: " political ads, of which ", //of which.
+      results_screen4: " were from ", //{quantity} were from {party name}
     },
     links: {
       website: {

@@ -95,7 +95,7 @@ DOWNLOAD NEW FROM flag-icon-css
 
 body {
   font-size: 15px;
-  font-family: Poppins;
+  font-family: Poppins, arial;
   font-weight: normal;
 }
 
@@ -108,7 +108,7 @@ p {
 }
 
 #root {
-  width: 800px;
+  width: 780px;
   height: 600px;
   overflow: hidden;
 }

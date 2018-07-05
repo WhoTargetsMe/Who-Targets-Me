@@ -4,11 +4,12 @@ import {Button, InputGroup, FormInput, FormField, FormSelect, FormRow, Spinner, 
 import api from '../../helpers/api.js';
 import countries from './countries.js';
 import languages from './languages.js';
-import {OxfordSurvey0, OxfordSurvey1, OxfordSurvey2,OxfordSurvey3} from '../OxfordSurvey/OxfordSurvey.js'; //, OxfordSurvey2, OxfordSurvey3, OxfordSurvey4
+import {OxfordSurvey0, OxfordSurvey1, OxfordSurvey2, OxfordSurvey3, OxfordSurvey4, OxfordSurvey5} from '../OxfordSurvey/OxfordSurvey.js';
 import {fields} from '../OxfordSurvey/SurveyFields.js';
 import FacebookIcon from './icon_facebook.svg';
 import TwitterIcon from './icon_twitter.svg';
 import Logo from '../Shell/wtm_logo_border.png';
+import LogoBR from '../Shell/wtm_logo_br.png';
 
 /* CONTAINS THE SIGNUP STAGES */
 
@@ -20,10 +21,10 @@ for (let i=0; i<keys.length; i++) {
   countryOptions.push(country)
 }
 
-const Container = ({survey, children}) => (
+const Container = ({survey, children, country}) => (
   <div className="CenterContainer_outer">
     <div className="CenterContainer_inner">
-      <img src={Logo} className='logo'/>
+      <img src={country === 'BR' ? LogoBR : Logo} className='logo'/>
       <h2 className={survey ? 'settingUp smallText' : 'settingUp'}>
         {survey ? 'Oxford Internet Institute Research Survey' : 'Setting up...'}</h2>
       <div style={{margin: '0 auto'}}>
@@ -149,7 +150,7 @@ class CountrySelector extends Component {
 
     return (
       <span>
-        <Container>
+        <Container country={country ? country.countryCode : ''}>
           <div className="fullwidth pageTitle">
             <p>{strings.register.welcome1}</p>
             <p>{strings.register.welcome2}</p>
@@ -247,7 +248,7 @@ class PostcodeSelector extends Component {
     const {countryCode} = country
     return (
       <span>
-        <Container>
+        <Container country={countryCode}>
           <div className="fullwidth pageTitle">
             <h3>{strings.register.enter_postcode}</h3>
           </div>
@@ -259,7 +260,13 @@ class PostcodeSelector extends Component {
               <div style={{width: '400px', float: 'left'}}>
                 <InputGroup contiguous style={{width: '400px'}}>
                   <InputGroup.Section grow>
-                    <FormInput disabled={checkingPostcode} type="text" placeholder={countryCode === 'IE' ?  strings.register.county : strings.register.postcode} value={inputValue} ref={(input) => {this.postcodeInput = input}} onChange={(e) => this.inputChange(e.target.value)} onKeyPress={this.handleKeyPress}/>
+                    <FormInput
+                      disabled={checkingPostcode}
+                      type="text"
+                      placeholder={countryCode === 'IE' ?  strings.register.county : strings.register.postcode}
+                      value={inputValue} ref={(input) => {this.postcodeInput = input}}
+                      onChange={(e) => this.inputChange(e.target.value)}
+                      onKeyPress={this.handleKeyPress}/>
                   </InputGroup.Section>
                   <InputGroup.Section>
                     <Button onClick={this.check} disabled={checkingPostcode} type="hollow-success">{checkingPostcode ? <Spinner /> : (strings.register.next + " " + String.fromCharCode("187"))}</Button>
@@ -313,7 +320,7 @@ class GenderSelector extends Component {
   render() {
     const {back, next} = this.props;
     return (
-      <Container>
+      <Container country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}>
         <div className="fullwidth pageTitle">
           <h3>{strings.register.gender}</h3>
         </div>
@@ -353,7 +360,7 @@ class AgeSelector extends Component {
     const {back, next} = this.props;
     const {inputValue, allowContinue} = this.state;
     return (
-      <Container>
+      <Container country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}>
         <div className="fullwidth pageTitle">
           <h3>{strings.register.years_of_age}</h3>
         </div>
@@ -434,7 +441,7 @@ class PoliticalAffiliationSelector extends Component {
     }
 
     return (
-      <Container>
+      <Container country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}>
         <div className="fullwidth pageTitle">
           <h3>{strings.register.political_affiliation}</h3>
           <p>{strings.register.political_affiliation_description}</p>
@@ -506,13 +513,13 @@ class AttemptSignup extends Component {
     this.setState({awaitingResponse: true, error: null});
     api.post('user/create', {json: {age, gender, postcode, country: country.countryCode, political_affiliation}})
       .then((response) => { // The rest of the validation is down to the server
-        console.log('user/create',response.jsonData.data.token)
+        // console.log('user/create',response.jsonData.data.token)
         if(response.jsonData.errorMessage !== undefined) {
           throw new Error(response.jsonData.errorMessage);
         }
         chrome.storage.promise.local.set({'general_token': response.jsonData.data.token})
           .then((res) => {
-            console.log('chrome.storage.promise.local',res, response.jsonData.data.token)
+            // console.log('chrome.storage.promise.local',res, response.jsonData.data.token)
             next();
           })
           .catch((e) => {
@@ -532,14 +539,14 @@ class AttemptSignup extends Component {
   render() {
     const {back, next} = this.props;
     const {awaitingResponse, error} = this.state;
-    console.log('attemptRegistration', awaitingResponse, error)
+    // console.log('attemptRegistration', awaitingResponse, error)
     return (
-      <Container>
+      <Container country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}>
         <div className="fullwidth" style={{marginBottom: '20px'}}>
           <h2>{strings.register.confirming} {awaitingResponse && <Spinner size="md" />}</h2>
           {error &&
             <span>
-              <p>{strings.register.request_error}<br/>{error}</p>
+              <p>{strings.register.request_error}<br/>{'Registration is not completed. Check postcode.'+error}</p>
               <Button type="hollow-primary" className='buttonBack' onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}</Button>
             </span>
             }
@@ -562,12 +569,18 @@ class OxfordSurvey extends Component {
     this.nextPage = this.nextPage.bind(this);
     this.prevPage = this.prevPage.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
+    this.handleSliderCheck = this.handleSliderCheck.bind(this);
   }
 
   nextPage() {
     const surveyPage = this.state.surveyPage + 1;
     const answers = this.state.answers;
-    const checkInputCompleted = answers.filter(a => a.slice(0,2) === `s${surveyPage}`).length === fields[`fields${surveyPage}`].length;
+    const sectionAnswers = fields[`fields${surveyPage}`].map(field => field.answers);
+    let answered_ids = [];
+    sectionAnswers.forEach(sa => {
+      sa.forEach(a => answered_ids.push(a.anid));
+    })
+    const checkInputCompleted = answers.filter(a => answered_ids.includes(a)).length === fields[`fields${surveyPage}`].length;
     this.setState({surveyPage, inputCompleted: checkInputCompleted})
   }
 
@@ -576,18 +589,47 @@ class OxfordSurvey extends Component {
     this.setState({surveyPage, inputCompleted: true})
   }
 
-  handleCheck(val) {
+  handleCheck(val, i) {
     let {answers, inputCompleted, surveyPage} = this.state;
-    let name = val.target.name;
+    const name = parseInt(val.target.name);
+    const answered_ids = fields[`fields${surveyPage}`][i].answers.map(a => a.anid);
+    let section_ids = [];
+    fields[`fields${surveyPage}`].forEach(field => {
+      field.answers.forEach(a => section_ids.push(a.anid))
+    })
     if (answers.length === 0) {
       answers.push(name);
     } else if (val.target.value === 'on') {
       answers = answers.filter(a => a !== name);
     } else if (val.target.value === 'off') {
-      answers = answers.filter(a => a.slice(0,6) !== name.slice(0,6));
+      answers = answers.filter(a => !answered_ids.includes(a))
       answers.push(name);
     }
-    const checkInputCompleted = answers.filter(a => a.slice(0,2) === `s${surveyPage}`).length === fields[`fields${surveyPage}`].length;
+
+    const checkInputCompleted = answers.filter(a => section_ids.includes(a)).length === fields[`fields${surveyPage}`].length;
+    if (checkInputCompleted) {
+      inputCompleted = true;
+    }
+    this.setState({answers, inputCompleted})
+  }
+
+  handleSliderCheck(val, i) {
+    let {answers, inputCompleted, surveyPage} = this.state;
+
+    const answered_ids = fields[`fields${surveyPage}`][i].answers.map(a => a.anid);
+    const sectionAnswers = fields[`fields${surveyPage}`][i].answers;
+    let section_ids = [];
+    fields[`fields${surveyPage}`].forEach(field => {
+      field.answers.forEach(a => section_ids.push(a.anid))
+    })
+    let name = parseInt(val);
+    if (answers.length === 0) {
+      answers.push(sectionAnswers[name].anid);
+    } else {
+      answers = answers.filter(a => !answered_ids.includes(a));
+      answers.push(sectionAnswers[name].anid);
+    }
+    const checkInputCompleted = answers.filter(a => section_ids.includes(a)).length === fields[`fields${surveyPage}`].length;
     if (checkInputCompleted) {
       inputCompleted = true;
     }
@@ -597,15 +639,22 @@ class OxfordSurvey extends Component {
   render(){
     const {surveyPage, inputCompleted, notFilled, answers} = this.state;
     const {back, next} = this.props;
-
+    // console.log('surveyPage, inputCompleted, notFilled, answers', surveyPage, inputCompleted, notFilled, answers)
+    let serAnswers = '';
+    answers.forEach(a => {
+      serAnswers = serAnswers + a + ',';
+    })
+    
     return(
       <div>
-        <Container survey>
+        <Container survey country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}>
           <div className="fullwidth">
             {surveyPage === 0 && <OxfordSurvey0/>}
             {surveyPage === 1 && <OxfordSurvey1 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers}/>}
-            {surveyPage === 2 && <OxfordSurvey2 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers}/>}
+            {surveyPage === 2 && <OxfordSurvey2 notFilled={notFilled} handleCheck={this.handleSliderCheck} answers={answers}/>}
             {surveyPage === 3 && <OxfordSurvey3 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers}/>}
+            {surveyPage === 4 && <OxfordSurvey4 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers}/>}
+            {surveyPage === 5 && <OxfordSurvey5 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers}/>}
           </div>
           <div className="fullwidth">
             <InputGroup contiguous style={{width: '300px', display: 'flex', flexFlow: 'row nowrap', justifyContent: 'center'}}>
@@ -620,11 +669,11 @@ class OxfordSurvey extends Component {
               </div>
               <div style={{flex: 1}}>
                 <Button style={{width: '130px'}}
-                  onClick={surveyPage === 3 ? () => next({oxfordSurvey: answers}) : this.nextPage}
-                  disabled={surveyPage > 0 && !inputCompleted}
+                  onClick={surveyPage === 5 ? () => next({survey: serAnswers}) : this.nextPage}
+                  disabled={(surveyPage > 0 && surveyPage !== 3) && !inputCompleted}
                   type="hollow-success"
                   >
-                  {((surveyPage === 0 ? "Take survey" : surveyPage === 3 ? "Finish" : "Next") + " " + String.fromCharCode("187"))}
+                  {((surveyPage === 0 ? "Take survey" : surveyPage === 5 ? "Finish" : "Next") + " " + String.fromCharCode("187"))}
                 </Button>
               </div>
             </InputGroup>
@@ -648,7 +697,7 @@ class PostSignupShare extends Component {
   render() {
     const {next} = this.props;
     return (
-      <Container>
+      <Container country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}>
         <div className="fullwidth pageTitle" style={{margin: '0px 50px'}}>
           <h3>{strings.register.share}</h3>
         </div>
@@ -691,12 +740,12 @@ const signupStages = [
   {
     component: <CountrySelector/>,
   },
-  {
-    component: <PostcodeSelector/>,
-  },
   // {
   //   component: <OxfordSurvey/>,
   // },
+  {
+    component: <PostcodeSelector/>,
+  },
   {
     component: <GenderSelector/>,
   },

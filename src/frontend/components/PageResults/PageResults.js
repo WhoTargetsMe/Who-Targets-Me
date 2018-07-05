@@ -36,7 +36,7 @@ export default class PageRegister extends Component {
     this.props.api.get('user')
       .then((response) => {
         this.setState({userData: response.jsonData.data})
-        console.log('user data', response, response.jsonData)
+        // console.log('user data', response, response.jsonData)
       })
       .catch((error) => {
         console.log(error)
@@ -122,7 +122,7 @@ export default class PageRegister extends Component {
         }
       })
     }
-    console.log('PARTIES', parties)
+    // console.log('PARTIES', parties)
 
     // Group pageOwners that belong to one party
     let groups = [];
@@ -211,9 +211,12 @@ export default class PageRegister extends Component {
                 <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: '20px'}}>
                   <div style={{flex: 1, minHeight: '40px'}}>
                     <h3>You are being targeted by <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span></h3>
-                    <h4 className='resultsSubHeader'>In total you've seen {userSeenSum} ads
-                        of which {userSeenPartiesSum} ({partiesPercAmongAds}%) were political <br/>
-                        and {party.count} ({partyPerc}%) were from <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span>.
+                    {/* <h4 className='resultsSubHeader'>In total you've seen {userSeenSum} ads
+                        of which {userSeenPartiesSum} ({partiesPercAmongAds}%) were political. <br/>
+                        {party.count} ({partyPerc}%) were from <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span>.
+                    </h4> */}
+                    <h4 className='resultsSubHeader'>In total you've seen {userSeenPartiesSum} political ads, of which
+                        {party.count} ({partyPerc}%) were from <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span>.
                     </h4>
                   </div>
                 </div>
@@ -279,8 +282,8 @@ export default class PageRegister extends Component {
       { view !== "delete_request" && view !== "data_deleted" && <Row style={{backgroundColor: 'white', minHeight: '120px', color: 'black', paddingTop: '20px'}}>
         <Col sm="1/2">
           <div className="statbox">
-            <Button style={{position: 'absolute', top: 5, left: 25}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party ? party.partyDetails.party.toUpperCase() : null)}>{strings.register.shareOnFacebook}</Button>
-            <Button style={{position: 'absolute', top: 5, left: 215}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(party ? party.partyDetails.party.toUpperCase() : null)} >{strings.register.shareOnTwitter}</Button>
+            <Button style={{position: 'absolute', top: 5, left: 25}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party ? [party.partyDetails.party.toUpperCase(), userCountry] : [null, null])}>{strings.register.shareOnFacebook}</Button>
+            <Button style={{position: 'absolute', top: 5, left: 215}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(party ? [party.partyDetails.party.toUpperCase(), userCountry] : [null, null])} >{strings.register.shareOnTwitter}</Button>
             <div style={{position: 'absolute', top: 20, left: 410, width: 380}}>
               <span style={{fontWeight: 'bold', fontSize: '1.1rem'}}>{strings.register.share1}</span>
               <span style={{fontSize: '1.1rem'}}>{strings.register.share2}</span>
@@ -289,8 +292,8 @@ export default class PageRegister extends Component {
         </Col>
       </Row>}
 
-      <Row style={{position: 'absolute', left: '20px', 'bottom': '0', textAlign: 'center', fontSize: '12px'}}>
-        <div style={{padding: '5px'}}>
+      <Row style={{textAlign: 'center', fontSize: '12px'}}>
+        <div style={{padding: '5px 15px 0px 15px'}}>
           <a href={strings.links.website.url} target='_blank' style={{color: 'white'}}> &#169; Who Targets Me? Ltd</a> &nbsp;|&nbsp;&nbsp;
           <a href={strings.links.privacy.url} target='_blank' style={{color: 'white'}}>{`${strings.links.privacy.title}`}</a>&nbsp;|&nbsp;&nbsp;
           <a href={strings.links.terms.url} target='_blank' style={{color: 'white'}}>{`${strings.links.terms.title}`}</a>&nbsp;|&nbsp;&nbsp;
@@ -325,20 +328,28 @@ export default class PageRegister extends Component {
 } // End of PageResults class
 
 
-const shareLinkFB = (party) => {
+const shareLinkFB = ([party, userCountry]) => {
   let title = ''
   if (party) {
-    title = strings.results.shareFacebook1 + party + strings.results.shareFacebook2;
+    if (userCountry === "BR") {
+      title = strings.results.shareFacebook1 + party + strings.results.shareFacebook2BR;
+    } else {
+      title = strings.results.shareFacebook1 + party + strings.results.shareFacebook2;
+    }
   } else {
     title = strings.register.shareFacebook;
   }
   return "http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwhotargets.me&title=" + encodeURIComponent(title) ;
 }
 
-const shareLinkTwitter = (party) => {
+const shareLinkTwitter = ([party, userCountry]) => {
   let title = ''
   if (party) {
-    title = strings.results.shareTwitter1 + party + strings.results.shareTwitter2;
+    if (userCountry === "BR") {
+      title = strings.results.shareTwitter1 + party + strings.results.shareTwitter2BR;
+    } else {
+      title = strings.results.shareTwitter1 + party + strings.results.shareTwitter2;
+    }
   } else {
     title = strings.register.shareTwitter;
   }
