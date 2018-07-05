@@ -16,7 +16,7 @@
 .LanguageSelector .flag-icon {
   border-radius: 2px;
   margin-right: 50px;
-  font-size: 80px;
+  font-size: 50px;
   cursor: pointer;
 }
 
@@ -29,6 +29,7 @@
   width: 100%;
   height: 100%;
   background: radial-gradient(ellipse at center, #ffffff 34%,#f2f2f2 100%);
+  overflow: hidden;
 }
 
 .CenterContainer_inner {
@@ -108,4 +109,56 @@ input[type=range]::-webkit-slider-thumb {
 }
 input[type=range]:focus::-webkit-slider-runnable-track {
   background: #71b5ef;
+}
+.logo{
+  height: 80px;
+  width: 80px;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+.settingUp{
+  position: absolute;
+  top: 60px;
+  left: 120px;
+}
+.pageTitle{
+  margin-bottom: 20px;
+}
+.buttonBack{
+  color: #b2b2b2;
+  border-color: #b2b2b2;
+  margin-right: 20px;
+}
+
+/* Oxford survey */
+.surveyContainer{
+  overflow-y: scroll;
+  height: 380px;
+}
+.smallText{
+  font-size: 22px;
+}
+.notFilled{
+  font-size: 12px;
+  color: red;
+}
+.Radio{
+  display: inline-block;
+  margin: 0px 5px;
+  text-align: left;
+  font-size: 13px;
+}
+.formLabel{
+  text-align: left;
+  display: block;
+  color: black;
+}
+ul{
+  text-align: left;
+  list-style: none;
+}
+li{
+  margin-bottom: 20px;
 }
