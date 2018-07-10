@@ -301,18 +301,34 @@ class PostcodeSelector extends Component {
     const {countryCode} = this.props.signupState.country;
     const {next} = this.props;
     if(checkingPostcode) {
-      return false
+      return false;
     }
     this.setState({checkingPostcode: true});
+
     api.get('general/checkpostcode', {query: {countryCode, postcode: inputValue}})
       .then((response) => {
-        this.setState({checkingPostcode: false});
-        next({postcode: inputValue});
+        if (response.status >= 200 && response.status < 300) {
+          this.setState({checkingPostcode: false, postcodeError: false});
+          next({postcode: inputValue});
+        } else if (countryCode === 'BR') {
+            // For Brazil try to trim the postcode to omit google api error if any
+            const trimmedValue = inputValue.slice(0,inputValue.length-3)+'000';
+            api.get('general/checkpostcode', {query: {countryCode, postcode: trimmedValue}})
+              .then((response) => {
+                this.setState({checkingPostcode: false, postcodeError: false});
+                next({postcode: trimmedValue});
+              })
+              .catch(err => {
+                console.log('error postcode', err)
+                this.setState({checkingPostcode: false, postcodeError: true});
+              })
+        }
       })
-      .catch(() => {
+      .catch(err => {
+        console.log('error postcode', err)
         this.setState({checkingPostcode: false, postcodeError: true});
       })
-  }
+    }
 }
 
 class GenderSelector extends Component {
@@ -644,7 +660,7 @@ class OxfordSurvey extends Component {
     answers.forEach(a => {
       serAnswers = serAnswers + a + ',';
     })
-    
+
     return(
       <div>
         <Container survey country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}>
