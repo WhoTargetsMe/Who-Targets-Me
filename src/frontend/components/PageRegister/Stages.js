@@ -4,7 +4,15 @@ import {Button, InputGroup, FormInput, FormField, FormSelect, FormRow, Spinner, 
 import api from '../../helpers/api.js';
 import countries from './countries.js';
 import languages from './languages.js';
-import {OxfordSurvey0, OxfordSurvey1, OxfordSurvey2, OxfordSurvey3, OxfordSurvey4, OxfordSurvey5} from '../OxfordSurvey/OxfordSurvey.js';
+import {
+  OxfordSurvey0,
+  OxfordSurvey1,
+  OxfordSurvey2,
+  OxfordSurvey3,
+  OxfordSurvey4,
+  OxfordSurvey5,
+  OxfordSurvey6
+  } from '../OxfordSurvey/OxfordSurvey.js';
 import {fields} from '../OxfordSurvey/SurveyFields.js';
 import FacebookIcon from './icon_facebook.svg';
 import TwitterIcon from './icon_twitter.svg';
@@ -605,24 +613,52 @@ class OxfordSurvey extends Component {
     this.setState({surveyPage, inputCompleted: true})
   }
 
-  handleCheck(val, i) {
+  handleCheck(val, i, type) {
     let {answers, inputCompleted, surveyPage} = this.state;
     const name = parseInt(val.target.name);
     const answered_ids = fields[`fields${surveyPage}`][i].answers.map(a => a.anid);
     let section_ids = [];
+    let multi_section_ids = [];
+
     fields[`fields${surveyPage}`].forEach(field => {
-      field.answers.forEach(a => section_ids.push(a.anid))
+      let subField = [];
+      field.answers.forEach(a => {
+        section_ids.push(a.anid);
+        subField.push(a.anid);
+      })
+      multi_section_ids.push(subField);
     })
+
     if (answers.length === 0) {
       answers.push(name);
     } else if (val.target.value === 'on') {
       answers = answers.filter(a => a !== name);
     } else if (val.target.value === 'off') {
-      answers = answers.filter(a => !answered_ids.includes(a))
+      if (type !== 'multi'){
+        answers = answers.filter(a => !answered_ids.includes(a))
+      }
       answers.push(name);
     }
 
-    const checkInputCompleted = answers.filter(a => section_ids.includes(a)).length === fields[`fields${surveyPage}`].length;
+    let checkInputCompleted = false;
+    if (type !== 'multi'){
+      checkInputCompleted = answers.filter(a => section_ids.includes(a)).length === fields[`fields${surveyPage}`].length;
+    } else {
+      let score = 0;
+      multi_section_ids.forEach(section => {
+        for (let k=0; k<answers.length; k++) {
+          if (section.includes(answers[k])){
+            score++;
+            if (score === multi_section_ids.length) {
+              checkInputCompleted = true;
+              break;
+            }
+            break;
+          }
+        }
+      })
+    }
+
     if (checkInputCompleted) {
       inputCompleted = true;
     }
@@ -655,7 +691,6 @@ class OxfordSurvey extends Component {
   render(){
     const {surveyPage, inputCompleted, notFilled, answers} = this.state;
     const {back, next} = this.props;
-    // console.log('surveyPage, inputCompleted, notFilled, answers', surveyPage, inputCompleted, notFilled, answers)
     let serAnswers = '';
     answers.forEach(a => {
       serAnswers = serAnswers + a + ',';
@@ -669,8 +704,9 @@ class OxfordSurvey extends Component {
             {surveyPage === 1 && <OxfordSurvey1 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers}/>}
             {surveyPage === 2 && <OxfordSurvey2 notFilled={notFilled} handleCheck={this.handleSliderCheck} answers={answers}/>}
             {surveyPage === 3 && <OxfordSurvey3 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers}/>}
-            {surveyPage === 4 && <OxfordSurvey4 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers}/>}
+            {surveyPage === 4 && <OxfordSurvey4 notFilled={notFilled} handleCheck={this.handleSliderCheck} answers={answers}/>}
             {surveyPage === 5 && <OxfordSurvey5 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers}/>}
+            {surveyPage === 6 && <OxfordSurvey6 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers}/>}
           </div>
           <div className="fullwidth">
             <InputGroup contiguous style={{width: '300px', display: 'flex', flexFlow: 'row nowrap', justifyContent: 'center'}}>
@@ -685,11 +721,11 @@ class OxfordSurvey extends Component {
               </div>
               <div style={{flex: 1}}>
                 <Button style={{width: '130px'}}
-                  onClick={surveyPage === 5 ? () => next({survey: serAnswers}) : this.nextPage}
-                  disabled={(surveyPage > 0 && surveyPage !== 3) && !inputCompleted}
+                  onClick={surveyPage === 6 ? () => next({survey: serAnswers}) : this.nextPage}
+                  disabled={surveyPage > 0 && !inputCompleted}
                   type="hollow-success"
                   >
-                  {((surveyPage === 0 ? "Take survey" : surveyPage === 5 ? "Finish" : "Next") + " " + String.fromCharCode("187"))}
+                  {((surveyPage === 0 ? "Take survey" : surveyPage === 6 ? "Finish" : "Next") + " " + String.fromCharCode("187"))}
                 </Button>
               </div>
             </InputGroup>
@@ -756,9 +792,9 @@ const signupStages = [
   {
     component: <CountrySelector/>,
   },
-  // {
-  //   component: <OxfordSurvey/>,
-  // },
+  {
+    component: <OxfordSurvey/>,
+  },
   {
     component: <PostcodeSelector/>,
   },
@@ -774,9 +810,9 @@ const signupStages = [
   {
     component: <AttemptSignup/>,
   },
-  {
-    component: <OxfordSurvey/>,
-  },
+  // {
+  //   component: <OxfordSurvey/>,
+  // },
   {
     component: <PostSignupShare/>,
   }

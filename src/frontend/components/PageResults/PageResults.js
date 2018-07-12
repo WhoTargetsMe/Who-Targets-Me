@@ -122,7 +122,7 @@ export default class PageRegister extends Component {
         }
       })
     }
-    // console.log('PARTIES', parties)
+    console.log('PARTIES', parties)
 
     // Group pageOwners that belong to one party
     let groups = [];

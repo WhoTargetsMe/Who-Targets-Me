@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import strings from '../../helpers/localization.js';
-import {Button, InputGroup, FormInput, FormField, FormSelect, FormRow, Radio, Spinner, Row, Card, Col} from 'elemental';
+import {Button, InputGroup, FormInput, FormField, FormSelect, FormRow, Radio, Checkbox, Spinner, Row, Card, Col} from 'elemental';
 import {fields} from './SurveyFields.js';
 
 export const OxfordSurvey0 = (props) => {
@@ -9,7 +9,8 @@ export const OxfordSurvey0 = (props) => {
     <div className="fullwidth pageTitle" style={{width: '500px'}}>
       <h3>Thank you. Who Targets Me is now fully installed.</h3>
       <p>We partner with academic researchers and investigative journalists to understand and explain the use of targeted political advertising.</p>
-      <p>The following short survey is a key part of a research partnership with the Oxford Internet Institute (OII). It takes less than five minutes to complete.</p>
+      <p>The following short survey is a key part of a research partnership with the Oxford Internet Institute (OII). It takes less than two minutes to complete.</p>
+      <p>Please complete all three sections of the survey without closing the browser extension, or your answers will be lost.</p>
       <p>If you choose to take part, the OII will use your answers as part of their research into targeted advertising and for no other purpose. It will not be used to identify you.</p>
       <p>You can permanently delete your data at any time.</p>
     </div>
@@ -123,14 +124,16 @@ export const OxfordSurvey3 = (props) => {
 
   return(
     <div style={{marginTop: '90px'}}>
-      <h4>Optional questions</h4>
+      <h4>Section 1: Optional questions (multiple choice)</h4>
       <div className="surveyContainer">
-        <ul>
+        <ul style={{maxHeight: 200, maxWidth: 650}}>
         {fields.fields3.map((field, i) => {
-          return <li key={`field-${i}`}>
-            <FormField label={`${i+1}. ${field.label}`} onChange={(val) => props.handleCheck(val, i)}>
+          return <li key={`field-${i}`}
+            style={{display: 'inline-block', marginBottom: '10px'}}>
+            <FormField label={`${i+1}. ${field.label}`} onChange={(val) => props.handleCheck(val, i, 'multi')}>
               {field.answers.map((answer, j) => {
-                return <Radio key={`answer-${j}`}
+                return <Checkbox key={`answer-${j}`}
+                          style={{width: 200, margin: '0px 25px', display: 'inline-block'}}
                           name={answer.anid}
                           label={answer.label}
                           checked={props.answers.includes(answer.anid)}
@@ -146,14 +149,107 @@ export const OxfordSurvey3 = (props) => {
   )
 }
 
+// New questions added after Section 1
+// SLIDER
 export const OxfordSurvey4 = (props) => {
+  let answered_ids_0 = fields[`fields${4}`][0].answers.map(a => a.anid);
+  let val_0 = props.answers.filter(a => answered_ids_0.includes(a));
+  if (val_0.length > 0) { val_0 = parseInt(val_0[0]) }
+
+  let answered_ids_1 = fields[`fields${4}`][1].answers.map(a => a.anid);
+  let val_1 = props.answers.filter(a => answered_ids_1.includes(a));
+  if (val_1.length > 0) { val_1 = parseInt(val_1[0]) }
+
+  return(
+    <div style={{marginTop: '90px'}}>
+      <div className="surveyContainer">
+      <h4>Section 1: Optional questions (continued)</h4>
+      <div style={{minWidth: '270px', margin: '0 auto'}}>
+        <InputGroup contiguous>
+          <InputGroup.Section grow>
+          <p>3. {fields.fields4[0].label}</p>
+            <div style={{display: 'inline-block', margin: '10px'}}>{fields.fields4[0].answers[1].label}</div>
+              <input type="range" value={answered_ids_0.indexOf(val_0) > 0 ? answered_ids_0.indexOf(val_0) : 3} min={1} max={5}
+                onChange={(e) => props.handleCheck(e.target.value, 0)}
+                style={{display: 'inline-block', margin: '10px'}}
+              />
+            <div style={{display: 'inline-block', margin: '10px'}}>{fields.fields4[0].answers[5].label}</div>
+            <div style={{width: '440px', display: 'inline-block', marginLeft: '25px'}}>
+              <div style={{minHeight: 25}}>
+                {(fields.fields4[0].answers.filter(a => a.anid === val_0).length > 0 &&
+                  val_0 !== fields.fields4[0].answers[0].anid) ?
+
+                  <a style={{color: 'black', margin: '20px', textDecoration: 'none', fontWeight: 'bold'}}>
+                    {fields.fields4[0].answers.filter(a => a.anid === val_0)[0].label}
+                  </a>
+                  :
+                  <a style={{color: 'grey', margin: '0px 20px', textDecoration: 'none', cursor: 'pointer',
+                    fontWeight: `${answered_ids_0.indexOf(val_0) === 3 ? 'bold' : '400'}`}}
+                    onClick={() => props.handleCheck(3, 0)}>{fields.fields4[0].answers[3].label}
+                  </a>
+                }
+              </div>
+            </div>
+          </InputGroup.Section>
+        </InputGroup>
+        <div className="fullwidth" style={{textAlign: 'center'}}>
+          <a style={{color: '#1385e5', margin: '0px 20px',
+            fontWeight: `${answered_ids_0.indexOf(val_0) === 0 ? 'bold' : '400'}`}}
+            onClick={() => props.handleCheck(0, 0)}>{fields.fields4[0].answers[0].label}
+          </a>
+        </div>
+
+        <br/>
+        <br/>
+
+        <InputGroup contiguous>
+          <InputGroup.Section grow>
+          <p>4. {fields.fields4[1].label}</p>
+            <div style={{display: 'inline-block', margin: '10px'}}>{fields.fields4[1].answers[1].label}</div>
+              <input type="range" value={answered_ids_1.indexOf(val_1) > 0 ? answered_ids_1.indexOf(val_1) : 3} min={1} max={5}
+                onChange={(e) => props.handleCheck(e.target.value, 1)}
+                style={{display: 'inline-block', margin: '10px'}}
+              />
+            <div style={{display: 'inline-block', margin: '10px'}}>{fields.fields4[1].answers[5].label}</div>
+            <div style={{width: '440px', display: 'inline-block', marginLeft: '25px'}}>
+              <div style={{minHeight: 25}}>
+                {(fields.fields4[1].answers.filter(a => a.anid === val_1).length > 0 &&
+                  val_1 !== fields.fields4[1].answers[0].anid) ?
+
+                  <a style={{color: 'black', margin: '20px', textDecoration: 'none', fontWeight: 'bold'}}>
+                    {fields.fields4[1].answers.filter(a => a.anid === val_1)[0].label}
+                  </a>
+                  :
+                  <a style={{color: 'grey', margin: '0px 20px', textDecoration: 'none', cursor: 'pointer',
+                    fontWeight: `${answered_ids_1.indexOf(val_1) === 3 ? 'bold' : '400'}`}}
+                    onClick={() => props.handleCheck(3, 1)}>{fields.fields4[1].answers[3].label}
+                  </a>
+                }
+              </div>
+            </div>
+          </InputGroup.Section>
+        </InputGroup>
+        <div className="fullwidth" style={{textAlign: 'center'}}>
+          <a style={{color: '#1385e5', margin: '0px 20px',
+            fontWeight: `${answered_ids_1.indexOf(val_1) === 0 ? 'bold' : '400'}`}}
+            onClick={() => props.handleCheck(0, 1)}>{fields.fields4[1].answers[0].label}
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  )
+}
+
+export const OxfordSurvey5 = (props) => {
 
   return(
     <div style={{marginTop: '90px'}}>
       <h4>Section 2: About you</h4>
       <div className="surveyContainer">
         <ul>
-        {fields.fields4.map((field, i) => {
+        {fields.fields5.map((field, i) => {
           return <li key={`field-${i}`}>
             <FormField label={`${i+1}. ${field.label}`} onChange={(val) => props.handleCheck(val, i)}>
               {props.notFilled.includes(i) && <p className='notFilled'>Please complete the input</p>}
@@ -174,14 +270,14 @@ export const OxfordSurvey4 = (props) => {
   )
 }
 
-export const OxfordSurvey5 = (props) => {
+export const OxfordSurvey6 = (props) => {
 
   return(
     <div style={{marginTop: '90px'}}>
       <h4>Section 3: Social media use</h4>
       <div className="surveyContainer">
         <ul>
-        {fields.fields5.map((field, i) => {
+        {fields.fields6.map((field, i) => {
           return <li key={`field-${i}`}>
             <FormField label={`${i+1}. ${field.label}`} onChange={(val) => props.handleCheck(val, i)}>
               {field.answers.map((answer, j) => {
