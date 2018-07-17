@@ -104,7 +104,7 @@
   min-height: 280px;
   padding: 20px;
   font-size: 0.8rem;
-  margin-left: 100px;
+  /* margin-left: 100px; */
 }
 .chart{
   display: flex;

@@ -61,7 +61,7 @@ const strings = new LocalizedStrings({
       remove_WTM_message2: "Preserves your data and anonymous profile for research.",
       cancel: "Cancel",
       cancel_message: "Go back to the previous screen and continue using Who Targets Me",
-      uninstall: "To uninstall, right-click the extension icon on your toolbar",
+      uninstall: "To uninstall, right-click the extension icon",
       shareFacebook1: "I'm being targeted by ",
       shareFacebook2: ". Install Who Targets Me to find out who's using political social media ads to win your vote. https://whotargets.me",
       shareTwitter1: "I'm being targeted by ",

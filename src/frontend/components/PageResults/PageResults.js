@@ -112,7 +112,7 @@ export default class PageRegister extends Component {
     if (advertisers.length > 0 && availableCountries.map(c => c.id).includes(userCountry)){
       advertisers.forEach(advr => {
         const match = availablePages[userCountry].filter(p => advr.advertiserId === p.pageId)
-        console.log('match', match, advr)
+        // console.log('match', match, advr)
         if (match.length > 0) {
           const advr_object = Object.assign({},
             advr, {
@@ -122,7 +122,7 @@ export default class PageRegister extends Component {
         }
       })
     }
-    console.log('PARTIES', parties)
+    // console.log('PARTIES', parties)
 
     // Group pageOwners that belong to one party
     let groups = [];
@@ -186,7 +186,7 @@ export default class PageRegister extends Component {
         partyPercAmongParties = ((party.count/userSeenPartiesSum)*100).toFixed(0)
       }
     }
-
+    
     return (
       <div className="PageResults">
         <Row>
@@ -208,15 +208,17 @@ export default class PageRegister extends Component {
               }
               {
                 view === "display_parties" &&
-                <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: '20px'}}>
+                <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: '25px'}}>
                   <div style={{flex: 1, minHeight: '40px'}}>
-                    <h3>You are being targeted by <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span></h3>
+                    <h3>{`${strings.results.results_screen1} `}<span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span></h3>
+                    {/* <h3>{`${strings.results.results_screen1} `}<span className='party' >TEST</span></h3> */}
                     {/* <h4 className='resultsSubHeader'>In total you've seen {userSeenSum} ads
                         of which {userSeenPartiesSum} ({partiesPercAmongAds}%) were political. <br/>
                         {party.count} ({partyPerc}%) were from <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span>.
                     </h4> */}
-                    <h4 className='resultsSubHeader'>In total you've seen {userSeenPartiesSum} political ads, of which
-                        {party.count} ({partyPerc}%) were from <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span>.
+                    <h4 className='resultsSubHeader'>{`${strings.results.results_screen2} `}{userSeenPartiesSum} {` ${strings.results.results_screen3} `}
+                        {party.count} ({partyPerc}%) {` ${strings.results.results_screen4} `} <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span>.
+                        {/* {30} ({5}%) {` ${strings.results.results_screen4} `} <span className='party'>TEST</span>. */}
                     </h4>
                   </div>
                 </div>
@@ -232,8 +234,8 @@ export default class PageRegister extends Component {
             { view === "display_parties" && this.state.userData && this.state.userData.advertisers &&
               <div style={{display: 'flex', alignItems: 'center', flexFlow: 'column nowrap'}}>
                 <footer>
-                  <span style={{marginRight: 20}}>Click a bar to see the ads you've seen from them &nbsp;&nbsp;&nbsp;|</span>
-                  <a className='link' target='_blank' href='https://whotargets.me/en/defining-political-ads/'>How did we calculate this?</a>
+                  <span style={{marginRight: 0}}>Click a bar to see the ads you've seen from them &nbsp;|</span>
+                  <a className='link' style={{marginLeft: 7}} target='_blank' href='https://whotargets.me/en/defining-political-ads/'>How did we calculate this?</a>
                 </footer>
                 <PartyChart
                   advertisers={parties}
@@ -282,18 +284,19 @@ export default class PageRegister extends Component {
       { view !== "delete_request" && view !== "data_deleted" && <Row style={{backgroundColor: 'white', minHeight: '120px', color: 'black', paddingTop: '20px'}}>
         <Col sm="1/2">
           <div className="statbox">
-            <Button style={{position: 'absolute', top: 5, left: 25}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party ? [party.partyDetails.party.toUpperCase(), userCountry] : [null, null])}>{strings.register.shareOnFacebook}</Button>
-            <Button style={{position: 'absolute', top: 5, left: 215}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(party ? [party.partyDetails.party.toUpperCase(), userCountry] : [null, null])} >{strings.register.shareOnTwitter}</Button>
-            <div style={{position: 'absolute', top: 20, left: 410, width: 380}}>
-              <span style={{fontWeight: 'bold', fontSize: '1.1rem'}}>{strings.register.share1}</span>
-              <span style={{fontSize: '1.1rem'}}>{strings.register.share2}</span>
+            <Button style={{position: 'absolute', top: 5, left: 15}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party ? [party.partyDetails.party.toUpperCase(), userCountry] : [null, null])}>{strings.register.shareOnFacebook}</Button>
+            <Button style={{position: 'absolute', top: 5, left: 190}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(party ? [party.partyDetails.party.toUpperCase(), userCountry] : [null, null])} >{strings.register.shareOnTwitter}</Button>
+            <div style={{position: 'absolute', left: 380, width: 380, paddingTop: '5px'}}>
+              <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '20px'}}>{strings.register.share1}</span>
+              <span style={{fontSize: '1.05rem'}}>{strings.register.share2}</span>
             </div>
           </div>
         </Col>
       </Row>}
 
-      <Row style={{textAlign: 'center', fontSize: '12px'}}>
-        <div style={{padding: '5px 15px 0px 15px'}}>
+      <Row style={{textAlign: 'center', fontSize: '10px', paddingLeft: '20px'}}>
+        <div style={{padding: '5px 15px 0px 15px',
+        lineHeight: `${strings.links.privacy.title.length+strings.links.terms.title.length+strings.results.uninstall.length < 110 ? '30px' : '15px'}`, textAlign: 'left'}}>
           <a href={strings.links.website.url} target='_blank' style={{color: 'white'}}> &#169; Who Targets Me? Ltd</a> &nbsp;|&nbsp;&nbsp;
           <a href={strings.links.privacy.url} target='_blank' style={{color: 'white'}}>{`${strings.links.privacy.title}`}</a>&nbsp;|&nbsp;&nbsp;
           <a href={strings.links.terms.url} target='_blank' style={{color: 'white'}}>{`${strings.links.terms.title}`}</a>&nbsp;|&nbsp;&nbsp;

@@ -792,9 +792,9 @@ const signupStages = [
   {
     component: <CountrySelector/>,
   },
-  {
-    component: <OxfordSurvey/>,
-  },
+  // {
+  //   component: <OxfordSurvey/>,
+  // },
   {
     component: <PostcodeSelector/>,
   },
@@ -810,9 +810,9 @@ const signupStages = [
   {
     component: <AttemptSignup/>,
   },
-  // {
-  //   component: <OxfordSurvey/>,
-  // },
+  {
+    component: <OxfordSurvey/>,
+  },
   {
     component: <PostSignupShare/>,
   }
