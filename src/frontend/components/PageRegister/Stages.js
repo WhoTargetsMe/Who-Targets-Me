@@ -254,6 +254,7 @@ class PostcodeSelector extends Component {
     const {back, next, signupState: {country = {}}} = this.props;
     const {inputValue, checkingPostcode, postcodeError} = this.state;
     const {countryCode} = country
+
     return (
       <span>
         <Container country={countryCode}>
@@ -323,13 +324,19 @@ class PostcodeSelector extends Component {
             const trimmedValue = inputValue.slice(0,inputValue.length-3)+'000';
             api.get('general/checkpostcode', {query: {countryCode, postcode: trimmedValue}})
               .then((response) => {
-                this.setState({checkingPostcode: false, postcodeError: false});
-                next({postcode: trimmedValue});
+                if (response.status >= 200 && response.status < 300){
+                  this.setState({checkingPostcode: false, postcodeError: false});
+                  next({postcode: trimmedValue});
+                } else {
+                  this.setState({checkingPostcode: false, postcodeError: true});
+                }
               })
               .catch(err => {
                 console.log('error postcode', err)
                 this.setState({checkingPostcode: false, postcodeError: true});
               })
+        } else {
+          this.setState({checkingPostcode: false, postcodeError: true});
         }
       })
       .catch(err => {
@@ -534,8 +541,11 @@ class AttemptSignup extends Component {
   register() {
     const {age, gender, postcode, country, political_affiliation} = this.props.signupState;
     const {next} = this.props;
+    let {survey} = this.props.signupState;
+    if (!survey) { survey = null; }
     this.setState({awaitingResponse: true, error: null});
-    api.post('user/create', {json: {age, gender, postcode, country: country.countryCode, political_affiliation}})
+    // console.log('api.post', age, gender, postcode, country, political_affiliation, survey)
+    api.post('user/create', {json: {age, gender, postcode, country: country.countryCode, political_affiliation, survey}})
       .then((response) => { // The rest of the validation is down to the server
         // console.log('user/create',response.jsonData.data.token)
         if(response.jsonData.errorMessage !== undefined) {
@@ -588,12 +598,31 @@ class OxfordSurvey extends Component {
       surveyPage: 0,
       inputCompleted: false,
       notFilled: [],
-      answers: []
+      answers: [],
+      survey: null,
+      surveyName: 'oxford2018',
     }
     this.nextPage = this.nextPage.bind(this);
     this.prevPage = this.prevPage.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
     this.handleSliderCheck = this.handleSliderCheck.bind(this);
+    this.getSurvey = this.getSurvey.bind(this);
+  }
+
+  componentDidMount(){
+    // this.getSurvey(this.state.surveyName)
+  }
+
+  getSurvey(survey) {
+    console.log("REQUESTING survey")
+    api.get('general/survey', {query: {survey}})
+      .then((response) => {
+        this.setState({survey: response.jsonData.data})
+        console.log('user data', response, response.jsonData)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 
   nextPage() {
@@ -689,9 +718,9 @@ class OxfordSurvey extends Component {
   }
 
   render(){
-    const {surveyPage, inputCompleted, notFilled, answers} = this.state;
+    const {surveyPage, inputCompleted, notFilled, answers, survey, surveyName} = this.state;
     const {back, next} = this.props;
-    let serAnswers = '';
+    let serAnswers = '' + surveyName + ':';
     answers.forEach(a => {
       serAnswers = serAnswers + a + ',';
     })
@@ -701,12 +730,12 @@ class OxfordSurvey extends Component {
         <Container survey country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}>
           <div className="fullwidth">
             {surveyPage === 0 && <OxfordSurvey0/>}
-            {surveyPage === 1 && <OxfordSurvey1 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers}/>}
-            {surveyPage === 2 && <OxfordSurvey2 notFilled={notFilled} handleCheck={this.handleSliderCheck} answers={answers}/>}
-            {surveyPage === 3 && <OxfordSurvey3 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers}/>}
-            {surveyPage === 4 && <OxfordSurvey4 notFilled={notFilled} handleCheck={this.handleSliderCheck} answers={answers}/>}
-            {surveyPage === 5 && <OxfordSurvey5 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers}/>}
-            {surveyPage === 6 && <OxfordSurvey6 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers}/>}
+            {surveyPage === 1 && <OxfordSurvey1 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers} survey={survey}/>}
+            {surveyPage === 2 && <OxfordSurvey2 notFilled={notFilled} handleCheck={this.handleSliderCheck} answers={answers} survey={survey}/>}
+            {surveyPage === 3 && <OxfordSurvey3 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers} survey={survey}/>}
+            {surveyPage === 4 && <OxfordSurvey4 notFilled={notFilled} handleCheck={this.handleSliderCheck} answers={answers} survey={survey}/>}
+            {surveyPage === 5 && <OxfordSurvey5 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers} survey={survey}/>}
+            {surveyPage === 6 && <OxfordSurvey6 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers} survey={survey}/>}
           </div>
           <div className="fullwidth">
             <InputGroup contiguous style={{width: '300px', display: 'flex', flexFlow: 'row nowrap', justifyContent: 'center'}}>
@@ -808,10 +837,10 @@ const signupStages = [
     component: <PoliticalAffiliationSelector/>,
   },
   {
-    component: <AttemptSignup/>,
+    component: <OxfordSurvey/>,
   },
   {
-    component: <OxfordSurvey/>,
+    component: <AttemptSignup/>,
   },
   {
     component: <PostSignupShare/>,

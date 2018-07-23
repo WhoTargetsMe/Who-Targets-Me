@@ -186,7 +186,7 @@ export default class PageRegister extends Component {
         partyPercAmongParties = ((party.count/userSeenPartiesSum)*100).toFixed(0)
       }
     }
-    
+
     return (
       <div className="PageResults">
         <Row>
@@ -284,8 +284,8 @@ export default class PageRegister extends Component {
       { view !== "delete_request" && view !== "data_deleted" && <Row style={{backgroundColor: 'white', minHeight: '120px', color: 'black', paddingTop: '20px'}}>
         <Col sm="1/2">
           <div className="statbox">
-            <Button style={{position: 'absolute', top: 5, left: 15}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party ? [party.partyDetails.party.toUpperCase(), userCountry] : [null, null])}>{strings.register.shareOnFacebook}</Button>
-            <Button style={{position: 'absolute', top: 5, left: 190}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(party ? [party.partyDetails.party.toUpperCase(), userCountry] : [null, null])} >{strings.register.shareOnTwitter}</Button>
+            <Button style={{position: 'absolute', top: 5, left: 15}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties] : [null, null, null])}>{strings.register.shareOnFacebook}</Button>
+            <Button style={{position: 'absolute', top: 5, left: 190}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties] : [null, null, null])} >{strings.register.shareOnTwitter}</Button>
             <div style={{position: 'absolute', left: 380, width: 380, paddingTop: '5px'}}>
               <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '20px'}}>{strings.register.share1}</span>
               <span style={{fontSize: '1.05rem'}}>{strings.register.share2}</span>
@@ -331,13 +331,13 @@ export default class PageRegister extends Component {
 } // End of PageResults class
 
 
-const shareLinkFB = ([party, userCountry]) => {
+const shareLinkFB = ([party, userCountry, partyPercAmongParties]) => {
   let title = ''
   if (party) {
     if (userCountry === "BR") {
-      title = strings.results.shareFacebook1 + party + strings.results.shareFacebook2BR;
+      title = partyPercAmongParties + strings.results.shareFacebook1 + party + strings.results.shareFacebook2BR;
     } else {
-      title = strings.results.shareFacebook1 + party + strings.results.shareFacebook2;
+      title = partyPercAmongParties + strings.results.shareFacebook1 + party + strings.results.shareFacebook2;
     }
   } else {
     title = strings.register.shareFacebook;
@@ -345,13 +345,13 @@ const shareLinkFB = ([party, userCountry]) => {
   return "http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwhotargets.me&title=" + encodeURIComponent(title) ;
 }
 
-const shareLinkTwitter = ([party, userCountry]) => {
+const shareLinkTwitter = ([party, userCountry, partyPercAmongParties]) => {
   let title = ''
   if (party) {
     if (userCountry === "BR") {
-      title = strings.results.shareTwitter1 + party + strings.results.shareTwitter2BR;
+      title = partyPercAmongParties + strings.results.shareTwitter1 + party + strings.results.shareTwitter2BR;
     } else {
-      title = strings.results.shareTwitter1 + party + strings.results.shareTwitter2;
+      title = partyPercAmongParties + strings.results.shareTwitter1 + party + strings.results.shareTwitter2;
     }
   } else {
     title = strings.register.shareTwitter;

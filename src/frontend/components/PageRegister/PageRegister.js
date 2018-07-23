@@ -23,7 +23,7 @@ export default class PageRegister extends Component {
     let {signupStage} = this.state;
     // Skip Oxford survey if not from US
     const usSignup = (this.state.country && this.state.country.countryCode === "US") && strings.getLanguage() === "en";
-    if (signupStage === 8 && !usSignup) {
+    if (signupStage === 7 && !usSignup) {
     // if (signupStage === 4 && !usSignup) { //test version
       signupStage += 1
     }
@@ -53,7 +53,12 @@ export default class PageRegister extends Component {
   }
 
   next(stateChange = {}) { // Change which stage is shown, updating the state
-    const {signupStage} = this.state;
+    let {signupStage} = this.state;
+    const usSignup = (this.state.country && this.state.country.countryCode === "US") && strings.getLanguage() === "en";
+    if (signupStage === 7 && !usSignup) {
+    // if (signupStage === 4 && !usSignup) { //test version
+      signupStage += 1
+    }
     const {registrationComplete} = this.props;
     // console.log("NEXT, signupStage to be increased", signupStage, stateChange)
     if(signupStage + 1 >= signupStages.length) {
