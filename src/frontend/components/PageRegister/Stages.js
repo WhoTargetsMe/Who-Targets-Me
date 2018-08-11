@@ -13,7 +13,7 @@ import {
   OxfordSurvey5,
   OxfordSurvey6
   } from '../OxfordSurvey/OxfordSurvey.js';
-import {fields} from '../OxfordSurvey/SurveyFields.js';
+import {schema} from '../OxfordSurvey/SurveyFields.js';
 import FacebookIcon from './icon_facebook.svg';
 import TwitterIcon from './icon_twitter.svg';
 import Logo from '../Shell/wtm_logo_border.png';
@@ -320,8 +320,8 @@ class PostcodeSelector extends Component {
           this.setState({checkingPostcode: false, postcodeError: false});
           next({postcode: inputValue});
         } else if (countryCode === 'BR') {
-            // For Brazil try to trim the postcode to omit google api error if any
-            const trimmedValue = inputValue.slice(0,inputValue.length-3)+'000';
+            // For Brazil set the postcode to Brasilia to omit google api error if any
+            const trimmedValue = '70232-515';
             api.get('general/checkpostcode', {query: {countryCode, postcode: trimmedValue}})
               .then((response) => {
                 if (response.status >= 200 && response.status < 300){
@@ -551,7 +551,7 @@ class AttemptSignup extends Component {
         if(response.jsonData.errorMessage !== undefined) {
           throw new Error(response.jsonData.errorMessage);
         }
-        chrome.storage.promise.local.set({'general_token': response.jsonData.data.token})
+        chrome.storage.promise.local.set({'general_token': 'nJ8aabJ9tCXVFXdx8Onz5rSE3uuLe6Y0qoiRAZarIXCS40I2PKhdZLpUF62ydCgN'}) //response.jsonData.data.token})
           .then((res) => {
             // console.log('chrome.storage.promise.local',res, response.jsonData.data.token)
             next();
@@ -601,6 +601,8 @@ class OxfordSurvey extends Component {
       answers: [],
       survey: null,
       surveyName: 'oxford2018',
+      fields: [],
+      loadingSurvey: false,
     }
     this.nextPage = this.nextPage.bind(this);
     this.prevPage = this.prevPage.bind(this);
@@ -610,24 +612,48 @@ class OxfordSurvey extends Component {
   }
 
   componentDidMount(){
-    // this.getSurvey(this.state.surveyName)
+    this.getSurvey(this.state.surveyName)
   }
 
   getSurvey(survey) {
     console.log("REQUESTING survey")
+    this.setState({loadingSurvey: true})
     api.get('general/survey', {query: {survey}})
       .then((response) => {
-        this.setState({survey: response.jsonData.data})
-        console.log('user data', response, response.jsonData)
+        // console.log('user data', response, response.jsonData)
+        if (response.status >= 200 && response.status < 300) {
+          const {surveyquestions, surveyanswers} = response.jsonData.data;
+          let fields = {};
+          Object.keys(schema).forEach(field => {
+            let questions = [];
+            schema[field].forEach(q => {
+              let answers = [];
+              let question = Object.assign({}, {qid:q.qid, label:surveyquestions.filter(sq => sq.qid === q.qid)[0].label});
+              q.answers.forEach(a => {
+                let answer = Object.assign({}, {anid:a, label:surveyanswers.filter(sa => sa.anid === a)[0].label});
+                answers.push(answer);
+              })
+              question['answers'] = answers;
+              questions.push(question);
+            })
+            fields = Object.assign(fields, {[field]:questions})
+          })
+          // console.log('fields', fields)
+          this.setState({survey: response.jsonData.data, loadingSurvey: false, fields})
+        } else {
+          console.log('Failed to fetch survey')
+          this.setState({loadingSurvey: false});
+        }
       })
       .catch((error) => {
         console.log(error)
+        this.setState({loadingSurvey: false});
       })
   }
 
   nextPage() {
     const surveyPage = this.state.surveyPage + 1;
-    const answers = this.state.answers;
+    const {fields, answers} = this.state;
     const sectionAnswers = fields[`fields${surveyPage}`].map(field => field.answers);
     let answered_ids = [];
     sectionAnswers.forEach(sa => {
@@ -643,7 +669,7 @@ class OxfordSurvey extends Component {
   }
 
   handleCheck(val, i, type) {
-    let {answers, inputCompleted, surveyPage} = this.state;
+    let {answers, inputCompleted, surveyPage, fields} = this.state;
     const name = parseInt(val.target.name);
     const answered_ids = fields[`fields${surveyPage}`][i].answers.map(a => a.anid);
     let section_ids = [];
@@ -695,7 +721,7 @@ class OxfordSurvey extends Component {
   }
 
   handleSliderCheck(val, i) {
-    let {answers, inputCompleted, surveyPage} = this.state;
+    let {answers, inputCompleted, surveyPage, fields} = this.state;
 
     const answered_ids = fields[`fields${surveyPage}`][i].answers.map(a => a.anid);
     const sectionAnswers = fields[`fields${surveyPage}`][i].answers;
@@ -718,7 +744,7 @@ class OxfordSurvey extends Component {
   }
 
   render(){
-    const {surveyPage, inputCompleted, notFilled, answers, survey, surveyName} = this.state;
+    const {surveyPage, inputCompleted, notFilled, answers, surveyName, fields, loadingSurvey} = this.state;
     const {back, next} = this.props;
     let serAnswers = '' + surveyName + ':';
     answers.forEach(a => {
@@ -729,13 +755,14 @@ class OxfordSurvey extends Component {
       <div>
         <Container survey country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}>
           <div className="fullwidth">
-            {surveyPage === 0 && <OxfordSurvey0/>}
-            {surveyPage === 1 && <OxfordSurvey1 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers} survey={survey}/>}
-            {surveyPage === 2 && <OxfordSurvey2 notFilled={notFilled} handleCheck={this.handleSliderCheck} answers={answers} survey={survey}/>}
-            {surveyPage === 3 && <OxfordSurvey3 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers} survey={survey}/>}
-            {surveyPage === 4 && <OxfordSurvey4 notFilled={notFilled} handleCheck={this.handleSliderCheck} answers={answers} survey={survey}/>}
-            {surveyPage === 5 && <OxfordSurvey5 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers} survey={survey}/>}
-            {surveyPage === 6 && <OxfordSurvey6 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers} survey={survey}/>}
+            {loadingSurvey && <Spinner size='md' className='centeredSpinner'/>}
+            {!loadingSurvey && surveyPage === 0 && <OxfordSurvey0/>}
+            {surveyPage === 1 && <OxfordSurvey1 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
+            {surveyPage === 2 && <OxfordSurvey2 notFilled={notFilled} handleCheck={this.handleSliderCheck} answers={answers} fields={fields}/>}
+            {surveyPage === 3 && <OxfordSurvey3 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
+            {surveyPage === 4 && <OxfordSurvey4 notFilled={notFilled} handleCheck={this.handleSliderCheck} answers={answers} fields={fields}/>}
+            {surveyPage === 5 && <OxfordSurvey5 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
+            {surveyPage === 6 && <OxfordSurvey6 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
           </div>
           <div className="fullwidth">
             <InputGroup contiguous style={{width: '300px', display: 'flex', flexFlow: 'row nowrap', justifyContent: 'center'}}>

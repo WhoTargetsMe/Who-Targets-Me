@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Col, Row, Spinner } from 'elemental';
 import './PageResults.css';
 
 const reduFunc = (a, b) => a + b;
@@ -41,7 +42,11 @@ export const PartyChart = (props) => {
     <div className='container'>
       <div className='chart'>
         {partiesDisplay.map((elt, i) =>
-          <div key={`bar-${i}`} className='bar' style={{height: elt.height, backgroundColor: elt.color}}></div>
+          <div key={`bar-${i}`}
+          className='bar'
+          style={{height: elt.height, backgroundColor: elt.color}}
+          onClick={() => props.showBarInfo(elt.advertiserName)}
+          ></div>
         )}
       </div>
       <div className='labels'>
@@ -57,35 +62,104 @@ export const PartyChart = (props) => {
   )
 }
 
-const PartyAds = () => {
-  return(
-    <div className='box'>
-      <img src="https://whotargets.me/wp-content/uploads/2017/04/logo-small-3.png" alt=""/>
-      <h3>These are the 4 ads you've seen from <span className='party'>FDP</span></h3>
+export const PartyAds = (props) => {
+  // console.log('PartyAds props', props)
+  const count = props.advertisers.filter(advr => advr.advertiserName === props.party)[0].count;
+  let disabledPrev = false, disabledNext = false;
+  const partyIndex = props.advertisers.map(advr => advr.advertiserName).indexOf(props.party);
+  if (partyIndex === 0) { disabledPrev = true }
+  else if (partyIndex === props.advertisers.length - 1) { disabledNext = true }
 
-      <table>
-        <tr>
-          <th>Page</th>
-          <th>Text</th>
-          <th>Seen</th>
-          <th>Reason</th>
-        </tr>
-        <tr>
-          <td className="link">Theresa May</td>
-          <td className="text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consectetur dolorem deleniti autem delectus fuga animi assumenda praesentium neque dicta unde?
-            <span className='link'>View ad</span></td>
-          <td>24/03/18 at 11:56am</td>
-          <td className="link">View</td>
-        </tr>
-        <tr>
-          <td className="link">Conservatives</td>
-          <td className="text">Consectetur dolorem deleniti autem delectus fuga animi assumenda praesentium neque dicta unde?
-          <span className='link'>View ad</span>
-        </td>
-          <td>24/03/18 at 11:56am</td>
-          <td className="link">View</td>
-        </tr>
-      </table>
+  let showTargetingPage = false;
+  let message = "Show";
+  if (props.postId && props.rationales[props.postId].rationales.length > 0) {
+    showTargetingPage = true;
+    message = props.rationales[props.postId].noRationaleMessage;
+  }
+
+  return(
+    <div>
+      <div style={{marginBottom: 5}}>
+        <h3 style={{marginLeft: 20, marginBottom: 3}}>{count} ads from <span className='party'>{`${props.ads[0].advertiserName} (${props.party})`}</span></h3>
+        <span className='link link_underline' style={{marginLeft: 20}} onClick={props.hideBarInfo}>Back to stats</span>
+        <span style={{color: '#0A4496'}} >&nbsp;|&nbsp;</span>
+        <span className={`link link_underline ${disabledPrev ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('prev')}>Previous advertiser</span>
+        <span style={{color: '#0A4496'}}>&nbsp;|&nbsp;</span>
+        <span className={`link link_underline ${disabledNext ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('next')}>Next advertiser</span>
+      </div>
+
+      {!props.showingTargeting && !showTargetingPage ?
+        <div className='boxNoFlex'>
+          <Row className='headerRow'>
+            <Col sm="4/20" className='colHeader'>Page</Col>
+            <Col sm="8/20" className='colHeader'>Text</Col>
+            <Col sm="3/20" className='colHeader'>Seen</Col>
+            <Col sm="3/20" className='colHeader'>Targeting</Col>
+          </Row>
+          {props.ads.map((ad, j) => {
+            const displayTime = ad.createdAt.slice(8,10) + '/' + ad.createdAt.slice(5,7) + '/' + ad.createdAt.slice(0,4);
+            return (
+              <Row key={`tablerow-${j}`}>
+                <Col sm="4/20" className='adCol'>
+                  <a href={`https://facebook.com/${ad.postId}`} className='link'>{ad.advertiserName}</a>
+                </Col>
+                <Col sm="8/20" className="text adCol">
+                  {ad.text.map((t,i) => <p key={`txt-${i}`}>{t.length > 120 ? t.slice(0,120)+'...' : t}</p>)}
+                  <a href={ad.url} className='link'>View ad</a>
+                </Col>
+                <Col sm="3/20" className='adCol'>{displayTime}</Col>
+                <Col sm="3/20" className='adCol'>
+                  <span className="link" onClick={() => props.showTargeting(ad.postId)}>{message}</span>
+                </Col>
+              </Row>
+            )}
+          )}
+      </div> :
+      <RationalesView
+        rationales={props.rationales}
+        ads={props.ads}
+        party={props.party}
+        hideTargeting={props.hideTargeting}
+        postId={props.postId}
+      />
+    }
+    </div>
+  )
+}
+
+export const RationalesView = (props) => {
+  // console.log('RationalesView props', props)
+
+  const ad = props.ads.filter(ad => ad.party === props.party)[0];
+  const displayTime = ad.createdAt.slice(8,10) + '/' + ad.createdAt.slice(5,7) + '/' + ad.createdAt.slice(0,4);
+  return (
+    <div className='boxNoFlex whiteBackground'>
+      <Row className='headerRow'>
+        <Col sm="4/20" className='colHeader'>Page</Col>
+        <Col sm="8/20" className='colHeader'>Text</Col>
+        <Col sm="3/20" className='colHeader'>Seen</Col>
+        <Col sm="3/20" className='colHeader'>Targeting</Col>
+      </Row>
+
+      <Row>
+        <Col sm="4/20" className='adCol'>
+          <a href={`https://facebook.com/${props.postId}`} className='link'>{ad.advertiserName}</a>
+        </Col>
+        <Col sm="8/20" className="text adCol">
+          {ad.text.map((t,i) => <p key={`txt-${i}`}>{t}</p>)}
+          <a href={ad.url} className='link'>View ad</a></Col>
+        <Col sm="3/20" className='adCol'>{displayTime}</Col>
+        <Col sm="3/20" className='adCol'>
+          <span className="link" onClick={props.hideTargeting}>Hide</span>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col sm="1">
+          <div className='targetingHeader'>Targeting information (from Facebook)</div>
+          <div>{props.rationales[props.postId].rationales}</div>
+        </Col>
+      </Row>
     </div>
   )
 }

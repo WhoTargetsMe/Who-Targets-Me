@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { sprintf } from 'sprintf-js';
-import { Form, FormField, FormInput, FormSelect, Col, Row, Button, InputGroup } from 'elemental'
+import { Form, FormField, FormInput, FormSelect, Col, Row, Button, InputGroup, Spinner } from 'elemental';
 import axios from 'axios';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts'
 import strings, {changeLocale} from '../../helpers/localization.js';
-import {availableCountries, availableParties, availablePages} from '../../helpers/parties.js';
+import {availableCountries, availableParties} from '../../helpers/parties.js'; //, availablePages
 
-import { PartyChart } from './TargetingResults.js';
+import { PartyChart, PartyAds, RationalesView } from './TargetingResults.js';
 import { DeleteRequestPage } from './DeleteRequestPage.js';
 import countries from '../PageRegister/countries.js';
 import IMGLogo from '../Shell/logo.svg';
@@ -15,20 +15,32 @@ import IMGFirstPlace from './firstplace.png';
 
 import './PageResults.css';
 
-//console.log('availableCountries, availableParties', availableCountries, availableParties, availablePages)
-export default class PageRegister extends Component {
+export default class PageResults extends Component {
 
   constructor() {
     super()
     this.state = {
       userData: null,
       view: "no_country",
-      currentView: ""
+      currentView: "",
+      ads: null,
+      showAds: false,
+      party: null,
+      loadingAds: false,
+      showTargeting: false,
+      rationales: [],
+      loadingRationales: false,
+      postId: null,
     }
     this.updateUser = this.updateUser.bind(this);
     this.requestDeleteData = this.requestDeleteData.bind(this);
     this.confirmDeleteData = this.confirmDeleteData.bind(this);
     this.cancelDeleteRequestPage = this.cancelDeleteRequestPage.bind(this);
+    this.showBarInfo = this.showBarInfo.bind(this);
+    this.hideBarInfo = this.hideBarInfo.bind(this);
+    this.showTargetingFunc = this.showTargetingFunc.bind(this);
+    this.hideTargetingFunc = this.hideTargetingFunc.bind(this);
+    this.showAdvr = this.showAdvr.bind(this);
   }
 
   refreshUserData() {
@@ -79,8 +91,98 @@ export default class PageRegister extends Component {
     this.setState({view: currentView})
   }
 
-  render() {
+  showBarInfo(party) {
+    if (!this.state.ads) {
+      this.setState({loadingAds: true});
+      this.props.api.get('user/ads')
+        .then((response) => {
+          // console.log('response', response)
+          if (response.status >= 200 && response.status < 300) {
+            this.setState({ads: response.jsonData.data.result, showAds: true, party, loadingAds: false})
+            // console.log('got ads', party, response.jsonData.data.result)
+          } else {
+            throw new Error('something went wrong!');
+            this.setState({loadingAds: false});
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          this.setState({loadingAds: false});
+        })
+    } else {
+      this.setState({showAds: true, loadingAds: false, party})
+    }
+  }
 
+  hideBarInfo() {
+    this.setState({showAds: false, showTargeting: false, party: null})
+  }
+
+  showTargetingFunc(postId) {
+    if (!Object.keys(this.state.rationales).includes(postId)) {
+      this.setState({loadingRationales: true});
+      this.props.api.get(`user/rationales?postId=${postId}`)
+        .then((response) => {
+          // console.log('response rationales', response)
+          if (response.status >= 200 && response.status < 300) {
+            let {rationales} = this.state;
+            let rationalesFetched = response.jsonData.data.rationales[0].map((rationale, i) => {
+              let html = JSON.parse(rationale.html.slice(9));
+              if(!html.jsmods) {
+                return null;
+              }
+              const stopWords = ['Close', 'Close', 'About this Facebook ad']
+              let text = html.jsmods.markup[0][1].__html;
+              text = text.slice(0,text.indexOf('gear'));
+              stopWords.forEach(w => text = text.replace(w, ''));
+              return <Rationale content={{__html: text}} />;
+            });
+            rationalesFetched = rationalesFetched.filter(c => c);
+
+            const showTargeting = rationalesFetched.length > 0;
+            let noRationaleMessage = "Show";
+            if (!showTargeting) {
+              noRationaleMessage: "Not available";
+            }
+            //for now will only show first rationale as they should be the same for same user for same postId
+            rationales = Object.assign(rationales, {[postId]: {rationales: rationalesFetched[0], noRationaleMessage}})
+            this.setState({rationales, postId, showTargeting, loadingRationales: false})
+
+          } else {
+            throw new Error('cannot fetch rationales!');
+            this.setState({loadingRationales: false, postId: null});
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          this.setState({loadingRationales: false, postId: null});
+        })
+    } else {
+      this.setState({postId, showTargeting: true, loadingRationales: false})
+    }
+  }
+
+  hideTargetingFunc() {
+    this.setState({showTargeting: false, postId: null})
+  }
+
+  showAdvr(direction){
+    if (!this.state.userData || !this.state.party) { return; }
+    let parties = this.state.userData.advertisers.map(advr => Object.assign({}, {party: advr.party, count: advr.count}));
+    parties = parties.sort((a,b) => b.count - a.count).map(p => p.party);
+    let partyIndex = parties.indexOf(this.state.party);
+    if (direction === 'prev') {
+      if (partyIndex === 0) { return; }
+      partyIndex -= 1;
+    }
+    else if (direction === 'next') {
+      if (partyIndex === parties.length - 1) { return; }
+      partyIndex += 1;
+    }
+    this.setState({party: parties[partyIndex], showTargeting: false});
+  }
+
+  render() {
     if(!this.state.userData) {
       return (
         <div className="middle-outer" style={{backgroundColor: '#2d2d2d', color: 'white'}}>
@@ -111,15 +213,11 @@ export default class PageRegister extends Component {
     // if there is at least one advertiser and country labels are available
     if (advertisers.length > 0 && availableCountries.map(c => c.id).includes(userCountry)){
       advertisers.forEach(advr => {
-        const match = availablePages[userCountry].filter(p => advr.advertiserId === p.pageId)
-        // console.log('match', match, advr)
-        if (match.length > 0) {
-          const advr_object = Object.assign({},
-            advr, {
-            partyDetails: availableParties[userCountry].filter(p => match[0].entityId === p.entityId)[0],
-          })
-          parties.push(advr_object)
-        }
+        const advr_object = Object.assign({},
+          advr, {
+          partyDetails: availableParties[userCountry].filter(p => advr.party.toLowerCase() === p.shortName.toLowerCase())[0],
+        })
+        parties.push(advr_object);
       })
     }
     // console.log('PARTIES', parties)
@@ -210,15 +308,9 @@ export default class PageRegister extends Component {
                 view === "display_parties" &&
                 <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: '25px'}}>
                   <div style={{flex: 1, minHeight: '40px'}}>
-                    <h3>{`${strings.results.results_screen1} `}<span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span></h3>
-                    {/* <h3>{`${strings.results.results_screen1} `}<span className='party' >TEST</span></h3> */}
-                    {/* <h4 className='resultsSubHeader'>In total you've seen {userSeenSum} ads
-                        of which {userSeenPartiesSum} ({partiesPercAmongAds}%) were political. <br/>
-                        {party.count} ({partyPerc}%) were from <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span>.
-                    </h4> */}
+                    <h3 className='mainHeader'>{`${strings.results.results_screen1} `}<span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span></h3>
                     <h4 className='resultsSubHeader'>{`${strings.results.results_screen2} `}{userSeenPartiesSum} {` ${strings.results.results_screen3} `}
                         {party.count} ({partyPerc}%) {` ${strings.results.results_screen4} `} <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span>.
-                        {/* {30} ({5}%) {` ${strings.results.results_screen4} `} <span className='party'>TEST</span>. */}
                     </h4>
                   </div>
                 </div>
@@ -230,8 +322,9 @@ export default class PageRegister extends Component {
 
         <Row>
         <Col sm="1">
-          <div className="statbox" style={{backgroundColor: '#f2f2f2', minHeight: '280px'}}>
+          <div className="statbox mainstatbox">
             { view === "display_parties" && this.state.userData && this.state.userData.advertisers &&
+              !this.state.showAds && !this.state.loadingAds &&
               <div style={{display: 'flex', alignItems: 'center', flexFlow: 'column nowrap'}}>
                 <footer>
                   <span style={{marginRight: 0}}>Click a bar to see the ads you've seen from them &nbsp;|</span>
@@ -241,8 +334,28 @@ export default class PageRegister extends Component {
                   advertisers={parties}
                   userSeenSum={userSeenPartiesSum}
                   displayLabels={displayLabels}
+                  showBarInfo={this.showBarInfo}
                   />
 
+              </div>
+            }
+            { (this.state.loadingAds || this.state.loadingRationales) && <Spinner size="md" className='centeredSpinner'/>}
+            { view === "display_parties" && this.state.userData && this.state.userData.advertisers &&
+              this.state.showAds && !this.state.loadingRationales &&
+              <div style={{display: 'flex', alignItems: 'center', flexFlow: 'column nowrap'}}>
+                <PartyAds
+                  advertisers={parties}
+                  displayLabels={displayLabels}
+                  party={this.state.party}
+                  ads={this.state.ads.filter(ad => ad.party === this.state.party)}
+                  hideBarInfo={this.hideBarInfo}
+                  postId={this.state.postId}
+                  showTargeting={this.showTargetingFunc}
+                  hideTargeting={this.hideTargetingFunc}
+                  showingTargeting={this.state.showTargeting}
+                  rationales={this.state.rationales}
+                  showAdvr={this.showAdvr}
+                  />
               </div>
             }
             { view === "no_party" &&
@@ -363,6 +476,14 @@ const shareLinkTwitter = ([party, userCountry, partyPercAmongParties]) => {
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
+}
+
+const Rationale = (props) => {
+    return (
+      <div style={{position: 'relative'}}>
+        <div className="rationale" dangerouslySetInnerHTML={props.content} />
+      </div>
+    )
 }
 
 const politicalParties = [{label: "Alliance - Alliance Party of Northern Ireland",value: "party:103"},{label: "Christian Peoples Alliance",value: "party:79"},{label: "Conservative and Unionist Party",value: "party:52"},{label: "Democratic Unionist Party - D.U.P.",value: "party:70"},{label: "Green Party",value: "party:63"},{label: "Labour and Co-operative Party",value: "joint-party:53-119"},{label: "Labour Party",value: "party:53"},{label: "Liberal Democrats",value: "party:90"},{label: "Plaid Cymru - The Party of Wales",value: "party:77"},{label: "Scottish National Party (SNP)",value: "party:102"},{label: "SDLP (Social Democratic & Labour Party)",value: "party:55"},{label: "Sinn Fein",value: "party:39"},{label: "The Yorkshire Party",value: "party:2055"},{label: "UK Independence Party (UKIP)",value: "party:85"},{label: "-------- Other Parties --------",value: "NA",disabled: true},{label: "Independent / Other",value: "independent"},{label: "Alliance For Green Socialism",value: "party:67"},{label: "Animal Welfare Party",value: "party:616"},{label: "Apolitical Democrats",value: "party:845"},{label: "Ashfield Independents",value: "party:3902"},{label: "Better for Bradford",value: "party:4230"},{label: "Blue Revolution",value: "party:6342"},{label: "British National Party",value: "party:3960"},{label: "Christian Party",value: "party:2893"},{label: "Church of the Militant Elvis",value: "party:843"},{label: "Citizens Independent Social Thought Alliance",value: "party:6335"},{label: "Common Good",value: "party:375"},{label: "Communist League Election Campaign",value: "party:823"},{label: "Compass Party",value: "party:4089"},{label: "Concordia",value: "party:3983"},{label: "Demos Direct Initiative Party",value: "party:6318"},{label: "English Democrats",value: "party:17"},{label: "Friends Party",value: "party:6372"},{label: "Greater Manchester Homeless Voice",value: "party:6409"},{label: "Green Party",value: "party:305"},{label: "Humanity",value: "party:834"},{label: "Independent Save Withybush Save Lives",value: "party:2648"},{label: "Independent Sovereign Democratic Britain",value: "party:2575"},{label: "Libertarian Party",value: "party:684"},{label: "Money Free Party",value: "party:6387"},{label: "Movement for Active Democracy (M.A.D.)",value: "party:481"},{label: "National Health Action Party",value: "party:1931"},{label: "North of England Community Alliance",value: "party:5297"},{label: "Official Monster Raving Loony Party",value: "party:66"},{label: "Open Borders Party",value: "party:2803"},{label: "Patria",value: "party:1969"},{label: "People Before Profit Alliance",value: "party:773"},{label: "Pirate Party UK",value: "party:770"},{label: "Populist Party",value: "party:3914"},{label: "Rebooting Democracy",value: "party:2674"},{label: "Scotland's Independence Referendum Party",value: "party:6356"},{label: "Scottish Green Party",value: "party:130"},{label: "Social Democratic Party",value: "party:243"},{label: "Socialist Labour Party",value: "party:73"},{label: "Something New",value: "party:2486"},{label: "Southampton Independents",value: "party:6364"},{label: "Southend Independent Association",value: "party:6317"},{label: "Space Navies Party",value: "party:549"},{label: "Speaker seeking re-election",value: "ynmp-party:12522"},{label: "The Just Political Party",value: "party:2520"},{label: "The Justice & Anti-Corruption Party",value: "party:865"},{label: "The Liberal Party",value: "party:54"},{label: "The New Society of Worth",value: "party:2714"},{label: "The North East Party",value: "party:2303"},{label: "The Peace Party - Non-violence, Justice, Environment",value: "party:133"},{label: "The Radical Party",value: "party:2652"},{label: "The Realists' Party",value: "party:1871"},{label: "The Socialist Party of Great Britain",value: "party:110"},{label: "The Workers Party",value: "party:127"},{label: "Traditional Unionist Voice - TUV",value: "party:680"},{label: "Ulster Unionist Party",value: "party:83"},{label: "War Veteran's Pro-Traditional Family Party",value: "party:488"},{label: "Wessex Regionalists",value: "party:95"},{label: "Women's Equality Party",value: "party:2755"},{label: "Workers Revolutionary Party",value: "party:184"},{label: "Young People's Party YPP",value: "party:1912"}

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import strings from '../../helpers/localization.js';
 import {Button, InputGroup, FormInput, FormField, FormSelect, FormRow, Radio, Checkbox, Spinner, Row, Card, Col} from 'elemental';
-import {fields} from './SurveyFields.js';
 
 export const OxfordSurvey0 = (props) => {
 
@@ -18,6 +17,7 @@ export const OxfordSurvey0 = (props) => {
 }
 
 export const OxfordSurvey1 = (props) => {
+  const {fields} = props;
   return(
     <div style={{marginTop: '90px'}}>
       <h4>Section 1: Your political views and voting</h4>
@@ -43,6 +43,7 @@ export const OxfordSurvey1 = (props) => {
   )
 }
 export const OxfordSurvey2 = (props) => {
+  const {fields} = props;
   let answered_ids_0 = fields[`fields${2}`][0].answers.map(a => a.anid);
   let val_0 = props.answers.filter(a => answered_ids_0.includes(a));
   if (val_0.length > 0) { val_0 = parseInt(val_0[0]) }
@@ -121,7 +122,7 @@ export const OxfordSurvey2 = (props) => {
 
 // New questions added after Section 1
 export const OxfordSurvey3 = (props) => {
-
+  const {fields} = props;
   return(
     <div style={{marginTop: '90px'}}>
       <h4>Section 1: Optional questions (multiple choice)</h4>
@@ -152,6 +153,7 @@ export const OxfordSurvey3 = (props) => {
 // New questions added after Section 1
 // SLIDER
 export const OxfordSurvey4 = (props) => {
+  const {fields} = props;
   let answered_ids_0 = fields[`fields${4}`][0].answers.map(a => a.anid);
   let val_0 = props.answers.filter(a => answered_ids_0.includes(a));
   if (val_0.length > 0) { val_0 = parseInt(val_0[0]) }
@@ -243,7 +245,7 @@ export const OxfordSurvey4 = (props) => {
 }
 
 export const OxfordSurvey5 = (props) => {
-
+  const {fields} = props;
   return(
     <div style={{marginTop: '90px'}}>
       <h4>Section 2: About you</h4>
@@ -271,7 +273,7 @@ export const OxfordSurvey5 = (props) => {
 }
 
 export const OxfordSurvey6 = (props) => {
-
+  const {fields} = props;
   return(
     <div style={{marginTop: '90px'}}>
       <h4>Section 3: Social media use</h4>

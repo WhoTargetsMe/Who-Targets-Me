@@ -6,6 +6,7 @@ const languages = [
     {value: "hu", label: "Magyar"},
     {value: "lv", label: "Latviešu"},
     {value: "ru", label: "Русский"},
-    {value: "pt", label: "Português"}
+    {value: "pt", label: "Português"},
+    {value: "se", label: "Svenska"}
   ]
   export default languages;
