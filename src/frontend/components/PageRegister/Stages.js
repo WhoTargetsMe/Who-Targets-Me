@@ -551,7 +551,7 @@ class AttemptSignup extends Component {
         if(response.jsonData.errorMessage !== undefined) {
           throw new Error(response.jsonData.errorMessage);
         }
-        chrome.storage.promise.local.set({'general_token': 'nJ8aabJ9tCXVFXdx8Onz5rSE3uuLe6Y0qoiRAZarIXCS40I2PKhdZLpUF62ydCgN'}) //response.jsonData.data.token})
+        chrome.storage.promise.local.set({'general_token': response.jsonData.data.token})
           .then((res) => {
             // console.log('chrome.storage.promise.local',res, response.jsonData.data.token)
             next();
