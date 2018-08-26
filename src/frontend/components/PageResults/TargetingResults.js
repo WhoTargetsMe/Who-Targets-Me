@@ -66,7 +66,9 @@ export const PartyAds = (props) => {
   // console.log('PartyAds props', props)
   const count = props.advertisers.filter(advr => advr.advertiserName === props.party)[0].count;
   let disabledPrev = false, disabledNext = false;
-  const partyIndex = props.advertisers.map(advr => advr.advertiserName).indexOf(props.party);
+  let parties = props.advertisers.map(advr => Object.assign({}, {party: advr.advertiserName, count: parseInt(advr.count)}));
+  parties = parties.sort((a,b) => b.count - a.count).map(p => p.party);
+  const partyIndex = parties.indexOf(props.party);
   if (partyIndex === 0) { disabledPrev = true }
   else if (partyIndex === props.advertisers.length - 1) { disabledNext = true }
 
@@ -83,9 +85,9 @@ export const PartyAds = (props) => {
         <h3 style={{marginLeft: 20, marginBottom: 3}}>{count} ads from <span className='party'>{`${props.ads[0].advertiserName} (${props.party})`}</span></h3>
         <span className='link link_underline' style={{marginLeft: 20}} onClick={props.hideBarInfo}>Back to stats</span>
         <span style={{color: '#0A4496'}} >&nbsp;|&nbsp;</span>
-        <span className={`link link_underline ${disabledPrev ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('prev')}>Previous advertiser</span>
+        <span className={`link link_underline ${disabledPrev ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('prev', props.advertisers)}>Previous advertiser</span>
         <span style={{color: '#0A4496'}}>&nbsp;|&nbsp;</span>
-        <span className={`link link_underline ${disabledNext ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('next')}>Next advertiser</span>
+        <span className={`link link_underline ${disabledNext ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('next', props.advertisers)}>Next advertiser</span>
       </div>
 
       {!props.showingTargeting && !showTargetingPage ?
@@ -130,7 +132,7 @@ export const PartyAds = (props) => {
 export const RationalesView = (props) => {
   // console.log('RationalesView props', props)
 
-  const ad = props.ads.filter(ad => ad.party === props.party)[0];
+  const ad = props.ads.filter(ad => ad.postId === props.postId)[0];
   const displayTime = ad.createdAt.slice(8,10) + '/' + ad.createdAt.slice(5,7) + '/' + ad.createdAt.slice(0,4);
   return (
     <div className='boxNoFlex whiteBackground'>

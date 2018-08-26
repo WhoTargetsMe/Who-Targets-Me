@@ -166,11 +166,13 @@ export default class PageResults extends Component {
     this.setState({showTargeting: false, postId: null})
   }
 
-  showAdvr(direction){
+  showAdvr(direction, advertisers){
     if (!this.state.userData || !this.state.party) { return; }
-    let parties = this.state.userData.advertisers.map(advr => Object.assign({}, {party: advr.party, count: advr.count}));
+    if (advertisers.length === 0) { return; }
+    let parties = advertisers.map(advr => Object.assign({}, {party: advr.advertiserName, count: parseInt(advr.count)}));
     parties = parties.sort((a,b) => b.count - a.count).map(p => p.party);
     let partyIndex = parties.indexOf(this.state.party);
+
     if (direction === 'prev') {
       if (partyIndex === 0) { return; }
       partyIndex -= 1;
@@ -179,6 +181,7 @@ export default class PageResults extends Component {
       if (partyIndex === parties.length - 1) { return; }
       partyIndex += 1;
     }
+
     this.setState({party: parties[partyIndex], showTargeting: false});
   }
 
