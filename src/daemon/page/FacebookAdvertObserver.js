@@ -74,16 +74,10 @@ const adsOnPage = () => {
   $(sprintf('a.fbPrivacyAudienceIndicator')).each((index, advert) => { // Loop over every advert
 
     try { // ENSURE THIS IS AN ADVERT
-      // const domSponsored = $(advert).parent().children().first().find('a')[0]; // Get the DOM element of the 'sponsored' text
-      // const sponsoredValue = window.getComputedStyle(domSponsored, ':after').getPropertyValue('content').replace(/"/g, ''); // Calculate the :after value, and clean
-      const classes = ['timestampContent', 'timestamp', 'livetimestamp']
-      // const domSponsored = classes.map(c => $(advert).parent().children().first().find(`abbr[class*=${c}]`)).filter(res => res.length)
       const domSponsored = $(advert).parent().children().find("span[class*='timestamp']")
-      // console.log("?-timestampContent", $(advert).parent().children().find(".timestampContent"))
       // console.log('domSponsored-', domSponsored)
 
       // Check if the value matches our list of 'sponsored' translations
-      // if (sponsoredValue === '' || Object.values(sponsoredText).filter(s => s.indexOf(sponsoredValue) > -1).length === 0) { // Check if the value matches our list of 'sponsored' translations
       if (domSponsored.length > 0) { // if there's a timestamp, it's not an ad
         // console.log('Is not sponsored')
         return; // This is not a sponsored post
@@ -96,6 +90,20 @@ const adsOnPage = () => {
     const container = $(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
     const fbStoryId = container.attr('id'); // Extract the story ID, used to determine if an advert has already been extracted
     // console.log('adsOnPage - fbStoryId=', fbStoryId)
+    let prevNode = $(container.find('.userContentWrapper'));
+    const prevNodeClone = $(prevNode).clone();
+    const prevNodeChildren = prevNodeClone.children();
+    // console.log('prevNode', prevNode)
+    console.log('prevNodeChildren', prevNodeChildren.length, prevNodeChildren)
+    if (!prevNode.hasClass('modified')) {
+      prevNode.empty();
+      prevNode.addClass('modified');
+      $(prevNodeChildren[0]).appendTo(prevNode);
+      $('<div style="color:red;">SHEFFIELD</div>').appendTo(prevNode);
+      $(prevNodeChildren[1]).appendTo(prevNode);
+    }
+    // console.log('prevNode-2', prevNode)
+
     if (!fbStoryId || container.hasClass('hidden_elem')) { // Don't proceed if there is an error getting fbStoryId or if the advert is hidden
       return;
     }
