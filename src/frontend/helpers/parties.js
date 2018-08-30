@@ -75,10 +75,10 @@ export const availableParties = {
     {entityId: 1, party:'MDB e base do governo Temer (PTB, DEM, PP, PR, PSD)', shortName: 'MDB', color: 'black'},
     {entityId: 2, party:'PT e centro esquerda (PCdoB e PDT)', shortName: 'PTE', color: 'red'},
     {entityId: 3, party:'Socialista Brasileiro', shortName: 'PSB', color: 'orange'},
-    {entityId: 4, party:'Partido da Social Democracia Brasileira', shortName: 'PSDB', color: 'blue'},
+    {entityId: 4, party:'Partido da Social Democracia Brasileira', shortName: 'SDB', color: 'blue'},
     {entityId: 5, party:'Partidos conservadores menores (PSL, PSC, PODE, PRTB, PSDC, PRB)', shortName: 'CON', color: 'darkgreen'},
     {entityId: 6, party:'Partidos progressistas menores (REDE, PSTU, PSOL, PCB, PCO)', shortName: 'PRO', color: 'darkred'},
-    {entityId: 7, party:'Outros partidos', shortName: 'OUT', color: 'grey'}
+    {entityId: 7, party:'Outros partidos', shortName: 'OUT', color: 'grey'},
   ],
   'IE': [
     {entityId: 1, party:'Fine Gael', shortName: 'FG', color: '#0c4176'},
@@ -102,7 +102,8 @@ export const availableParties = {
     {entityId: 7, party:'Liberalerna', shortName: 'L', color: '#0069b4'},
     {entityId: 8, party:'Kristdemokraterna', shortName: 'KD', color: '#2D338E'},
     {entityId: 9, party:'Feministiskt initiativ', shortName: 'FI', color: '#cd1b68'},
-    {entityId: 10, party:'Piratpartiet', shortName: 'PP', color: '#000000'},
+    {entityId: 10, party:'Alternativ för Sverige', shortName: 'AfS', color: '#19489D'},
+    {entityId: 11, party:'Medborgerlig Samling', shortName: 'MED', color: '#28416f'},
   ],
   'AU': [
     {entityId: 1, party:'Liberal Party', shortName: 'Lib', color: '#0047AB'},
