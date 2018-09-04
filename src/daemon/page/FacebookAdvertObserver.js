@@ -76,9 +76,9 @@ const adsOnPage = () => {
     try { // ENSURE THIS IS AN ADVERT
       // const domSponsored = $(advert).parent().children().first().find('a')[0]; // Get the DOM element of the 'sponsored' text
       // const sponsoredValue = window.getComputedStyle(domSponsored, ':after').getPropertyValue('content').replace(/"/g, ''); // Calculate the :after value, and clean
-      const classes = ['timestampContent', 'timestamp', 'livetimestamp']
+      // const classes = ['timestampContent', 'timestamp', 'livetimestamp']
       // const domSponsored = classes.map(c => $(advert).parent().children().first().find(`abbr[class*=${c}]`)).filter(res => res.length)
-      const domSponsored = $(advert).parent().children().find("span[class*='timestamp']")
+      const domSponsored = $(advert).parent().children().find("span[class~='timestamp']")
       // console.log("?-timestampContent", $(advert).parent().children().find(".timestampContent"))
       // console.log('domSponsored-', domSponsored)
 
