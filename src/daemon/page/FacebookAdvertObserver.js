@@ -3,27 +3,6 @@ import Observer from './Observer.js';
 import {sprintf} from 'sprintf-js';
 import PromisePool from 'es6-promise-pool';
 
-const sponsoredText = {
-  'cs': 'Spo', //nzorováno',
-  'da': 'Spo', //nsoreret',
-  'de': 'Ges', //ponsert',
-  'en': 'Spo', //nsored',
-  'es': 'Pub', //licidad',
-  'fr': 'Spo', //nsorisé',
-  'hu': 'Hir', //detés',
-  'it': 'Spo', //, //nsonrizzata',
-  'ja': '広', // '告',
-  'nb': 'Spo', //nset',
-  'nl': 'Ges', //ponsord',
-  'nn': 'Spo', //nsa',
-  'pl': 'Spo', //nsorowane',
-  'pt': 'Pat', //rocinado',
-  'ru': 'Рек', //'лама',
-  'sk': 'Spo', //nzorované',
-  'sr': 'Спо', //'нзорисано',
-  'sv': 'Spo', //nsrad',
-  'tr': 'Spo' //nsorlu'
-};
 
 const fetchRationale = (advertId) => {
   return new Promise((resolve, reject) => {
@@ -68,14 +47,11 @@ const adsOnPage = () => {
   let adverts = []; // Pass adverts back to cycle
 
   // const lang = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; // Extract the language preferance of the client
-  // const sponsoredValue = sponsoredText[lang] || sponsoredText.en; // Using the language, determine the correct word for 'sponsored', default to english
-
-
   $(sprintf('a.fbPrivacyAudienceIndicator')).each((index, advert) => { // Loop over every advert
 
     try { // ENSURE THIS IS AN ADVERT
       const domSponsored = $(advert).parent().children().find("span[class*='timestamp']")
-      // console.log('domSponsored-', domSponsored)
+      console.log('domSponsored-', domSponsored)
 
       // Check if the value matches our list of 'sponsored' translations
       if (domSponsored.length > 0) { // if there's a timestamp, it's not an ad
@@ -83,25 +59,25 @@ const adsOnPage = () => {
         return; // This is not a sponsored post
       }
     } catch (err) {
-      // console.log('Some err, RETURN', err)
+      console.log('Some err, RETURN', err)
       return;
     }
 
     const container = $(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
     const fbStoryId = container.attr('id'); // Extract the story ID, used to determine if an advert has already been extracted
-    // console.log('adsOnPage - fbStoryId=', fbStoryId)
-    let prevNode = $(container.find('.userContentWrapper'));
-    const prevNodeClone = $(prevNode).clone();
-    const prevNodeChildren = prevNodeClone.children();
-    // console.log('prevNode', prevNode)
-    console.log('prevNodeChildren', prevNodeChildren.length, prevNodeChildren)
-    if (!prevNode.hasClass('modified')) {
-      prevNode.empty();
-      prevNode.addClass('modified');
-      $(prevNodeChildren[0]).appendTo(prevNode);
-      $('<div style="color:red;">SHEFFIELD</div>').appendTo(prevNode);
-      $(prevNodeChildren[1]).appendTo(prevNode);
+    console.log('adsOnPage - fbStoryId=', fbStoryId)
+    let nextNode = $(container.find('.commentable_item')).parent();
+    const nextNodeClone = $(nextNode).clone();
+    const nextNodeChildren = nextNodeClone.children();
+    if (!nextNode.hasClass('modified')) {
+      nextNode.empty();
+      nextNode.addClass('modified');
+      $('<div style="color:grey; font-weight:bold;height: 30px; background-color:orange; text-align:center; padding-top:10px;border:2px solid grey;">SHEFFIELD</div>').appendTo(nextNode);
+      $(nextNodeChildren[0]).appendTo(nextNode);
     }
+    console.log('nextNode', nextNode)
+    console.log('nextNodeChildren', nextNodeChildren.length)
+
     // console.log('prevNode-2', prevNode)
 
     if (!fbStoryId || container.hasClass('hidden_elem')) { // Don't proceed if there is an error getting fbStoryId or if the advert is hidden

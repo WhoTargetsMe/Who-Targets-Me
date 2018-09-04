@@ -1,0 +1,29 @@
+.startBlockSurvey{
+  color: lightgrey;
+  border-top: 2px solid lightgrey;
+  text-align: left;
+}
+.endBlockSurvey{
+  color: lightgrey;
+  border-bottom: 2px solid lightgrey;
+  text-align: left;
+}
+.pageTitle p{
+  margin-bottom: 15px;
+}
+.quizQuestion{
+  margin-left: -40px;
+}
+.biathlon{
+  border: 1px solid grey;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+  padding: 5px 0px;
+}
+.biathlon .Radio__label{
+  position: relative;
+  left: -15px;
+  top: -20px;
+}

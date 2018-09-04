@@ -5,15 +5,15 @@ import api from '../../helpers/api.js';
 import countries from './countries.js';
 import languages from './languages.js';
 import {
-  OxfordSurvey0,
-  OxfordSurvey1,
-  OxfordSurvey2,
-  OxfordSurvey3,
-  OxfordSurvey4,
-  OxfordSurvey5,
-  OxfordSurvey6
-  } from '../OxfordSurvey/OxfordSurvey.js';
-import {schema} from '../OxfordSurvey/SurveyFields.js';
+  Survey0,
+  Survey1,
+  Survey2,
+  Survey3,
+  Survey4,
+  // Survey5,
+} from '../SheffieldSurvey/SheffieldSurvey.js';
+import {schema} from '../SheffieldSurvey/SurveyFields.js';
+import {surveyanswers, surveyquestions} from '../SheffieldSurvey/SurveyFields.js'; //remove when moved to db
 import FacebookIcon from './icon_facebook.svg';
 import TwitterIcon from './icon_twitter.svg';
 import Logo from '../Shell/wtm_logo_border.png';
@@ -34,7 +34,7 @@ const Container = ({survey, children, country}) => (
     <div className="CenterContainer_inner">
       <img src={country === 'BR' ? LogoBR : Logo} className='logo'/>
       <h2 className={survey ? 'settingUp smallText' : 'settingUp'}>
-        {survey ? 'Oxford Internet Institute Research Survey' : 'Setting up...'}</h2>
+        {survey && 'Facebook advertising'}</h2>
       <div style={{margin: '0 auto'}}>
         {children}
       </div>
@@ -591,7 +591,7 @@ class AttemptSignup extends Component {
 }
 
 
-class OxfordSurvey extends Component {
+class SheffieldSurvey extends Component {
   constructor() {
     super();
     this.state = {
@@ -600,7 +600,7 @@ class OxfordSurvey extends Component {
       notFilled: [],
       answers: [],
       survey: null,
-      surveyName: 'oxford2018',
+      surveyName: 'sheffield2018',
       fields: [],
       loadingSurvey: false,
     }
@@ -612,17 +612,18 @@ class OxfordSurvey extends Component {
   }
 
   componentDidMount(){
-    this.getSurvey(this.state.surveyName)
+    this.getSurvey(this.state.surveyName);
   }
 
-  getSurvey(survey) {
+  getSurvey(surveyName) {
     console.log("REQUESTING survey")
     this.setState({loadingSurvey: true})
-    api.get('general/survey', {query: {survey}})
+    api.get('general/survey', {query: {survey: surveyName}})
       .then((response) => {
-        // console.log('user data', response, response.jsonData)
-        if (response.status >= 200 && response.status < 300) {
-          const {surveyquestions, surveyanswers} = response.jsonData.data;
+        console.log('user data', response, response.jsonData)
+        if (response.status >= 200) { // && response.status < 300) { // UNCOMMENT when data entered to DB
+          // UNCOMMENT when data entered to DB
+          // const {surveyquestions, surveyanswers} = response.jsonData.data;
           let fields = {};
           Object.keys(schema).forEach(field => {
             let questions = [];
@@ -638,8 +639,15 @@ class OxfordSurvey extends Component {
             })
             fields = Object.assign(fields, {[field]:questions})
           })
-          // console.log('fields', fields)
-          this.setState({survey: response.jsonData.data, loadingSurvey: false, fields})
+          console.log('fields', fields)
+          // UNCOMMENT when data entered to DB
+          //const survey = response.jsonData.data;
+          const survey = {
+            "message": "Survey delivered",
+            "surveyquestions": surveyquestions,
+            "surveyanswers": surveyanswers,
+          }
+          this.setState({survey, loadingSurvey: false, fields})
         } else {
           console.log('Failed to fetch survey')
           this.setState({loadingSurvey: false});
@@ -750,23 +758,23 @@ class OxfordSurvey extends Component {
     answers.forEach(a => {
       serAnswers = serAnswers + a + ',';
     })
-
+    console.log('this state', this.state)
     return(
       <div>
         <Container survey country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}>
           <div className="fullwidth">
             {loadingSurvey && <Spinner size='md' className='centeredSpinner'/>}
-            {!loadingSurvey && surveyPage === 0 && <OxfordSurvey0/>}
-            {surveyPage === 1 && <OxfordSurvey1 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
-            {surveyPage === 2 && <OxfordSurvey2 notFilled={notFilled} handleCheck={this.handleSliderCheck} answers={answers} fields={fields}/>}
-            {surveyPage === 3 && <OxfordSurvey3 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
-            {surveyPage === 4 && <OxfordSurvey4 notFilled={notFilled} handleCheck={this.handleSliderCheck} answers={answers} fields={fields}/>}
-            {surveyPage === 5 && <OxfordSurvey5 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
-            {surveyPage === 6 && <OxfordSurvey6 notFilled={notFilled} handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
+            {!loadingSurvey && surveyPage === 0 && <Survey0 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
+            {surveyPage === 1 && <Survey1 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
+            {surveyPage === 2 && <Survey2 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
+            {surveyPage === 3 && <Survey3 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
+            {surveyPage === 4 && <Survey4 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
+            {/* {surveyPage === 5 && <Survey5 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
+            {surveyPage === 2 && <OxfordSurvey2 notFilled={notFilled} handleCheck={this.handleSliderCheck} answers={answers} fields={fields}/>} */}
           </div>
-          <div className="fullwidth">
+          <div className="fullwidth" style={{marginTop: '30px'}}>
             <InputGroup contiguous style={{width: '300px', display: 'flex', flexFlow: 'row nowrap', justifyContent: 'center'}}>
-              <div style={{flex: 1, marginRight: 10}}>
+              {surveyPage > 0 && <div style={{flex: 1, marginRight: 10}}>
                 <Button style={{width: '130px'}}
                   type="hollow-primary"
                   className='buttonBack'
@@ -774,8 +782,8 @@ class OxfordSurvey extends Component {
                   >
                   {surveyPage === 0 ? "Skip" : (String.fromCharCode("171") + " " + "Back")}
                 </Button>
-              </div>
-              <div style={{flex: 1}}>
+              </div>}
+              {surveyPage > 0 && <div style={{flex: 1}}>
                 <Button style={{width: '130px'}}
                   onClick={surveyPage === 6 ? () => next({survey: serAnswers}) : this.nextPage}
                   disabled={surveyPage > 0 && !inputCompleted}
@@ -783,7 +791,16 @@ class OxfordSurvey extends Component {
                   >
                   {((surveyPage === 0 ? "Take survey" : surveyPage === 6 ? "Finish" : "Next") + " " + String.fromCharCode("187"))}
                 </Button>
-              </div>
+              </div>}
+              {surveyPage === 0 && <div style={{flex: 1}}>
+                <Button style={{width: '130px'}}
+                  onClick={surveyPage === 0 && answers[0] === 1 ? this.nextPage : () => next({survey: serAnswers})}
+                  disabled={!inputCompleted}
+                  type="hollow-success"
+                  >
+                  {("Next" + " " + String.fromCharCode("187"))}
+                </Button>
+              </div>}
             </InputGroup>
           </div>
         </Container>
@@ -843,14 +860,18 @@ const signupStages = [
     component: <LanguageSelector/>,
   },
   {
+    component: <SheffieldSurvey/>,
+  },
+  {
+    component: <AttemptSignup/>,
+  },
+
+  {
     component: <TermsPrivacy/>,
   },
   {
     component: <CountrySelector/>,
   },
-  // {
-  //   component: <OxfordSurvey/>,
-  // },
   {
     component: <PostcodeSelector/>,
   },
@@ -863,12 +884,12 @@ const signupStages = [
   {
     component: <PoliticalAffiliationSelector/>,
   },
-  {
-    component: <OxfordSurvey/>,
-  },
-  {
-    component: <AttemptSignup/>,
-  },
+  // {
+  //   component: <OxfordSurvey/>,
+  // },
+  // {
+  //   component: <AttemptSignup/>,
+  // },
   {
     component: <PostSignupShare/>,
   }
