@@ -50,7 +50,8 @@ const adsOnPage = () => {
   $(sprintf('a.fbPrivacyAudienceIndicator')).each((index, advert) => { // Loop over every advert
 
     try { // ENSURE THIS IS AN ADVERT
-      const domSponsored = $(advert).parent().children().find("span[class*='timestamp']")
+      // const domSponsored = $(advert).parent().children().find("span[class*='timestamp']") //contains all matching word
+      const domSponsored = $(advert).parent().children().find("span[class~='timestamp']") //contains exact word
       console.log('domSponsored-', domSponsored)
 
       // Check if the value matches our list of 'sponsored' translations

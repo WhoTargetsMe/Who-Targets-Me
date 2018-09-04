@@ -5,12 +5,7 @@ import api from '../../helpers/api.js';
 import countries from './countries.js';
 import languages from './languages.js';
 import {
-  Survey0,
-  Survey1,
-  Survey2,
-  Survey3,
-  Survey4,
-  // Survey5,
+  Survey0, Survey1, Survey2, Survey3, Survey4, Survey5, Survey6
 } from '../SheffieldSurvey/SheffieldSurvey.js';
 import {schema} from '../SheffieldSurvey/SurveyFields.js';
 import {surveyanswers, surveyquestions} from '../SheffieldSurvey/SurveyFields.js'; //remove when moved to db
@@ -722,10 +717,7 @@ class SheffieldSurvey extends Component {
       })
     }
 
-    if (checkInputCompleted) {
-      inputCompleted = true;
-    }
-    this.setState({answers, inputCompleted})
+    this.setState({answers, inputCompleted: checkInputCompleted})
   }
 
   handleSliderCheck(val, i) {
@@ -758,7 +750,7 @@ class SheffieldSurvey extends Component {
     answers.forEach(a => {
       serAnswers = serAnswers + a + ',';
     })
-    console.log('this state', this.state)
+    console.log('this state', this.state.answers)
     return(
       <div>
         <Container survey country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}>
@@ -769,8 +761,9 @@ class SheffieldSurvey extends Component {
             {surveyPage === 2 && <Survey2 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
             {surveyPage === 3 && <Survey3 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
             {surveyPage === 4 && <Survey4 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
-            {/* {surveyPage === 5 && <Survey5 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
-            {surveyPage === 2 && <OxfordSurvey2 notFilled={notFilled} handleCheck={this.handleSliderCheck} answers={answers} fields={fields}/>} */}
+            {surveyPage === 5 && <Survey5 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
+            {surveyPage === 6 && <Survey6 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
+            {/* {surveyPage === 2 && <OxfordSurvey2 notFilled={notFilled} handleCheck={this.handleSliderCheck} answers={answers} fields={fields}/>} */}
           </div>
           <div className="fullwidth" style={{marginTop: '30px'}}>
             <InputGroup contiguous style={{width: '300px', display: 'flex', flexFlow: 'row nowrap', justifyContent: 'center'}}>

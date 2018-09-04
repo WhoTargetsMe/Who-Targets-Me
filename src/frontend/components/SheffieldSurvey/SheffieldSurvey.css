@@ -27,3 +27,11 @@
   left: -15px;
   top: -20px;
 }
+.lowmargin {
+  margin-bottom: -10px;
+}
+.biathlonHeader{
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+}
