@@ -6,7 +6,10 @@ import countries from './countries.js';
 import languages from './languages.js';
 import {
   Survey0, Survey1, Survey2, Survey3, Survey4, Survey5, Survey6
-} from '../SheffieldSurvey/SheffieldSurvey.js';
+} from '../SheffieldSurvey/SheffieldSurveyBefore.js';
+import {
+  Survey7 //, Survey8, Survey9
+} from '../SheffieldSurvey/SheffieldSurveyAfter.js';
 import {schema} from '../SheffieldSurvey/SurveyFields.js';
 import {surveyanswers, surveyquestions} from '../SheffieldSurvey/SurveyFields.js'; //remove when moved to db
 import FacebookIcon from './icon_facebook.svg';
@@ -763,6 +766,7 @@ class SheffieldSurvey extends Component {
             {surveyPage === 4 && <Survey4 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
             {surveyPage === 5 && <Survey5 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
             {surveyPage === 6 && <Survey6 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
+            {surveyPage === 7 && <Survey7 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
             {/* {surveyPage === 2 && <OxfordSurvey2 notFilled={notFilled} handleCheck={this.handleSliderCheck} answers={answers} fields={fields}/>} */}
           </div>
           <div className="fullwidth" style={{marginTop: '30px'}}>
@@ -778,11 +782,11 @@ class SheffieldSurvey extends Component {
               </div>}
               {surveyPage > 0 && <div style={{flex: 1}}>
                 <Button style={{width: '130px'}}
-                  onClick={surveyPage === 6 ? () => next({survey: serAnswers}) : this.nextPage}
+                  onClick={surveyPage === 100 ? () => next({survey: serAnswers}) : this.nextPage}
                   disabled={surveyPage > 0 && !inputCompleted}
                   type="hollow-success"
                   >
-                  {((surveyPage === 0 ? "Take survey" : surveyPage === 6 ? "Finish" : "Next") + " " + String.fromCharCode("187"))}
+                  {((surveyPage === 0 ? "Take survey" : surveyPage === 100 ? "Finish" : "Next") + " " + String.fromCharCode("187"))}
                 </Button>
               </div>}
               {surveyPage === 0 && <div style={{flex: 1}}>
