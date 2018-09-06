@@ -3,18 +3,19 @@ import strings from '../../helpers/localization.js';
 import {Button, InputGroup, FormInput, FormField, FormSelect, FormRow, Radio, Checkbox, Spinner, Row, Card, Col} from 'elemental';
 import './SheffieldSurvey.css';
 
-// "Dashboard Biathlon" questions
+// "Dashboard Biathlon" questions 3 blocks on same page
 export const Survey7 = (props) => {
   const {fields} = props;
   return(
     <div style={{marginTop: '90px', marginLeft: '40px'}}>
       <div className="surveyContainer">
+      <div className='startBlockSurvey'>Start of block: Trust</div>
         <p style={{marginBottom: 20, textAlign: 'left'}}>Q15. How would you rate your GENERAL TRUST in the following things</p>
         <div className='biathlonHeader'>
           <div style={{minWidth: 200, flex: 1}}></div>
-          {fields.fields5[0].answers.map((answer, j) => {
-            return <div style={{flex: 1, fontSize: '12px'}} key={`answer-${j*2}`}>
-                    {answer.label}
+          {fields.fields7[0].answers.map((answer, j) => {
+            return <div style={{flex: 1, fontSize: '12px'}} key={`answer-1-${j*2}`}>
+                    {j === 0 || j === fields.fields7[0].answers.length - 1 ? answer.label : `(${answer.label})`}
                   </div>
           })}
         </div>
@@ -41,17 +42,92 @@ export const Survey7 = (props) => {
             })}
           </ul>
 
-          <p style={{marginBottom: 20, textAlign: 'left'}}>Q16. Now, how would you rate the following things in terms of your TRUST THEY WILL KEEP YOUR DATA SECURE</p>
+          <p style={{marginBottom: 20, marginTop: 30, textAlign: 'left'}}>Q16. Now, how would you rate the following things in terms of your TRUST THEY WILL KEEP YOUR DATA SECURE</p>
           <div className='biathlonHeader'>
             <div style={{minWidth: 200, flex: 1}}></div>
-            {fields.fields5[0].answers.map((answer, j) => {
-              return <div style={{flex: 1, fontSize: '12px'}} key={`answer-${j*2}`}>
-                      {answer.label}
+            {fields.fields7[0].answers.map((answer, j) => {
+              return <div style={{flex: 1, fontSize: '12px'}} key={`answer-2-${j*2}`}>
+                      {j === 0 || j === fields.fields7[0].answers.length - 1 ? answer.label : `(${answer.label})`}
                     </div>
             })}
           </div>
           <ul>
-            {fields.fields7.slice(5,8).map((field, i) => {
+            {fields.fields7.slice(4,8).map((field, i) => {
+              return <li key={`field-2-${i}`} className='quizQuestion lowmargin'>
+                <FormField label='' onChange={(val) => props.handleCheck(val, i+4)}>
+                  <div className='biathlon'>
+                    <div style={{maxWidth: 150, flex: 1}}>
+                      {field.label}
+                    </div>
+                    {field.answers.map((answer, j) => {
+                      return <Radio key={`answer-2-${j}`}
+                                name={answer.anid}
+                                label='' //{answer.label}
+                                checked={props.answers.includes(answer.anid)}
+                                value={props.answers.includes(answer.anid) ? 'on' : 'off'}
+                                style={{flex: 1}}
+                                />
+                    })}
+                  </div>
+                </FormField>
+              </li>
+              })}
+            </ul>
+
+            <p style={{marginBottom: 20, marginTop: 30, textAlign: 'left'}}>Q17. Now, how would you rate the following things in terms of your TRUST THEY WILL BE TRANSPARENT ABOUT HOW THEY USE YOUR DATA</p>
+            <div className='biathlonHeader'>
+              <div style={{minWidth: 200, flex: 1}}></div>
+              {fields.fields7[0].answers.map((answer, j) => {
+                return <div style={{flex: 1, fontSize: '12px'}} key={`answer-3-${j*2}`}>
+                        {j === 0 || j === fields.fields7[0].answers.length - 1 ? answer.label : `(${answer.label})`}
+                      </div>
+              })}
+            </div>
+            <ul>
+              {fields.fields7.slice(8,12).map((field, i) => {
+                return <li key={`field-3-${i}`} className='quizQuestion lowmargin'>
+                  <FormField label='' onChange={(val) => props.handleCheck(val, i+8)}>
+                    <div className='biathlon'>
+                      <div style={{maxWidth: 150, flex: 1}}>
+                        {field.label}
+                      </div>
+                      {field.answers.map((answer, j) => {
+                        return <Radio key={`answer-3-${j}`}
+                                  name={answer.anid}
+                                  label='' //{answer.label}
+                                  checked={props.answers.includes(answer.anid)}
+                                  value={props.answers.includes(answer.anid) ? 'on' : 'off'}
+                                  style={{flex: 1}}
+                                  />
+                      })}
+                    </div>
+                  </FormField>
+                </li>
+                })}
+              </ul>
+
+        </div>
+      </div>
+    )
+  }
+
+  // "Dashboard Biathlon" questions 3 blocks on same page
+  export const Survey8 = (props) => {
+    const {fields} = props;
+    return(
+      <div style={{marginTop: '90px', marginLeft: '40px'}}>
+        <div className="surveyContainer">
+          <p style={{marginBottom: 20, textAlign: 'left'}}>Q18. Now, how would you rate the following things in terms of your TRUST THEY WILL PROMOTE THE PUBLIC INTEREST</p>
+          <div className='biathlonHeader'>
+            <div style={{minWidth: 200, flex: 1}}></div>
+            {fields.fields8[0].answers.map((answer, j) => {
+              return <div style={{flex: 1, fontSize: '12px'}} key={`answer-1-${j*2}`}>
+                      {j === 0 || j === fields.fields8[0].answers.length - 1 ? answer.label : `(${answer.label})`}
+                    </div>
+            })}
+          </div>
+          <ul>
+            {fields.fields8.slice(0,4).map((field, i) => {
               return <li key={`field-${i}`} className='quizQuestion lowmargin'>
                 <FormField label='' onChange={(val) => props.handleCheck(val, i)}>
                   <div className='biathlon'>
@@ -73,12 +149,75 @@ export const Survey7 = (props) => {
               })}
             </ul>
 
+            <p style={{marginBottom: 20, marginTop: 30, textAlign: 'left'}}>Q19. Now, how would you rate the following things in terms of your TRUST THEY WILL PROMOTE YOUR INTERESTS</p>
+            <div className='biathlonHeader'>
+              <div style={{minWidth: 200, flex: 1}}></div>
+              {fields.fields8[0].answers.map((answer, j) => {
+                return <div style={{flex: 1, fontSize: '12px'}} key={`answer-2-${j*2}`}>
+                        {j === 0 || j === fields.fields8[0].answers.length - 1 ? answer.label : `(${answer.label})`}
+                      </div>
+              })}
+            </div>
+            <ul>
+              {fields.fields8.slice(4,8).map((field, i) => {
+                return <li key={`field-2-${i}`} className='quizQuestion lowmargin'>
+                  <FormField label='' onChange={(val) => props.handleCheck(val, i+4)}>
+                    <div className='biathlon'>
+                      <div style={{maxWidth: 150, flex: 1}}>
+                        {field.label}
+                      </div>
+                      {field.answers.map((answer, j) => {
+                        return <Radio key={`answer-2-${j}`}
+                                  name={answer.anid}
+                                  label='' //{answer.label}
+                                  checked={props.answers.includes(answer.anid)}
+                                  value={props.answers.includes(answer.anid) ? 'on' : 'off'}
+                                  style={{flex: 1}}
+                                  />
+                      })}
+                    </div>
+                  </FormField>
+                </li>
+                })}
+              </ul>
+
+              <p style={{marginBottom: 20, marginTop: 30, textAlign: 'left'}}>Q20. How much regulation or oversight do you think there is of how the following things CAN USE YOUR DATA</p>
+              <div className='biathlonHeader'>
+                <div style={{minWidth: 200, flex: 1}}></div>
+                {fields.fields8[0].answers.map((answer, j) => {
+                  return <div style={{flex: 1, fontSize: '12px'}} key={`answer-3-${j*2}`}>
+                          {j === 0 || j === fields.fields8[0].answers.length - 1 ? answer.label : `(${answer.label})`}
+                        </div>
+                })}
+              </div>
+              <ul>
+                {fields.fields8.slice(8,12).map((field, i) => {
+                  return <li key={`field-3-${i}`} className='quizQuestion lowmargin'>
+                    <FormField label='' onChange={(val) => props.handleCheck(val, i+8)}>
+                      <div className='biathlon'>
+                        <div style={{maxWidth: 150, flex: 1}}>
+                          {field.label}
+                        </div>
+                        {field.answers.map((answer, j) => {
+                          return <Radio key={`answer-3-${j}`}
+                                    name={answer.anid}
+                                    label='' //{answer.label}
+                                    checked={props.answers.includes(answer.anid)}
+                                    value={props.answers.includes(answer.anid) ? 'on' : 'off'}
+                                    style={{flex: 1}}
+                                    />
+                        })}
+                      </div>
+                    </FormField>
+                  </li>
+                  })}
+                </ul>
+
+          </div>
+          <div className='endBlockSurvey'>End of block: Trust</div>
         </div>
-      </div>
-    )
-  }
-
-
+      )
+    }
 
 export const Survey0 = (props) => {
   const {fields} = props;
@@ -294,7 +433,7 @@ export const Survey4 = (props) => {
     )
   }
 
-/*
+
 export const OxfordSurvey2 = (props) => {
   const {fields} = props;
   let answered_ids_0 = fields[`fields${2}`][0].answers.map(a => a.anid);
@@ -374,7 +513,7 @@ export const OxfordSurvey2 = (props) => {
 }
 
 
-
+/*
 // New questions added after Section 1
 // SLIDER
 export const OxfordSurvey4 = (props) => {

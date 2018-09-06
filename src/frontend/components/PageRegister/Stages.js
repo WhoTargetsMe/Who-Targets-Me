@@ -8,7 +8,7 @@ import {
   Survey0, Survey1, Survey2, Survey3, Survey4, Survey5, Survey6
 } from '../SheffieldSurvey/SheffieldSurveyBefore.js';
 import {
-  Survey7 //, Survey8, Survey9
+  Survey7, Survey8//, Survey9
 } from '../SheffieldSurvey/SheffieldSurveyAfter.js';
 import {schema} from '../SheffieldSurvey/SurveyFields.js';
 import {surveyanswers, surveyquestions} from '../SheffieldSurvey/SurveyFields.js'; //remove when moved to db
@@ -767,6 +767,7 @@ class SheffieldSurvey extends Component {
             {surveyPage === 5 && <Survey5 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
             {surveyPage === 6 && <Survey6 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
             {surveyPage === 7 && <Survey7 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
+            {surveyPage === 8 && <Survey8 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
             {/* {surveyPage === 2 && <OxfordSurvey2 notFilled={notFilled} handleCheck={this.handleSliderCheck} answers={answers} fields={fields}/>} */}
           </div>
           <div className="fullwidth" style={{marginTop: '30px'}}>
