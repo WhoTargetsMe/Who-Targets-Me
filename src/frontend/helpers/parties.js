@@ -79,6 +79,12 @@ export const availableParties = {
     {entityId: 5, party:'Partidos conservadores menores (PSL, PSC, PODE, PRTB, PSDC, PRB)', shortName: 'CON', color: 'darkgreen'},
     {entityId: 6, party:'Partidos progressistas menores (REDE, PSTU, PSOL, PCB, PCO)', shortName: 'PRO', color: 'darkred'},
     {entityId: 7, party:'Outros partidos', shortName: 'OUT', color: 'grey'},
+    {entityId: 8, party:'Coligação: Ciro Gomes', shortName: 'PDT', color: 'purple'},
+    {entityId: 9, party:'Coligação: Marina Silva', shortName: 'PV', color: 'lightgreen'},
+    {entityId: 10, party:'Coligação: Alvaro Dias', shortName: 'PTC', color: 'darkblue'},
+    {entityId: 11, party:'Partido: Vera Lúcia', shortName: 'PSTU', color: 'pink'},
+    {entityId: 12, party:'Partido: Cabo Daciolo', shortName: 'PATR', color: 'darkcyan'},
+    {entityId: 13, party:'Partido: João Goulart', shortName: 'PPL', color: 'yellow'},
   ],
   'IE': [
     {entityId: 1, party:'Fine Gael', shortName: 'FG', color: '#0c4176'},
