@@ -9,9 +9,8 @@ import {availableCountries, availableParties} from '../../helpers/parties.js'; /
 import { PartyChart, PartyAds, RationalesView } from './TargetingResults.js';
 import { DeleteRequestPage } from './DeleteRequestPage.js';
 import countries from '../PageRegister/countries.js';
-import IMGLogo from '../Shell/logo.svg';
-import Logo from '../Shell/wtm_logo_border.png';
-import IMGFirstPlace from './firstplace.png';
+import IMGLogo from '../Shell/TUOS_PRIMARY_LOGO.png';
+import Logo from '../Shell/TUOS_PRIMARY_LOGO.png';
 
 import './PageResults.css';
 
@@ -48,7 +47,7 @@ export default class PageResults extends Component {
     this.props.api.get('user')
       .then((response) => {
         this.setState({userData: response.jsonData.data})
-        // console.log('user data', response, response.jsonData)
+        console.log('user data', response, response.jsonData)
       })
       .catch((error) => {
         console.log(error)
@@ -190,7 +189,7 @@ export default class PageResults extends Component {
       return (
         <div className="middle-outer" style={{backgroundColor: '#2d2d2d', color: 'white'}}>
           <div className="middle-inner">
-            <img src={IMGLogo} style={{height: '250px'}} />
+            <img src={IMGLogo} style={{height: '120px', width: '270px'}} />
             <p>{strings.loading}</p>
           </div>
         </div>
@@ -287,17 +286,25 @@ export default class PageResults extends Component {
         partyPercAmongParties = ((party.count/userSeenPartiesSum)*100).toFixed(0)
       }
     }
-
+    view = 'no_party';
     return (
       <div className="PageResults">
         <Row>
           <Col sm="1">
             <div className="statbox">
-              <div style={{flex: 1, maxWidth: '100px'}}><img src={Logo}/></div>
+              <div style={{flex: 1, maxWidth: '200px'}}><img src={Logo} style={{width: '220px', height: '95px'}}/></div>
               <div style={{flex: 1, minWidth: '500px'}}>
               {
                 view === "no_country" || view === "no_party" &&
-                <h3 style={{flex: 1, marginTop: '40px', fontWeight: 'bold'}}>Gathering data...</h3>
+                // <h3 style={{flex: 1, marginTop: '40px', fontWeight: 'bold'}}>Gathering data...</h3>
+                <div className='settingUp smallText'>
+                  <div>
+                    {'University of Sheffield:'}
+                  </div>
+                  <div>
+                    {'Research on Facebook advertising and targeting'}
+                  </div>
+                </div>
               }
               {
                 view === "delete_request" &&
@@ -363,7 +370,7 @@ export default class PageResults extends Component {
             }
             { view === "no_party" &&
               <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px'}}>
-                <h3 className='subMessage'>{strings.results.no_results_explanation}</h3>
+                <h3 className='subMessage'>The study is ongoing. Please do not uninstall this extension.</h3>
               </div>
             }
             { view === "no_country" &&
@@ -397,7 +404,7 @@ export default class PageResults extends Component {
           </div>
         </Col>
       </Row>
-      { view !== "delete_request" && view !== "data_deleted" && <Row style={{backgroundColor: 'white', minHeight: '120px', color: 'black', paddingTop: '20px'}}>
+      {/* { view !== "delete_request" && view !== "data_deleted" && <Row style={{backgroundColor: 'white', minHeight: '120px', color: 'black', paddingTop: '20px'}}>
         <Col sm="1/2">
           <div className="statbox">
             <Button style={{position: 'absolute', top: 5, left: 15}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties] : [null, null, null])}>{strings.register.shareOnFacebook}</Button>
@@ -408,7 +415,7 @@ export default class PageResults extends Component {
             </div>
           </div>
         </Col>
-      </Row>}
+      </Row>} */}
 
       <Row style={{textAlign: 'center', fontSize: '10px', paddingLeft: '20px'}}>
         <div style={{padding: '5px 15px 0px 15px',
@@ -417,9 +424,9 @@ export default class PageResults extends Component {
           <a href={strings.links.privacy.url} target='_blank' style={{color: 'white'}}>{`${strings.links.privacy.title}`}</a>&nbsp;|&nbsp;&nbsp;
           <a href={strings.links.terms.url} target='_blank' style={{color: 'white'}}>{`${strings.links.terms.title}`}</a>&nbsp;|&nbsp;&nbsp;
           <span>
-            <span>{strings.results.uninstall} &nbsp;|&nbsp;&nbsp;</span>
-            {view === "data_deleted" ? <span>Data deleted</span> :
-              <span className='link_underline' style={{cursor: 'pointer'}} onClick={(e) => this.requestDeleteData(e, view)}>{strings.results.delete_data}</span>}
+            <span>{strings.results.uninstall}</span>
+            {/* {view === "data_deleted" ? <span>Data deleted</span> :
+              <span className='link_underline' style={{cursor: 'pointer'}} onClick={(e) => this.requestDeleteData(e, view)}>{strings.results.delete_data}</span>} */}
           </span>
           {/* <Button type="link" href={strings.links.facebook.url} style={{color: '#6d84b4'}}>{strings.links.facebook.title}</Button>
           <Button type="link" href={strings.links.twitter.url} style={{color: '#00aced'}}>{strings.links.twitter.title}</Button>

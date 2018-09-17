@@ -1,3 +1,40 @@
+export const agesMask = {
+  3: 18,
+  4: 21,
+  5: 29,
+  6: 45,
+  7: 55
+}
+
+export const genderMask = {
+  8: 1,
+  9: 2,
+  10: 0
+}
+
+export const politAffiliationMask = {
+  11: 1,
+  12: 2,
+  13: 3,
+  14: 4,
+  15: 5,
+  16: 6,
+  17: 7,
+  18: 8,
+  19: 0
+}
+
+
+// {id: 211, anid: 11, label: "Conservative", survey: "sheffield2018"},
+// {id: 212, anid: 12, label: "Labour", survey: "sheffield2018"},
+// {id: 213, anid: 13, label: "Liberal Democrat", survey: "sheffield2018"},
+// {id: 214, anid: 14, label: "Green", survey: "sheffield2018"},
+// {id: 215, anid: 15, label: "Scottish National Party", survey: "sheffield2018"},
+// {id: 216, anid: 16, label: "Plaid Cyrmu", survey: "sheffield2018"},
+// {id: 217, anid: 17, label: "UK Independence Party (UKIP)", survey: "sheffield2018"},
+// {id: 218, anid: 18, label: "Other", survey: "sheffield2018"},
+// {id: 219, anid: 19, label: "None", survey: "sheffield2018"},
+
 export const schema = {
   // currently 31 questions, 190 answers
   fields0: [
@@ -61,12 +98,26 @@ export const schema = {
     {qid: 42, answers:[274,275,276,277,278,279,280]},
     {qid: 43, answers:[281,282,283,284,285,286,287]},
     {qid: 44, answers:[288,289,290,291,292,293,294]},
-  ]
+  ],
+  fields9: [
+    {qid: 45, answers:[295,296,297,298,299]},
+    {qid: 46, answers:[300,301,302,303,304,305,306,307,308,309,310]},
+    {qid: 47, answers:[311,312]},
+    {qid: 48, answers:[313]},
+  ],
+  fields10: [
+    {qid: 49, answers:[314,315,316,317,318]},
+    {qid: 50, answers:[319,320,321,322,323]},
+    {qid: 51, answers:[324,325,326,327,328]},
+  ],
+  fields11: [
+    {qid: 52, answers:[329]},
+  ],
 }
 
 export const surveyanswers = [
-  {id: 201, anid: 1, label: "YES", survey: "sheffield2018"},
-  {id: 202, anid: 2, label: "NO", survey: "sheffield2018"},
+  {id: 201, anid: 1, label: "Yes", survey: "sheffield2018"},
+  {id: 202, anid: 2, label: "No", survey: "sheffield2018"},
   {id: 203, anid: 3, label: "less than 18", survey: "sheffield2018"},
   {id: 204, anid: 4, label: "18-24", survey: "sheffield2018"},
   {id: 205, anid: 5, label: "25-34", survey: "sheffield2018"},
@@ -81,7 +132,7 @@ export const surveyanswers = [
   {id: 214, anid: 14, label: "Green", survey: "sheffield2018"},
   {id: 215, anid: 15, label: "Scottish National Party", survey: "sheffield2018"},
   {id: 216, anid: 16, label: "Plaid Cyrmu", survey: "sheffield2018"},
-  {id: 217, anid: 17, label: "UK Independent Party", survey: "sheffield2018"},
+  {id: 217, anid: 17, label: "UK Independence Party (UKIP)", survey: "sheffield2018"},
   {id: 218, anid: 18, label: "Other", survey: "sheffield2018"},
   {id: 219, anid: 19, label: "None", survey: "sheffield2018"},
   {id: 220, anid: 20, label: "Very likely that I would vote", survey: "sheffield2018"},
@@ -197,7 +248,7 @@ export const surveyanswers = [
   {id: 322, anid: 122, label: "None of these options apply", survey: "sheffield2018"},
   {id: 323, anid: 123, label: "Facebook itself", survey: "sheffield2018"},
   {id: 324, anid: 124, label: "The UK Government", survey: "sheffield2018"},
-  {id: 325, anid: 125, label: "Facebook Users", survey: "sheffield2018"},
+  {id: 325, anid: 125, label: "Facebook users", survey: "sheffield2018"},
   {id: 326, anid: 126, label: "Other", survey: "sheffield2018"},
 
   //"Biathlon" Q15 (Q21-24)
@@ -380,27 +431,52 @@ export const surveyanswers = [
   {id: 493, anid: 293, label: "6", survey: "sheffield2018"},
   {id: 494, anid: 294, label: "Very high (7)", survey: "sheffield2018"},
 
-  // {id: , anid: , label: "", survey: "sheffield2018"},
-  // {id: , anid: , label: "", survey: "sheffield2018"},
-  // {id: , anid: , label: "", survey: "sheffield2018"},
-  // {id: , anid: , label: "", survey: "sheffield2018"},
-  // {id: , anid: , label: "", survey: "sheffield2018"},
-  // {id: , anid: , label: "", survey: "sheffield2018"},
-  // {id: , anid: , label: "", survey: "sheffield2018"},
-  // {id: , anid: , label: "", survey: "sheffield2018"},
-  // {id: , anid: , label: "", survey: "sheffield2018"},
-  // {id: , anid: , label: "", survey: "sheffield2018"},
-  // {id: , anid: , label: "", survey: "sheffield2018"},
-  // {id: , anid: , label: "", survey: "sheffield2018"},
-  // {id: , anid: , label: "", survey: "sheffield2018"},
-  // {id: , anid: , label: "", survey: "sheffield2018"},
-  // {id: , anid: , label: "", survey: "sheffield2018"},
+  {id: 495, anid: 295, label: "Less than 15 minutes/day", survey: "sheffield2018"},
+  {id: 496, anid: 296, label: "15-30 minutes/day", survey: "sheffield2018"},
+  {id: 497, anid: 297, label: "30-60 minutes/day", survey: "sheffield2018"},
+  {id: 498, anid: 298, label: "60-90 minutes/day", survey: "sheffield2018"},
+  {id: 499, anid: 299, label: "90+ minutes/day", survey: "sheffield2018"},
+
+  {id: 500, anid: 300, label: "0", survey: "sheffield2018"},
+  {id: 501, anid: 301, label: "10", survey: "sheffield2018"},
+  {id: 502, anid: 302, label: "20", survey: "sheffield2018"},
+  {id: 503, anid: 303, label: "30", survey: "sheffield2018"},
+  {id: 504, anid: 304, label: "40", survey: "sheffield2018"},
+  {id: 505, anid: 305, label: "50", survey: "sheffield2018"},
+  {id: 506, anid: 306, label: "60", survey: "sheffield2018"},
+  {id: 507, anid: 307, label: "70", survey: "sheffield2018"},
+  {id: 508, anid: 308, label: "80", survey: "sheffield2018"},
+  {id: 509, anid: 309, label: "90", survey: "sheffield2018"},
+  {id: 510, anid: 310, label: "100", survey: "sheffield2018"},
+
+  {id: 511, anid: 311, label: "Yes", survey: "sheffield2018"},
+  {id: 512, anid: 312, label: "No", survey: "sheffield2018"},
+  {id: 513, anid: 313, label: "", survey: "sheffield2018"},
+
+  {id: 514, anid: 314, label: "Definitely yes", survey: "sheffield2018"},
+  {id: 515, anid: 315, label: "Probably yes", survey: "sheffield2018"},
+  {id: 516, anid: 316, label: "Might or might not", survey: "sheffield2018"},
+  {id: 517, anid: 317, label: "Probably not", survey: "sheffield2018"},
+  {id: 518, anid: 318, label: "Definitely not", survey: "sheffield2018"},
+
+  {id: 519, anid: 319, label: "0", survey: "sheffield2018"},
+  {id: 520, anid: 320, label: "1-5", survey: "sheffield2018"},
+  {id: 521, anid: 321, label: "6-10", survey: "sheffield2018"},
+  {id: 522, anid: 322, label: "11-20", survey: "sheffield2018"},
+  {id: 523, anid: 323, label: "21+", survey: "sheffield2018"},
+  {id: 524, anid: 324, label: "0", survey: "sheffield2018"},
+  {id: 525, anid: 325, label: "1-5", survey: "sheffield2018"},
+  {id: 526, anid: 326, label: "6-10", survey: "sheffield2018"},
+  {id: 527, anid: 327, label: "11-20", survey: "sheffield2018"},
+  {id: 528, anid: 328, label: "21+", survey: "sheffield2018"},
+
+  {id: 529, anid: 329, label: "", survey: "sheffield2018"},
 ]
 
 export const surveyquestions = [
   {id: 41, qid: 1, label: "I consent to my anonymous data being made available as an output of this research project", survey: "sheffield2018"},
   {id: 42, qid: 2, label: "How old are you?", survey: "sheffield2018"},
-  {id: 43, qid: 3, label: "What is your gender", survey: "sheffield2018"},
+  {id: 43, qid: 3, label: "What is your gender?", survey: "sheffield2018"},
   {id: 44, qid: 4, label: "Generally speaking, do you think of yourself as Labour, Conservative, Liberal Democrat or what?", survey: "sheffield2018"},
   {id: 45, qid: 5, label: "Many people don't vote in elections these days. If there were a UK General Election tomorrow, how likely is it that you would vote? (Select one)", survey: "sheffield2018"},
   {id: 46, qid: 6, label: "Which of the following statements do you agree with (select all that apply):", survey: "sheffield2018"},
@@ -449,18 +525,14 @@ export const surveyquestions = [
   {id: 82, qid: 42, label: "Advertisers on Facebook", survey: "sheffield2018"},
   {id: 83, qid: 43, label: "Political parties", survey: "sheffield2018"},
   {id: 84, qid: 44, label: "Civil Service", survey: "sheffield2018"},
-  // {id: , qid: , label: "", survey: "sheffield2018"},
-  // {id: , qid: , label: "", survey: "sheffield2018"},
-  // {id: , qid: , label: "", survey: "sheffield2018"},
-  // {id: , qid: , label: "", survey: "sheffield2018"},
-  // {id: , qid: , label: "", survey: "sheffield2018"},
-  // {id: , qid: , label: "", survey: "sheffield2018"},
-  // {id: , qid: , label: "", survey: "sheffield2018"},
-  // {id: , qid: , label: "", survey: "sheffield2018"},
-  // {id: , qid: , label: "", survey: "sheffield2018"},
-  // {id: , qid: , label: "", survey: "sheffield2018"},
-  // {id: , qid: , label: "", survey: "sheffield2018"},
-  // {id: , qid: , label: "", survey: "sheffield2018"},
-  // {id: , qid: , label: "", survey: "sheffield2018"},
-  // {id: , qid: , label: "", survey: "sheffield2018"},
+
+  {id: 85, qid: 45, label: "How much time do you spend on facebook, per day", survey: "sheffield2018"},
+  {id: 86, qid: 46, label: "What percentage of your Facebook usage is on Chrome on a computer rather than via other browsers on a tablet or mobile", survey: "sheffield2018"},
+  {id: 87, qid: 47, label: "Do you use an ad-blocker when you browse the internet", survey: "sheffield2018"},
+  {id: 88, qid: 48, label: "How many adverts would you estimate that you have seen on your Facebook feed in the last 3 weeks? (please enter a number in digits, not text)", survey: "sheffield2018"},
+
+  {id: 89, qid: 49, label: "Did you see any adverts by politicians, political parties or political causes in the last 3 weeks?", survey: "sheffield2018"},
+  {id: 90, qid: 50, label: "How many adverts would you estimate that you clicked on over the last 3 weeks?", survey: "sheffield2018"},
+  {id: 91, qid: 51, label: "How many adverts would you estimate that you liked, shared or commented on over the last 3 weeks?", survey: "sheffield2018"},
+  {id: 92, qid: 52, label: "Finally, if you have any comments or things you think we should know, please leave them below", survey: "sheffield2018"},
 ]

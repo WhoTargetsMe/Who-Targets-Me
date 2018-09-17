@@ -40,7 +40,7 @@ export default class Shell extends Component {
         if(result) {
           this.props.api.addMiddleware(request => {request.options.headers['Authorization'] = result.general_token});
           this.setState({ access_token: result.general_token, token_loaded: true })
-        }else {
+        } else {
           this.setState({ token_loaded: true })
         }
       }).catch((error) => {

@@ -11,7 +11,7 @@
 .pageTitle p{
   margin-bottom: 15px;
 }
-.quizQuestion{
+.quizQuestion, .quizQuestionBlock{
   margin-left: -40px;
 }
 .biathlon{
@@ -34,4 +34,21 @@
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-around;
+}
+.sliderContainer{
+  display: flex;
+  flex-flow: row nowrap;
+
+}
+.quizQuestionBlock .Radio{
+  display: block;
+}
+
+.Checkbox__label{
+  line-height: 20px;
+}
+.surveyLink{
+  color: navy;
+  text-decoration: underline;
+  cursor: pointer;
 }

@@ -28,7 +28,7 @@
   display: table;
   width: 100%;
   height: 100%;
-  background: radial-gradient(ellipse at center, #ffffff 34%,#f2f2f2 100%);
+  background-color: white;  /* radial-gradient(ellipse at center, #ffffff 34%,#f2f2f2 100%); */
   overflow: hidden;
 }
 
@@ -112,7 +112,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 .logo{
   height: 80px;
-  width: 80px;
+  width: 200px;
   cursor: pointer;
   position: absolute;
   top: 20px;
@@ -120,8 +120,9 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 .settingUp{
   position: absolute;
-  top: 60px;
-  left: 120px;
+  top: 45px;
+  left: 180px;
+  color: #666;
 }
 .pageTitle{
   margin-bottom: 20px;
@@ -138,7 +139,10 @@ input[type=range]:focus::-webkit-slider-runnable-track {
   height: 380px;
 }
 .smallText{
-  font-size: 22px;
+  font-size: 18px;
+  padding-left: 40px;
+  padding-right: 40px;
+  text-align: left;
 }
 .notFilled{
   font-size: 12px;
