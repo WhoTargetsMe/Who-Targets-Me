@@ -96,15 +96,29 @@ const adsOnPage = () => {
     const container = $(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
     const fbStoryId = container.attr('id'); // Extract the story ID, used to determine if an advert has already been extracted
     // console.log('adsOnPage - fbStoryId=', fbStoryId)
+
     if (!fbStoryId || container.hasClass('hidden_elem')) { // Don't proceed if there is an error getting fbStoryId or if the advert is hidden
       return;
     }
 
-    adverts.push({ // Queue advert for server
-      type: 'FBADVERT',
-      related: fbStoryId,
-      html: container.html()
-    });
+    const nextNode = $(container.find('.userContentWrapper')).first().parent();
+    console.log('---------------------postId=', fbStoryId);
+    const condition0 = nextNode.find('a[class*="uiStreamSponsoredLink"]')
+    const subtitle = $(nextNode).find("div[id*='feed_subtitle']");
+    // console.log('subtitle', subtitle)
+    const condition1 = subtitle.find('div[data-tooltip-content*="Shared"]')
+    const condition2 = nextNode.find('a[rel*="theater"]')
+    console.log('sponsored??', condition0.length, condition1.length, condition2.length);
+    console.log('---------------------');
+    if (condition0.length === 1 || (condition1.length + condition2.length === 0)) {
+      console.log('added ------>', fbStoryId)
+
+      adverts.push({ // Queue advert for server
+        type: 'FBADVERT',
+        related: fbStoryId,
+        html: container.html()
+      });
+    }
   });
 
   return Promise.resolve(adverts);
