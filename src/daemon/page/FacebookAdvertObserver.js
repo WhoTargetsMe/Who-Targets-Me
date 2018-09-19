@@ -77,67 +77,65 @@ const adsOnPage = () => {
     let nextNode = $(container.find('.userContentWrapper')).first().parent();
 
     if (!nextNode.hasClass(`modified-${fbStoryId}`) && !nextNode.hasClass('rationale-found')) {
-      let text = 'This is posted by page. The initial post might be sponsored. Fetching reasons this ad is displayed in your timeline...';
-      nextNode.addClass(`modified-${fbStoryId}`);
-      $(`<div class='yellowText-${fbStoryId}' style="color:grey; padding: 15px; font-weight:bold;height: 30px; background-color:yellow; text-align:center; padding-top:10px;border:2px solid grey;">${text}</div>`).prependTo(nextNode);
-      // console.log('yellow text added -->', fbStoryId)
+
+      // const postId = $('input[name="ft_ent_identifier"]').first().attr('value');
+      // console.log('!!!!!!!!!!!!!!postId=', postId);
+      console.log('!!!!!!!!!!!!!!postId=', fbStoryId);
+      const condition0 = nextNode.find('a[class*="uiStreamSponsoredLink"]')
+      const subtitle = $(nextNode).find("div[id*='feed_subtitle']");
+      console.log('subtitle', subtitle)
+      const condition1 = subtitle.find('div[data-tooltip-content*="Shared"]')
+      const condition2 = nextNode.find('a[rel*="theater"]')
+      console.log('sponsored??', subtitle.text(), condition0, condition1, condition2);
+      console.log('---------------------');
+      if (condition0.length === 1 || (condition1.length + condition2.length === 0)) {
+        let text = 'This is posted by page. The initial post might be sponsored. Fetching reasons this ad is displayed in your timeline...';
+        nextNode.addClass(`modified-${fbStoryId}`);
+        $(`<div class='yellowText-${fbStoryId}' style="color:grey; padding: 15px; font-weight:bold;height: 30px; background-color:yellow; text-align:center; padding-top:10px;border:2px solid grey;">${text}</div>`).prependTo(nextNode);
+        console.log('yellow text added -->', fbStoryId)
 
 
 
-    // const postId = $('input[name="ft_ent_identifier"]').first().attr('value');
-    // console.log('!!!!!!!!!!!!!!postId=', postId);
-    console.log('!!!!!!!!!!!!!!postId=', fbStoryId);
-    const subtitle = $(nextNode).find("div[id*='feed_subtitle']");
-    console.log('subtitle', subtitle)
-    const t = subtitle.find('span.timestampContent')
-    console.log('timestamp', t);
-    const livet = subtitle.find('abbr.livetimestamp')
-    console.log('livetimestamp', livet);
-    const yel = subtitle.text().indexOf('red') > 0;
-    const bl = subtitle[0].innerHTML.indexOf('red')
-    console.log('sponsored??', subtitle.text(), yel, bl);
-    console.log('---------------------');
+        /* Temporarily turn off fetching rationales
+        if (!nextNode.hasClass('rationale-found')) {
+          chrome.storage.promise.local.get('general_token')
+            .then((result) => {
+              console.log('general_token===', result)
+              if(result) {
+                api.addMiddleware(request => {
+                  request.options.headers['Authorization'] = 'lioAJCOPJtP9kc1eO1NjJu2IxJjoMS2AvlpTevpM3HXIA9MnJg55DGL7jIBCiBz8'}); //result.general_token});
 
-    /* Temporarily turn off fetching rationales
-    if (!nextNode.hasClass('rationale-found')) {
-      chrome.storage.promise.local.get('general_token')
-        .then((result) => {
-          console.log('general_token===', result)
-          if(result) {
-            api.addMiddleware(request => {
-              request.options.headers['Authorization'] = 'lioAJCOPJtP9kc1eO1NjJu2IxJjoMS2AvlpTevpM3HXIA9MnJg55DGL7jIBCiBz8'}); //result.general_token});
+                api.get(`user/rationales?postId=${postId}`)
+                  .then((response) => {
+                    console.log('response rationales', response)
+                    if (response.status >= 200 && response.status < 300) {
+                      let rationalesFetched = response.jsonData.data.rationales[0].map((rationale, i) => {
+                        let html = JSON.parse(rationale.html.slice(9));
+                        if(!html.jsmods) {
+                          return null;
+                        }})
+                        rationalesFetched = rationalesFetched.filter(c => c);
+                        if (rationalesFetched.length > 0) {
+                          let html = rationalesFetched[0].html.slice(9);
+                          let text = html.jsmods.markup[0][1].__html;
+                          let rationaleText = text.slice(text.indexOf('One reason'),text.indexOf('connected to the internet.')+26);
+                          rationaleText = '<div><span>'+rationaleText+'</span></div>'
+                          console.log('rationaleText processed -->', fbStoryId, rationaleText)
 
-            api.get(`user/rationales?postId=${postId}`)
-              .then((response) => {
-                console.log('response rationales', response)
-                if (response.status >= 200 && response.status < 300) {
-                  let rationalesFetched = response.jsonData.data.rationales[0].map((rationale, i) => {
-                    let html = JSON.parse(rationale.html.slice(9));
-                    if(!html.jsmods) {
-                      return null;
-                    }})
-                    rationalesFetched = rationalesFetched.filter(c => c);
-                    if (rationalesFetched.length > 0) {
-                      let html = rationalesFetched[0].html.slice(9);
-                      let text = html.jsmods.markup[0][1].__html;
-                      let rationaleText = text.slice(text.indexOf('One reason'),text.indexOf('connected to the internet.')+26);
-                      rationaleText = '<div><span>'+rationaleText+'</span></div>'
-                      console.log('rationaleText processed -->', fbStoryId, rationaleText)
-
-                      nextNode.addClass('rationale-found');
-                      $(`.yellowText-${fbStoryId}`).remove();
-                      $(`<div style="color:black; padding: 15px; font-weight:bold;min-height: 30px; background-color:orange; text-align:center; padding-top:10px;border:2px solid grey;">${rationaleText}</div>`).prependTo(nextNode);
-                      console.log('nextNode processed -->', fbStoryId)
-                    }
-                  }
-                }).catch(e => console.log("ERR getting rationale", e))
-        }})
+                          nextNode.addClass('rationale-found');
+                          $(`.yellowText-${fbStoryId}`).remove();
+                          $(`<div style="color:black; padding: 15px; font-weight:bold;min-height: 30px; background-color:orange; text-align:center; padding-top:10px;border:2px solid grey;">${rationaleText}</div>`).prependTo(nextNode);
+                          console.log('nextNode processed -->', fbStoryId)
+                        }
+                      }
+                    }).catch(e => console.log("ERR getting rationale", e))
+            }})
+          }
+          */
       }
-      */
-
     if (!fbStoryId || container.hasClass('hidden_elem')) { // Don't proceed if there is an error getting fbStoryId or if the advert is hidden
       return;
-    }
+      }
     }
 
     adverts.push({ // Queue advert for server
