@@ -44,6 +44,7 @@ const fetchRationale = (advertId) => {
 const triggerMenu = (fbStoryId) => {
   const $menuButton = $(`#${fbStoryId}`).find('[data-testid="post_chevron_button"]');
   const menuOwnerId = $menuButton.attr("id");
+  // console.log('TRIGGERED! menuOwnerId=', menuOwnerId)
 
   $menuButton.get(0).click(); // Open the menu
   $menuButton.get(0).click(); // Close the menu
@@ -52,6 +53,9 @@ const triggerMenu = (fbStoryId) => {
     .then(() => {
       try {
         const ajaxify =  document.querySelector(`[data-ownerid='${menuOwnerId}'] a[data-feed-option-name='FeedAdSeenReasonOption']`).getAttribute('ajaxify');
+        // console.log('TRIGGERED ! ajaxify=', ajaxify)
+        if (!ajaxify) { return; }
+
         return Promise.resolve({
           fbStoryId,
           fbAdvertId: /id=\s*(.*?)\s*&/.exec(ajaxify)[1]
@@ -102,16 +106,16 @@ const adsOnPage = () => {
     }
 
     const nextNode = $(container.find('.userContentWrapper')).first().parent();
-    console.log('---------------------postId=', fbStoryId);
-    const condition0 = nextNode.find('a[class*="uiStreamSponsoredLink"]')
+    // console.log('---------------------postId=', fbStoryId);
+    const condition0 = $(nextNode).find('a[class*="uiStreamSponsoredLink"]')
     const subtitle = $(nextNode).find("div[id*='feed_subtitle']");
     // console.log('subtitle', subtitle)
     const condition1 = subtitle.find('div[data-tooltip-content*="Shared"]')
     const condition2 = nextNode.find('a[rel*="theater"]')
-    console.log('sponsored??', condition0.length, condition1.length, condition2.length);
-    console.log('---------------------');
+    // console.log('sponsored??', condition0.length, condition1.length, condition2.length);
+    // console.log('---------------------');
     if (condition0.length === 1 || (condition1.length + condition2.length === 0)) {
-      console.log('added ------>', fbStoryId)
+      // console.log('added ------>', fbStoryId)
 
       adverts.push({ // Queue advert for server
         type: 'FBADVERT',
@@ -193,7 +197,7 @@ const cycle = ({persistant, temp}) => {
         advertIdQueue,
         parsedRationale
       } = results[1];
-
+      // console.log('++++++++++++++++++', adverts, advertIds, advertIdQueue, parsedRationale)
       temp.fbStoryIds.push(...adverts.map(advert => advert.related));
       temp.rationale.advertIdQueue = advertIdQueue.concat(advertIds);
 
