@@ -62,7 +62,7 @@
   border-top: 1px solid #ccc !important;
 }
 
-.statbox * {
+.blacktext {
   color: #222;
 }
 
@@ -179,11 +179,10 @@ img{
   width: 100px;
 }
 .subMessage{
-  flex: 1;
   max-width: 600px;
-  margin-left: 100px;
   line-height: 24px;
   text-align: center;
+  margin: 30px;
 }
 .buttonFB, .buttonTW{
   color: white;

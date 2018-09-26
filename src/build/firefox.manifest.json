@@ -7,7 +7,7 @@
 	"browser_action": {
 		"name": "__MSG_appName__",
 		"default_popup": "frontend/index.html",
-		"default_icon": "logo-128.png"
+		"default_icon": "TUOS_PRIMARY_LOGO.png"
 	},
 	"permissions": [
 		"tabs",
@@ -28,6 +28,6 @@
 		"scripts": ["daemon/index.js"]
 	},
 	"icons": {
-		"128": "logo-128.png"
+		"128": "TUOS_PRIMARY_LOGO.png"
 	}
 }

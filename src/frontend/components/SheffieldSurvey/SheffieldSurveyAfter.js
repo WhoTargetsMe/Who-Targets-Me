@@ -116,7 +116,7 @@ export const Survey7 = (props) => {
     const {fields} = props;
     return(
       <div style={{marginTop: '90px', marginLeft: '40px', marginRight: '40px'}}>
-        <div className="surveyContainer">
+        <div className="surveyContainer" style={{margin: '55px 0px', height: 380}}>
           <p style={{marginBottom: 20, textAlign: 'left'}}>Q18. Now, how would you rate the following things in terms of your TRUST THEY WILL PROMOTE THE PUBLIC INTEREST</p>
           <div className='biathlonHeader'>
             <div style={{minWidth: 200, flex: 1}}></div>
@@ -225,7 +225,7 @@ export const Survey9 = (props) => {
   let answered_ids_1 = fields[`fields${9}`][1].answers.map(a => a.anid);
   let val_1 = props.answers.filter(a => answered_ids_1.includes(a));
   if (val_1.length > 0) { val_1 = parseInt(val_1[0]) }
-  console.log('props', props, answered_ids_1, val_1)
+  // console.log('props', props, answered_ids_1, val_1)
 
   return(
     <div style={{marginTop: '90px', marginLeft: '40px'}}>
@@ -320,7 +320,7 @@ export const Survey10 = (props) => {
 
   return(
     <div style={{marginTop: '90px', marginLeft: '40px', marginRight: '40px'}}>
-      <div className="surveyContainer" style={{overflow: 'hidden', marginRight: '10px'}}>
+      <div className="surveyContainer" style={{overflow: 'hidden', marginRight: '10px', height: 405}}>
       <p style={{marginTop: 30, textAlign: 'left'}}>{`Q25. ${fields.fields10[0].label}`}</p>
       <div className='biathlonHeader'>
           <div style={{minWidth: 200, flex: 1}}></div>
@@ -407,8 +407,8 @@ export const Survey10 = (props) => {
 
   export const Survey12 = () => {
     return(
-      <div className="fullwidth pageTitle" style={{width: '700px', textAlign: 'left'}}>
-        <div style={{overflowY:'hidden', maxHeight: 400}}>
+      <div className="fullwidth pageTitle" style={{width: '700px', minHeight: 500, textAlign: 'left', marginTop: 90}}>
+        <div style={{overflowY:'hidden', minHeight: 410, textAlign: 'left'}}>
           <p>Q29</p>
           <p>Thank you. The survey is complete.</p>
 

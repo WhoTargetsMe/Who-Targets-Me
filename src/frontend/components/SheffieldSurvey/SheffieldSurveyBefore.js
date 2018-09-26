@@ -5,7 +5,7 @@ import './SheffieldSurvey.css';
 
 export const Survey0 = (props) => {
   const {fields} = props;
-  console.log('props', props)
+  // console.log('props', props)
   if (fields.length === 0) { return null; }
 
   function sendMail(address) {
@@ -14,7 +14,7 @@ export const Survey0 = (props) => {
       document.location.href = `mailto:${address}?subject=`
           + encodeURIComponent(subject)
           + "&body=" + encodeURIComponent(yourMessage);
-      console.log('sendMail(address)', address)
+      // console.log('sendMail(address)', address)
   }
 
   return(
@@ -119,6 +119,7 @@ export const Survey2 = (props) => {
   )
 }
 
+// Cross-section Initial/Post Survey
 //"Biathlon" questions
 export const Survey3 = (props) => {
   const {fields} = props;
@@ -130,7 +131,7 @@ export const Survey3 = (props) => {
   return(
     <div style={{marginTop: '90px', marginLeft: '40px', marginRight: '40px'}}>
     <div className='startBlockSurvey'>About use of data and personalisation</div>
-      <div className="surveyContainer">
+      <div className="surveyContainer" class='blacktext'>
         <ul>
           {fields.fields3.map((field, i) => {
             return <li key={`field-${i}`} className='quizQuestion'>

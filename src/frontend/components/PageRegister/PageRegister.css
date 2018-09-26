@@ -27,7 +27,7 @@
 .CenterContainer_outer {
   display: table;
   width: 100%;
-  height: 100%;
+  height: 600px;
   background-color: white;  /* radial-gradient(ellipse at center, #ffffff 34%,#f2f2f2 100%); */
   overflow: hidden;
 }
