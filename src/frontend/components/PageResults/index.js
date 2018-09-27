@@ -1,2 +1,2 @@
-import PageResults from './PageResults'
-export default PageResults
+import PageResults from './PageResults';
+export default PageResults;

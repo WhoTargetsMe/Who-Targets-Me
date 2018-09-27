@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
-import strings from '../../helpers/localization.js';
 import {Button, InputGroup, FormInput, FormField, FormSelect, FormRow, Spinner, Row, Card, Col} from 'elemental';
 import api from '../../helpers/api.js';
-import countries from './countries.js';
-import languages from './languages.js';
 import {
   Survey0, Survey1, Survey2, Survey3, Survey4, Survey5, Survey6
 } from '../SheffieldSurvey/SheffieldSurveyBefore.js';
@@ -12,8 +9,6 @@ import {
 } from '../SheffieldSurvey/SheffieldSurveyAfter.js';
 import {schema, agesMask, genderMask, politAffiliationMask} from '../SheffieldSurvey/SurveyFields.js';
 import {surveyanswers, surveyquestions} from '../SheffieldSurvey/SurveyFields.js'; //remove when moved to db
-import FacebookIcon from './icon_facebook.svg';
-import TwitterIcon from './icon_twitter.svg';
 import Logo from '../Shell/TUOS_PRIMARY_LOGO.png';
 
 /* CONTAINS THE INIT SURVEY STAGES */
@@ -242,7 +237,7 @@ class SheffieldSurvey extends Component {
           }
           this.setState({survey, loadingSurvey: false, fields})
         } else {
-          console.log('Failed to fetch survey')
+          // console.log('Failed to fetch survey')
           this.setState({loadingSurvey: false});
         }
       })

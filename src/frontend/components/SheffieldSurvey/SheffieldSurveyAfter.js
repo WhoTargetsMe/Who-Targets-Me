@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import strings from '../../helpers/localization.js';
 import {Button, InputGroup, FormInput, FormField, FormSelect, FormRow, Radio, Checkbox, Spinner, Row, Card, Col, FormIconField} from 'elemental';
 import './SheffieldSurvey.css';
 
@@ -225,8 +224,7 @@ export const Survey9 = (props) => {
   let answered_ids_1 = fields[`fields${9}`][1].answers.map(a => a.anid);
   let val_1 = props.answers.filter(a => answered_ids_1.includes(a));
   if (val_1.length > 0) { val_1 = parseInt(val_1[0]) }
-  // console.log('props', props, answered_ids_1, val_1)
-
+  
   return(
     <div style={{marginTop: '90px', marginLeft: '40px'}}>
       <div className='startBlockSurvey'>AFTER questions (FB use)</div>

@@ -1,2 +1,2 @@
-import PageRegister from './PageRegister'
-export default PageRegister
+import PageRegister from './PageRegister';
+export default PageRegister;

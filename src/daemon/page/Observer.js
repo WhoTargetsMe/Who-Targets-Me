@@ -48,13 +48,11 @@ export default class Observer {
 
   stop() {
     if (this.timeout) {
-      console.log('OBSERVER---> stopped')
       this.timeout.clearTimeout();
     }
   }
 
   cycle() { // Called every interval when observing
-    console.log('OBSERVER---> cycle1')
     this.running = true;
     this.timeout = setTimeout(this.cycle, this.config.interval);
     this.config.cycle({persistant: Object.assign({}, this.persistantStorage), temp: Object.assign({}, this.tempStorage)}) // Immutable

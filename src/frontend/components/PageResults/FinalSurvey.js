@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import strings from '../../helpers/localization.js';
 import {Button, InputGroup, FormInput, FormField, FormSelect, FormRow, Spinner, Row, Card, Col} from 'elemental';
 
 import api from '../../helpers/api.js';

@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
-import strings from '../../helpers/localization.js';
 import {Button, InputGroup, FormInput, FormField, FormSelect, FormRow, Radio, Checkbox, Spinner, Row, Card, Col} from 'elemental';
 import './SheffieldSurvey.css';
 
 export const Survey0 = (props) => {
   const {fields} = props;
-  // console.log('props', props)
+
   if (fields.length === 0) { return null; }
 
   function sendMail(address) {
@@ -14,7 +13,6 @@ export const Survey0 = (props) => {
       document.location.href = `mailto:${address}?subject=`
           + encodeURIComponent(subject)
           + "&body=" + encodeURIComponent(yourMessage);
-      // console.log('sendMail(address)', address)
   }
 
   return(
