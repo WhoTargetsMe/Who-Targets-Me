@@ -43,6 +43,10 @@ const checkYouGovUrl = url => {
   if (rawYouGovRegexExec) {
     // Remove listener and attempt to create a new user
     createYouGovUser(rawYouGovRegexExec[1])
+      .then(token => {
+        chrome.storage.promise.local.set({'general_token': token})
+      })
+      .catch(console.log)
     return true
   }
   return false
