@@ -23,75 +23,95 @@ const fetchRationale = (advertId) => {
 };
 
 const triggerMenu = (fbStoryId, group) => {
+  if (group !== 'Sheffield-Experiment') { return; } // don't trigger menu if this is not experiment group
   const $menuButton = $(`#${fbStoryId}`).find('[data-testid="post_chevron_button"]');
   const menuOwnerId = $menuButton.attr("id");
+  const container = $(`#${fbStoryId}`).closest('[data-testid="fbfeed_story"]');
+  const fetched = container.find('.fetched');
+  // console.log('container', fbStoryId, container)
+  // console.log('fetched', fbStoryId, fetched)
+  if (fetched.length > 0) {
+    // don't triggerMenu if already fetched
+    // console.log('fetched exists', fbStoryId)
+    return;
+  }
+
   // console.log('TRIGGERED menuOwnerId', menuOwnerId)
-  $menuButton.get(0).click(); // Open the menu
-  $menuButton.get(0).click(); // Close the menu
-
-  return new Promise((resolve) => setTimeout(resolve(), 100)) // Wait 100ms to ensure the menu rendered
+  return new Promise((resolve) => setTimeout(resolve(), 1000 * parseInt(Math.random()*10)))
     .then(() => {
-      try {
-        const ajaxify0 = document.querySelector(`[data-ownerid='${menuOwnerId}'] a[data-feed-option-name='FeedAdSeenReasonOption']`)
-        const ajaxify = ajaxify0.getAttribute('ajaxify');
-        // console.log('TRY TRIGGERED! fbStoryId, owner=',menuOwnerId, fbStoryId)
-        // console.log('TRY TRIGGERED! ajaxify=', ajaxify)
-        const fbAdvertId = /id=\s*(.*?)\s*&/.exec(ajaxify)[1]
-        // console.log('TRY TRIGGERED! fbAdvertId=', fbAdvertId)
+      $menuButton.get(0).click(); // Open the menu
+      $menuButton.get(0).click(); // Close the menu
 
-        return new Promise((resolve) => setTimeout(resolve(), 1000 * getRandomInt(5)))
-          .then(() => {
-            fetchRationale(fbAdvertId)
-              .then(parsedRationale => {
-                // console.log("FBADVERTRATIONALE-2", parsedRationale)
-                if (parsedRationale) {
-                  // console.log("FBADVERTRATIONALE-3 (if parsed)", fbAdvertId, "advert.fbStoryId", fbStoryId)
+    return new Promise((resolve) => setTimeout(resolve(), 100)) // Wait 100ms to ensure the menu rendered
+      .then(() => {
+        try {
+          const ajaxify0 = document.querySelector(`[data-ownerid='${menuOwnerId}'] a[data-feed-option-name='FeedAdSeenReasonOption']`)
+          const ajaxify = ajaxify0.getAttribute('ajaxify');
+          // console.log('TRY TRIGGERED! fbStoryId, owner=',menuOwnerId, fbStoryId)
+          // console.log('TRY TRIGGERED! ajaxify=', ajaxify)
+          const fbAdvertId = /id=\s*(.*?)\s*&/.exec(ajaxify)[1]
+          // console.log('TRY TRIGGERED! fbAdvertId=', fbAdvertId)
 
-                  if (group === 'Sheffield-Experiment') {
-                    $(sprintf('a.fbPrivacyAudienceIndicator')).each((index, adv) => {
-                      try {
-                        const domSponsored = $(adv).parent().children().find("span[class~='timestamp']") //contains exact word
-                        if (domSponsored.length === 0) { // if there's a timestamp, it's not an ad
-                          const container = $(adv).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
-                          const _fbStoryId = container.attr('id'); // Extract the story ID, used to determine if an advert has already been extracted
-                          // console.log('RATIONALE-1')
-                          if (_fbStoryId === fbStoryId) {
-                            // console.log('RATIONALE-2')
-                            let html = JSON.parse(parsedRationale.slice(9));
-                            // console.log('RATIONALE-3')
-                            if(!html.jsmods) {
-                              return null;
+          return new Promise((resolve) => setTimeout(resolve(), 100 * getRandomInt(5)))
+            .then(() => {
+              fetchRationale(fbAdvertId)
+                .then(parsedRationale => {
+                  // console.log("FBADVERTRATIONALE (response)", parsedRationale)
+                  if (parsedRationale) {
+                    console.log("FBADVERTRATIONALE (if parsed)", fbAdvertId, "advert.fbStoryId", fbStoryId)
+
+                    if (group === 'Sheffield-Experiment') {
+                      $(sprintf('a.fbPrivacyAudienceIndicator')).each((index, adv) => {
+                        try {
+                          const domSponsored = $(adv).parent().children().find("span[class~='timestamp']") //contains exact word
+                          if (domSponsored.length === 0) { // if there's a timestamp, it's not an ad
+                            const container = $(adv).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
+                            const _fbStoryId = container.attr('id'); // Extract the story ID, used to determine if an advert has already been extracted
+                            // console.log('RATIONALE-1')
+                            if (_fbStoryId === fbStoryId) {
+                              // console.log('RATIONALE-2')
+                              let html = JSON.parse(parsedRationale.toString().slice(9));
+                              // console.log('RATIONALE-3 (parsed)', html)
+                              if(!html.jsmods) {
+                                return null;
+                              }
+                              let text = html.jsmods.markup[0][1].__html;
+                              let low_text = text.toLowerCase()
+                              // console.log('RATIONALE-4', text)
+                              const startTxt = 're seeing this ad'
+                              const endTxt = 'connected to the internet'
+                              let rationaleText = text.slice(low_text.indexOf(startTxt)-8,low_text.indexOf(endTxt)+26);
+                              rationaleText = '<div><span>'+'Y'+rationaleText+'</span></div>'
+                              // console.log('RATIONALE-5')
+                              let nextNode = $(container.find('.userContentWrapper')).first().parent();
+                              // console.log('RATIONALE-6')
+                              let fetched = $(nextNode.find('.fetched'))
+                              // console.log('fetched', fetched)
+                              if (fetched.length === 0) {
+                                $(`<div class="fetched" style="color:black; padding:15px; font-size:14px; font-weight:normal; min-height: 30px; background-color:orange; text-align:left; padding-top:10px;border-bottom:1px solid #ccc;border-right:1px solid #ccc;border-left:1px solid #ccc;">${rationaleText}</div>`).appendTo(nextNode);
+                              }
+                              return Promise.resolve({
+                                fbStoryId,
+                                fbAdvertId
+                              }); // Extract the advert ID using regex
                             }
-                            // console.log('RATIONALE-4')
-                            let text = html.jsmods.markup[0][1].__html;
-                            let rationaleText = text.slice(text.indexOf('One reason'),text.indexOf('connected to the internet.')+26);
-                            rationaleText = '<div><span>'+rationaleText+'</span></div>'
-                            // console.log('RATIONALE-5')
-                            let nextNode = $(container.find('.userContentWrapper')).first().parent();
-                            // console.log('RATIONALE-6')
-                            let fetched = $(nextNode.find('.fetched'))
-                            // console.log('fetched', fetched)
-                            if (fetched.length === 0) {
-                              $(`<div class="fetched" style="color:black; padding: 15px; font-weight:bold;min-height: 30px; background-color:orange; text-align:left; padding-top:10px;border:2px solid grey;">${rationaleText}</div>`).appendTo(nextNode);
-                            }
-                            return Promise.resolve({
-                              fbStoryId,
-                              fbAdvertId
-                            }); // Extract the advert ID using regex
                           }
+                        } catch (err) { // try
+                          // console.log('Some err, RETURN', err)
                         }
-                      } catch (err) { // try
-                        // console.log('Some err, RETURN', err)
-                      }
-                  })
-              } // If this is experiment group, insert rationale div
-            } // If parsed rationale
-          }) // then parsed rationale
-        }) // new Promise on fetchRationale
-      } catch (err) {
-        // console.log(err);
-        return Promise.reject(new Error(['Could not extract advert ID', fbStoryId]));
-      }
+                    })
+                } // If this is experiment group, insert rationale div
+              } // If parsed rationale
+            }) // then parsed rationale
+          }) // new Promise on fetchRationale
+        } catch (err) {
+          // console.log(err);
+          return Promise.reject(new Error(['Could not extract advert ID', fbStoryId]));
+        }
+    });
+  }).catch(err => {
+    // console.log(err);
+    return Promise.reject(new Error(['Could not extract advert ID', fbStoryId]));
   });
 };
 
@@ -132,9 +152,9 @@ const adsOnPage = (group) => {
     // console.log('---------------------');
 
     if (index === 1 || condition0.length === 1 || (condition1.length + condition2.length === 0)) {
-      if (group === 'Sheffield-Experiment') {
-        nextNode.css('background-color', 'yellow')
-      }
+      // if (group === 'Sheffield-Experiment') {
+      //   nextNode.css('background-color', 'yellow')
+      // }
 
     // console.log('AD FOUND -->', fbStoryId)
 
