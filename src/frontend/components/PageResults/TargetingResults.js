@@ -78,11 +78,15 @@ export const PartyAds = (props) => {
     showTargetingPage = true;
     message = props.rationales[props.postId].noRationaleMessage;
   }
+  let partyName = props.party;
+  if (props.advertisers.length > 0) {
+    partyName = props.advertisers.filter(advr => advr.advertiserName === props.party)[0].partyDetails.party;
+  }
 
   return(
     <div>
       <div style={{marginBottom: 5}}>
-        <h3 style={{marginLeft: 20, marginBottom: 3}}>{count} ads from <span className='party'>{`${props.ads[0].advertiserName} (${props.party})`}</span></h3>
+        <h3 style={{marginLeft: 20, marginBottom: 3}}>{count} ads from <span className='party'>{`${partyName}`}</span></h3>
         <span className='link link_underline' style={{marginLeft: 20}} onClick={props.hideBarInfo}>Back to stats</span>
         <span style={{color: '#0A4496'}} >&nbsp;|&nbsp;</span>
         <span className={`link link_underline ${disabledPrev ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('prev', props.advertisers)}>Previous advertiser</span>

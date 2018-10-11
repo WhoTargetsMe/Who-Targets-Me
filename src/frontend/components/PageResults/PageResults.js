@@ -330,7 +330,7 @@ export default class PageResults extends Component {
               !this.state.showAds && !this.state.loadingAds &&
               <div style={userCountry === 'BR' ? {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', maxHeight: '200px'} : {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap'}}>
                 <footer>
-                  <span style={{marginRight: 0}}>Click a bar to see the ads you've seen from them &nbsp;|</span>
+                  <span style={{marginRight: 0}}>Click a bar to view the ads you’ve seen from them &nbsp;|</span>
                   <a className='link' style={{marginLeft: 7}} target='_blank' href='https://whotargets.me/en/defining-political-ads/'>How did we calculate this?</a>
                 </footer>
                 <PartyChart
