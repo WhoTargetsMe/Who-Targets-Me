@@ -35,7 +35,7 @@
 }
 .mainstatbox {
   background-color: #f2f2f2;
-  min-height: 320px;
+  min-height: 300px;
   max-height: 320px;
 }
 
@@ -209,8 +209,7 @@ img{
 }
 .mainHeader {
   font-weight: 600;
-  line-height: 0.7;
-  margin-top: 30px;
+  line-height: 25px;
 }
 
 /* Styles related to DeleteRequestPage */

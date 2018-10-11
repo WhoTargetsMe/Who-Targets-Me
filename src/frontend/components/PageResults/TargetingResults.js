@@ -52,7 +52,7 @@ export const PartyChart = (props) => {
       <div className='labels'>
         {partiesDisplay.map((elt, i) =>
           <div key={`label-${i}`} className='label'>
-            <div className="name" title={elt.advertiserName}>{elt.advertiserName.toUpperCase().slice(0,5)}</div>
+            <div className="name" title={elt.advertiserName}>{elt.advertiserName.toUpperCase().slice(0,6)}</div>
             <div className="labtext">{parseInt(elt.count) === 1 ? `${elt.count} ad` : `${elt.count} ads`}</div>
             <div className="labtext">{`${(parseInt(elt.count)/props.userSeenSum*100).toFixed(0)}%`}</div>
           </div>

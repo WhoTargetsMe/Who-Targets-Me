@@ -309,7 +309,7 @@ export default class PageResults extends Component {
               }
               {
                 view === "display_parties" &&
-                <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: '25px'}}>
+                <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: '15px'}}>
                   <div style={{flex: 1, minHeight: '40px'}}>
                     <h3 className='mainHeader'>{`${strings.results.results_screen1} `}<span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span></h3>
                     <h4 className='resultsSubHeader'>{`${strings.results.results_screen2} `}{userSeenPartiesSum} {` ${strings.results.results_screen3} `}
@@ -328,7 +328,7 @@ export default class PageResults extends Component {
           <div className="statbox mainstatbox">
             { view === "display_parties" && this.state.userData && this.state.userData.advertisers &&
               !this.state.showAds && !this.state.loadingAds &&
-              <div style={{display: 'flex', alignItems: 'center', flexFlow: 'column nowrap'}}>
+              <div style={userCountry === 'BR' ? {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', maxHeight: '200px'} : {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap'}}>
                 <footer>
                   <span style={{marginRight: 0}}>Click a bar to see the ads you've seen from them &nbsp;|</span>
                   <a className='link' style={{marginLeft: 7}} target='_blank' href='https://whotargets.me/en/defining-political-ads/'>How did we calculate this?</a>
