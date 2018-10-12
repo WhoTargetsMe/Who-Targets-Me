@@ -17,7 +17,7 @@ const links = {
   },
   project: {
     title: 'About this project',
-    url: '#',
+    url: 'https://whotargets.me/en/sheffield/',
   }
 }
 
@@ -157,59 +157,3 @@ export default class PageResults extends Component {
     )
   }
 } // End of PageResults class
-
-// function validateEmail(email) {
-//     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-//     return re.test(email);
-// }
-//
-//
-// class ChooseEmail extends Component {
-//
-//   constructor() {
-//     super()
-//     this.state = {
-//       inputEmail: '',
-//       loading: false
-//     }
-//     this.handleFormChange = this.handleFormChange.bind(this)
-//     this.updateUser = this.updateUser.bind(this)
-//   }
-//
-//   componentWillMount() {
-//     this.setState({inputEmail: this.props.value})
-//   }
-//
-//   render() {
-//     return (
-//       <div>
-//         <Form>
-//           <InputGroup contiguous>
-//           	<InputGroup.Section grow>
-//               <FormInput type="email" placeholder="Please enter your email" onChange={(e) => this.handleFormChange('inputEmail', e.target.value)} value={this.state.inputEmail} />
-//           	</InputGroup.Section>
-//           	<InputGroup.Section>
-//           		<Button type="hollow-primary" onClick={this.updateUser}>{this.state.loading ? "Loading..." : (this.props.done ? "Done" : "Submit")}</Button>
-//           	</InputGroup.Section>
-//           </InputGroup>
-//         </Form>
-//       </div>
-//     )
-//   }
-//
-//   handleFormChange(field, value) {
-//     let newState = {}
-//     newState[field] = value
-//     this.setState(newState)
-//   }
-//
-//   updateUser() {
-//     if(this.state.inputEmail != "" && validateEmail(this.state.inputEmail)) {
-//       this.setState({loading: true})
-//       this.props.updateUser({email: this.state.inputEmail})
-//         .then(() => {
-//           this.setState({loading: false})
-//         })
-//     }
-//   }
-// }

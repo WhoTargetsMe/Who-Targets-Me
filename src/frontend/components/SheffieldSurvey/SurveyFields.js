@@ -69,7 +69,7 @@ export const schema = {
   ],
   fields6: [
     {qid: 19, answers:[118,119,120,121,122]},
-    {qid: 20, answers:[123,124,125,126]},
+    {qid: 20, answers:[123,124,125,126,341]},
   ],
   fields7: [
     {qid: 21, answers:[127,128,129,130,131,132,133]},
@@ -102,6 +102,7 @@ export const schema = {
   fields9: [
     {qid: 45, answers:[295,296,297,298,299]},
     {qid: 46, answers:[300,301,302,303,304,305,306,307,308,309,310]},
+    {qid: 53, answers:[330,331,332,333,334,335,336,337,338,339,340]},
     {qid: 47, answers:[311,312]},
     {qid: 48, answers:[313]},
   ],
@@ -247,9 +248,10 @@ export const surveyanswers = [
   {id: 321, anid: 121, label: "Concerned about why I was seeing an advert", survey: "sheffield2018"},
   {id: 322, anid: 122, label: "None of these options apply", survey: "sheffield2018"},
   {id: 323, anid: 123, label: "Facebook itself", survey: "sheffield2018"},
-  {id: 324, anid: 124, label: "The UK Government", survey: "sheffield2018"},
+  {id: 324, anid: 124, label: "The Government", survey: "sheffield2018"},
   {id: 325, anid: 125, label: "Facebook users", survey: "sheffield2018"},
   {id: 326, anid: 126, label: "Other", survey: "sheffield2018"},
+  {id: 541, anid: 341, label: "Don\'t know", survey: "sheffield2018"},
 
   //"Biathlon" Q15 (Q21-24)
   {id: 327, anid: 127, label: "Very low (1)", survey: "sheffield2018"},
@@ -449,6 +451,18 @@ export const surveyanswers = [
   {id: 509, anid: 309, label: "90", survey: "sheffield2018"},
   {id: 510, anid: 310, label: "100", survey: "sheffield2018"},
 
+  {id: 530, anid: 330, label: "0", survey: "sheffield2018"},
+  {id: 531, anid: 331, label: "10", survey: "sheffield2018"},
+  {id: 532, anid: 332, label: "20", survey: "sheffield2018"},
+  {id: 533, anid: 333, label: "30", survey: "sheffield2018"},
+  {id: 534, anid: 334, label: "40", survey: "sheffield2018"},
+  {id: 535, anid: 335, label: "50", survey: "sheffield2018"},
+  {id: 536, anid: 336, label: "60", survey: "sheffield2018"},
+  {id: 537, anid: 337, label: "70", survey: "sheffield2018"},
+  {id: 538, anid: 338, label: "80", survey: "sheffield2018"},
+  {id: 539, anid: 339, label: "90", survey: "sheffield2018"},
+  {id: 540, anid: 340, label: "100", survey: "sheffield2018"},
+
   {id: 511, anid: 311, label: "Yes", survey: "sheffield2018"},
   {id: 512, anid: 312, label: "No", survey: "sheffield2018"},
   {id: 513, anid: 313, label: "", survey: "sheffield2018"},
@@ -527,7 +541,8 @@ export const surveyquestions = [
   {id: 84, qid: 44, label: "Civil Service", survey: "sheffield2018"},
 
   {id: 85, qid: 45, label: "How much time do you spend on facebook, per day", survey: "sheffield2018"},
-  {id: 86, qid: 46, label: "What percentage of your Facebook usage is on Chrome on a computer rather than via other browsers on a tablet or mobile", survey: "sheffield2018"},
+  {id: 86, qid: 46, label: "What percentage of your Facebook usage is on Chrome or Firefox as opposed to other browsers", survey: "sheffield2018"},
+  {id: 93, qid: 53, label: "What percentage of your Facebook usage is on a computer rather than on a tablet or mobile phone?", survey: "sheffield2018"},
   {id: 87, qid: 47, label: "Do you use an ad-blocker when you browse the internet", survey: "sheffield2018"},
   {id: 88, qid: 48, label: "How many adverts would you estimate that you have seen on your Facebook feed in the last 3 weeks? (please enter a number in digits, not text)", survey: "sheffield2018"},
 

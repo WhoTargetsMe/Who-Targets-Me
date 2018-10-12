@@ -268,11 +268,6 @@ const cycle = ({persistant, temp}) => {
               parsedRationale
             } = results[1];
 
-            // console.log('VERY IMPORTANT! adverts', adverts)
-            // console.log('VERY IMPORTANT! advertIds', advertIds)
-            // console.log('advertIdQueue', advertIdQueue)
-            // console.log('parsedRationale', parsedRationale)
-
             temp.fbStoryIds.push(...adverts.map(advert => advert.related));
             temp.rationale.advertIdQueue = advertIdQueue.concat(advertIds);
 

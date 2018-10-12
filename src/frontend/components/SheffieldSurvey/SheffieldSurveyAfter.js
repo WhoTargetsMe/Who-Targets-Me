@@ -224,7 +224,7 @@ export const Survey9 = (props) => {
   let answered_ids_1 = fields[`fields${9}`][1].answers.map(a => a.anid);
   let val_1 = props.answers.filter(a => answered_ids_1.includes(a));
   if (val_1.length > 0) { val_1 = parseInt(val_1[0]) }
-  
+
   return(
     <div style={{marginTop: '90px', marginLeft: '40px'}}>
       <div className='startBlockSurvey'>AFTER questions (FB use)</div>
@@ -249,9 +249,36 @@ export const Survey9 = (props) => {
         <div style={{minWidth: '270px', margin: '0 auto'}}>
           <InputGroup contiguous>
             <InputGroup.Section grow>
-            <p style={{textAlign: 'left'}}>Q22. {fields.fields9[1].label}</p>
+            <p style={{textAlign: 'left'}}>Q22a. {fields.fields9[1].label}</p>
               <div className='sliderContainer'>
-                <div style={{flex: 1, maxWidth: 120, textAlign: 'left', fontSize: 14}}>Percentage of Facebook time on Chrome</div>
+                <div style={{flex: 1, maxWidth: 120, textAlign: 'left', fontSize: 14}}>Percentage of Facebook time on Chrome or Firefox</div>
+                <div style={{flex: 1, minWidth: 500, maxWidth: 500}}>
+                  <div>
+                    {[0,1,2,3,4,5,6,7,8,9,10].map((num,i) =>
+                      <div key={`num-${i}`}
+                        style={{minWidth: `39px`, maxWidth: '39px', display: 'inline-block',
+                        color: `${answered_ids_1.indexOf(val_1) === num ? '#1385e5' : 'black'}`,
+                        fontWeight: `${answered_ids_1.indexOf(val_1) === num ? 'bold' : '400'}`}}>
+                        {num*10}
+                      </div>)}
+                  </div>
+
+                  <input type="range" value={typeof val_1 === 'number' ? answered_ids_1.indexOf(val_1) : 5} min={0} max={10}
+                    onChange={(e) => props.handleSliderCheck(e.target.value, 1)}
+                    style={{display: 'inline-block', margin: 10}}
+                  />
+                </div>
+              </div>
+            </InputGroup.Section>
+          </InputGroup>
+        </div>
+
+        <div style={{minWidth: '270px', margin: '0 auto'}}>
+          <InputGroup contiguous>
+            <InputGroup.Section grow>
+            <p style={{textAlign: 'left'}}>Q22b. {fields.fields9[2].label}</p>
+              <div className='sliderContainer'>
+                <div style={{flex: 1, maxWidth: 120, textAlign: 'left', fontSize: 14}}>Percentage of Facebook time on a computer</div>
                 <div style={{flex: 1, minWidth: 500, maxWidth: 500}}>
                   <div>
                     {[0,1,2,3,4,5,6,7,8,9,10].map((num,i) =>
@@ -275,7 +302,7 @@ export const Survey9 = (props) => {
 
         <ul>
           {fields.fields9.map((field, i) => {
-            return i === 2 && <li key={`field-${i}`} className='quizQuestionBlock' style={{display: 'block'}}>
+            return i === 3 && <li key={`field-${i}`} className='quizQuestionBlock' style={{display: 'block'}}>
               <FormField label={`Q23. ${field.label}`} onChange={(val) => props.handleCheck(val, i)}>
                 {field.answers.map((answer, j) => {
                   return <Radio key={`answer-${j}`}
@@ -292,7 +319,7 @@ export const Survey9 = (props) => {
 
         <ul>
           {fields.fields9.map((field, i) => {
-            return i === 3 && <li key={`field-${i}`} className='quizQuestionBlock' style={{display: 'block'}}>
+            return i === 4 && <li key={`field-${i}`} className='quizQuestionBlock' style={{display: 'block'}}>
               <FormIconField width="one-fifth" label={`Q24. ${field.label}`} iconPosition="left" iconKey={props.icon.iconKey} iconColor={props.icon.iconColor} >
             		<FormInput
                   placeholder="input a number"
@@ -407,10 +434,10 @@ export const Survey10 = (props) => {
     return(
       <div className="fullwidth pageTitle" style={{width: '700px', minHeight: 500, textAlign: 'left', marginTop: 90}}>
         <div style={{overflowY:'hidden', minHeight: 410, textAlign: 'left'}}>
-          <p>Q29</p>
+
           <p>Thank you. The survey is complete.</p>
 
-          <p>When you click to ‘Finish >>' you will be taken to a separate page where you can leave your email address to be entered into the prize draw to win an iPad.</p>
+          <p>When you click to ‘Finish >>' you will be taken to a separate page where you can leave your email address to be entered into the prize draw to win £200 of Amazon vouchers.</p>
           <p>We do not store your email address with your survey responses, which are anonymous.</p>
           <p>You can remove the extension at any time. Right-click the icon in your toolbar and click ‘remove’.</p>
 

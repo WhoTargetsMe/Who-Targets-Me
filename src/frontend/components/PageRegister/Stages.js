@@ -452,30 +452,7 @@ class SheffieldSurvey extends Component {
             {surveyPage === 4 && <Survey4 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
             {surveyPage === 5 && <Survey5 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
             {surveyPage === 6 && <Survey6 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
-            {/* {surveyPage === 7 && <Survey7 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
-            {surveyPage === 8 && <Survey8 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
-            {surveyPage === 9 &&
-              <Survey9
-                handleCheck={this.handleCheck}
-                handleSliderCheck={this.handleSliderCheck}
-                handleInputNumber={this.handleInputNumber}
-                answers={answers} fields={fields}
-                inputNum={inputNum.value}
-                icon={this.state.icon}
-              />}
-              {surveyPage === 10 &&
-                <Survey10
-                  handleCheck={this.handleCheck}
-                  answers={answers} fields={fields}
-              />}
-              {surveyPage === 11 &&
-                <Survey11
-                  handleInputText={this.handleInputText}
-                  answers={answers} fields={fields}
-                  inputText={inputText.value}
-                />}
-              {surveyPage === 12 && <Survey12/>} */}
-              {surveyPage === 14 && <Survey14/>}
+            {surveyPage === 14 && <Survey14/>}
           </div>
           <div className="fullwidth" style={{marginTop: '30px'}}>
             <InputGroup contiguous style={{width: '300px', display: 'flex', flexFlow: 'row nowrap', justifyContent: 'center'}}>

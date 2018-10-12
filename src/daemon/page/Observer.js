@@ -85,7 +85,7 @@ export default class Observer {
     const defaultObserverConfig = {
       typeId: '',
       urls: [],
-      interval: 5000,
+      interval: 2000,
       storageDefaults: {
         persistant: {},
         temp: {}

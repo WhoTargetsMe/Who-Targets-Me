@@ -209,7 +209,7 @@ class ProvideEmail extends Component {
         }
         chrome.storage.promise.local.set({'general_token': response.jsonData.data.token, 'sh_exp_endDate': '', 'sh_exp_group': ''})
           .then((res) => {
-            this.setState({awaitingResponse: false, error: null, message: 'All good! Your email is recorded.'});
+            this.setState({awaitingResponse: false, error: null, message: 'Thank you! Your email is recorded. You can now remove this extension. Thanks for your participation.'});
           })
           .catch((e) => {
             console.log(e);
