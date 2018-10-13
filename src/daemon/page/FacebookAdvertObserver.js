@@ -3,6 +3,7 @@ import Observer from './Observer.js';
 import {sprintf} from 'sprintf-js';
 import PromisePool from 'es6-promise-pool';
 import api from '../api.js';
+import {calc_days} from '../../frontend/helpers/helpers.js';
 
 const fetchRationale = (advertId) => {
   return new Promise((resolve, reject) => {
@@ -115,7 +116,7 @@ const triggerMenu = (fbStoryId, group) => {
   });
 };
 
-const adsOnPage = (group) => {
+const adsOnPage = (group, study_finished) => {
   if (group === '') {return;} // Experiment is over, group cleared
   let adverts = []; // Pass adverts back to cycle
 
@@ -134,6 +135,15 @@ const adsOnPage = (group) => {
     }
 
     const container = $(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
+
+    // inform the users that experiment is over
+    if (index === 0 && study_finished && !container.hasClass("study_finished")) {
+      container.addClass("study_finished");
+      const text = 'The Sheffield study is complete. Click the extension icon to complete the survey and enter the prize draw.';
+      $(`<div style="color:white; padding: 15px; font-weight:bold; font-size: 20px; background-color:red; text-align:center; padding-top:10px;border-top:1px solid #ccc;border-right:1px solid #ccc;border-left:1px solid #ccc;">${text}</div>`).prependTo(container);
+      return;
+    }
+
     const fbStoryId = container.attr('id'); // Extract the story ID, used to determine if an advert has already been extracted
 
     if (!fbStoryId || container.hasClass('hidden_elem')) { // Don't proceed if there is an error getting fbStoryId or if the advert is hidden
@@ -169,7 +179,7 @@ const adsOnPage = (group) => {
   return Promise.resolve(adverts);
 };
 
-const newAds = (fbStoryIds, group) => adsOnPage(group)
+const newAds = (fbStoryIds, group, study_finished) => adsOnPage(group, study_finished)
   .then(_adverts => {
     // console.log('New ads _adverts', _adverts)
     const adverts = _adverts; //.filter(advert => fbStoryIds.indexOf(advert.related) === -1); // Filter out previously parsed adverts
@@ -250,13 +260,16 @@ const cycle = ({persistant, temp}) => {
   */
   return new Promise((resolve, reject) => {
     let group = '';
+    let study_finished = false;
     chrome.storage.promise.local.get()
       .then((result) => {
         if (result.sh_exp_group) {
           group = result.sh_exp_group;
+          const {days_left} = calc_days(result.sh_exp_endDate);
+          if (days_left <= 0) { study_finished = true; }
         }
 
-        return Promise.all([newAds(fbStoryIds, group), rationales(rationale.advertIdQueue, group)])
+        return Promise.all([newAds(fbStoryIds, group, study_finished), rationales(rationale.advertIdQueue, group)])
           .then(results => {
             let {
               adverts,

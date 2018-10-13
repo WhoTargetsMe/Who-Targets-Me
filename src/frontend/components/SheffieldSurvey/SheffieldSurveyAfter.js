@@ -9,7 +9,7 @@ export const Survey7 = (props) => {
     <div style={{marginTop: '90px', marginLeft: '40px', marginRight: '40px'}}>
       <div className='startBlockSurvey'>Trust</div>
       <div className="surveyContainer">
-        <p style={{marginBottom: 20, textAlign: 'left'}}>Q15. How would you rate your GENERAL TRUST in the following things</p>
+        <p style={{marginBottom: 20, textAlign: 'left'}}>Q9. How would you rate your GENERAL TRUST in the following things</p>
         <div className='biathlonHeader'>
           <div style={{minWidth: 200, flex: 1}}></div>
           {fields.fields7[0].answers.map((answer, j) => {
@@ -41,7 +41,7 @@ export const Survey7 = (props) => {
             })}
           </ul>
 
-          <p style={{marginBottom: 20, marginTop: 30, textAlign: 'left'}}>Q16. Now, how would you rate the following things in terms of your TRUST THEY WILL KEEP YOUR DATA SECURE</p>
+          <p style={{marginBottom: 20, marginTop: 30, textAlign: 'left'}}>Q10. Now, how would you rate the following things in terms of your TRUST THEY WILL KEEP YOUR DATA SECURE</p>
           <div className='biathlonHeader'>
             <div style={{minWidth: 200, flex: 1}}></div>
             {fields.fields7[0].answers.map((answer, j) => {
@@ -73,7 +73,7 @@ export const Survey7 = (props) => {
               })}
             </ul>
 
-            <p style={{marginBottom: 20, marginTop: 30, textAlign: 'left'}}>Q17. Now, how would you rate the following things in terms of your TRUST THEY WILL BE TRANSPARENT ABOUT HOW THEY USE YOUR DATA</p>
+            <p style={{marginBottom: 20, marginTop: 30, textAlign: 'left'}}>Q11. Now, how would you rate the following things in terms of your TRUST THEY WILL BE TRANSPARENT ABOUT HOW THEY USE YOUR DATA</p>
             <div className='biathlonHeader'>
               <div style={{minWidth: 200, flex: 1}}></div>
               {fields.fields7[0].answers.map((answer, j) => {
@@ -116,7 +116,7 @@ export const Survey7 = (props) => {
     return(
       <div style={{marginTop: '90px', marginLeft: '40px', marginRight: '40px'}}>
         <div className="surveyContainer" style={{margin: '55px 0px', height: 380}}>
-          <p style={{marginBottom: 20, textAlign: 'left'}}>Q18. Now, how would you rate the following things in terms of your TRUST THEY WILL PROMOTE THE PUBLIC INTEREST</p>
+          <p style={{marginBottom: 20, textAlign: 'left'}}>Q12. Now, how would you rate the following things in terms of your TRUST THEY WILL PROMOTE THE PUBLIC INTEREST</p>
           <div className='biathlonHeader'>
             <div style={{minWidth: 200, flex: 1}}></div>
             {fields.fields8[0].answers.map((answer, j) => {
@@ -148,7 +148,7 @@ export const Survey7 = (props) => {
               })}
             </ul>
 
-            <p style={{marginBottom: 20, marginTop: 30, textAlign: 'left'}}>Q19. Now, how would you rate the following things in terms of your TRUST THEY WILL PROMOTE YOUR INTERESTS</p>
+            <p style={{marginBottom: 20, marginTop: 30, textAlign: 'left'}}>Q13. Now, how would you rate the following things in terms of your TRUST THEY WILL PROMOTE YOUR INTERESTS</p>
             <div className='biathlonHeader'>
               <div style={{minWidth: 200, flex: 1}}></div>
               {fields.fields8[0].answers.map((answer, j) => {
@@ -180,7 +180,7 @@ export const Survey7 = (props) => {
                 })}
               </ul>
 
-              <p style={{marginBottom: 20, marginTop: 30, textAlign: 'left'}}>Q20. How much regulation or oversight do you think there is of how the following things CAN USE YOUR DATA</p>
+              <p style={{marginBottom: 20, marginTop: 30, textAlign: 'left'}}>Q14. How much regulation or oversight do you think there is of how the following things CAN USE YOUR DATA</p>
               <div className='biathlonHeader'>
                 <div style={{minWidth: 200, flex: 1}}></div>
                 {fields.fields8[0].answers.map((answer, j) => {
@@ -225,6 +225,10 @@ export const Survey9 = (props) => {
   let val_1 = props.answers.filter(a => answered_ids_1.includes(a));
   if (val_1.length > 0) { val_1 = parseInt(val_1[0]) }
 
+  let answered_ids_2 = fields[`fields${9}`][2].answers.map(a => a.anid);
+  let val_2 = props.answers.filter(a => answered_ids_2.includes(a));
+  if (val_2.length > 0) { val_2 = parseInt(val_2[0]) }
+
   return(
     <div style={{marginTop: '90px', marginLeft: '40px'}}>
       <div className='startBlockSurvey'>AFTER questions (FB use)</div>
@@ -232,7 +236,7 @@ export const Survey9 = (props) => {
         <ul>
           {fields.fields9.map((field, i) => {
             return i === 0 && <li key={`field-${i}`} className='quizQuestion' style={{display: 'block'}}>
-              <FormField label={`Q21. ${field.label}`} onChange={(val) => props.handleCheck(val, i)}>
+              <FormField label={`Q15. ${field.label}`} onChange={(val) => props.handleCheck(val, i)}>
                 {field.answers.map((answer, j) => {
                   return <Radio key={`answer-${j}`}
                             name={answer.anid}
@@ -249,7 +253,7 @@ export const Survey9 = (props) => {
         <div style={{minWidth: '270px', margin: '0 auto'}}>
           <InputGroup contiguous>
             <InputGroup.Section grow>
-            <p style={{textAlign: 'left'}}>Q22a. {fields.fields9[1].label}</p>
+            <p style={{textAlign: 'left'}}>Q16. {fields.fields9[1].label}</p>
               <div className='sliderContainer'>
                 <div style={{flex: 1, maxWidth: 120, textAlign: 'left', fontSize: 14}}>Percentage of Facebook time on Chrome or Firefox</div>
                 <div style={{flex: 1, minWidth: 500, maxWidth: 500}}>
@@ -276,7 +280,7 @@ export const Survey9 = (props) => {
         <div style={{minWidth: '270px', margin: '0 auto'}}>
           <InputGroup contiguous>
             <InputGroup.Section grow>
-            <p style={{textAlign: 'left'}}>Q22b. {fields.fields9[2].label}</p>
+            <p style={{textAlign: 'left'}}>Q17. {fields.fields9[2].label}</p>
               <div className='sliderContainer'>
                 <div style={{flex: 1, maxWidth: 120, textAlign: 'left', fontSize: 14}}>Percentage of Facebook time on a computer</div>
                 <div style={{flex: 1, minWidth: 500, maxWidth: 500}}>
@@ -284,14 +288,14 @@ export const Survey9 = (props) => {
                     {[0,1,2,3,4,5,6,7,8,9,10].map((num,i) =>
                       <div key={`num-${i}`}
                         style={{minWidth: `39px`, maxWidth: '39px', display: 'inline-block',
-                        color: `${answered_ids_1.indexOf(val_1) === num ? '#1385e5' : 'black'}`,
-                        fontWeight: `${answered_ids_1.indexOf(val_1) === num ? 'bold' : '400'}`}}>
+                        color: `${answered_ids_2.indexOf(val_2) === num ? '#1385e5' : 'black'}`,
+                        fontWeight: `${answered_ids_2.indexOf(val_2) === num ? 'bold' : '400'}`}}>
                         {num*10}
                       </div>)}
                   </div>
 
-                  <input type="range" value={typeof val_1 === 'number' ? answered_ids_1.indexOf(val_1) : 5} min={0} max={10}
-                    onChange={(e) => props.handleSliderCheck(e.target.value, 1)}
+                  <input type="range" value={typeof val_2 === 'number' ? answered_ids_2.indexOf(val_2) : 5} min={0} max={10}
+                    onChange={(e) => props.handleSliderCheck(e.target.value, 2)}
                     style={{display: 'inline-block', margin: 10}}
                   />
                 </div>
@@ -303,7 +307,7 @@ export const Survey9 = (props) => {
         <ul>
           {fields.fields9.map((field, i) => {
             return i === 3 && <li key={`field-${i}`} className='quizQuestionBlock' style={{display: 'block'}}>
-              <FormField label={`Q23. ${field.label}`} onChange={(val) => props.handleCheck(val, i)}>
+              <FormField label={`Q18. ${field.label}`} onChange={(val) => props.handleCheck(val, i)}>
                 {field.answers.map((answer, j) => {
                   return <Radio key={`answer-${j}`}
                             name={answer.anid}
@@ -320,7 +324,7 @@ export const Survey9 = (props) => {
         <ul>
           {fields.fields9.map((field, i) => {
             return i === 4 && <li key={`field-${i}`} className='quizQuestionBlock' style={{display: 'block'}}>
-              <FormIconField width="one-fifth" label={`Q24. ${field.label}`} iconPosition="left" iconKey={props.icon.iconKey} iconColor={props.icon.iconColor} >
+              <FormIconField width="one-fifth" label={`Q19. ${field.label}`} iconPosition="left" iconKey={props.icon.iconKey} iconColor={props.icon.iconColor} >
             		<FormInput
                   placeholder="input a number"
                   type="text"
@@ -346,7 +350,7 @@ export const Survey10 = (props) => {
   return(
     <div style={{marginTop: '90px', marginLeft: '40px', marginRight: '40px'}}>
       <div className="surveyContainer" style={{overflow: 'hidden', marginRight: '10px', height: 405}}>
-      <p style={{marginTop: 30, textAlign: 'left'}}>{`Q25. ${fields.fields10[0].label}`}</p>
+      <p style={{marginTop: 30, textAlign: 'left'}}>{`Q20. ${fields.fields10[0].label}`}</p>
       <div className='biathlonHeader'>
           <div style={{minWidth: 200, flex: 1}}></div>
           {fields.fields10[0].answers.map((answer, j) => {
@@ -381,7 +385,7 @@ export const Survey10 = (props) => {
           <ul>
             {fields.fields10.slice(1,3).map((field, i) => {
               return <li key={`field-${i}`} className='quizQuestion' style={{display: 'block'}}>
-                <FormField label={`Q${26+i}. ${field.label}`} onChange={(val) => props.handleCheck(val, i+1)}>
+                <FormField label={`Q${21+i}. ${field.label}`} onChange={(val) => props.handleCheck(val, i+1)}>
                   {field.answers.map((answer, j) => {
                     return <Radio key={`answer-${j}`}
                               name={answer.anid}
@@ -411,7 +415,7 @@ export const Survey10 = (props) => {
           <ul>
             {fields.fields11.map((field, i) => {
               return <li key={`field-${i}`} className='quizQuestion' style={{display: 'block'}}>
-                <FormField label={`Q28. ${field.label}`} >
+                <FormField label={`Q23. ${field.label}`} >
               		<FormInput
                     placeholder="leave your comments"
                     multiline

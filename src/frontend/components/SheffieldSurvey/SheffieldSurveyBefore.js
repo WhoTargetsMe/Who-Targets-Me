@@ -120,7 +120,7 @@ export const Survey2 = (props) => {
 // Cross-section Initial/Post Survey
 //"Biathlon" questions
 export const Survey3 = (props) => {
-  const {fields} = props;
+  const {fields, final} = props;
   const scale = {
     1: {minimum: 'I want to see the same adverts as everyone else', maximum: 'I want to see personalised adverts'},
     2: {minimum: 'Privacy is important to me and I don’t want my data used', maximum: 'Personalization is important to me so I am happy for Facebook to collect my data'},
@@ -133,7 +133,7 @@ export const Survey3 = (props) => {
         <ul>
           {fields.fields3.map((field, i) => {
             return <li key={`field-${i}`} className='quizQuestion'>
-              <FormField label={`Q${i+7}. ${field.label}`} onChange={(val) => props.handleCheck(val, i)}>
+              <FormField label={`Q${final ? i+1 : i+7}. ${field.label}`} onChange={(val) => props.handleCheck(val, i)}>
                 <div className='biathlon'>
                   <div style={{maxWidth: 100, flex: 1}}>
                     {scale[i+1].minimum}
@@ -162,7 +162,7 @@ export const Survey3 = (props) => {
 
 // Multiple choice
 export const Survey4 = (props) => {
-  const {fields} = props;
+  const {fields, final} = props;
   return(
     <div style={{marginTop: '90px', marginLeft: '40px'}}>
       <div className='startBlockSurvey'>Types of advertising</div>
@@ -171,7 +171,7 @@ export const Survey4 = (props) => {
           {fields.fields4.map((field, i) => {
             return <li key={`field-${i}`}
               style={{display: 'inline-block', marginBottom: '10px', marginLeft: '-75px'}}>
-              <FormField label={`Q${i+10}. ${field.label}`} onChange={(val) => props.handleCheck(val, i, 'multi')}>
+              <FormField label={`Q${final ? i+4 : i+10}. ${field.label}`} onChange={(val) => props.handleCheck(val, i, 'multi')}>
                 {field.answers.map((answer, j) => {
                   return <Checkbox key={`answer-${j}`}
                             style={{width: 250, margin: '5px 25px 0px 0px', display: 'inline-block', lineHeight: '20px'}}
@@ -193,12 +193,12 @@ export const Survey4 = (props) => {
 
 //Dashboard "Biathlon" questions
 export const Survey5 = (props) => {
-  const {fields} = props;
+  const {fields, final} = props;
   return(
     <div style={{marginTop: '90px', marginLeft: '40px', marginRight: '40px'}}>
       <div className='startBlockSurvey'>Privacy</div>
       <div className="surveyContainer">
-        <p style={{marginBottom: 20, textAlign: 'left'}}>Q12. How strongly do you agree or disagree with the following?</p>
+        <p style={{marginBottom: 20, textAlign: 'left'}}>{`Q${final ? 6 : 12}. How strongly do you agree or disagree with the following?`}</p>
         <div className='biathlonHeader'>
           <div style={{minWidth: 200, flex: 1}}></div>
           {fields.fields5[0].answers.map((answer, j) => {
@@ -236,7 +236,7 @@ export const Survey5 = (props) => {
 
   // Multiple choice
   export const Survey6 = (props) => {
-    const {fields} = props;
+    const {fields, final} = props;
     return(
       <div style={{marginTop: '90px', marginLeft: '40px'}}>
         <div className='startBlockSurvey'>Transparency and regulation</div>
@@ -245,7 +245,7 @@ export const Survey5 = (props) => {
             {fields.fields6.map((field, i) => {
               return <li key={`field-${i}`}
                 style={{display: 'inline-block', marginBottom: '10px', marginLeft: '-75px'}}>
-                <FormField label={`Q${i+13}. ${field.label}`} onChange={(val) => props.handleCheck(val, i, 'multi')}>
+                <FormField label={`Q${final ? i+7 : i+13}. ${field.label}`} onChange={(val) => props.handleCheck(val, i, 'multi')}>
                   {field.answers.map((answer, j) => {
                     return <Checkbox key={`answer-${j}`}
                               style={{width: 250, margin: '10px 25px 0px 0px', display: 'inline-block', lineHeight: '20px'}}

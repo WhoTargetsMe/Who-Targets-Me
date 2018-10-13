@@ -47,7 +47,7 @@ export const schema = {
     {qid: 5, answers:[20,21,22,23,24,25]},
   ],
   fields2: [
-    {qid: 6, answers:[26,27,28,29,30]},
+    {qid: 6, answers:[26,27,28,29,30,342]},
   ],
   fields3: [
     {qid: 7, answers:[31,32,33,34,35,36,37]},
@@ -55,8 +55,8 @@ export const schema = {
     {qid: 9, answers:[45,46,47,48,49,50,51]},
   ],
   fields4: [
-    {qid: 10, answers:[52,53,54,55,56,57,58,59,60]},
-    {qid: 11, answers:[61,62,63,64,65,66,67,68]},
+    {qid: 10, answers:[52,53,54,55,56,57,58,59,60,343]},
+    {qid: 11, answers:[61,62,63,64,65,66,67,68,344]},
   ],
   fields5: [
     {qid: 12, answers:[69,70,71,72,73,74,75]},
@@ -135,7 +135,7 @@ export const surveyanswers = [
   {id: 216, anid: 16, label: "Plaid Cyrmu", survey: "sheffield2018"},
   {id: 217, anid: 17, label: "UK Independence Party (UKIP)", survey: "sheffield2018"},
   {id: 218, anid: 18, label: "Other", survey: "sheffield2018"},
-  {id: 219, anid: 19, label: "None", survey: "sheffield2018"},
+  {id: 219, anid: 19, label: "None of the above", survey: "sheffield2018"},
   {id: 220, anid: 20, label: "Very likely that I would vote", survey: "sheffield2018"},
   {id: 221, anid: 21, label: "Fairly likely that I would vote", survey: "sheffield2018"},
   {id: 222, anid: 22, label: "Neither likely nor unlikely that I would vote", survey: "sheffield2018"},
@@ -147,6 +147,7 @@ export const surveyanswers = [
   {id: 228, anid: 28, label: "I find adverts on Facebook annoying", survey: "sheffield2018"},
   {id: 229, anid: 29, label: "The adverts I see on Facebook show me things I am interested in seeing", survey: "sheffield2018"},
   {id: 230, anid: 30, label: "Adverts on Facebook make me buy things I wouldn’t buy otherwise", survey: "sheffield2018"},
+  {id: 542, anid: 342, label: "None of the above", survey: "sheffield2018"},
   {id: 231, anid: 31, label: "1", survey: "sheffield2018"},
   {id: 232, anid: 32, label: "2", survey: "sheffield2018"},
   {id: 233, anid: 33, label: "3", survey: "sheffield2018"},
@@ -177,6 +178,8 @@ export const surveyanswers = [
   {id: 258, anid: 58, label: "Travel", survey: "sheffield2018"},
   {id: 259, anid: 59, label: "Political causes", survey: "sheffield2018"},
   {id: 260, anid: 60, label: "Party political campaigns", survey: "sheffield2018"},
+  {id: 543, anid: 343, label: "None of the above", survey: "sheffield2018"},
+
   {id: 261, anid: 61, label: "Age", survey: "sheffield2018"},
   {id: 262, anid: 62, label: "Location", survey: "sheffield2018"},
   {id: 263, anid: 63, label: "Political views", survey: "sheffield2018"},
@@ -185,6 +188,7 @@ export const surveyanswers = [
   {id: 266, anid: 66, label: "Relationship status", survey: "sheffield2018"},
   {id: 267, anid: 67, label: "Things I’ve liked on Facebook previously", survey: "sheffield2018"},
   {id: 268, anid: 68, label: "Browsing history on other webpages", survey: "sheffield2018"},
+  {id: 544, anid: 344, label: "None of the above", survey: "sheffield2018"},
 
   {id: 269, anid: 69, label: "Strongly agree", survey: "sheffield2018"},
   {id: 270, anid: 70, label: "Agree", survey: "sheffield2018"},

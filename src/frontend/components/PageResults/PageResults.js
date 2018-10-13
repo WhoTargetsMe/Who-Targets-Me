@@ -4,6 +4,7 @@ import { Form, FormField, FormInput, FormSelect, Col, Row, Button, InputGroup, S
 import axios from 'axios';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts'
 import FinalSurveyWrapper from './FinalSurveyWrapper.js';
+import {calc_days} from '../../helpers/helpers.js';
 
 import IMGLogo from '../Shell/TUOS_PRIMARY_LOGO.png';
 import Logo from '../Shell/TUOS_PRIMARY_LOGO.png';
@@ -52,19 +53,10 @@ export default class PageResults extends Component {
   getStorage() {
     chrome.storage.promise.local.get()
       .then((result) => {
-        // console.log('GROUP, endDate', result)
         let view = this.state.view;
-        let d = new Date()
-        d.setDate(d.getDate() + 20); //!!! for development
-        const endDate = new Date(Date.parse(result.sh_exp_endDate))
-        const months = {1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}
-        let days_left = endDate.getDate() - d.getDate()
-        if (endDate.getFullYear() === d.getFullYear()) {
-        	days_left += (endDate.getMonth() - d.getMonth())*months[d.getMonth()+1]
-        } else if (endDate.getFullYear() > d.getFullYear()) {
-        	days_left += 31
-        }
+        const {days_left, endDate} = calc_days(result.sh_exp_endDate);
         if (days_left <= 0) { view = 'study_finished'; }
+        // console.log('GROUP, endDate', result, days_left, endDate)
         this.setState({group: result.sh_exp_group, endDate, days_left, view, token: result.general_token})
         return null;
       })

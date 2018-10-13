@@ -231,7 +231,7 @@ class ProvideEmail extends Component {
     // console.log('attemptRegistration', awaitingResponse, error, message)
     return (
       <Container>
-        <div className="fullwidth" style={{marginBottom: '20px'}}>
+        <div className="fullwidth" style={{margin: '50px'}}>
           <h2>{message} {awaitingResponse && <Spinner size="md" />}</h2>
           {error &&
             <span>
@@ -523,13 +523,10 @@ class SheffieldSurvey extends Component {
         <Container survey>
           <div className="fullwidth" style={{padding: '26px 0px 0px 0px'}}>
             {loadingSurvey && <Spinner size='md' className='centeredSpinner'/>}
-            {/* {!loadingSurvey && surveyPage === 0 && <Survey0 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
-            {surveyPage === 1 && <Survey1 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
-            {surveyPage === 2 && <Survey2 handleCheck={this.handleCheck} answers={answers} fields={fields}/>} */}
-            {surveyPage === 3 && <Survey3 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
-            {surveyPage === 4 && <Survey4 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
-            {surveyPage === 5 && <Survey5 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
-            {surveyPage === 6 && <Survey6 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
+            {surveyPage === 3 && <Survey3 handleCheck={this.handleCheck} answers={answers} fields={fields} final/>}
+            {surveyPage === 4 && <Survey4 handleCheck={this.handleCheck} answers={answers} fields={fields} final/>}
+            {surveyPage === 5 && <Survey5 handleCheck={this.handleCheck} answers={answers} fields={fields} final/>}
+            {surveyPage === 6 && <Survey6 handleCheck={this.handleCheck} answers={answers} fields={fields} final/>}
             {surveyPage === 7 && <Survey7 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
             {surveyPage === 8 && <Survey8 handleCheck={this.handleCheck} answers={answers} fields={fields}/>}
             {surveyPage === 9 &&
@@ -577,15 +574,6 @@ class SheffieldSurvey extends Component {
                   {((surveyPage === 12 ? "Finish" : "Next") + " " + String.fromCharCode("187"))}
                 </Button>
               </div>}
-              {/* {surveyPage === 0 && <div style={{flex: 1}}>
-                <Button style={{width: '130px'}}
-                  onClick={answers[0] === 1 ? this.nextPage : () => this.nextPage('skip')}
-                  disabled={!inputCompleted}
-                  type="hollow-success"
-                  >
-                  {("Next" + " " + String.fromCharCode("187"))}
-                </Button>
-              </div>} */}
             </InputGroup>
           </div>
         </Container>
