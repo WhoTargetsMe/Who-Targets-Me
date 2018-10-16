@@ -59,7 +59,7 @@ const triggerMenu = (fbStoryId, group) => {
                 .then(parsedRationale => {
                   // console.log("FBADVERTRATIONALE (response)", parsedRationale)
                   if (parsedRationale) {
-                    console.log("FBADVERTRATIONALE (if parsed)", fbAdvertId, "advert.fbStoryId", fbStoryId)
+                    // console.log("FBADVERTRATIONALE (if parsed)", fbAdvertId, "advert.fbStoryId", fbStoryId)
 
                     if (group === 'Sheffield-Experiment') {
                       $(sprintf('a.fbPrivacyAudienceIndicator')).each((index, adv) => {

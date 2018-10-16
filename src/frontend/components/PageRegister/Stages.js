@@ -58,7 +58,7 @@ const SurveyWelcome = (props) => {
             <p>The project is conducted by Kate Dommett (Department of Politics) and Tom Stafford (Department of Psychology) and has been approved by The Ethics Board of the University of Sheffield as research carried out in the public interest.</p>
             <p>By submitting answers to these survey questions you indicate that you consent to take part in the research project. We are also planning to make all the data from this project openly available so our results can be reproduced and built on by others.</p>
             <p>Contact details</p>
-            <p>- Kate Domment (<span className='surveyLink' onClick={() => sendMail('k.domment@sheffield.ac.uk')}>k.domment@sheffield.ac.uk</span>)</p>
+            <p>- Kate Dommett (<span className='surveyLink' onClick={() => sendMail('k.dommett@sheffield.ac.uk')}>k.dommett@sheffield.ac.uk</span>)</p>
             <p>- Tom Stafford (<span className='surveyLink' onClick={() => sendMail('t.stafford@sheffield.ac.uk')}>t.stafford@sheffield.ac.uk</span>)</p>
             <p>To speak to someone outside of the research team about any concerns you might have contact:</p>
             <div>Prof. Andrew Hindmoor</div>
@@ -205,11 +205,11 @@ class SheffieldSurvey extends Component {
 
   getSurvey(surveyName) {
     console.log("REQUESTING survey")
-    this.setState({loadingSurvey: true})
-    api.get('general/survey', {query: {survey: surveyName}})
-      .then((response) => {
+    // this.setState({loadingSurvey: true})
+    // api.get('general/survey', {query: {survey: surveyName}})
+    //   .then((response) => {
         // console.log('user data', response, response.jsonData)
-        if (response.status >= 200) { // && response.status < 300) { // UNCOMMENT when data entered to DB
+        // if (response.status >= 200) { // && response.status < 300) { // UNCOMMENT when data entered to DB
           // UNCOMMENT when data entered to DB
           // const {surveyquestions, surveyanswers} = response.jsonData.data;
           let fields = {};
@@ -236,15 +236,15 @@ class SheffieldSurvey extends Component {
             "surveyanswers": surveyanswers,
           }
           this.setState({survey, loadingSurvey: false, fields})
-        } else {
+        //} else {
           // console.log('Failed to fetch survey')
-          this.setState({loadingSurvey: false});
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-        this.setState({loadingSurvey: false});
-      })
+          // this.setState({loadingSurvey: false});
+        //}
+      // })
+      // .catch((error) => {
+      //   console.log(error)
+      //   this.setState({loadingSurvey: false});
+      // })
   }
 
   nextPage(skip) {
@@ -353,8 +353,7 @@ class SheffieldSurvey extends Component {
     fields[`fields${surveyPage}`].forEach(field => {
       field.answers.forEach(a => section_ids.push(a.anid))
     })
-    // console.log("val, i, sectionAnswers, answers, inputCompleted, surveyPage, fields, answered_ids, section_ids")
-    // console.log(val, i, sectionAnswers, answers, inputCompleted, surveyPage, fields, answered_ids, section_ids)
+    
     const re = /^\d+$/;
     if (!val.match(re) || val.match(re).length !== 1 || val.match(re)[0].toString().length !== val.toString().length) {
       this.setState({
@@ -401,8 +400,6 @@ class SheffieldSurvey extends Component {
     fields[`fields${surveyPage}`].forEach(field => {
       field.answers.forEach(a => section_ids.push(a.anid))
     })
-    // console.log("val, i, sectionAnswers, answers, inputCompleted, surveyPage, fields, answered_ids, section_ids")
-    // console.log(val, i, sectionAnswers, answers, inputCompleted, surveyPage, fields, answered_ids, section_ids)
 
     let name = val;
     if (answers.length === 0) {

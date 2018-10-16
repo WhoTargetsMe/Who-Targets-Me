@@ -141,7 +141,7 @@ export const surveyanswers = [
   {id: 222, anid: 22, label: "Neither likely nor unlikely that I would vote", survey: "sheffield2018"},
   {id: 223, anid: 23, label: "Fairly unlikely that I would vote", survey: "sheffield2018"},
   {id: 224, anid: 24, label: "Very unlikely that I would vote", survey: "sheffield2018"},
-  {id: 225, anid: 25, label: "Don't know", survey: "sheffield2018"},
+  {id: 225, anid: 25, label: "Don't know/can't vote", survey: "sheffield2018"},
   {id: 226, anid: 26, label: "I don’t really notice adverts on Facebook", survey: "sheffield2018"},
   {id: 227, anid: 27, label: "I wish Facebook didn’t contain adverts", survey: "sheffield2018"},
   {id: 228, anid: 28, label: "I find adverts on Facebook annoying", survey: "sheffield2018"},
