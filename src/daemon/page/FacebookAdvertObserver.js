@@ -44,7 +44,12 @@ const fetchRationale = (advertId) => {
 const triggerMenu = (fbStoryId) => {
   const $menuButton = $(`#${fbStoryId}`).find('[data-testid="post_chevron_button"]');
   const menuOwnerId = $menuButton.attr("id");
-  // console.log('TRIGGERED! menuOwnerId=', menuOwnerId)
+  const container = $(`#${fbStoryId}`).closest('[data-testid="fbfeed_story"]');
+  const fetched = container.hasClass('fetched');
+  if (fetched) {
+    // don't triggerMenu second time if ajaxify is null
+    return;
+  }
 
   $menuButton.get(0).click(); // Open the menu
   $menuButton.get(0).click(); // Close the menu
@@ -52,16 +57,21 @@ const triggerMenu = (fbStoryId) => {
   return new Promise((resolve) => setTimeout(resolve(), 100)) // Wait 100ms to ensure the menu rendered
     .then(() => {
       try {
-        const ajaxify =  document.querySelector(`[data-ownerid='${menuOwnerId}'] a[data-feed-option-name='FeedAdSeenReasonOption']`).getAttribute('ajaxify');
-        // console.log('TRIGGERED ! ajaxify=', ajaxify)
-        if (!ajaxify) { return; }
+        const ajaxify0 = document.querySelector(`[data-ownerid='${menuOwnerId}'] a[data-feed-option-name='FeedAdSeenReasonOption']`)
+        if (!ajaxify0) {
+          container.addClass('fetched');
+        } else {
+          const ajaxify = ajaxify0.getAttribute('ajaxify');
+          const fbAdvertId = /id=\s*(.*?)\s*&/.exec(ajaxify)[1]
 
-        return Promise.resolve({
-          fbStoryId,
-          fbAdvertId: /id=\s*(.*?)\s*&/.exec(ajaxify)[1]
-        }); // Extract the advert ID using regex
+          return Promise.resolve({
+            fbStoryId,
+            fbAdvertId
+          }); // Extract the advert ID using regex
+        }
+
       } catch (err) {
-        // console.log(err);
+        console.log(err);
         return Promise.reject(new Error(['Could not extract advert ID', fbStoryId]));
       }
     });
@@ -217,7 +227,7 @@ const cycle = ({persistant, temp}) => {
 export default new Observer({
   typeId: 'FBADVERT',
   urls: [/^http(s|):\/\/(www\.|)facebook.com/],
-  interval: 3000,
+  interval: 10000,
   storageDefaults: {
     persistant: {},
     temp: {fbStoryIds: [], rationale: {advertIdQueue: []}}
