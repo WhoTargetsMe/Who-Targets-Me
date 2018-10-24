@@ -201,7 +201,7 @@ img{
   border-color: #00aced;
 }
 .resultsSubHeader{
-  margin-top: -5px;
+  margin-top: -10px;
   line-height: 20px;
 }
 .centeredSpinner{
@@ -284,7 +284,7 @@ tr{
 /*Rationale*/
 .boxNoFlex {
   max-width: 100%;
-  max-height: 260px;
+  max-height: 254px;
   flex-flow: row nowrap;
   font-size: 0.8rem;
   overflow-y: scroll;
@@ -294,6 +294,12 @@ tr{
 }
 .adCol {
   margin-left: 10px;
+  font-family: poppins;
+  font-size: 11px;
+  padding-bottom: 10px;
+}
+.adCol p {
+  margin: 0 0 .5em 0;
 }
 .whiteBackground {
   background-color: white;

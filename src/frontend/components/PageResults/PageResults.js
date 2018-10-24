@@ -309,7 +309,7 @@ export default class PageResults extends Component {
               }
               {
                 view === "display_parties" &&
-                <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: '15px'}}>
+                <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: '25px'}}>
                   <div style={{flex: 1, minHeight: '40px'}}>
                     <h3 className='mainHeader'>{`${strings.results.results_screen1} `}<span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span></h3>
                     <h4 className='resultsSubHeader'>{`${strings.results.results_screen2} `}{userSeenPartiesSum} {` ${strings.results.results_screen3} `}
@@ -402,7 +402,7 @@ export default class PageResults extends Component {
           <div className="statbox">
             <Button style={{position: 'absolute', top: 5, left: 15}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties] : [null, null, null])}>{strings.register.shareOnFacebook}</Button>
             <Button style={{position: 'absolute', top: 5, left: 190}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties] : [null, null, null])} >{strings.register.shareOnTwitter}</Button>
-            <div style={{position: 'absolute', left: 380, width: 380, paddingTop: '5px'}}>
+            <div style={{position: 'absolute', left: 365, width: 380, paddingTop: '10px'}}>
               <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '20px'}}>{strings.register.share1}</span>
               <span style={{fontSize: '1.05rem'}}>{strings.register.share2}</span>
             </div>

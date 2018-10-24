@@ -86,7 +86,7 @@ export const PartyAds = (props) => {
   return(
     <div>
       <div style={{marginBottom: 5}}>
-        <h3 style={{marginLeft: 20, marginBottom: 3}}>{count} ads from <span className='party'>{`${partyName}`}</span></h3>
+        <h3 style={{margin: '5px 0px 10px 20px', fontSize: '1em'}}>{count} ads from <span className='party'>{`${partyName}`}</span></h3>
         <span className='link link_underline' style={{marginLeft: 20}} onClick={props.hideBarInfo}>Back to stats</span>
         <span style={{color: '#0A4496'}} >&nbsp;|&nbsp;</span>
         <span className={`link link_underline ${disabledPrev ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('prev', props.advertisers)}>Previous advertiser</span>
@@ -105,7 +105,7 @@ export const PartyAds = (props) => {
           {props.ads.map((ad, j) => {
             const displayTime = ad.createdAt.slice(8,10) + '/' + ad.createdAt.slice(5,7) + '/' + ad.createdAt.slice(0,4);
             return (
-              <Row key={`tablerow-${j}`}>
+              <Row key={`tablerow-${j}`} style={{borderBottom: '1px solid #ccc', marginBottom: '10px'}}>
                 <Col sm="4/20" className='adCol'>
                   <a href={`https://facebook.com/${ad.postId}`} className='link'>{ad.advertiserName}</a>
                 </Col>
