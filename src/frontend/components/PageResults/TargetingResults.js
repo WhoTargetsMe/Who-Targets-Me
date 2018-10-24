@@ -85,8 +85,8 @@ export const PartyAds = (props) => {
 
   return(
     <div>
-      <div style={{marginBottom: 5}}>
-        <h3 style={{margin: '5px 0px 10px 20px', fontSize: '1em'}}>{count} ads from <span className='party'>{`${partyName}`}</span></h3>
+      <div style={{marginBottom: 10}}>
+        <h3 style={{margin: '5px 0px 5px 20px', fontSize: '1em'}}>{count} ads from <span className='party'>{`${partyName}`}</span></h3>
         <span className='link link_underline' style={{marginLeft: 20}} onClick={props.hideBarInfo}>Back to stats</span>
         <span style={{color: '#0A4496'}} >&nbsp;|&nbsp;</span>
         <span className={`link link_underline ${disabledPrev ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('prev', props.advertisers)}>Previous advertiser</span>
