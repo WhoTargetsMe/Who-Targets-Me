@@ -14,11 +14,11 @@
 		"tabs",
 		"storage",
 		"notifications",
-		"<all_urls>"
+		"*://*.facebook.com/*"
 	],
 	"content_scripts": [
 		{
-			"matches": ["<all_urls>"],
+			"matches": ["*://*.facebook.com/*"],
 			"js": ["daemon/index.js"]
 		}
 	],
