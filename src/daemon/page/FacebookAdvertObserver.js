@@ -41,15 +41,64 @@ const fetchRationale = (advertId) => {
   });
 };
 
+const triggerMenu = (fbStoryId, group) => {
+  const $menuButton = $(`#${fbStoryId}`).find('[data-testid="post_chevron_button"]');
+  const menuOwnerId = $menuButton.attr("id");
+  const container = $(`#${fbStoryId}`).closest('[data-testid="fbfeed_story"]');
+  const fetched = container.hasClass('fetched');
+  // console.log('container', fbStoryId, container)
+  // console.log('fetched', fbStoryId, fetched)
+  // if (fetched) {
+    //don't triggerMenu if already fetched
+  //   console.log('fetched exists', fbStoryId)
+  //   return;
+  // }
+
+  // console.log('TRIGGERED menuOwnerId', menuOwnerId)
+  return new Promise((resolve) => setTimeout(resolve(), 1000 * parseInt(Math.random()*10)))
+    .then(() => {
+      $menuButton.get(0).click(); // Open the menu
+      $menuButton.get(0).click(); // Close the menu
+
+    return new Promise((resolve) => setTimeout(resolve(), 100)) // Wait 100ms to ensure the menu rendered
+      .then(() => {
+        try {
+          const ajaxify0 = document.querySelector(`[data-ownerid='${menuOwnerId}'] a[data-feed-option-name='FeedAdSeenReasonOption']`)
+          const ajaxify = ajaxify0.getAttribute('ajaxify');
+          // console.log('TRY TRIGGERED! fbStoryId, owner=',menuOwnerId, fbStoryId)
+          // console.log('TRY TRIGGERED! ajaxify=', ajaxify.slice(50))
+          const fbAdvertId = /id=\s*(.*?)\s*&/.exec(ajaxify)[1]
+          // console.log('TRY TRIGGERED! fbAdvertId=', fbAdvertId)
+          // let fetched = $(container.hasClass('fetched'))
+          // console.log('fetched', fetched)
+          // if (fbAdvertId && !fetched) {
+          //   container.addClass('fetched');
+          // }
+          return Promise.resolve({
+            fbStoryId,
+            fbAdvertId
+          }); // Extract the advert ID using regex
+        } catch (err) {
+          // console.log(err);
+          // container.addClass('fetched');
+          return Promise.reject(new Error(['Could not extract advert ID', fbStoryId]));
+        }
+    }).catch(err => {
+      // console.log(err);
+      return Promise.reject(new Error(['Could not extract advert ID', fbStoryId]));
+    });
+  })
+}
+/* //Prev version of triggerMenu function
 const triggerMenu = (fbStoryId) => {
   const $menuButton = $(`#${fbStoryId}`).find('[data-testid="post_chevron_button"]');
   const menuOwnerId = $menuButton.attr("id");
   const container = $(`#${fbStoryId}`).closest('[data-testid="fbfeed_story"]');
   const fetched = container.hasClass('fetched');
-  if (fetched) {
+  // if (fetched) {
     // don't triggerMenu second time if ajaxify is null
-    return;
-  }
+    // return;
+  // }
 
   $menuButton.get(0).click(); // Open the menu
   $menuButton.get(0).click(); // Close the menu
@@ -75,7 +124,7 @@ const triggerMenu = (fbStoryId) => {
         return Promise.reject(new Error(['Could not extract advert ID', fbStoryId]));
       }
     });
-};
+}*/
 
 const adsOnPage = () => {
 
@@ -153,7 +202,7 @@ const newAds = (fbStoryIds) => adsOnPage()
   });
 
 const rationales = (advertIdQueue) => {
-
+  console.log('rationales called', advertIdQueue)
   if (advertIdQueue.length > 0) {
     const advert = advertIdQueue.shift();
     return fetchRationale(advert.fbAdvertId)
@@ -207,7 +256,7 @@ const cycle = ({persistant, temp}) => {
         advertIdQueue,
         parsedRationale
       } = results[1];
-      // console.log('++++++++++++++++++', adverts, advertIds, advertIdQueue, parsedRationale)
+      console.log('++++++++++++++++++', adverts, advertIds, advertIdQueue, parsedRationale)
       temp.fbStoryIds.push(...adverts.map(advert => advert.related));
       temp.rationale.advertIdQueue = advertIdQueue.concat(advertIds);
 
