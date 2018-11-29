@@ -9,6 +9,8 @@ export const availableCountries = [
   {id: 'CA', country: "Canada"},
   {id: 'SE', country: "Sweden"},
   {id: 'AU', country: "Australia"},
+  {id: 'UA', country: "Ukraine"},
+  {id: 'FI', country: "Finland"},
 ]
 
 export const availableParties = {
@@ -120,5 +122,30 @@ export const availableParties = {
     {entityId: 4, party:'Liberal National Party', shortName: 'LNP', color: '#006644'},
     {entityId: 5, party:'Green Party', shortName: 'Gre', color: '#006644'},
     {entityId: 6, party:'Other Parties', shortName: 'Oth', color: '#cccccc'},
-  ]
+  ],
+  'UA': [
+    {entityId: 1, party:'Всеукраїнське об\'єднання "Свобода"', shortName: 'СВО', color: 'black'},
+    {entityId: 2, party:'Всеукраїнське об\'єднання "Батьківщина"', shortName: 'БАТ', color: 'red'},
+    {entityId: 3, party:'Партія "Блок Петра Порошенка "Солідарність“', shortName: 'БПП', color: 'darkred'},
+    {entityId: 4, party:'Політична партія "Опозиційний блок"', shortName: 'ОПБ', color: 'blue'},
+    {entityId: 5, party:'Радикальна партія Олега Ляшка', shortName: 'РПОЛ', color: 'purple'},
+    {entityId: 6, party:'Політична партія "Громадянська позиція"', shortName: 'ГП', color: 'yellow'},
+    {entityId: 7, party:'Політична партія "Об\'єднання "Самопоміч“', shortName: 'САМ', color: 'green'},
+    {entityId: 8, party:'Політична партія "Народний фронт"', shortName: 'НФ', color: 'lightblue'},
+    {entityId: 9, party:'Партія "Основа"', shortName: 'ОСН', color: 'red'},
+    {entityId: 10, party:'Політична партія "Громадсько-політичний рух Валентина Наливайченка "Справедливість"', shortName: 'СПР', color: 'brown'},
+    {entityId: 11, party:'Інші', shortName: 'ІНШ', color: 'grey'},
+  ],
+  'FI': [
+    {entityId: 1, party:'Suomen Keskusta', shortName: 'KES', color: '#01954B'},
+    {entityId: 2, party:'Kansallinen Kokoomus', shortName: 'KOK', color: '#006288'},
+    {entityId: 3, party:'Suomen Sosialidemokraattinen Puolue', shortName: 'SDP', color: '#E11931'},
+    {entityId: 4, party:'Sininen tulevaisuus', shortName: 'SIN', color: '#031F73'},
+    {entityId: 5, party:'Perussuomalaiset', shortName: 'PER', color: '#FFDE55'},
+    {entityId: 6, party:'Vihreä liitto', shortName: 'VIH', color: '#61BF1A'},
+    {entityId: 7, party:'Vasemmistoliitto', shortName: 'VAS', color: '#BF1E24'},
+    {entityId: 8, party:'Suomen ruotsalainen kansanpuolue', shortName: 'RKP', color: '#FFDD93'},
+    {entityId: 9, party:'Suomen Kristillisdemokraatit', shortName: 'KD', color: '#18359B'},
+    {entityId: 10, party:'Others', shortName: 'OTH', color: 'grey'},
+  ],
 }

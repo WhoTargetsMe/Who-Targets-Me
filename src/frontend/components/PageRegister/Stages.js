@@ -35,7 +35,7 @@ const Container = ({survey, children, country}) => (
       <img src={country === 'BR' ? LogoBR : Logo} className='logo'/>
       <h2 className={survey ? 'settingUp smallText' : 'settingUp'}>
         {survey ? 'Oxford Internet Institute Research Survey' : 'Setting up...'}</h2>
-      <div style={{margin: '0 auto'}}>
+      <div style={{margin: '0 auto', padding: '0px 20px'}}>
         {children}
       </div>
     </div>
