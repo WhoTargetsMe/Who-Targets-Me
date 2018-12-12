@@ -2,6 +2,7 @@ import $ from "jquery";
 import Observer from './Observer.js';
 import {sprintf} from 'sprintf-js';
 import PromisePool from 'es6-promise-pool';
+import api from '../api.js';
 
 const sponsoredText = {
   'cs': 'Spo', //nzorováno',
@@ -41,20 +42,19 @@ const fetchRationale = (advertId) => {
   });
 };
 
-const triggerMenu = (fbStoryId, group) => {
+const triggerMenu = (fbStoryId) => {
   const $menuButton = $(`#${fbStoryId}`).find('[data-testid="post_chevron_button"]');
   const menuOwnerId = $menuButton.attr("id");
   const container = $(`#${fbStoryId}`).closest('[data-testid="fbfeed_story"]');
   const fetched = container.hasClass('fetched');
   // console.log('container', fbStoryId, container)
   // console.log('fetched', fbStoryId, fetched)
-  // if (fetched) {
-    //don't triggerMenu if already fetched
-  //   console.log('fetched exists', fbStoryId)
-  //   return;
-  // }
+  if (fetched) {
+    // don't triggerMenu if already fetched
+    console.log('fetched exists', fbStoryId)
+    // return;
+  }
 
-  // console.log('TRIGGERED menuOwnerId', menuOwnerId)
   return new Promise((resolve) => setTimeout(resolve(), 1000 * parseInt(Math.random()*10)))
     .then(() => {
       $menuButton.get(0).click(); // Open the menu
@@ -66,21 +66,14 @@ const triggerMenu = (fbStoryId, group) => {
           const ajaxify0 = document.querySelector(`[data-ownerid='${menuOwnerId}'] a[data-feed-option-name='FeedAdSeenReasonOption']`)
           const ajaxify = ajaxify0.getAttribute('ajaxify');
           // console.log('TRY TRIGGERED! fbStoryId, owner=',menuOwnerId, fbStoryId)
-          // console.log('TRY TRIGGERED! ajaxify=', ajaxify.slice(50))
+
           const fbAdvertId = /id=\s*(.*?)\s*&/.exec(ajaxify)[1]
-          // console.log('TRY TRIGGERED! fbAdvertId=', fbAdvertId)
-          // let fetched = $(container.hasClass('fetched'))
-          // console.log('fetched', fetched)
-          // if (fbAdvertId && !fetched) {
-          //   container.addClass('fetched');
-          // }
           return Promise.resolve({
             fbStoryId,
             fbAdvertId
           }); // Extract the advert ID using regex
         } catch (err) {
           // console.log(err);
-          // container.addClass('fetched');
           return Promise.reject(new Error(['Could not extract advert ID', fbStoryId]));
         }
     }).catch(err => {
@@ -130,25 +123,11 @@ const adsOnPage = () => {
 
   let adverts = []; // Pass adverts back to cycle
 
-  // const lang = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; // Extract the language preferance of the client
-  // const sponsoredValue = sponsoredText[lang] || sponsoredText.en; // Using the language, determine the correct word for 'sponsored', default to english
-
-
   $(sprintf('a.fbPrivacyAudienceIndicator')).each((index, advert) => { // Loop over every advert
 
     try { // ENSURE THIS IS AN ADVERT
-      // const domSponsored = $(advert).parent().children().first().find('a')[0]; // Get the DOM element of the 'sponsored' text
-      // const sponsoredValue = window.getComputedStyle(domSponsored, ':after').getPropertyValue('content').replace(/"/g, ''); // Calculate the :after value, and clean
-      // const classes = ['timestampContent', 'timestamp', 'livetimestamp']
-      // const domSponsored = classes.map(c => $(advert).parent().children().first().find(`abbr[class*=${c}]`)).filter(res => res.length)
       const domSponsored = $(advert).parent().children().find("span[class~='timestamp']")
-      // console.log("?-timestampContent", $(advert).parent().children().find(".timestampContent"))
-      // console.log('domSponsored-', domSponsored)
-
-      // Check if the value matches our list of 'sponsored' translations
-      // if (sponsoredValue === '' || Object.values(sponsoredText).filter(s => s.indexOf(sponsoredValue) > -1).length === 0) { // Check if the value matches our list of 'sponsored' translations
       if (domSponsored.length > 0) { // if there's a timestamp, it's not an ad
-        // console.log('Is not sponsored')
         return; // This is not a sponsored post
       }
     } catch (err) {
@@ -165,32 +144,111 @@ const adsOnPage = () => {
     }
 
     const nextNode = $(container.find('.userContentWrapper')).first().parent();
-    // console.log('---------------------postId=', fbStoryId);
     const condition0 = $(nextNode).find('a[class*="uiStreamSponsoredLink"]')
     const subtitle = $(nextNode).find("div[id*='feed_subtitle']");
-    // console.log('subtitle', subtitle)
     const condition1 = subtitle.find('div[data-tooltip-content*="Shared"]')
     const condition2 = nextNode.find('a[rel*="theater"]')
-    // console.log('sponsored??', condition0.length, condition1.length, condition2.length);
-    // console.log('---------------------');
+
     if (condition0.length === 1 || (condition1.length + condition2.length === 0)) {
-      // console.log('added ------>', fbStoryId)
+      console.log('candidate ad ------>', fbStoryId)
 
-      adverts.push({ // Queue advert for server
-        type: 'FBADVERT',
-        related: fbStoryId,
-        html: container.html()
+      //start triggerMenu
+      const triggerMenuTrial = (fbStoryId) => {
+        const $menuButton = $(`#${fbStoryId}`).find('[data-testid="post_chevron_button"]');
+        const menuOwnerId = $menuButton.attr("id");
+        const container = $(`#${fbStoryId}`).closest('[data-testid="fbfeed_story"]');
+        const fetched = container.hasClass('fetched');
+        console.log('container TRIAL', fbStoryId, fetched, container)
+
+        if (fetched) {
+          // don't triggerMenu if already fetched
+          console.log('fetched exists', fbStoryId)
+          return Promise.resolve({fbStoryId: null});
+        }
+
+        console.log('TRIGGERED triggerMenuTrial menuOwnerId', menuOwnerId)
+        return new Promise((resolve) => setTimeout(resolve(), 1000 * parseInt(Math.random()*10)))
+          .then(() => {
+            $menuButton.get(0).click(); // Open the menu
+            $menuButton.get(0).click(); // Close the menu
+
+          return new Promise((resolve) => setTimeout(resolve(), 100)) // Wait 100ms to ensure the menu rendered
+            .then(() => {
+              try {
+                const ajaxify0 = document.querySelector(`[data-ownerid='${menuOwnerId}'] a[data-feed-option-name='FeedAdSeenReasonOption']`)
+
+                if (ajaxify0 && !fetched) {
+                  const ajaxify = ajaxify0.getAttribute('ajaxify');
+                  const fbAdvertId = /id=\s*(.*?)\s*&/.exec(ajaxify)[1]
+                  console.log('triggerMenuTrial TRIGGERED success! fbAdvertId=', fbAdvertId)
+
+                  return new Promise((resolve) => setTimeout(resolve(), 100 * getRandomInt(5)))
+                    .then(() => {
+                      return fetchRationale(fbAdvertId)
+                        .then(parsedRationale => {
+                          console.log("FBADVERTRATIONALE (response obtained)")
+                          if (parsedRationale) {
+                            // transmitPayload(payload) // Send data to server
+                            console.log('OBSERVER-From Ads--> transmitPayload')
+                            let extVersion = chrome.runtime.getManifest().version;
+
+                            let finalPayload = { // Queue advert for server
+                              typeId: 'FBADVERT',
+                              extVersion,
+                              payload: [{
+                                type: "FBADVERTRATIONALE",
+                                related: fbStoryId,
+                                html: parsedRationale
+                              }, {
+                                type: 'FBADVERT',
+                                related: fbStoryId,
+                                html: container.html()
+                              }]
+                            };
+                            api.post('log/raw', {json: finalPayload})
+                              .then((response) => {
+                                // response completed, no log
+                              });
+                              container.addClass('fetched');
+                              return Promise.resolve({fbStoryId});
+                            } else {
+                              return Promise.resolve({fbStoryId: null});
+                            }
+                          }) //then()..
+                        }) //then()..
+
+                } else { //if (ajaxify0 && !fetched)
+                  return Promise.resolve({fbStoryId: null});
+                }
+              } catch (err) {
+                // console.log(err);
+                return Promise.resolve({fbStoryId: null});
+              }
+          }).catch(err => {
+            // console.log(err);
+            return Promise.resolve({fbStoryId: null});
+          });
+        }) // then()..
+      } //end triggerMenuTrial
+
+      triggerMenuTrial(fbStoryId).then(res => {
+        if (res.fbStoryId) {
+          console.log('triggerMenuTrial==resolved==', res.fbStoryId)
+          return Promise.resolve([]);
+        } else {
+          return Promise.resolve([]);
+        }
+      }).catch(err => {
+        // console.log(err);
       });
-    }
+    } //if conditions are met
   });
-
-  return Promise.resolve(adverts);
+  return Promise.resolve([]);
 };
 
 const newAds = (fbStoryIds) => adsOnPage()
   .then(_adverts => {
     const adverts = _adverts.filter(advert => fbStoryIds.indexOf(advert.related) === -1); // Filter out previously parsed adverts
-
     return Promise.all(adverts.map(advert => triggerMenu(advert.related))) // Trigger the menu to open for each advert
       .then(_advertIds => {
         const advertIds = _advertIds.filter(advertId => Boolean(advertId));
@@ -202,7 +260,7 @@ const newAds = (fbStoryIds) => adsOnPage()
   });
 
 const rationales = (advertIdQueue) => {
-  console.log('rationales called', advertIdQueue)
+  // console.log('rationales called', advertIdQueue)
   if (advertIdQueue.length > 0) {
     const advert = advertIdQueue.shift();
     return fetchRationale(advert.fbAdvertId)
@@ -256,7 +314,7 @@ const cycle = ({persistant, temp}) => {
         advertIdQueue,
         parsedRationale
       } = results[1];
-      console.log('++++++++++++++++++', adverts, advertIds, advertIdQueue, parsedRationale)
+      // console.log('++++++++++++++++++', adverts, advertIds, advertIdQueue, parsedRationale)
       temp.fbStoryIds.push(...adverts.map(advert => advert.related));
       temp.rationale.advertIdQueue = advertIdQueue.concat(advertIds);
 
