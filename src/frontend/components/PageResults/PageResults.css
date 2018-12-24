@@ -165,6 +165,9 @@
   text-decoration: underline;
   cursor: pointer;
 }
+.noLink{
+  color: grey;
+}
 .disabledLink {
   color: lightgrey;
 }

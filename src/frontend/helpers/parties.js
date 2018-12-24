@@ -11,6 +11,8 @@ export const availableCountries = [
   {id: 'AU', country: "Australia"},
   {id: 'UA', country: "Ukraine"},
   {id: 'FI', country: "Finland"},
+  {id: 'NL', country: "Netherlands"},
+  // {id: 'FR', country: "France"},
 ]
 
 export const availableParties = {
@@ -147,5 +149,20 @@ export const availableParties = {
     {entityId: 8, party:'Suomen ruotsalainen kansanpuolue', shortName: 'RKP', color: '#FFDD93'},
     {entityId: 9, party:'Suomen Kristillisdemokraatit', shortName: 'KD', color: '#18359B'},
     {entityId: 10, party:'Others', shortName: 'OTH', color: 'grey'},
+  ],
+  'NL': [
+    {entityId: 1, party:'Volkspartij voor Vrijheid en Democratie', shortName: 'VVD', color: 'orange'},
+    {entityId: 2, party:'Partij voor de Vrijheid', shortName: 'PVV', color: 'blue'},
+    {entityId: 3, party:'Christen Democratisch Appel', shortName: 'CDA', color: 'darkgreen'},
+    {entityId: 4, party:'Democraten 66', shortName: 'D66', color: 'green'},
+    {entityId: 5, party:'GroenLinks', shortName: 'GL', color: 'green'},
+    {entityId: 6, party:'Socialistische Partij', shortName: 'SP', color: 'red'},
+    {entityId: 7, party:'Partij van de Arbeid', shortName: 'PvdA', color: 'red'},
+    {entityId: 8, party:'ChristenUnie', shortName: 'CU', color: 'blue'},
+    {entityId: 9, party:'Partij voor de Dieren', shortName: 'PvdD', color: 'darkgreen'},
+    {entityId: 10, party:'50Plus', shortName: '50Plus', color: 'purple'},
+    {entityId: 11, party:'Staatkundig Gereformeerde Partij', shortName: 'SGP', color: 'orange'},
+    {entityId: 12, party:'DENK', shortName: 'DENK', color: '#40E0D0'},
+    {entityId: 13, party:'Forum voor Democratie', shortName: 'FvD', color: '#900020'},
   ],
 }

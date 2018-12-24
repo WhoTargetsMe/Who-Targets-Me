@@ -27,7 +27,7 @@ export default class PageResults extends Component {
       showAds: false,
       party: null,
       loadingAds: false,
-      showTargeting: false,
+      showingTargeting: false,
       rationales: [],
       loadingRationales: false,
       postId: null,
@@ -115,7 +115,7 @@ export default class PageResults extends Component {
   }
 
   hideBarInfo() {
-    this.setState({showAds: false, showTargeting: false, party: null})
+    this.setState({showAds: false, showingTargeting: false, party: null})
   }
 
   showTargetingFunc(postId) {
@@ -138,15 +138,26 @@ export default class PageResults extends Component {
               return <Rationale content={{__html: text}} />;
             });
             rationalesFetched = rationalesFetched.filter(c => c);
-
-            const showTargeting = rationalesFetched.length > 0;
-            let noRationaleMessage = "Show";
-            if (!showTargeting) {
-              noRationaleMessage: "Not available";
+            // console.log('rationalesFetched=>', rationalesFetched, rationalesFetched.length)
+            let showingTargeting = this.state.showingTargeting;
+            let rationaleExists = rationalesFetched.length > 0;
+            if (!showingTargeting && rationaleExists){
+              showingTargeting = true;
             }
+            let noRationaleMessage = "Show";
+            if (!rationaleExists) {
+              noRationaleMessage = "Not available";
+            }
+
             //for now will only show first rationale as they should be the same for same user for same postId
             rationales = Object.assign(rationales, {[postId]: {rationales: rationalesFetched[0], noRationaleMessage}})
-            this.setState({rationales, postId, showTargeting, loadingRationales: false})
+            let ads = this.state.ads;
+            ads.forEach(ad => {
+              if (ad.postId === postId){
+                ad['noRationaleMessage'] = noRationaleMessage;
+              }
+            })
+            this.setState({rationales, postId, showingTargeting, loadingRationales: false})
 
           } else {
             throw new Error('cannot fetch rationales!');
@@ -158,12 +169,12 @@ export default class PageResults extends Component {
           this.setState({loadingRationales: false, postId: null});
         })
     } else {
-      this.setState({postId, showTargeting: true, loadingRationales: false})
+      this.setState({postId, showingTargeting: true, loadingRationales: false})
     }
   }
 
   hideTargetingFunc() {
-    this.setState({showTargeting: false, postId: null})
+    this.setState({postId: null})
   }
 
   showAdvr(direction, advertisers){
@@ -182,7 +193,7 @@ export default class PageResults extends Component {
       partyIndex += 1;
     }
 
-    this.setState({party: parties[partyIndex], showTargeting: false});
+    this.setState({party: parties[partyIndex], showingTargeting: false});
   }
 
   render() {
@@ -355,7 +366,7 @@ export default class PageResults extends Component {
                   postId={this.state.postId}
                   showTargeting={this.showTargetingFunc}
                   hideTargeting={this.hideTargetingFunc}
-                  showingTargeting={this.state.showTargeting}
+                  showingTargeting={this.state.showingTargeting}
                   rationales={this.state.rationales}
                   showAdvr={this.showAdvr}
                   />

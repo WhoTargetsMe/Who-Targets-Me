@@ -72,12 +72,11 @@ export const PartyAds = (props) => {
   if (partyIndex === 0) { disabledPrev = true }
   else if (partyIndex === props.advertisers.length - 1) { disabledNext = true }
 
-  let showTargetingPage = false;
-  let message = "Show";
-  if (props.postId && props.rationales[props.postId].rationales.length > 0) {
-    showTargetingPage = true;
+  let message = "Check rationales";
+  if (props.rationales[props.postId]) {
     message = props.rationales[props.postId].noRationaleMessage;
   }
+
   let partyName = props.party;
   if (props.advertisers.length > 0) {
     partyName = props.advertisers.filter(advr => advr.advertiserName === props.party)[0].partyDetails.party;
@@ -94,7 +93,7 @@ export const PartyAds = (props) => {
         <span className={`link link_underline ${disabledNext ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('next', props.advertisers)}>Next advertiser</span>
       </div>
 
-      {!props.showingTargeting && !showTargetingPage ?
+      {!props.postId ?
         <div className='boxNoFlex'>
           <Row className='headerRow'>
             <Col sm="4/20" className='colHeader'>Page</Col>
@@ -115,19 +114,56 @@ export const PartyAds = (props) => {
                 </Col>
                 <Col sm="3/20" className='adCol'>{displayTime}</Col>
                 <Col sm="3/20" className='adCol'>
-                  <span className="link" onClick={() => props.showTargeting(ad.postId)}>{message}</span>
+                {
+                  ad.noRationaleMessage && ad.noRationaleMessage === "Not available" ?
+                    <span className="noLink">{ad.noRationaleMessage}</span> :
+                    <span className="link" onClick={() => props.showTargeting(ad.postId)}>{ad.noRationaleMessage ? ad.noRationaleMessage : "Check rationale"}</span>
+                }
                 </Col>
               </Row>
             )}
           )}
       </div> :
-      <RationalesView
-        rationales={props.rationales}
-        ads={props.ads}
-        party={props.party}
-        hideTargeting={props.hideTargeting}
-        postId={props.postId}
-      />
+      <div>
+        {(props.rationales[props.postId] && props.ads.filter(ad => ad.postId === props.postId)[0].noRationaleMessage !== "Not available") ?
+          <RationalesView
+            rationales={props.rationales}
+            ads={props.ads}
+            party={props.party}
+            hideTargeting={props.hideTargeting}
+            postId={props.postId}
+          /> :
+          <div className='boxNoFlex'>
+            <Row className='headerRow'>
+              <Col sm="4/20" className='colHeader'>Page</Col>
+              <Col sm="8/20" className='colHeader'>Text</Col>
+              <Col sm="3/20" className='colHeader'>Seen</Col>
+              <Col sm="3/20" className='colHeader'>Targeting</Col>
+            </Row>
+            {props.ads.map((ad, j) => {
+              const displayTime = ad.createdAt.slice(8,10) + '/' + ad.createdAt.slice(5,7) + '/' + ad.createdAt.slice(0,4);
+              return (
+                <Row key={`tablerow-${j}`} style={{borderBottom: '1px solid #ccc', marginBottom: '10px'}}>
+                  <Col sm="4/20" className='adCol'>
+                    <a href={`https://facebook.com/${ad.postId}`} className='link'>{ad.advertiserName}</a>
+                  </Col>
+                  <Col sm="8/20" className="text adCol">
+                    {ad.text.map((t,i) => <p key={`txt-${i}`}>{t.length > 120 ? t.slice(0,120)+'...' : t}</p>)}
+                    <a href={ad.url} className='link'>View ad</a>
+                  </Col>
+                  <Col sm="3/20" className='adCol'>{displayTime}</Col>
+                  <Col sm="3/20" className='adCol'>
+                  {
+                    ad.noRationaleMessage && ad.noRationaleMessage === "Not available" ?
+                      <span className="noLink">{ad.noRationaleMessage}</span> :
+                      <span className="link" onClick={() => props.showTargeting(ad.postId)}>{ad.noRationaleMessage ? ad.noRationaleMessage : "Check rationale"}</span>
+                  }
+                  </Col>
+                </Row>
+              )}
+            )}
+        </div>}
+      </div>
     }
     </div>
   )

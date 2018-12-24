@@ -9,6 +9,8 @@ const languages = [
     {value: "pt", label: "Português"},
     {value: "se", label: "Svenska"},
     {value: "ua", label: "Українська"},
-    {value: "fi", label: "Suomi"}
+    {value: "fi", label: "Suomi"},
+    {value: "nl", label: "Nederlands"},
+    {value: "fr", label: "Français"}
   ]
   export default languages;
