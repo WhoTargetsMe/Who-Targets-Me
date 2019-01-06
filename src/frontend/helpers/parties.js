@@ -13,6 +13,7 @@ export const availableCountries = [
   {id: 'FI', country: "Finland"},
   {id: 'NL', country: "Netherlands"},
   // {id: 'FR', country: "France"},
+  {id: 'NG', country: "Nigeria"},
 ]
 
 export const availableParties = {
@@ -164,5 +165,17 @@ export const availableParties = {
     {entityId: 11, party:'Staatkundig Gereformeerde Partij', shortName: 'SGP', color: 'orange'},
     {entityId: 12, party:'DENK', shortName: 'DENK', color: '#40E0D0'},
     {entityId: 13, party:'Forum voor Democratie', shortName: 'FvD', color: '#900020'},
+  ],
+  'NG': [
+    {entityId: 1, party:'People\'s Democratic Party', shortName: 'PDP', color: 'green'},
+    {entityId: 2, party:'All Progressives Congress', shortName: 'APC', color: 'lightblue'},
+    {entityId: 3, party:'Advanced Allied Party', shortName: 'AAP', color: 'red'},
+    {entityId: 4, party:'Social Democratic Party', shortName: 'SDP', color: 'red'},
+    {entityId: 5, party:'Alliance for New Nigeria', shortName: 'ANN', color: 'lightgreen'},
+    {entityId: 6, party:'Allied Congress Party', shortName: 'ACP', color: 'green'},
+    {entityId: 7, party:'Abundant Nigeria Renewal Party', shortName: 'ANRP', color: 'darkgrey'},
+    {entityId: 8, party:'Independent', shortName: 'IND', color: 'grey'},
+    {entityId: 9, party:'Other', shortName: 'OTH', color: 'lightgrey'},
+    {entityId: 10, party:'Alliance for People\'s Trust', shortName: 'APT', color: 'yellow'},
   ],
 }
