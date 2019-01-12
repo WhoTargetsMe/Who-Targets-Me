@@ -6,7 +6,7 @@ const reduFunc = (a, b) => a + b;
 
 export const PartyChart = (props) => {
 
-  let maxHeight = 200;
+  let maxHeight = 180;
   let partiesDisplay = props.advertisers.sort((a,b) => parseInt(b.count)-parseInt(a.count))
   // console.log('partiesDisplay-1', partiesDisplay)
 
@@ -125,7 +125,9 @@ export const PartyAds = (props) => {
           )}
       </div> :
       <div>
-        {(props.rationales[props.postId] && props.ads.filter(ad => ad.postId === props.postId)[0].noRationaleMessage !== "Not available") ?
+        {(props.rationales[props.postId] && props.ads.filter(ad => ad.postId === props.postId) &&
+          // props.ads.filter(ad => ad.postId === props.postId)[0].noRationaleMessage !== "Not available") ?
+          props.rationales[props.postId].noRationaleMessage !== "Not available") ?
           <RationalesView
             rationales={props.rationales}
             ads={props.ads}

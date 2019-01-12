@@ -5,6 +5,7 @@ import axios from 'axios';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts'
 import strings, {changeLocale} from '../../helpers/localization.js';
 import {availableCountries, availableParties} from '../../helpers/parties.js'; //, availablePages
+import {getUserCount} from '../../helpers/functions.js'; 
 
 import { PartyChart, PartyAds, RationalesView } from './TargetingResults.js';
 import { DeleteRequestPage } from './DeleteRequestPage.js';
@@ -48,7 +49,7 @@ export default class PageResults extends Component {
     this.props.api.get('user')
       .then((response) => {
         this.setState({userData: response.jsonData.data})
-        // console.log('user data', response, response.jsonData)
+        console.log('user data', response, response.jsonData)
       })
       .catch((error) => {
         console.log(error)
@@ -279,6 +280,27 @@ export default class PageResults extends Component {
     let partiesPercAmongAds = 0;
     let partyPercAmongParties = 0;
 
+    // pulling userCount for this country
+    // const gaps = [100, 250, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7500, 10000, 12500, 15000, 20000]
+    // const gapslen = gaps.length;
+    // let userCount = this.state.userData.userCount;
+    // let nextUserCount = gaps[gapslen - 1];
+    // if (!userCount) { userCount = 101; } // if userCount is not available, fall back to 100
+    // if (userCount > gaps[gapslen - 1]) {
+    //   userCount = gaps[gapslen - 1];
+    //   nextUserCount = gaps[gapslen - 1] + 5000;
+    // }
+    // else {
+    //   for (let i = gapslen - 1; i > 0 ; i--) {
+    //     if (userCount > gaps[i]) {
+    //       userCount = gaps[i];
+    //       nextUserCount = gaps[i+1];
+    //       break;
+    //     }
+    //   }
+    // }
+    const { userCount, nextUserCount } = getUserCount(this.state.userData.userCount);
+    //console.log('userCount, nextUserCount', userCount, nextUserCount)
     // If this is a user with data
     if (view !== "delete_request" && view !== "data_deleted") {
       if (availableCountries.map(c => c.id).includes(userCountry)){
@@ -408,15 +430,16 @@ export default class PageResults extends Component {
           </div>
         </Col>
       </Row>
-      { view !== "delete_request" && view !== "data_deleted" && <Row style={{backgroundColor: 'white', minHeight: '120px', color: 'black', paddingTop: '20px'}}>
-        <Col sm="1/2">
-          <div className="statbox">
-            <Button style={{position: 'absolute', top: 5, left: 15}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties] : [null, null, null])}>{strings.register.shareOnFacebook}</Button>
-            <Button style={{position: 'absolute', top: 5, left: 190}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties] : [null, null, null])} >{strings.register.shareOnTwitter}</Button>
-            <div style={{position: 'absolute', left: 365, width: 380, paddingTop: '10px'}}>
-              <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '20px'}}>{strings.register.share1}</span>
-              <span style={{fontSize: '1.05rem'}}>{strings.register.share2}</span>
-            </div>
+      { view !== "delete_request" && view !== "data_deleted" && <Row style={{backgroundColor: 'white', minHeight: '120px', color: 'black'}}>
+        <Col sm="1">
+          <div className="statbox" style={{height: '140px'}}>
+          <div style={{padding: '5px 15px', height: '120px', margin: 'auto', textAlign: 'center'}}>
+            <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '25px'}}>{sprintf(strings.register.share3, userCount, userCountry)}</span>
+            <br/>
+            <span style={{fontSize: '1.05rem', lineHeight: '25px'}}>{sprintf(strings.register.share4, nextUserCount)}</span>
+          </div>
+            <Button style={{position: 'absolute', bottom: 5, left: 220}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties] : [null, null, null])}>{strings.register.shareOnFacebook}</Button>
+            <Button style={{position: 'absolute', bottom: 5, left: 380}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties] : [null, null, null])} >{strings.register.shareOnTwitter}</Button>
           </div>
         </Col>
       </Row>}

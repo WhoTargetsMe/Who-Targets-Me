@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import strings from '../../helpers/localization.js';
+import {getUserCount} from '../../helpers/functions.js';
 import {Button, InputGroup, FormInput, FormField, FormSelect, FormRow, Spinner, Row, Card, Col} from 'elemental';
 import api from '../../helpers/api.js';
 import countries from './countries.js';
@@ -547,13 +548,14 @@ class AttemptSignup extends Component {
     // console.log('api.post', age, gender, postcode, country, political_affiliation, survey)
     api.post('user/create', {json: {age, gender, postcode, country: country.countryCode, political_affiliation, survey}})
       .then((response) => { // The rest of the validation is down to the server
-        // console.log('user/create',response.jsonData.data.token)
+        console.log('user/create',response.jsonData.data)
         if(response.jsonData.errorMessage !== undefined) {
           throw new Error(response.jsonData.errorMessage);
         }
-        chrome.storage.promise.local.set({'general_token': response.jsonData.data.token})
+        chrome.storage.promise.local.set({'general_token': response.jsonData.data.token, userCount: response.jsonData.data.userCount})
           .then((res) => {
             // console.log('chrome.storage.promise.local',res, response.jsonData.data.token)
+            // this.setState({userCount: response.jsonData.data.userCount});
             next();
           })
           .catch((e) => {
@@ -804,12 +806,17 @@ class PostSignupShare extends Component {
 
   render() {
     const {next} = this.props;
+    const userCountry = 'US'; //this.props.signupState.country ? this.props.signupState.country.countryCode : null;
+    const input = chrome.storage.promise.local.get('userCount') || null;
+    const {userCount, nextUserCount} = getUserCount(input);
+    
     return (
       <Container country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}>
-        <div className="fullwidth pageTitle" style={{margin: '0px 50px'}}>
+        {!userCountry && <div className="fullwidth pageTitle" style={{margin: '0px 50px'}}>
           <h3>{strings.register.share}</h3>
-        </div>
-        <div className="fullwidth">
+        </div>}
+
+        {!userCountry && <div className="fullwidth">
           <Row style={{margin: '10px'}}>
             <Col sm="1/2">
               <Button type="hollow-primary"
@@ -829,7 +836,22 @@ class PostSignupShare extends Component {
                 </Button>
             </Col>
           </Row>
-        </div>
+        </div>}
+
+        {userCountry && <Row style={{backgroundColor: 'transparent', minHeight: '120px', color: 'black'}}>
+          <Col sm="1">
+            <div className="statbox" style={{height: '140px', backgroundColor: 'transparent'}}>
+            <div style={{padding: '5px 15px', height: '120px', margin: 'auto', textAlign: 'center'}}>
+              <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '25px'}}>{sprintf(strings.register.share3, userCount, userCountry)}</span>
+              <br/>
+              <span style={{fontSize: '1.05rem', lineHeight: '25px'}}>{sprintf(strings.register.share4, nextUserCount)}</span>
+            </div>
+              <Button style={{position: 'absolute', bottom: 5, left: 200}} type="hollow-primary" className='buttonFB' href={shareLinkFB()}>{strings.register.shareOnFacebook}</Button>
+              <Button style={{position: 'absolute', bottom: 5, left: 360}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter()} >{strings.register.shareOnTwitter}</Button>
+            </div>
+          </Col>
+        </Row>}
+
         <div className="fullwidth">
           <Button onClick={next} type="hollow-primary" className='buttonBack'>{strings.register.skip} {String.fromCharCode("187")}</Button>
         </div>
@@ -848,9 +870,6 @@ const signupStages = [
   {
     component: <CountrySelector/>,
   },
-  // {
-  //   component: <OxfordSurvey/>,
-  // },
   {
     component: <PostcodeSelector/>,
   },

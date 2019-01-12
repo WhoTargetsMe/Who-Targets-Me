@@ -36,7 +36,7 @@
 .mainstatbox {
   background-color: #f2f2f2;
   min-height: 300px;
-  max-height: 320px;
+  max-height: 300px;
 }
 
 .statbox:last-child {
