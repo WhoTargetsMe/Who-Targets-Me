@@ -5,7 +5,7 @@ import axios from 'axios';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts'
 import strings, {changeLocale} from '../../helpers/localization.js';
 import {availableCountries, availableParties} from '../../helpers/parties.js'; //, availablePages
-import {getUserCount} from '../../helpers/functions.js'; 
+import {getUserCount} from '../../helpers/functions.js';
 
 import { PartyChart, PartyAds, RationalesView } from './TargetingResults.js';
 import { DeleteRequestPage } from './DeleteRequestPage.js';
@@ -49,7 +49,7 @@ export default class PageResults extends Component {
     this.props.api.get('user')
       .then((response) => {
         this.setState({userData: response.jsonData.data})
-        console.log('user data', response, response.jsonData)
+        // console.log('user data', response, response.jsonData)
       })
       .catch((error) => {
         console.log(error)
@@ -280,25 +280,6 @@ export default class PageResults extends Component {
     let partiesPercAmongAds = 0;
     let partyPercAmongParties = 0;
 
-    // pulling userCount for this country
-    // const gaps = [100, 250, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7500, 10000, 12500, 15000, 20000]
-    // const gapslen = gaps.length;
-    // let userCount = this.state.userData.userCount;
-    // let nextUserCount = gaps[gapslen - 1];
-    // if (!userCount) { userCount = 101; } // if userCount is not available, fall back to 100
-    // if (userCount > gaps[gapslen - 1]) {
-    //   userCount = gaps[gapslen - 1];
-    //   nextUserCount = gaps[gapslen - 1] + 5000;
-    // }
-    // else {
-    //   for (let i = gapslen - 1; i > 0 ; i--) {
-    //     if (userCount > gaps[i]) {
-    //       userCount = gaps[i];
-    //       nextUserCount = gaps[i+1];
-    //       break;
-    //     }
-    //   }
-    // }
     const { userCount, nextUserCount } = getUserCount(this.state.userData.userCount);
     //console.log('userCount, nextUserCount', userCount, nextUserCount)
     // If this is a user with data
@@ -342,7 +323,7 @@ export default class PageResults extends Component {
               }
               {
                 view === "display_parties" &&
-                <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: '25px'}}>
+                <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: userCountry === 'BR' ? '0px' : '25px'}}>
                   <div style={{flex: 1, minHeight: '40px'}}>
                     <h3 className='mainHeader'>{`${strings.results.results_screen1} `}<span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span></h3>
                     <h4 className='resultsSubHeader'>{`${strings.results.results_screen2} `}{userSeenPartiesSum} {` ${strings.results.results_screen3} `}

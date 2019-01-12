@@ -552,11 +552,10 @@ class AttemptSignup extends Component {
         if(response.jsonData.errorMessage !== undefined) {
           throw new Error(response.jsonData.errorMessage);
         }
-        chrome.storage.promise.local.set({'general_token': response.jsonData.data.token, userCount: response.jsonData.data.userCount})
+        chrome.storage.promise.local.set({'general_token': response.jsonData.data.token})
           .then((res) => {
             // console.log('chrome.storage.promise.local',res, response.jsonData.data.token)
-            // this.setState({userCount: response.jsonData.data.userCount});
-            next();
+            next({userCount: response.jsonData.data.userCount});
           })
           .catch((e) => {
             console.log(e);
@@ -806,8 +805,8 @@ class PostSignupShare extends Component {
 
   render() {
     const {next} = this.props;
-    const userCountry = 'US'; //this.props.signupState.country ? this.props.signupState.country.countryCode : null;
-    const input = chrome.storage.promise.local.get('userCount') || null;
+    const userCountry = this.props.signupState.country ? this.props.signupState.country.countryCode : null;
+    const input = this.props.signupState.userCount || null; //chrome.storage.promise.local.get('userCount') || null;
     const {userCount, nextUserCount} = getUserCount(input);
     
     return (

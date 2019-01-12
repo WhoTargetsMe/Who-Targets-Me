@@ -4,7 +4,8 @@ export const getUserCount = (input) => {
   const gapslen = gaps.length;
   let userCount = input;
   let nextUserCount = gaps[gapslen - 1];
-  if (!userCount || userCount < gaps[0]) { userCount = 101; } // if userCount is not available, fall back to 100
+  if (!input || input < gaps[0]) { userCount = 101; } // if userCount is not available, fall back to 100
+  userCount = parseInt(userCount);
 
   if (userCount > gaps[gapslen - 1]) {
     userCount = gaps[gapslen - 1];
