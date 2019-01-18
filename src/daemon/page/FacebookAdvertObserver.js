@@ -26,12 +26,15 @@ const sponsoredText = {
   'tr': 'Spo' //nsorlu'
 };
 
-const fetchRationale = (advertId) => {
+const fetchRationale = (advertId, ajaxify) => {
   return new Promise((resolve, reject) => {
-    const fbRationaleURL = sprintf('https://www.facebook.com/ads/preferences/dialog/?id=%s&optout_url=http%%3A%%2F%%2Fwww.facebook.com%%2Fabout%%2Fads&page_type=16&show_ad_choices=0&dpr=1&__a=1', advertId);
+    // const fbRationaleURL = sprintf('https://www.facebook.com/ads/preferences/dialog/?id=%s&optout_url=http%%3A%%2F%%2Fwww.facebook.com%%2Fabout%%2Fads&page_type=16&show_ad_choices=0&dpr=1&__a=1', advertId);
+    const fbRationaleURL = 'https://www.facebook.com' + ajaxify;
+    console.log('fbRationaleURL', fbRationaleURL)
     fetch(fbRationaleURL, {credentials: 'include'}) // credentials enables use of cookies
       .then((response) => {
         response.text().then((text) => {
+          console.log(text)
           resolve(text);
         });
       })
@@ -158,7 +161,11 @@ const adsOnPage = () => {
         const menuOwnerId = $menuButton.attr("id");
         const container = $(`#${fbStoryId}`).closest('[data-testid="fbfeed_story"]');
         const fetched = container.hasClass('fetched');
-        console.log('container TRIAL', fbStoryId, fetched, container)
+        const nsub = $(`#${fbStoryId}`).find('[data-testid="story-subtitle"]');
+        const link = nsub.find('a[role="link"]');
+        const isad = (link && link.get(0)) ? link.get(0).offsetHeight: false;
+        console.log('ISAD', isad)
+        console.log('container TRIAL', fbStoryId, menuOwnerId, 'offsetHeight=', link ? link.get(0): 'Not an ad')
 
         if (fetched) {
           // don't triggerMenu if already fetched
@@ -166,27 +173,55 @@ const adsOnPage = () => {
           return Promise.resolve({fbStoryId: null});
         }
 
-        console.log('TRIGGERED triggerMenuTrial menuOwnerId', menuOwnerId)
+        // console.log('TRIGGERED triggerMenuTrial menuOwnerId', menuOwnerId, $menuButton)
         return new Promise((resolve) => setTimeout(resolve(), 1000 * parseInt(Math.random()*10)))
           .then(() => {
-            $menuButton.get(0).click(); // Open the menu
-            $menuButton.get(0).click(); // Close the menu
+            // $menuButton.get(0).click(); // Open the menu
+            // $menuButton.get(0).click(); // Close the menu
+
+            // return new Promise((resolve) => setTimeout(resolve(), 3000)) // Wait 100ms to ensure the menu rendered
+            //   .then(() => {
 
           return new Promise((resolve) => setTimeout(resolve(), 100)) // Wait 100ms to ensure the menu rendered
             .then(() => {
               try {
-                const ajaxify0 = document.querySelector(`[data-ownerid='${menuOwnerId}'] a[data-feed-option-name='FeedAdSeenReasonOption']`)
+                const ajaxify0 = document.querySelector(`[data-ownerid='${menuOwnerId}'] li[data-feed-option-name='FeedAdSeenReasonOption']`)
+                // console.log('ajaxify0', ajaxify0)
 
-                if (ajaxify0 && !fetched) {
-                  const ajaxify = ajaxify0.getAttribute('ajaxify');
-                  const fbAdvertId = /id=\s*(.*?)\s*&/.exec(ajaxify)[1]
-                  console.log('triggerMenuTrial TRIGGERED success! fbAdvertId=', fbAdvertId)
+                if (isad) { //if (ajaxify0) {
+                  // console.log('triggerMenuTrial TRIGGERED success! fbStoryId=', fbStoryId)
 
-                  return new Promise((resolve) => setTimeout(resolve(), 100 * getRandomInt(5)))
+                  return new Promise((resolve) => setTimeout(resolve(), 500 * parseInt(Math.random()*10)))
                     .then(() => {
-                      return fetchRationale(fbAdvertId)
+                      // transmitPayload(payload) // Send data to server
+                      console.log('OBSERVER-From Ads--> transmitPayload')
+                      let extVersion = chrome.runtime.getManifest().version;
+
+                      let finalPayload = { // Queue advert for server
+                        typeId: 'FBADVERT',
+                        extVersion,
+                        payload: [{
+                          type: 'FBADVERT',
+                          related: fbStoryId,
+                          html: container.html()
+                        }]
+                      };
+                      console.log('finalPayload', finalPayload)
+                      api.post('log/raw', {json: finalPayload})
+                        .then((response) => {
+                          // response completed, no log
+                        });
+                        container.addClass('fetched');
+                        return Promise.resolve({fbStoryId});
+                    }) //then()..
+
+
+                  /*return new Promise((resolve) => setTimeout(resolve(), 100 * getRandomInt(5)))
+                    .then(() => {
+                      return fetchRationale(fbAdvertId, ajaxify)
                         .then(parsedRationale => {
                           console.log("FBADVERTRATIONALE (response obtained)")
+                          console.log(parsedRationale)
                           if (parsedRationale) {
                             // transmitPayload(payload) // Send data to server
                             console.log('OBSERVER-From Ads--> transmitPayload')
@@ -205,6 +240,7 @@ const adsOnPage = () => {
                                 html: container.html()
                               }]
                             };
+                            console.log('finalPayload', finalPayload)
                             api.post('log/raw', {json: finalPayload})
                               .then((response) => {
                                 // response completed, no log
@@ -215,7 +251,7 @@ const adsOnPage = () => {
                               return Promise.resolve({fbStoryId: null});
                             }
                           }) //then()..
-                        }) //then()..
+                        }) *///then()..
 
                 } else { //if (ajaxify0 && !fetched)
                   return Promise.resolve({fbStoryId: null});
@@ -228,6 +264,7 @@ const adsOnPage = () => {
             // console.log(err);
             return Promise.resolve({fbStoryId: null});
           });
+        // }) // then() additional promise between clicks..
         }) // then()..
       } //end triggerMenuTrial
 
