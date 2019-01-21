@@ -30,11 +30,11 @@ const fetchRationale = (advertId, ajaxify) => {
   return new Promise((resolve, reject) => {
     // const fbRationaleURL = sprintf('https://www.facebook.com/ads/preferences/dialog/?id=%s&optout_url=http%%3A%%2F%%2Fwww.facebook.com%%2Fabout%%2Fads&page_type=16&show_ad_choices=0&dpr=1&__a=1', advertId);
     const fbRationaleURL = 'https://www.facebook.com' + ajaxify;
-    console.log('fbRationaleURL', fbRationaleURL)
+    // console.log('fbRationaleURL', fbRationaleURL)
     fetch(fbRationaleURL, {credentials: 'include'}) // credentials enables use of cookies
       .then((response) => {
         response.text().then((text) => {
-          console.log(text)
+          // console.log(text)
           resolve(text);
         });
       })
@@ -50,12 +50,10 @@ const triggerMenu = (fbStoryId) => {
   const menuOwnerId = $menuButton.attr("id");
   const container = $(`#${fbStoryId}`).closest('[data-testid="fbfeed_story"]');
   const fetched = container.hasClass('fetched');
-  // console.log('container', fbStoryId, container)
-  // console.log('fetched', fbStoryId, fetched)
   if (fetched) {
     // don't triggerMenu if already fetched
-    console.log('fetched exists', fbStoryId)
-    // return;
+    // console.log('fetched exists', fbStoryId)
+    return;
   }
 
   return new Promise((resolve) => setTimeout(resolve(), 1000 * parseInt(Math.random()*10)))
@@ -153,7 +151,7 @@ const adsOnPage = () => {
     const condition2 = nextNode.find('a[rel*="theater"]')
 
     if (condition0.length === 1 || (condition1.length + condition2.length === 0)) {
-      console.log('candidate ad ------>', fbStoryId)
+      // console.log('candidate ad ------>', fbStoryId)
 
       //start triggerMenu
       const triggerMenuTrial = (fbStoryId) => {
@@ -164,12 +162,12 @@ const adsOnPage = () => {
         const nsub = $(`#${fbStoryId}`).find('[data-testid="story-subtitle"]');
         const link = nsub.find('a[role="link"]');
         const isad = (link && link.get(0)) ? link.get(0).offsetHeight: false;
-        console.log('ISAD', isad)
-        console.log('container TRIAL', fbStoryId, menuOwnerId, 'offsetHeight=', link ? link.get(0): 'Not an ad')
+        // console.log('ISAD', isad)
+        // console.log('container TRIAL', fbStoryId, menuOwnerId, 'offsetHeight=', link ? link.get(0): 'Not an ad')
 
         if (fetched) {
           // don't triggerMenu if already fetched
-          console.log('fetched exists', fbStoryId)
+          // console.log('fetched exists', fbStoryId)
           return Promise.resolve({fbStoryId: null});
         }
 
@@ -194,7 +192,7 @@ const adsOnPage = () => {
                   return new Promise((resolve) => setTimeout(resolve(), 500 * parseInt(Math.random()*10)))
                     .then(() => {
                       // transmitPayload(payload) // Send data to server
-                      console.log('OBSERVER-From Ads--> transmitPayload')
+                      // console.log('OBSERVER-From Ads--> transmitPayload')
                       let extVersion = chrome.runtime.getManifest().version;
 
                       let finalPayload = { // Queue advert for server
@@ -206,7 +204,6 @@ const adsOnPage = () => {
                           html: container.html()
                         }]
                       };
-                      console.log('finalPayload', finalPayload)
                       api.post('log/raw', {json: finalPayload})
                         .then((response) => {
                           // response completed, no log
@@ -270,7 +267,7 @@ const adsOnPage = () => {
 
       triggerMenuTrial(fbStoryId).then(res => {
         if (res.fbStoryId) {
-          console.log('triggerMenuTrial==resolved==', res.fbStoryId)
+          // console.log('triggerMenuTrial==resolved==', res.fbStoryId)
           return Promise.resolve([]);
         } else {
           return Promise.resolve([]);
@@ -351,7 +348,6 @@ const cycle = ({persistant, temp}) => {
         advertIdQueue,
         parsedRationale
       } = results[1];
-      // console.log('++++++++++++++++++', adverts, advertIds, advertIdQueue, parsedRationale)
       temp.fbStoryIds.push(...adverts.map(advert => advert.related));
       temp.rationale.advertIdQueue = advertIdQueue.concat(advertIds);
 

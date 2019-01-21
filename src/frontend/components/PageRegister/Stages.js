@@ -617,7 +617,7 @@ class OxfordSurvey extends Component {
   }
 
   getSurvey(survey) {
-    console.log("REQUESTING survey")
+    // console.log("REQUESTING survey")
     this.setState({loadingSurvey: true})
     api.get('general/survey', {query: {survey}})
       .then((response) => {
@@ -808,7 +808,7 @@ class PostSignupShare extends Component {
     const userCountry = this.props.signupState.country ? this.props.signupState.country.countryCode : null;
     const input = this.props.signupState.userCount || null; //chrome.storage.promise.local.get('userCount') || null;
     const {userCount, nextUserCount} = getUserCount(input);
-    
+
     return (
       <Container country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}>
         {!userCountry && <div className="fullwidth pageTitle" style={{margin: '0px 50px'}}>
