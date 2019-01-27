@@ -11,6 +11,7 @@ const languages = [
     {value: "ua", label: "Українська"},
     {value: "fi", label: "Suomi"},
     {value: "nl", label: "Nederlands"},
-    {value: "fr", label: "Français"}
+    {value: "fr", label: "Français"},
+    {value: "il", label: "ʕivˈɾit"}
   ]
   export default languages;

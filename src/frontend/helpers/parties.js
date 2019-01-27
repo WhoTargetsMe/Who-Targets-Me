@@ -14,6 +14,7 @@ export const availableCountries = [
   {id: 'NL', country: "Netherlands"},
   // {id: 'FR', country: "France"},
   {id: 'NG', country: "Nigeria"},
+  // {id: 'IL', country: "Israel"},
 ]
 
 export const availableParties = {
