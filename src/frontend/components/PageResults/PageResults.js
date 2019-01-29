@@ -9,7 +9,7 @@ import {getUserCount} from '../../helpers/functions.js';
 
 import { PartyChart, PartyAds, RationalesView } from './TargetingResults.js';
 import { DeleteRequestPage } from './DeleteRequestPage.js';
-import countries from '../PageRegister/countries.js';
+import { countries, countries_in_native_lang } from '../PageRegister/countries.js';
 import IMGLogo from '../Shell/logo.svg';
 import Logo from '../Shell/wtm_logo_border.png';
 import IMGFirstPlace from './firstplace.png';
@@ -218,6 +218,7 @@ export default class PageResults extends Component {
 
     const reduFunc = (a, b) => a + b;
     const userCountry = this.state.userData.country;
+    const userCountryNative = countries_in_native_lang[userCountry];
     const advertisers = this.state.userData.advertisers;
     let displayLabels = [];
     if (availableCountries.map(c => c.id).includes(userCountry) && availableParties[userCountry].length > 0) {
@@ -415,7 +416,7 @@ export default class PageResults extends Component {
         <Col sm="1">
           <div className="statbox" style={{height: '140px'}}>
           <div style={{padding: '5px 15px', height: '120px', margin: 'auto', textAlign: 'center'}}>
-            <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '25px'}}>{sprintf(strings.register.share3, userCount, userCountry)}</span>
+            <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '25px'}}>{sprintf(strings.register.share3, userCount, userCountryNative)}</span>
             <br/>
             <span style={{fontSize: '1.05rem', lineHeight: '25px'}}>{sprintf(strings.register.share4, nextUserCount)}</span>
           </div>

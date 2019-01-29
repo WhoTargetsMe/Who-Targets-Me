@@ -3,7 +3,7 @@ import strings from '../../helpers/localization.js';
 import {getUserCount} from '../../helpers/functions.js';
 import {Button, InputGroup, FormInput, FormField, FormSelect, FormRow, Spinner, Row, Card, Col} from 'elemental';
 import api from '../../helpers/api.js';
-import countries from './countries.js';
+import { countries, countries_in_native_lang } from './countries.js';
 import languages from './languages.js';
 import {
   OxfordSurvey0,
@@ -806,6 +806,7 @@ class PostSignupShare extends Component {
   render() {
     const {next} = this.props;
     const userCountry = this.props.signupState.country ? this.props.signupState.country.countryCode : null;
+    const userCountryNative = countries_in_native_lang[userCountry];
     const input = this.props.signupState.userCount || null; //chrome.storage.promise.local.get('userCount') || null;
     const {userCount, nextUserCount} = getUserCount(input);
 
@@ -841,7 +842,7 @@ class PostSignupShare extends Component {
           <Col sm="1">
             <div className="statbox" style={{height: '140px', backgroundColor: 'transparent'}}>
             <div style={{padding: '5px 15px', height: '120px', margin: 'auto', textAlign: 'center'}}>
-              <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '25px'}}>{sprintf(strings.register.share3, userCount, userCountry)}</span>
+              <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '25px'}}>{sprintf(strings.register.share3, userCount, userCountryNative)}</span>
               <br/>
               <span style={{fontSize: '1.05rem', lineHeight: '25px'}}>{sprintf(strings.register.share4, nextUserCount)}</span>
             </div>
