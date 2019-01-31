@@ -44,6 +44,7 @@ const strings = new LocalizedStrings({
       non_us_labels: ['No affiliation', 'Very left wing', 'Moderately left wing', 'Slightly left wing', 'Center', 'Slightly right wing', 'Moderately right wing', 'Very right wing'],
       would_rather_not_say: 'Would rather not say',
       county: 'County',
+      setting_up: 'Setting up...',
     },
     results: {
       my_constituency: 'My Constituency',
@@ -72,6 +73,21 @@ const strings = new LocalizedStrings({
       results_screen2: "In total you've seen ", // In total you've seen {quantity} political ads,
       results_screen3: " political ads, of which ", //of which.
       results_screen4: " were from ", //{quantity} were from {party name}
+      gathering_data: 'Gathering data...',
+      click_a_bar: 'Click a bar to view the ads you’ve seen from them',
+      how_did_we_calc: 'How did we calculate this?',
+      ad: 'ad',
+      ads: 'ads',
+      ads_from: 'ads from',
+      back_to_stats: 'Back to stats',
+      prev_advertiser: 'Previous advertiser',
+      next_advertiser: 'Next advertiser',
+      page: 'Page',
+      text: 'Text',
+      seen: 'Seen',
+      targeting: 'Targeting',
+      view_ad: 'View ad',
+      check_rationale: 'Check rationale',
     },
     links: {
       website: {
@@ -158,6 +174,21 @@ const strings = new LocalizedStrings({
       results_screen2: "In total you've seen ", // In total you've seen {quantity} political ads,
       results_screen3: " political ads, of which ", //of which.
       results_screen4: " were from ", //{quantity} were from {party name}
+      gathering_data: 'Gathering data...',
+      click_a_bar: 'Click a bar to view the ads you’ve seen from them',
+      how_did_we_calc: 'How did we calculate this?',
+      ad: 'ad',
+      ads: 'ads',
+      ads_from: 'ads from',
+      back_to_stats: 'Back to stats',
+      prev_advertiser: 'Previous advertiser',
+      next_advertiser: 'Next advertiser',
+      page: 'Page',
+      text: 'Text',
+      seen: 'Seen',
+      targeting: 'Targeting',
+      view_ad: 'View ad',
+      check_rationale: 'Check rationale',
     },
     links: {
       website: {
@@ -225,6 +256,7 @@ const strings = new LocalizedStrings({
       non_us_labels: ["Sin afiliación política", "Muy de izquierdas", "De izquierdas", "De centro izquierda", "De centro", "De centro-derecha", "De derechas", "Muy de derechas" ],
       would_rather_not_say: "Prefiero no decirlo",
       county: "País",
+      setting_up: 'Setting up...',
     },
     results: {
       my_constituency: "Mi circunscripción",
@@ -253,6 +285,21 @@ const strings = new LocalizedStrings({
       results_screen2: "En total has visto ", // In total you've seen {quantity} political ads,
       results_screen3: " anuncios políticos o electorales, de los cuales ", //of which.
       results_screen4: " eran de ", //{quantity} were from {party name}
+      gathering_data: 'Gathering data...',
+      click_a_bar: 'Click a bar to view the ads you’ve seen from them',
+      how_did_we_calc: 'How did we calculate this?',
+      ad: 'ad',
+      ads: 'ads',
+      ads_from: 'ads from',
+      back_to_stats: 'Back to stats',
+      prev_advertiser: 'Previous advertiser',
+      next_advertiser: 'Next advertiser',
+      page: 'Page',
+      text: 'Text',
+      seen: 'Seen',
+      targeting: 'Targeting',
+      view_ad: 'View ad',
+      check_rationale: 'Check rationale',
     },
     links: {
       website: {
@@ -334,6 +381,21 @@ const strings = new LocalizedStrings({
       results_screen2: "In total you've seen ", // In total you've seen {quantity} political ads,
       results_screen3: " political ads, of which ", //of which.
       results_screen4: " were from ", //{quantity} were from {party name}
+      gathering_data: 'Gathering data...',
+      click_a_bar: 'Click a bar to view the ads you’ve seen from them',
+      how_did_we_calc: 'How did we calculate this?',
+      ad: 'ad',
+      ads: 'ads',
+      ads_from: 'ads from',
+      back_to_stats: 'Back to stats',
+      prev_advertiser: 'Previous advertiser',
+      next_advertiser: 'Next advertiser',
+      page: 'Page',
+      text: 'Text',
+      seen: 'Seen',
+      targeting: 'Targeting',
+      view_ad: 'View ad',
+      check_rationale: 'Check rationale',
     },
     links: {
       website: {
@@ -420,6 +482,21 @@ const strings = new LocalizedStrings({
       results_screen2: "In total you've seen ", // In total you've seen {quantity} political ads,
       results_screen3: " political ads, of which ", //of which.
       results_screen4: " were from ", //{quantity} were from {party name}
+      gathering_data: 'Gathering data...',
+      click_a_bar: 'Click a bar to view the ads you’ve seen from them',
+      how_did_we_calc: 'How did we calculate this?',
+      ad: 'ad',
+      ads: 'ads',
+      ads_from: 'ads from',
+      back_to_stats: 'Back to stats',
+      prev_advertiser: 'Previous advertiser',
+      next_advertiser: 'Next advertiser',
+      page: 'Page',
+      text: 'Text',
+      seen: 'Seen',
+      targeting: 'Targeting',
+      view_ad: 'View ad',
+      check_rationale: 'Check rationale',
     },
     links: {
       website: {
@@ -487,6 +564,7 @@ const strings = new LocalizedStrings({
       non_us_labels: ['Нет принадлежности', 'Ультралевые', 'Умеренно левые', 'Левоцентристские', 'Центристские', 'Правоцентристские', "Умеренно правые", "Ультраправые"],
       would_rather_not_say: "Предпочитаю не говорить",
       county: "Округ",
+      setting_up: 'Setting up...',
     },
     results: {
       my_constituency: 'Мои избиратели',
@@ -515,6 +593,21 @@ const strings = new LocalizedStrings({
       results_screen2: "В общей сложности вы видели ", // In total you've seen {quantity} political ads
       results_screen3: " политических рекламных объявлений, из которых ", //of which.
       results_screen4: " были от ", //{quantity} were from {party name}.
+      gathering_data: 'Gathering data...',
+      click_a_bar: 'Click a bar to view the ads you’ve seen from them',
+      how_did_we_calc: 'How did we calculate this?',
+      ad: 'ad',
+      ads: 'ads',
+      ads_from: 'ads from',
+      back_to_stats: 'Back to stats',
+      prev_advertiser: 'Previous advertiser',
+      next_advertiser: 'Next advertiser',
+      page: 'Page',
+      text: 'Text',
+      seen: 'Seen',
+      targeting: 'Targeting',
+      view_ad: 'View ad',
+      check_rationale: 'Check rationale',
     },
     links: {
       website: {
@@ -582,6 +675,7 @@ const strings = new LocalizedStrings({
       non_us_labels: ['Nav politiskās piederības', 'Izteikti labēji uzskati', 'Labēji uzskati', 'Daļēji labēji uzskati', 'Centriski uzskati', 'Daļēji kreisi uzskati', 'Kreisi uzskati', 'Ļoti kreisi uzskati'],
       would_rather_not_say: "Nevēlos uz šo jautājumu atbildēt",
       county: "Valsts",
+      setting_up: 'Setting up...',
     },
     results: {
       my_constituency: 'Mans vēlēšanu apgabals',
@@ -610,6 +704,21 @@ const strings = new LocalizedStrings({
       results_screen2: "In total you've seen ", // In total you've seen {quantity} political ads,
       results_screen3: " political ads, of which ", //of which.
       results_screen4: " were from ", //{quantity} were from {party name}
+      gathering_data: 'Gathering data...',
+      click_a_bar: 'Click a bar to view the ads you’ve seen from them',
+      how_did_we_calc: 'How did we calculate this?',
+      ad: 'ad',
+      ads: 'ads',
+      ads_from: 'ads from',
+      back_to_stats: 'Back to stats',
+      prev_advertiser: 'Previous advertiser',
+      next_advertiser: 'Next advertiser',
+      page: 'Page',
+      text: 'Text',
+      seen: 'Seen',
+      targeting: 'Targeting',
+      view_ad: 'View ad',
+      check_rationale: 'Check rationale',
     },
     links: {
       website: {
@@ -677,6 +786,7 @@ const strings = new LocalizedStrings({
       non_us_labels: ['Sem afiliação', 'Extrema esquerda', 'Esquerda', 'Centro-esquerda', 'Centro', 'Centro-direita', 'Direita', 'Extrema direita'],
       would_rather_not_say: 'Prefiro não dizer',
       county: 'Estado',
+      setting_up: 'Setting up...',
     },
     results: {
       my_constituency: 'Meu domicílio eleitoral',
@@ -707,6 +817,21 @@ const strings = new LocalizedStrings({
       results_screen2: "In total you've seen ", // In total you've seen {quantity} political ads,
       results_screen3: " political ads, of which ", //of which.
       results_screen4: " were from ", //{quantity} were from {party name}
+      gathering_data: 'Gathering data...',
+      click_a_bar: 'Click a bar to view the ads you’ve seen from them',
+      how_did_we_calc: 'How did we calculate this?',
+      ad: 'ad',
+      ads: 'ads',
+      ads_from: 'ads from',
+      back_to_stats: 'Back to stats',
+      prev_advertiser: 'Previous advertiser',
+      next_advertiser: 'Next advertiser',
+      page: 'Page',
+      text: 'Text',
+      seen: 'Seen',
+      targeting: 'Targeting',
+      view_ad: 'View ad',
+      check_rationale: 'Check rationale',
     },
     links: {
       website: {
@@ -774,6 +899,7 @@ const strings = new LocalizedStrings({
       non_us_labels: ['Inga sympatier', 'Mycket vänster', 'Vänster', 'Lite vänster', 'Mitten', 'Lite höger', 'Höger', 'Mycket höger'],
       would_rather_not_say: 'Jag avstår',
       county: 'Län',
+      setting_up: 'Setting up...',
     },
     results: {
       my_constituency: 'Min valkrets',
@@ -802,6 +928,21 @@ const strings = new LocalizedStrings({
       results_screen2: "Du har sammanlagt sett ", // In total you've seen {quantity} political ads,
       results_screen3: " politiska annonser där ", //of which.
       results_screen4: " är från ", //{quantity} were from {party name}
+      gathering_data: 'Gathering data...',
+      click_a_bar: 'Click a bar to view the ads you’ve seen from them',
+      how_did_we_calc: 'How did we calculate this?',
+      ad: 'ad',
+      ads: 'ads',
+      ads_from: 'ads from',
+      back_to_stats: 'Back to stats',
+      prev_advertiser: 'Previous advertiser',
+      next_advertiser: 'Next advertiser',
+      page: 'Page',
+      text: 'Text',
+      seen: 'Seen',
+      targeting: 'Targeting',
+      view_ad: 'View ad',
+      check_rationale: 'Check rationale',
     },
     links: {
       website: {
@@ -869,6 +1010,7 @@ const strings = new LocalizedStrings({
       non_us_labels: ['Немає', 'Крайні ліві', 'Помірно ліві', 'Дещо ліві', 'Центристські', 'Дещо праві', 'Помірно праві', 'Крайні праві'],
       would_rather_not_say: 'Не бажаю відповідати',
       county: 'Виборчий округ',
+      setting_up: 'Setting up...',
     },
     results: {
       my_constituency: 'Мій виборчий округ',
@@ -897,6 +1039,21 @@ const strings = new LocalizedStrings({
       results_screen2: "Загалом ви побачили ", // In total you've seen {quantity} political ads,
       results_screen3: " політичних оголошень, з яких ", //of which.
       results_screen4: " були від ", //{quantity} were from {party name}
+      gathering_data: 'Gathering data...',
+      click_a_bar: 'Click a bar to view the ads you’ve seen from them',
+      how_did_we_calc: 'How did we calculate this?',
+      ad: 'ad',
+      ads: 'ads',
+      ads_from: 'ads from',
+      back_to_stats: 'Back to stats',
+      prev_advertiser: 'Previous advertiser',
+      next_advertiser: 'Next advertiser',
+      page: 'Page',
+      text: 'Text',
+      seen: 'Seen',
+      targeting: 'Targeting',
+      view_ad: 'View ad',
+      check_rationale: 'Check rationale',
     },
     links: {
       website: {
@@ -951,8 +1108,8 @@ const strings = new LocalizedStrings({
       share: 'Jaa hanke, niin ystäväsi voivat myös oppia heihin kohdistuvasta some-viestinnästä.',
       share1: 'Jaa tuloksesi',
       share2: ' niin voit auttaa muita oppimaan heihin kohdistetusta poliittisesta viestinnästä',
-      share3: 'Over %i people in %s are taking part in Who Targets Me.',
-      share4: 'Will you share the project and help us to get to %i?',
+      share3: 'Yli %i henkilöä %s: ssä osallistuvat Vaalivahdin käyttämiseen.',
+      share4: 'Kerro osallistumisesta ystävillesi ja auta meitä saamaan %i osallistujaa?',
       shareOnFacebook: 'Facebook',
       shareOnTwitter: 'Twitter',
       skip: 'Ohita',
@@ -964,6 +1121,7 @@ const strings = new LocalizedStrings({
       non_us_labels: ['Sitoutumaton', 'Hyvin vasemmalla', 'Melko vasemmalla', 'Hieman vasemmalla', 'Keskellä', 'Hieman oikealla', 'Melko oikealla', 'Hyvin oikealla'],
       would_rather_not_say: 'Mieluummin en vastaa',
       county: 'Kunta',
+      setting_up: 'Asennetaan...',
     },
     results: {
       my_constituency: 'Vaalipiirini',
@@ -992,6 +1150,21 @@ const strings = new LocalizedStrings({
       results_screen2: "Yhteensä olet nähnyt ", // In total you've seen {quantity} political ads,
       results_screen3: " poliittista mainosta, joista ", //of which.
       results_screen4: " olivat peräisin ", //{quantity} were from {party name}
+      gathering_data: 'Kerätään dataa...',
+      click_a_bar: 'Klikkaa palkkia nähdäksesi kyseiseltä taholta näkemäsi mainokset',
+      how_did_we_calc: 'Kuinka laskimme tämän',
+      ad: 'kpl',
+      ads: 'kpl',
+      ads_from: 'mainosta lähteestä',
+      back_to_stats: 'Takaisin tilastotietoihin',
+      prev_advertiser: 'Edellinen mainostaja',
+      next_advertiser: 'Seuraava mainostaja',
+      page: 'Sivu',
+      text: 'Teksti',
+      seen: 'Nähty',
+      targeting: 'Kohdentaminen',
+      view_ad: 'Näytä mainos',
+      check_rationale: 'Katso kohdentamisen tapa',
     },
     links: {
       website: {
@@ -1059,6 +1232,7 @@ const strings = new LocalizedStrings({
       non_us_labels: ['Aucune affiliation', 'Très à gauche', 'Modérément à gauche', 'Légèrement à gauche', 'Centre', 'Légèrement à droite', 'Modérément à droite', 'Très à droite'],
       would_rather_not_say: 'Préfère ne rien dire',
       county: 'Départment',
+      setting_up: 'Setting up...',
     },
     results: {
       my_constituency: 'My Constituency',
@@ -1087,6 +1261,21 @@ const strings = new LocalizedStrings({
       results_screen2: "En tout, vous avez vu ", // In total you've seen {quantity} political ads,
       results_screen3: " annonces politiques, dont ", //of which.
       results_screen4: " viennent de ", //{quantity} were from {party name}
+      gathering_data: 'Gathering data...',
+      click_a_bar: 'Click a bar to view the ads you’ve seen from them',
+      how_did_we_calc: 'How did we calculate this?',
+      ad: 'ad',
+      ads: 'ads',
+      ads_from: 'ads from',
+      back_to_stats: 'Back to stats',
+      prev_advertiser: 'Previous advertiser',
+      next_advertiser: 'Next advertiser',
+      page: 'Page',
+      text: 'Text',
+      seen: 'Seen',
+      targeting: 'Targeting',
+      view_ad: 'View ad',
+      check_rationale: 'Check rationale',
     },
     links: {
       website: {
@@ -1154,6 +1343,7 @@ const strings = new LocalizedStrings({
       non_us_labels: ['Geen mening', 'Zeer links', 'Overwegend links', 'Ietwat links', 'Centrum', 'Ietwat rechts', 'Overwegend rechts', 'Zeer rechts'],
       would_rather_not_say: 'Zeg ik liever niet',
       county: 'Provincie',
+      setting_up: 'Setting up...',
     },
     results: {
       my_constituency: 'Gementee',
@@ -1182,6 +1372,21 @@ const strings = new LocalizedStrings({
       results_screen2: "In totaal heeft u ", // In total you've seen {quantity} political ads,
       results_screen3: " politieke advertenties, waarvan ", //of which.
       results_screen4: " waren van ", //{quantity} were from {party name}
+      gathering_data: 'Gathering data...',
+      click_a_bar: 'Click a bar to view the ads you’ve seen from them',
+      how_did_we_calc: 'How did we calculate this?',
+      ad: 'ad',
+      ads: 'ads',
+      ads_from: 'ads from',
+      back_to_stats: 'Back to stats',
+      prev_advertiser: 'Previous advertiser',
+      next_advertiser: 'Next advertiser',
+      page: 'Page',
+      text: 'Text',
+      seen: 'Seen',
+      targeting: 'Targeting',
+      view_ad: 'View ad',
+      check_rationale: 'Check rationale',
     },
     links: {
       website: {
@@ -1249,6 +1454,7 @@ const strings = new LocalizedStrings({
       non_us_labels: ['אף אחת מהאפשרויות', 'שמאלני/ת מאוד', 'שמאל מתון', 'שמאל מרכז', 'מרכז', 'ימין מרכז', 'ימין מתון', 'ימני/ת מאוד'],
       would_rather_not_say: 'אעדיף לא להגיד',
       county: 'מדינה',
+      setting_up: 'Setting up...',
     },
     results: {
       my_constituency: 'My Constituency',
@@ -1277,6 +1483,21 @@ const strings = new LocalizedStrings({
       results_screen2: "בסך הכל ראית ", // In total you've seen {quantity} political ads,
       results_screen3: " political ads, of which ", //of which.
       results_screen4: " were from ", //{quantity} were from {party name}
+      gathering_data: 'Gathering data...',
+      click_a_bar: 'Click a bar to view the ads you’ve seen from them',
+      how_did_we_calc: 'How did we calculate this?',
+      ad: 'ad',
+      ads: 'ads',
+      ads_from: 'ads from',
+      back_to_stats: 'Back to stats',
+      prev_advertiser: 'Previous advertiser',
+      next_advertiser: 'Next advertiser',
+      page: 'Page',
+      text: 'Text',
+      seen: 'Seen',
+      targeting: 'Targeting',
+      view_ad: 'View ad',
+      check_rationale: 'Check rationale',
     },
     links: {
       website: {

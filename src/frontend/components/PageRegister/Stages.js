@@ -19,6 +19,7 @@ import FacebookIcon from './icon_facebook.svg';
 import TwitterIcon from './icon_twitter.svg';
 import Logo from '../Shell/wtm_logo_border.png';
 import LogoBR from '../Shell/wtm_logo_br.png';
+import LogoFI from '../Shell/wtm_logo_fi.png';
 
 /* CONTAINS THE SIGNUP STAGES */
 
@@ -33,9 +34,9 @@ for (let i=0; i<keys.length; i++) {
 const Container = ({survey, children, country}) => (
   <div className="CenterContainer_outer">
     <div className="CenterContainer_inner">
-      <img src={country === 'BR' ? LogoBR : Logo} className='logo'/>
+      <img src={country === 'BR' ? LogoBR : country === 'FI' ? LogoFI : Logo} className='logo'/>
       <h2 className={survey ? 'settingUp smallText' : 'settingUp'}>
-        {survey ? 'Oxford Internet Institute Research Survey' : 'Setting up...'}</h2>
+        {survey ? 'Oxford Internet Institute Research Survey' : strings.register.setting_up}</h2>
       <div style={{margin: '0 auto', padding: '0px 20px'}}>
         {children}
       </div>

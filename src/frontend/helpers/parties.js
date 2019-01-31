@@ -14,7 +14,7 @@ export const availableCountries = [
   {id: 'NL', country: "Netherlands"},
   // {id: 'FR', country: "France"},
   {id: 'NG', country: "Nigeria"},
-  // {id: 'IL', country: "Israel"},
+  {id: 'IL', country: "Israel"},
 ]
 
 export const availableParties = {
@@ -178,5 +178,21 @@ export const availableParties = {
     {entityId: 8, party:'Independent', shortName: 'IND', color: 'grey'},
     {entityId: 9, party:'Other', shortName: 'OTH', color: 'lightgrey'},
     {entityId: 10, party:'Alliance for People\'s Trust', shortName: 'APT', color: 'yellow'},
+  ],
+  'IL': [
+    {entityId: 1, party:'הליכוד', shortName: 'LIK', color: 'lightblue'},
+    {entityId: 2, party:'הבית היהודי', shortName: 'BAY', color: 'orange'},
+    {entityId: 3, party:'ישראל ביתנו', shortName: 'ISB', color: 'grey'},
+    {entityId: 4, party:'הימין החדש', shortName: 'YMH', color: 'yellow'},
+    {entityId: 5, party:'כולנו', shortName: 'KLN', color: 'purple'},
+    {entityId: 6, party:'חוסן לישראל', shortName: 'HSN', color: 'green'},
+    {entityId: 7, party:'יש עתיד', shortName: 'YAT', color: 'blue'},
+    {entityId: 8, party:'גשר', shortName: 'GSR', color: '#FFDF00'}, //gold
+    {entityId: 9, party:'העבודה', shortName: 'AVD', color: 'lightgrey'}, //white
+    {entityId: 10, party:'התנועה', shortName: 'HTN', color: 'green'},
+    {entityId: 11, party:'מרצ', shortName: 'MRZ', color: 'pink'},
+    {entityId: 12, party:'(הרשימה המשותפת (القائمة المشتركة', shortName: 'ARB', color: 'red'},
+    {entityId: 13, party:'יהדות התורה', shortName: 'YTR', color: 'black'},
+    {entityId: 14, party:'ש״ס', shortName: 'SHS', color: 'brown'},
   ],
 }

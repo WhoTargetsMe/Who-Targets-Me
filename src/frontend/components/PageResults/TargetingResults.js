@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Col, Row, Spinner } from 'elemental';
+import strings, {changeLocale} from '../../helpers/localization.js';
 import './PageResults.css';
 
 const reduFunc = (a, b) => a + b;
@@ -53,7 +54,7 @@ export const PartyChart = (props) => {
         {partiesDisplay.map((elt, i) =>
           <div key={`label-${i}`} className='label'>
             <div className="name" title={elt.advertiserName}>{elt.advertiserName.toUpperCase().slice(0,6)}</div>
-            <div className="labtext">{parseInt(elt.count) === 1 ? `${elt.count} ad` : `${elt.count} ads`}</div>
+            <div className="labtext">{parseInt(elt.count) === 1 ? `${elt.count} ${strings.results.ad}` : `${elt.count} ${strings.results.ads}`}</div>
             <div className="labtext">{`${(parseInt(elt.count)/props.userSeenSum*100).toFixed(0)}%`}</div>
           </div>
         )}
@@ -85,21 +86,21 @@ export const PartyAds = (props) => {
   return(
     <div>
       <div style={{marginBottom: 10}}>
-        <h3 style={{margin: '5px 0px 5px 20px', fontSize: '1em'}}>{count} ads from <span className='party'>{`${partyName}`}</span></h3>
-        <span className='link link_underline' style={{marginLeft: 20}} onClick={props.hideBarInfo}>Back to stats</span>
+        <h3 style={{margin: '5px 0px 5px 20px', fontSize: '1em'}}>{count} {strings.results.ads_from} <span className='party'>{`${partyName}`}</span></h3>
+        <span className='link link_underline' style={{marginLeft: 20}} onClick={props.hideBarInfo}>{strings.results.back_to_stats}</span>
         <span style={{color: '#0A4496'}} >&nbsp;|&nbsp;</span>
-        <span className={`link link_underline ${disabledPrev ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('prev', props.advertisers)}>Previous advertiser</span>
+        <span className={`link link_underline ${disabledPrev ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('prev', props.advertisers)}>{strings.results.prev_advertiser}</span>
         <span style={{color: '#0A4496'}}>&nbsp;|&nbsp;</span>
-        <span className={`link link_underline ${disabledNext ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('next', props.advertisers)}>Next advertiser</span>
+        <span className={`link link_underline ${disabledNext ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('next', props.advertisers)}>{strings.results.next_advertiser}</span>
       </div>
 
       {!props.postId ?
         <div className='boxNoFlex'>
           <Row className='headerRow'>
-            <Col sm="4/20" className='colHeader'>Page</Col>
-            <Col sm="8/20" className='colHeader'>Text</Col>
-            <Col sm="3/20" className='colHeader'>Seen</Col>
-            <Col sm="3/20" className='colHeader'>Targeting</Col>
+            <Col sm="4/20" className='colHeader'>{strings.results.page}</Col>
+            <Col sm="8/20" className='colHeader'>{strings.results.text}</Col>
+            <Col sm="3/20" className='colHeader'>{strings.results.seen}</Col>
+            <Col sm="3/20" className='colHeader'>{strings.results.targeting}</Col>
           </Row>
           {props.ads.map((ad, j) => {
             const displayTime = ad.createdAt.slice(8,10) + '/' + ad.createdAt.slice(5,7) + '/' + ad.createdAt.slice(0,4);
@@ -110,14 +111,14 @@ export const PartyAds = (props) => {
                 </Col>
                 <Col sm="8/20" className="text adCol">
                   {ad.text.map((t,i) => <p key={`txt-${i}`}>{t.length > 120 ? t.slice(0,120)+'...' : t}</p>)}
-                  <a href={ad.url} className='link'>View ad</a>
+                  <a href={ad.url} className='link'>{strings.results.view_ad}</a>
                 </Col>
                 <Col sm="3/20" className='adCol'>{displayTime}</Col>
                 <Col sm="3/20" className='adCol'>
                 {
                   ad.noRationaleMessage && ad.noRationaleMessage === "Not available" ?
                     <span className="noLink">{ad.noRationaleMessage}</span> :
-                    <span className="link" onClick={() => props.showTargeting(ad.postId)}>{ad.noRationaleMessage ? ad.noRationaleMessage : "Check rationale"}</span>
+                    <span className="link" onClick={() => props.showTargeting(ad.postId)}>{ad.noRationaleMessage ? ad.noRationaleMessage : strings.results.check_rationale}</span>
                 }
                 </Col>
               </Row>
@@ -137,10 +138,10 @@ export const PartyAds = (props) => {
           /> :
           <div className='boxNoFlex'>
             <Row className='headerRow'>
-              <Col sm="4/20" className='colHeader'>Page</Col>
-              <Col sm="8/20" className='colHeader'>Text</Col>
-              <Col sm="3/20" className='colHeader'>Seen</Col>
-              <Col sm="3/20" className='colHeader'>Targeting</Col>
+              <Col sm="4/20" className='colHeader'>{strings.results.page}</Col>
+              <Col sm="8/20" className='colHeader'>{strings.results.text}</Col>
+              <Col sm="3/20" className='colHeader'>{strings.results.seen}</Col>
+              <Col sm="3/20" className='colHeader'>{strings.results.targeting}</Col>
             </Row>
             {props.ads.map((ad, j) => {
               const displayTime = ad.createdAt.slice(8,10) + '/' + ad.createdAt.slice(5,7) + '/' + ad.createdAt.slice(0,4);
@@ -151,14 +152,14 @@ export const PartyAds = (props) => {
                   </Col>
                   <Col sm="8/20" className="text adCol">
                     {ad.text.map((t,i) => <p key={`txt-${i}`}>{t.length > 120 ? t.slice(0,120)+'...' : t}</p>)}
-                    <a href={ad.url} className='link'>View ad</a>
+                    <a href={ad.url} className='link'>{strings.results.view_ad}</a>
                   </Col>
                   <Col sm="3/20" className='adCol'>{displayTime}</Col>
                   <Col sm="3/20" className='adCol'>
                   {
                     ad.noRationaleMessage && ad.noRationaleMessage === "Not available" ?
                       <span className="noLink">{ad.noRationaleMessage}</span> :
-                      <span className="link" onClick={() => props.showTargeting(ad.postId)}>{ad.noRationaleMessage ? ad.noRationaleMessage : "Check rationale"}</span>
+                      <span className="link" onClick={() => props.showTargeting(ad.postId)}>{ad.noRationaleMessage ? ad.noRationaleMessage : strings.results.check_rationale}</span>
                   }
                   </Col>
                 </Row>
@@ -179,10 +180,10 @@ export const RationalesView = (props) => {
   return (
     <div className='boxNoFlex whiteBackground'>
       <Row className='headerRow'>
-        <Col sm="4/20" className='colHeader'>Page</Col>
-        <Col sm="8/20" className='colHeader'>Text</Col>
-        <Col sm="3/20" className='colHeader'>Seen</Col>
-        <Col sm="3/20" className='colHeader'>Targeting</Col>
+        <Col sm="4/20" className='colHeader'>{strings.results.page}</Col>
+        <Col sm="8/20" className='colHeader'>{strings.results.text}</Col>
+        <Col sm="3/20" className='colHeader'>{strings.results.seen}</Col>
+        <Col sm="3/20" className='colHeader'>{strings.results.targeting}</Col>
       </Row>
 
       <Row>
@@ -191,7 +192,7 @@ export const RationalesView = (props) => {
         </Col>
         <Col sm="8/20" className="text adCol">
           {ad.text.map((t,i) => <p key={`txt-${i}`}>{t}</p>)}
-          <a href={ad.url} className='link'>View ad</a></Col>
+          <a href={ad.url} className='link'>{strings.results.view_ad}</a></Col>
         <Col sm="3/20" className='adCol'>{displayTime}</Col>
         <Col sm="3/20" className='adCol'>
           <span className="link" onClick={props.hideTargeting}>Hide</span>

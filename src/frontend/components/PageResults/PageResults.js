@@ -12,6 +12,8 @@ import { DeleteRequestPage } from './DeleteRequestPage.js';
 import { countries, countries_in_native_lang } from '../PageRegister/countries.js';
 import IMGLogo from '../Shell/logo.svg';
 import Logo from '../Shell/wtm_logo_border.png';
+import LogoBR from '../Shell/wtm_logo_br.png';
+import LogoFI from '../Shell/wtm_logo_fi.png';
 import IMGFirstPlace from './firstplace.png';
 
 import './PageResults.css';
@@ -308,11 +310,13 @@ export default class PageResults extends Component {
         <Row>
           <Col sm="1">
             <div className="statbox">
-              <div style={{flex: 1, maxWidth: '100px'}}><img src={Logo}/></div>
+              <div style={{flex: 1, maxWidth: '100px'}}>
+                <img src={userCountry === 'BR' ? LogoBR : userCountry === 'FI' ? LogoFI : Logo}/>
+              </div>
               <div style={{flex: 1, minWidth: '500px'}}>
               {
                 view === "no_country" || view === "no_party" &&
-                <h3 style={{flex: 1, marginTop: '40px', fontWeight: 'bold'}}>Gathering data...</h3>
+                <h3 style={{flex: 1, marginTop: '40px', fontWeight: 'bold'}}>{strings.results.gathering_data}</h3>
               }
               {
                 view === "delete_request" &&
@@ -324,7 +328,7 @@ export default class PageResults extends Component {
               }
               {
                 view === "display_parties" &&
-                <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: userCountry === 'BR' ? '0px' : '25px'}}>
+                <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: (userCountry === 'BR' || userCountry === 'FI') ? '0px' : '25px'}}>
                   <div style={{flex: 1, minHeight: '40px'}}>
                     <h3 className='mainHeader'>{`${strings.results.results_screen1} `}<span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span></h3>
                     <h4 className='resultsSubHeader'>{`${strings.results.results_screen2} `}{userSeenPartiesSum} {` ${strings.results.results_screen3} `}
@@ -343,10 +347,10 @@ export default class PageResults extends Component {
           <div className="statbox mainstatbox">
             { view === "display_parties" && this.state.userData && this.state.userData.advertisers &&
               !this.state.showAds && !this.state.loadingAds &&
-              <div style={userCountry === 'BR' ? {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', maxHeight: '200px'} : {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap'}}>
+              <div style={(userCountry === 'BR' || userCountry === 'FI') ? {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', maxHeight: '200px'} : {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap'}}>
                 <footer>
-                  <span style={{marginRight: 0}}>Click a bar to view the ads you’ve seen from them &nbsp;|</span>
-                  <a className='link' style={{marginLeft: 7}} target='_blank' href='https://whotargets.me/en/defining-political-ads/'>How did we calculate this?</a>
+                  <span style={{marginRight: 0}}>{`${strings.results.click_a_bar} &nbsp;|`}</span>
+                  <a className='link' style={{marginLeft: 7}} target='_blank' href={userCountry === 'FI' ? 'http://okf.fi/vaalivahti-rationale' : 'https://whotargets.me/en/defining-political-ads/'}>{strings.results.how_did_we_calc}</a>
                 </footer>
                 <PartyChart
                   advertisers={parties}
