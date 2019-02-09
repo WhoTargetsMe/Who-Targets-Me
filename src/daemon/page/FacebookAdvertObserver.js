@@ -5,25 +5,38 @@ import PromisePool from 'es6-promise-pool';
 import api from '../api.js';
 
 const sponsoredText = {
-  'cs': 'Spo', //nzorováno',
-  'da': 'Spo', //nsoreret',
-  'de': 'Ges', //ponsert',
-  'en': 'Spo', //nsored',
-  'es': 'Pub', //licidad',
-  'fr': 'Spo', //nsorisé',
-  'hu': 'Hir', //detés',
-  'it': 'Spo', //, //nsonrizzata',
-  'ja': '広', // '告',
-  'nb': 'Spo', //nset',
-  'nl': 'Ges', //ponsord',
-  'nn': 'Spo', //nsa',
-  'pl': 'Spo', //nsorowane',
-  'pt': 'Pat', //rocinado',
-  'ru': 'Рек', //'лама',
-  'sk': 'Spo', //nzorované',
-  'sr': 'Спо', //'нзорисано',
-  'sv': 'Spo', //nsrad',
-  'tr': 'Spo' //nsorlu'
+  'cs': 'Sponz', //orováno',
+  'da': 'Spons', //oreret',
+  'de': 'Gespo', //nsert',
+  'en': 'Spons', //ored',
+  'es': 'Publi', //cidad',
+  'fr': 'Spons', //orisé',
+  'hu': 'Hirde', //tés',
+  'it': 'Spons', //onrizzata',
+  'ja': '広告', // '',
+  'nb': 'Spons', //et',
+  'nl': 'Gespo', //nsord',
+  'nn': 'Spons', //a',
+  'pl': 'Spons', //orowane',
+  'pt': 'Patro', //cinado',
+  'ru': 'Рекла', //ма'
+  'sk': 'Sponz', //orované',
+  'sr': 'Спонз', //'орисано',
+  'sv': 'Spons', //rad',
+  'tr': 'Spons', //orlu'
+  'ua': 'Рекла', //ма'
+  'lv': 'Apmak', //sāta reklāma
+  'se': 'Spons', //rad
+  'fi': 'Spons', //oroitu
+  'il': 'ממומן', //
+  'bg': 'Спонс', //орирано
+  'cz': 'Sponz', //orováno
+  'ee': 'Spons', //itud
+  'gr': 'Χορηγ', //ούμενη
+  'mk': 'Спонз', //орирано
+  'ro': 'Spons', //orizat
+  'si': 'Sponz', //orované
+  'mt': 'Spons', //orjat
 };
 
 const fetchRationale = (advertId, ajaxify) => {
@@ -123,6 +136,8 @@ const triggerMenu = (fbStoryId) => {
 const adsOnPage = () => {
 
   let adverts = []; // Pass adverts back to cycle
+  const lang = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; // Extract the language preferance of the client
+  const sponsoredValue = sponsoredText[lang] || sponsoredText.en; // Using the language, determine the correct word for 'sponsored', default to english
 
   $(sprintf('a.fbPrivacyAudienceIndicator')).each((index, advert) => { // Loop over every advert
 
@@ -160,9 +175,22 @@ const adsOnPage = () => {
         const container = $(`#${fbStoryId}`).closest('[data-testid="fbfeed_story"]');
         const fetched = container.hasClass('fetched');
         const nsub = $(`#${fbStoryId}`).find('[data-testid="story-subtitle"]');
+
         const link = nsub.find('a[role="link"]');
         const isad = (link && link.get(0)) ? link.get(0).offsetHeight: false;
-        // console.log('ISAD', isad)
+
+        const link2 = nsub.text() || '';
+        const isad2 = !link2.match(/\d+/g);
+        // console.log('nsub.text()', nsub, link2, isad2, nsub.text())
+
+        let isad3 = 1;
+        sponsoredValue.toLowerCase().split('').forEach(l => {
+          if (link2.toLowerCase().indexOf(l) < 0) {
+            isad3--;
+          }
+        });
+        isad3 = isad3 > 0;
+        // console.log('ISAD', isad, isad2, isad3);
         // console.log('container TRIAL', fbStoryId, menuOwnerId, 'offsetHeight=', link ? link.get(0): 'Not an ad')
 
         if (fetched) {
@@ -186,7 +214,8 @@ const adsOnPage = () => {
                 const ajaxify0 = document.querySelector(`[data-ownerid='${menuOwnerId}'] li[data-feed-option-name='FeedAdSeenReasonOption']`)
                 // console.log('ajaxify0', ajaxify0)
 
-                if (isad) { //if (ajaxify0) {
+                // if (ajaxify0) {
+                if (isad2 && isad3) {
                   // console.log('triggerMenuTrial TRIGGERED success! fbStoryId=', fbStoryId)
 
                   return new Promise((resolve) => setTimeout(resolve(), 500 * parseInt(Math.random()*10)))
