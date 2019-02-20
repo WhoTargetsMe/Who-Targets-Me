@@ -58,7 +58,7 @@ class LanguageSelector extends Component {
     strings.setLanguage(language);
     chrome.storage.promise.local.set({language})
       .then(() => {
-        this.setState({loadingLanguage:false});
+        this.setState({loadingLanguage:false, language});
       })
   }
 
@@ -84,9 +84,12 @@ class LanguageSelector extends Component {
             </FormField>
           </FormRow>
           </div>
+          {this.state.language === 'il' ? <InputGroup.Section>
+            <Button onClick={() => this.props.next({language})} disabled={loadingLanguage} type="hollow-success">{(String.fromCharCode("171") + " " + strings.register.next)}</Button>
+          </InputGroup.Section> :
           <InputGroup.Section>
-            <Button onClick={() => this.props.next()} disabled={loadingLanguage} type="hollow-success">{(strings.register.next + " " + String.fromCharCode("187"))}</Button>
-          </InputGroup.Section>
+            <Button onClick={() => this.props.next({language})} disabled={loadingLanguage} type="hollow-success">{(strings.register.next + " " + String.fromCharCode("187"))}</Button>
+          </InputGroup.Section>}
         </Container>
       </span>
     )
@@ -95,17 +98,21 @@ class LanguageSelector extends Component {
 
 class TermsPrivacy extends Component {
   render() {
-    const {back, next} = this.props;
+    const {back, next, signupState} = this.props;
     return (
       <span>
         <Container>
           <div className="fullwidth" style={{marginBottom: '20px'}}>
             <p dangerouslySetInnerHTML={{__html: strings.register.terms}}></p>
           </div>
+          {signupState.language === 'il' ? <div className="fullwidth">
+            <Button type="hollow-success" style={{marginRight: '20px'}} onClick={next}>{String.fromCharCode("171")} {strings.register.agree}</Button>
+            <Button type="hollow-primary" className='buttonBack' onClick={back}>{strings.register.back + " " + String.fromCharCode("187")}</Button>
+          </div> :
           <div className="fullwidth">
             <Button type="hollow-primary" className='buttonBack' onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}</Button>
             <Button type="hollow-success" onClick={next}>{strings.register.agree} {String.fromCharCode("187")}</Button>
-          </div>
+          </div>}
         </Container>
       </span>
     )
@@ -133,7 +140,7 @@ class CountrySelector extends Component {
           const countryCode = response.jsonData.data.country.toUpperCase();
           const country = {countryCode, country: countries[countryCode]};
           this.setState({loadingLocation: false, country, inputValue: countries[countryCode]});
-        }else {
+        } else {
           this.setState({loadingLocation: false});
         }
       })
@@ -155,9 +162,9 @@ class CountrySelector extends Component {
   }
 
   render() {
-    const {back, next} = this.props;
+    const {back, next, signupState} = this.props;
     const {loadingLocation, country, countryDisplay, inputValue} = this.state;
-
+    console.log('country state', this.state)
     return (
       <span>
         <Container country={country ? country.countryCode : ''}>
@@ -180,6 +187,14 @@ class CountrySelector extends Component {
                 </InputGroup>
               </div>
               <div className="fullwidth">
+                {signupState.language === 'il' ? <InputGroup contiguous style={{width: '300px', display: 'flex', flexFlow: 'row nowrap', justifyContent: 'center'}}>
+                  <div style={{flex: 1}}>
+                    <Button style={{width: '130px', marginLeft: '30px'}} onClick={() => next({country})} disabled={loadingLocation || !inputValue || inputValue === "ALL"} type="hollow-success">{loadingLocation ? <Spinner /> : (String.fromCharCode("171") + " " + strings.register.next)}</Button>
+                  </div>
+                  <div style={{flex: 1, marginRight: 10}}>
+                    <Button style={{width: '130px', marginLeft: '20px'}} type="hollow-primary" className='buttonBack' onClick={back}>{strings.register.back + " " + String.fromCharCode("187")}</Button>
+                  </div>
+                </InputGroup> :
                 <InputGroup contiguous style={{width: '300px', display: 'flex', flexFlow: 'row nowrap', justifyContent: 'center'}}>
                   <div style={{flex: 1, marginRight: 10}}>
                     <Button style={{width: '130px'}} type="hollow-primary" className='buttonBack' onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}</Button>
@@ -187,7 +202,7 @@ class CountrySelector extends Component {
                   <div style={{flex: 1}}>
                     <Button style={{width: '130px'}} onClick={() => next({country})} disabled={loadingLocation || !inputValue || inputValue === "ALL"} type="hollow-success">{loadingLocation ? <Spinner /> : (strings.register.next + " " + String.fromCharCode("187"))}</Button>
                   </div>
-                </InputGroup>
+                </InputGroup>}
               </div>
             </div>
           </div>
@@ -266,7 +281,10 @@ class PostcodeSelector extends Component {
           <div className="fullwidth">
             <div style={{width: '500px', overflow: 'hidden', margin: '0 auto'}}>
               <div style={{width: '100px', float: 'left'}}>
-                <Button type="hollow-primary" className='buttonBack' onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}</Button>
+                {this.props.signupState.language === 'il' ?
+                  <Button onClick={this.check} disabled={checkingPostcode} type="hollow-success">{checkingPostcode ? <Spinner /> : (String.fromCharCode("171") + ' ' + strings.register.next)}</Button> :
+                  <Button type="hollow-primary" className='buttonBack' onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}</Button>
+                }
               </div>
               <div style={{width: '400px', float: 'left'}}>
                 <InputGroup contiguous style={{width: '400px'}}>
@@ -280,7 +298,10 @@ class PostcodeSelector extends Component {
                       onKeyPress={this.handleKeyPress}/>
                   </InputGroup.Section>
                   <InputGroup.Section>
-                    <Button onClick={this.check} disabled={checkingPostcode} type="hollow-success">{checkingPostcode ? <Spinner /> : (strings.register.next + " " + String.fromCharCode("187"))}</Button>
+                    {this.props.signupState.language === 'il' ?
+                      <Button type="hollow-primary" className='buttonBack' onClick={back}>{strings.register.back} {String.fromCharCode("187")}</Button> :
+                      <Button onClick={this.check} disabled={checkingPostcode} type="hollow-success">{checkingPostcode ? <Spinner /> : (strings.register.next + " " + String.fromCharCode("187"))}</Button>
+                    }
                   </InputGroup.Section>
                 </InputGroup>
               </div>
@@ -351,19 +372,24 @@ class PostcodeSelector extends Component {
 class GenderSelector extends Component {
 
   render() {
-    const {back, next} = this.props;
+    const {back, next, signupState} = this.props;
     return (
-      <Container country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}>
+      <Container country={signupState.country ? signupState.country.countryCode : ''}>
         <div className="fullwidth pageTitle">
           <h3>{strings.register.gender}</h3>
         </div>
+        {signupState.language === 'il' ? <div className="fullwidth gender_buttons" style={{marginBottom: '20px'}}>
+          <Button type="hollow-primary" onClick={() => next({gender: 0})}>{strings.register.other}</Button>
+          <Button type="hollow-primary" onClick={() => next({gender: 1})}>{strings.register.male}</Button>
+          <Button type="hollow-primary" onClick={() => next({gender: 2})}>{strings.register.female}</Button>
+        </div> :
         <div className="fullwidth gender_buttons" style={{marginBottom: '20px'}}>
           <Button type="hollow-primary" onClick={() => next({gender: 1})}>{strings.register.male}</Button>
           <Button type="hollow-primary" onClick={() => next({gender: 2})}>{strings.register.female}</Button>
           <Button type="hollow-primary" onClick={() => next({gender: 0})}>{strings.register.other}</Button>
-        </div>
+        </div>}
         <div className="fullwidth">
-          <Button type="hollow-primary" className='buttonBack' onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}</Button>
+          <Button type="hollow-primary" className='buttonBack' onClick={back}>{strings.register.back  + " " + String.fromCharCode("187")}</Button>
         </div>
       </Container>
     );
@@ -390,10 +416,10 @@ class AgeSelector extends Component {
   }
 
   render() {
-    const {back, next} = this.props;
+    const {back, next, signupState} = this.props;
     const {inputValue, allowContinue} = this.state;
     return (
-      <Container country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}>
+      <Container country={signupState.country ? signupState.country.countryCode : ''}>
         <div className="fullwidth pageTitle">
           <h3>{strings.register.years_of_age}</h3>
         </div>
@@ -406,10 +432,14 @@ class AgeSelector extends Component {
             </InputGroup>
           </div>
         </div>
+        {signupState.language === 'il' ? <div className="fullwidth">
+          <Button style={{marginLeft: '30px'}} onClick={() => next({age: inputValue})} disabled={!allowContinue} type="hollow-success">{String.fromCharCode("171")} {strings.register.next}</Button>
+          <Button style={{marginLeft: '20px'}} type="hollow-primary" className='buttonBack' onClick={back}>{strings.register.back + " " + String.fromCharCode("187")}</Button>
+        </div> :
         <div className="fullwidth">
           <Button type="hollow-primary" className='buttonBack' onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}</Button>
           <Button onClick={() => next({age: inputValue})} disabled={!allowContinue} type="hollow-success">{strings.register.next} {String.fromCharCode("187")}</Button>
-        </div>
+        </div>}
       </Container>
     );
   }
@@ -459,11 +489,11 @@ class PoliticalAffiliationSelector extends Component {
   }
 
   render() {
-    const {back, next} = this.props;
+    const {back, next, signupState} = this.props;
 
     // if country == US - us_labels, else - non_us_labels
     let labels = strings.register.non_us_labels;
-    if (this.props.signupState.country && this.props.signupState.country.countryCode === 'US'){
+    if (signupState.country && signupState.country.countryCode === 'US'){
       labels = strings.register.us_labels;
     }
     // if user goes back to slider and his choise was 'rather not say'
@@ -474,7 +504,7 @@ class PoliticalAffiliationSelector extends Component {
     }
 
     return (
-      <Container country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}>
+      <Container country={signupState.country ? signupState.country.countryCode : ''}>
         <div className="fullwidth pageTitle">
           <h3>{strings.register.political_affiliation}</h3>
           <p>{strings.register.political_affiliation_description}</p>
@@ -493,6 +523,15 @@ class PoliticalAffiliationSelector extends Component {
               </InputGroup.Section>
             </InputGroup>
 
+            {signupState.language === 'il' ? <div className="fullwidth" style={{textAlign: 'center', marginBottom: '10px'}}>
+              <Button style={{marginLeft: '40px'}} onClick={() => next({political_affiliation: parseInt(inputValue)})}
+                type="hollow-success">
+                {String.fromCharCode("171")} {labels[inputValue]}
+              </Button>
+              <Button type="hollow-primary" className='buttonBack' style={{width: '100px', marginLeft: '20px'}}
+                onClick={back}>{strings.register.back  + " " + String.fromCharCode("187")}
+              </Button>
+            </div> :
             <div className="fullwidth" style={{textAlign: 'center', marginBottom: '10px'}}>
               <Button type="hollow-primary" className='buttonBack' style={{width: '100px', marginRight: '10px'}}
                 onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}
@@ -501,7 +540,7 @@ class PoliticalAffiliationSelector extends Component {
                 type="hollow-success">
                 {labels[inputValue]} {String.fromCharCode("187")}
               </Button>
-            </div>
+            </div>}
             <div className="fullwidth" style={{textAlign: 'center'}}>
               <a style={{color: '#1385e5', margin: '10px'}}
                 onClick={() => this.setNoAffiliation()}>{strings.register.would_rather_not_say}
@@ -542,14 +581,14 @@ class AttemptSignup extends Component {
 
   register() {
     const {age, gender, postcode, country, political_affiliation} = this.props.signupState;
-    const {next} = this.props;
+    const {next, signupState} = this.props;
     let {survey} = this.props.signupState;
     if (!survey) { survey = null; }
     this.setState({awaitingResponse: true, error: null});
     // console.log('api.post', age, gender, postcode, country, political_affiliation, survey)
     api.post('user/create', {json: {age, gender, postcode, country: country.countryCode, political_affiliation, survey}})
       .then((response) => { // The rest of the validation is down to the server
-        console.log('user/create',response.jsonData.data)
+        // console.log('user/create',response.jsonData.data)
         if(response.jsonData.errorMessage !== undefined) {
           throw new Error(response.jsonData.errorMessage);
         }
@@ -583,7 +622,10 @@ class AttemptSignup extends Component {
           {error &&
             <span>
               <p>{strings.register.request_error}<br/>{'Registration is not completed. Check postcode.'+error}</p>
-              <Button type="hollow-primary" className='buttonBack' onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}</Button>
+              {signupState.language === 'il' ?
+                <Button type="hollow-primary" className='buttonBack' onClick={back}>{strings.register.back  + " " + String.fromCharCode("187")}</Button> :
+                <Button type="hollow-primary" className='buttonBack' onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}</Button>
+              }
             </span>
             }
         </div>
@@ -805,14 +847,14 @@ const shareLinkTwitter = (title = strings.register.shareTwitter) => {
 class PostSignupShare extends Component {
 
   render() {
-    const {next} = this.props;
-    const userCountry = this.props.signupState.country ? this.props.signupState.country.countryCode : null;
+    const {next, signupState} = this.props;
+    const userCountry = signupState.country ? signupState.country.countryCode : null;
     const userCountryNative = countries_in_native_lang[userCountry];
-    const input = this.props.signupState.userCount || null; //chrome.storage.promise.local.get('userCount') || null;
+    const input = signupState.userCount || null; //chrome.storage.promise.local.get('userCount') || null;
     const {userCount, nextUserCount} = getUserCount(input);
 
     return (
-      <Container country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}>
+      <Container country={signupState.country ? signupState.country.countryCode : ''}>
         {!userCountry && <div className="fullwidth pageTitle" style={{margin: '0px 50px'}}>
           <h3>{strings.register.share}</h3>
         </div>}
@@ -820,21 +862,32 @@ class PostSignupShare extends Component {
         {!userCountry && <div className="fullwidth">
           <Row style={{margin: '10px'}}>
             <Col sm="1/2">
-              <Button type="hollow-primary"
-                className='buttonFB'
-                href={shareLinkFB()}
-                style={{float:'right'}}>
-                  {strings.register.shareOnFacebook}
-                </Button>
-            </Col>
-            <Col sm="1/2">
-              <Button
+              {signupState.language === 'il' ? <Button
                 type="hollow-primary"
                 className='buttonTW'
                 href={shareLinkTwitter()}
                 style={{float:'left'}}>
                   {strings.register.shareOnTwitter}
-                </Button>
+                </Button> : <Button type="hollow-primary"
+                className='buttonFB'
+                href={shareLinkFB()}
+                style={{float:'right'}}>
+                  {strings.register.shareOnFacebook}
+                </Button>}
+            </Col>
+            <Col sm="1/2">
+              {signupState.language === 'il' ? <Button type="hollow-primary"
+              className='buttonFB'
+              href={shareLinkFB()}
+              style={{float:'right'}}>
+                {strings.register.shareOnFacebook}
+              </Button> : <Button
+                type="hollow-primary"
+                className='buttonTW'
+                href={shareLinkTwitter()}
+                style={{float:'left'}}>
+                  {strings.register.shareOnTwitter}
+                </Button>}
             </Col>
           </Row>
         </div>}
@@ -847,14 +900,22 @@ class PostSignupShare extends Component {
               <br/>
               <span style={{fontSize: '1.05rem', lineHeight: '25px'}}>{sprintf(strings.register.share4, nextUserCount)}</span>
             </div>
-              <Button style={{position: 'absolute', bottom: 5, left: 200}} type="hollow-primary" className='buttonFB' href={shareLinkFB()}>{strings.register.shareOnFacebook}</Button>
-              <Button style={{position: 'absolute', bottom: 5, left: 360}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter()} >{strings.register.shareOnTwitter}</Button>
+              {signupState.language === 'il' ? <div>
+                <Button style={{position: 'absolute', bottom: 5, left: 360}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter()} >{strings.register.shareOnTwitter}</Button>
+                <Button style={{position: 'absolute', bottom: 5, left: 200}} type="hollow-primary" className='buttonFB' href={shareLinkFB()}>{strings.register.shareOnFacebook}</Button>
+              </div> : <div>
+                <Button style={{position: 'absolute', bottom: 5, left: 200}} type="hollow-primary" className='buttonFB' href={shareLinkFB()}>{strings.register.shareOnFacebook}</Button>
+                <Button style={{position: 'absolute', bottom: 5, left: 360}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter()} >{strings.register.shareOnTwitter}</Button>
+              </div>}
             </div>
           </Col>
         </Row>}
 
         <div className="fullwidth">
-          <Button onClick={next} type="hollow-primary" className='buttonBack'>{strings.register.skip} {String.fromCharCode("187")}</Button>
+          {signupState.language === 'il' ?
+            <Button onClick={next} type="hollow-primary" className='buttonBack'>{String.fromCharCode("171")} {strings.register.skip}</Button> :
+            <Button onClick={next} type="hollow-primary" className='buttonBack'>{strings.register.skip} {String.fromCharCode("187")}</Button>
+          }
         </div>
       </Container>
     );

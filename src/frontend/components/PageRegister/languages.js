@@ -12,6 +12,7 @@ const languages = [
     {value: "fi", label: "Suomi"},
     {value: "nl", label: "Nederlands"},
     {value: "fr", label: "Français"},
-    {value: "il", label: "ʕivˈɾit"}
+    {value: "il", label: "עברית"},
+    {value: "hr", label: "hrvatski"},
   ]
   export default languages;

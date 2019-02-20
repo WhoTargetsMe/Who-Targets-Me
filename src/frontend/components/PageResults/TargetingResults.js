@@ -85,6 +85,18 @@ export const PartyAds = (props) => {
 
   return(
     <div>
+      {props.language === 'il' ? <div style={{marginBottom: 10}}>
+        <h3 style={{margin: '5px 0px 5px 20px', fontSize: '1em', display: 'inline-block'}}>
+          <span className='party'>{`${strings.results.ads_from} של ${partyName} `}</span>
+        </h3>
+        <span>{` ${count}`}</span>
+        <br/>
+        <span className='link link_underline' onClick={props.hideBarInfo}>{strings.results.back_to_stats}</span>
+        <span style={{color: '#0A4496'}} >&nbsp;|&nbsp;</span>
+        <span className={`link link_underline ${disabledPrev ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('prev', props.advertisers)}>{strings.results.prev_advertiser}</span>
+        <span style={{color: '#0A4496'}}>&nbsp;|&nbsp;</span>
+        <span className={`link link_underline ${disabledNext ? 'disabledLink' : ''}`} style={{marginLeft: 20}} onClick={() => props.showAdvr('next', props.advertisers)}>{strings.results.next_advertiser}</span>
+      </div> :
       <div style={{marginBottom: 10}}>
         <h3 style={{margin: '5px 0px 5px 20px', fontSize: '1em'}}>{count} {strings.results.ads_from} <span className='party'>{`${partyName}`}</span></h3>
         <span className='link link_underline' style={{marginLeft: 20}} onClick={props.hideBarInfo}>{strings.results.back_to_stats}</span>
@@ -92,7 +104,7 @@ export const PartyAds = (props) => {
         <span className={`link link_underline ${disabledPrev ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('prev', props.advertisers)}>{strings.results.prev_advertiser}</span>
         <span style={{color: '#0A4496'}}>&nbsp;|&nbsp;</span>
         <span className={`link link_underline ${disabledNext ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('next', props.advertisers)}>{strings.results.next_advertiser}</span>
-      </div>
+      </div>}
 
       {!props.postId ?
         <div className='boxNoFlex'>

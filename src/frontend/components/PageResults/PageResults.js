@@ -34,6 +34,7 @@ export default class PageResults extends Component {
       rationales: [],
       loadingRationales: false,
       postId: null,
+      language: null,
     }
     this.updateUser = this.updateUser.bind(this);
     this.requestDeleteData = this.requestDeleteData.bind(this);
@@ -50,8 +51,14 @@ export default class PageResults extends Component {
     console.log("REQUESTING USER DATA")
     this.props.api.get('user')
       .then((response) => {
-        this.setState({userData: response.jsonData.data})
-        // console.log('user data', response, response.jsonData)
+        return chrome.storage.promise.local.get()
+          .then((result) => {
+            this.setState({userData: response.jsonData.data, language: result.language})
+            // console.log('user data', response, response.jsonData, result.language)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
       })
       .catch((error) => {
         console.log(error)
@@ -329,12 +336,18 @@ export default class PageResults extends Component {
               {
                 view === "display_parties" &&
                 <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: (userCountry === 'BR' || userCountry === 'FI') ? '0px' : '25px'}}>
+                  {this.state.language === 'il' ? <div style={{flex: 1, minHeight: '40px'}}>
+                    <h3 className='mainHeader'>{`${strings.results.results_screen1} `}<span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span></h3>
+                    <h4 className='resultsSubHeader'>{`${strings.results.results_screen2} `}{userSeenPartiesSum} {` ${strings.results.results_screen3} `}
+                        {party.count} ({partyPerc}%) {` ${strings.results.results_screen4} `} <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span>
+                    </h4>
+                  </div> :
                   <div style={{flex: 1, minHeight: '40px'}}>
                     <h3 className='mainHeader'>{`${strings.results.results_screen1} `}<span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span></h3>
                     <h4 className='resultsSubHeader'>{`${strings.results.results_screen2} `}{userSeenPartiesSum} {` ${strings.results.results_screen3} `}
                         {party.count} ({partyPerc}%) {` ${strings.results.results_screen4} `} <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span>.
                     </h4>
-                  </div>
+                  </div>}
                 </div>
               }
               </div>
@@ -349,7 +362,7 @@ export default class PageResults extends Component {
               !this.state.showAds && !this.state.loadingAds &&
               <div style={(userCountry === 'BR' || userCountry === 'FI') ? {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', maxHeight: '200px'} : {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap'}}>
                 <footer>
-                  <span style={{marginRight: 0}}>{`${strings.results.click_a_bar} &nbsp;|`}</span>
+                  <span style={{marginRight: 0}}>{`${strings.results.click_a_bar} |  `}</span>
                   <a className='link' style={{marginLeft: 7}} target='_blank' href={userCountry === 'FI' ? 'http://okf.fi/vaalivahti-rationale' : 'https://whotargets.me/en/defining-political-ads/'}>{strings.results.how_did_we_calc}</a>
                 </footer>
                 <PartyChart
@@ -357,6 +370,7 @@ export default class PageResults extends Component {
                   userSeenSum={userSeenPartiesSum}
                   displayLabels={displayLabels}
                   showBarInfo={this.showBarInfo}
+                  language={this.state.language}
                   />
 
               </div>
@@ -377,6 +391,7 @@ export default class PageResults extends Component {
                   showingTargeting={this.state.showingTargeting}
                   rationales={this.state.rationales}
                   showAdvr={this.showAdvr}
+                  language={this.state.language}
                   />
               </div>
             }

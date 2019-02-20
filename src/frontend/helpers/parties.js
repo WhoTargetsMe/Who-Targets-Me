@@ -15,6 +15,9 @@ export const availableCountries = [
   // {id: 'FR', country: "France"},
   {id: 'NG', country: "Nigeria"},
   {id: 'IL', country: "Israel"},
+  {id: 'ES', country: "Spain"},
+  {id: 'EC', country: "Ecuador"},
+  {id: 'HR', country: "Croatia"},
 ]
 
 export const availableParties = {
@@ -191,8 +194,48 @@ export const availableParties = {
     {entityId: 9, party:'העבודה', shortName: 'AVD', color: 'lightgrey'}, //white
     {entityId: 10, party:'התנועה', shortName: 'HTN', color: 'green'},
     {entityId: 11, party:'מרצ', shortName: 'MRZ', color: 'pink'},
-    {entityId: 12, party:'(הרשימה המשותפת (القائمة المشتركة', shortName: 'ARB', color: 'red'},
+    {entityId: 12, party:'הרשימה המשותפת (القائمة المشتركة)', shortName: 'ARB', color: 'red'},
     {entityId: 13, party:'יהדות התורה', shortName: 'YTR', color: 'black'},
     {entityId: 14, party:'ש״ס', shortName: 'SHS', color: 'brown'},
+    {entityId: 15, party:'רשימה ערבית לשינוי (العربية للتغيير برئاسة أحمد الطيبي)', shortName: 'TIB', color: 'red'},
+  ],
+  'ES': [
+    {entityId: 1, party:'PSOE', shortName: 'PSOE', color: '#e30613'},
+    {entityId: 2, party:'Partido Popular', shortName: 'PP', color: '#008bd6'},
+    {entityId: 3, party:'Ciudadanos', shortName: 'CS', color: '#fb5000'},
+    {entityId: 4, party:'ES', shortName: 'POD', color: '#673165'},
+    {entityId: 5, party:'Vox', shortName: 'VOX', color: '#5ac035'},
+    {entityId: 6, party:'Partidos y organizaciones catalanas', shortName: 'CAT', color: '#f4e842'},
+    {entityId: 7, party:'Más Madrid', shortName: 'MM', color: '#00a58d'},
+    {entityId: 8, party:'PACMA', shortName: 'PACMA', color: '#93a607'},
+    {entityId: 9, party:'Partidos del País Vasco', shortName: 'Vasco', color: '#347a4a'},
+    {entityId: 10, party:'Otros partidos', shortName: 'OP', color: '#d3b3d6'},
+  ],
+  'EC': [
+    {entityId: 1, party:'Izquierda Democrática', shortName: 'ID', color: 'orange'},
+    {entityId: 2, party:'CREO', shortName: 'CRE', color: 'darkblue'},
+    {entityId: 3, party:'Partido Social Cristiano', shortName: 'PSC', color: 'yellow'},
+    {entityId: 4, party:'Fuerza Compromiso Social', shortName: 'FCS', color: 'blue'},
+    {entityId: 5, party:'Pachakutik', shortName: 'PK', color: 'green'},
+    {entityId: 6, party:'Movimiento Centro Democrático', shortName: 'CD', color: 'darkorange'},
+    {entityId: 7, party:'Movimiento Unidad Popular', shortName: 'UP', color: 'red'},
+    {entityId: 8, party:'Partido Adelante Ecuatoriano Adelante', shortName: 'AEA', color: '#ffcc00'}, //darkyellow
+    {entityId: 9, party:'Partido Fuerza EC', shortName: 'EC', color: 'black'},
+    {entityId: 10, party:'Movimiento Unión Ecuatoriana', shortName: 'UE', color: '#ff9980'}, //lightred
+    {entityId: 11, party:'Movimiento Concertación', shortName: 'MC', color: 'lightblue'},
+    {entityId: 12, party:'Partido Avanaza', shortName: 'PPA', color: '#ffff99'}, //lightyellow
+  ],
+  'HR': [
+    {entityId: 1, party:'HDZ', shortName: 'HDZ', color: '#0000ff'},
+    {entityId: 2, party:'SDP', shortName: 'SDP', color: '#ff0000'},
+    {entityId: 3, party:'Most', shortName: 'MOS', color: '#3e3696'},
+    {entityId: 4, party:'BM 365', shortName: 'BM', color: '#36f443'},
+    {entityId: 6, party:'HNS', shortName: 'HNS', color: '#f99212'},
+    {entityId: 7, party:'GLAS', shortName: 'GLAS', color: '#93f436'},
+    {entityId: 8, party:'HSS', shortName: 'HSS', color: '#008000'},
+    {entityId: 9, party:'Živi zid', shortName: 'ŽZ', color: '#ffff00'},
+    {entityId: 10, party:'Druge Strane', shortName: 'DRU', color: '#cccccc'},
+    {entityId: 17, party:'NHR', shortName: 'NHR', color: '#ee1dbb'},
+    {entityId: 18, party:'SDSS', shortName: 'SDSS', color: '#ff4d00'},
   ],
 }
