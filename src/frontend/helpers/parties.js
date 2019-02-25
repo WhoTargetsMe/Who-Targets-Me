@@ -184,20 +184,19 @@ export const availableParties = {
   ],
   'IL': [
     {entityId: 1, party:'הליכוד', shortName: 'LIK', color: 'lightblue'},
-    {entityId: 2, party:'הבית היהודי', shortName: 'BAY', color: 'orange'},
+    {entityId: 2, party:'איחוד מפלגות הימין', shortName: 'BAY', color: 'orange'},
     {entityId: 3, party:'ישראל ביתנו', shortName: 'ISB', color: 'grey'},
     {entityId: 4, party:'הימין החדש', shortName: 'YMH', color: 'yellow'},
     {entityId: 5, party:'כולנו', shortName: 'KLN', color: 'purple'},
-    {entityId: 6, party:'חוסן לישראל', shortName: 'HSN', color: 'green'},
-    {entityId: 7, party:'יש עתיד', shortName: 'YAT', color: 'blue'},
+    {entityId: 6, party:'כחול לבןל', shortName: 'KAL', color: 'green'},
     {entityId: 8, party:'גשר', shortName: 'GSR', color: '#FFDF00'}, //gold
     {entityId: 9, party:'העבודה', shortName: 'AVD', color: 'lightgrey'}, //white
-    {entityId: 10, party:'התנועה', shortName: 'HTN', color: 'green'},
     {entityId: 11, party:'מרצ', shortName: 'MRZ', color: 'pink'},
-    {entityId: 12, party:'הרשימה המשותפת (القائمة المشتركة)', shortName: 'ARB', color: 'red'},
+    {entityId: 12, party:'חד״ש-תע״ל', shortName: 'ARB', color: 'red'},
     {entityId: 13, party:'יהדות התורה', shortName: 'YTR', color: 'black'},
     {entityId: 14, party:'ש״ס', shortName: 'SHS', color: 'brown'},
-    {entityId: 15, party:'רשימה ערבית לשינוי (العربية للتغيير برئاسة أحمد الطيبي)', shortName: 'TIB', color: 'red'},
+    {entityId: 16, party:'רעמ-בלד', shortName: 'DAM', color: 'red'},
+    {entityId: 17, party:'אחר', shortName: 'OTH', color: 'lightgrey'},
   ],
   'ES': [
     {entityId: 1, party:'PSOE', shortName: 'PSOE', color: '#e30613'},
