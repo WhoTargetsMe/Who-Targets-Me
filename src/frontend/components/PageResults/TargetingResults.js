@@ -73,7 +73,7 @@ export const PartyAds = (props) => {
   if (partyIndex === 0) { disabledPrev = true }
   else if (partyIndex === props.advertisers.length - 1) { disabledNext = true }
 
-  let message = "Check rationales";
+  let message = "Why am I seeing this?";
   if (props.rationales[props.postId]) {
     message = props.rationales[props.postId].noRationaleMessage;
   }

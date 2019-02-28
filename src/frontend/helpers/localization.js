@@ -87,7 +87,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -188,7 +188,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -299,7 +299,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -395,7 +395,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -496,7 +496,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -607,7 +607,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -718,7 +718,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -831,7 +831,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -942,7 +942,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -1053,7 +1053,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -1275,7 +1275,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -1386,7 +1386,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -1497,7 +1497,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -1608,7 +1608,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -1719,7 +1719,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -1830,7 +1830,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -1941,7 +1941,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -2052,7 +2052,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -2163,7 +2163,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -2274,7 +2274,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -2385,7 +2385,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -2496,7 +2496,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -2607,7 +2607,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {
@@ -2718,7 +2718,7 @@ const strings = new LocalizedStrings({
       seen: 'Seen',
       targeting: 'Targeting',
       view_ad: 'View ad',
-      check_rationale: 'Check rationale',
+      check_rationale: 'Why did I see this?',
     },
     links: {
       website: {

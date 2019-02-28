@@ -170,7 +170,7 @@ export default class PageResults extends Component {
             this.setState({rationales, postId, showingTargeting, loadingRationales: false})
 
           } else {
-            throw new Error('cannot fetch rationales!');
+            throw new Error('cannot fetch "Why did I see this?"');
             this.setState({loadingRationales: false, postId: null});
           }
         })
