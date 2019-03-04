@@ -15,6 +15,7 @@
 		"*://facebook.com/*",
 		"*://www.facebook.com/*",
 		"*://b53fh4tb0h.execute-api.eu-central-1.amazonaws.com/*",
+		"*://msih3yho6h.execute-api.eu-central-1.amazonaws.com/*",
 		"*://*.whotargets.me/*",
 		"*://whotargets.me/*"
 	],

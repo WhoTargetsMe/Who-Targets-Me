@@ -223,7 +223,7 @@ const adsOnPage = () => {
                       // transmitPayload(payload) // Send data to server
                       // console.log('OBSERVER-From Ads--> transmitPayload')
                       let extVersion = chrome.runtime.getManifest().version;
-
+                      // console.log('OBSERVER-From Ads--> extVersion', extVersion)
                       let finalPayload = { // Queue advert for server
                         typeId: 'FBADVERT',
                         extVersion,
@@ -233,6 +233,7 @@ const adsOnPage = () => {
                           html: container.html()
                         }]
                       };
+                      // console.log('OBSERVER-From Ads--> finalPayload', finalPayload)
                       api.post('log/raw', {json: finalPayload})
                         .then((response) => {
                           // response completed, no log

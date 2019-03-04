@@ -162,3 +162,9 @@ ul{
 li{
   margin-bottom: 20px;
 }
+.InputGroup--contiguous{
+  margin: auto;
+}
+input[type=range]::-moz-range-track {
+  background-color: #3399ff;
+}

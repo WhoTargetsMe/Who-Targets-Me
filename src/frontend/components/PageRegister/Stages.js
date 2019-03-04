@@ -164,7 +164,7 @@ class CountrySelector extends Component {
   render() {
     const {back, next, signupState} = this.props;
     const {loadingLocation, country, countryDisplay, inputValue} = this.state;
-    console.log('country state', this.state)
+    // console.log('country state', this.state)
     return (
       <span>
         <Container country={country ? country.countryCode : ''}>
@@ -177,9 +177,9 @@ class CountrySelector extends Component {
           <div className="fullwidth">
             <div style={{width: '500px', overflow: 'hidden', margin: '0 auto'}}>
 
-              <div style={{width: '300px'}}>
-                <InputGroup contiguous style={{width: '300px'}}>
-                  <InputGroup.Section>
+              <div style={{width: '300px', margin: '0 auto'}}>
+                <InputGroup contiguous style={{width: '300px', display: 'flex', justifyContent: 'center'}}>
+                  <InputGroup.Section style={{flex: 1}}>
                     <FormField width="one-quarter" style={{float: 'none'}}>
                       <FormSelect disabled={loadingLocation} options={countryOptions} firstOption={this.state.countryDisplay.label} onChange={this.handleSelect} />
                     </FormField>

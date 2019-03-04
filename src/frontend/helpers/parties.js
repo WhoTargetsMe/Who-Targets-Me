@@ -142,6 +142,7 @@ export const availableParties = {
     {entityId: 9, party:'Партія "Основа"', shortName: 'ОСН', color: 'red'},
     {entityId: 10, party:'Політична партія "Громадсько-політичний рух Валентина Наливайченка "Справедливість"', shortName: 'СПР', color: 'brown'},
     {entityId: 11, party:'Інші', shortName: 'ІНШ', color: 'grey'},
+    {entityId: 12, party:'Зеленський Володимир', shortName: 'ЗЕЛ', color: '#00cc00'},
   ],
   'FI': [
     {entityId: 1, party:'Suomen Keskusta', shortName: 'KES', color: '#01954B'},
