@@ -388,9 +388,12 @@ class GenderSelector extends Component {
           <Button type="hollow-primary" onClick={() => next({gender: 2})}>{strings.register.female}</Button>
           <Button type="hollow-primary" onClick={() => next({gender: 0})}>{strings.register.other}</Button>
         </div>}
-        <div className="fullwidth">
+        {signupState.language === 'il' ? <div className="fullwidth">
           <Button type="hollow-primary" className='buttonBack' onClick={back}>{strings.register.back  + " " + String.fromCharCode("187")}</Button>
-        </div>
+        </div> :
+        <div className="fullwidth">
+          <Button type="hollow-primary" className='buttonBack' onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}</Button>
+        </div>}
       </Container>
     );
   }
