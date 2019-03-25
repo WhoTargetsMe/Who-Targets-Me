@@ -54,7 +54,7 @@ export default class PageResults extends Component {
         return chrome.storage.promise.local.get()
           .then((result) => {
             this.setState({userData: response.jsonData.data, language: result.language})
-            // console.log('user data', response, response.jsonData, result.language)
+            console.log('user data', response, response.jsonData, result.language)
           })
           .catch((error) => {
             console.log(error)
@@ -291,7 +291,7 @@ export default class PageResults extends Component {
     let partyPercAmongParties = 0;
 
     const { userCount, nextUserCount } = getUserCount(this.state.userData.userCount);
-    //console.log('userCount, nextUserCount', userCount, nextUserCount)
+    // console.log('userCount, nextUserCount (page)', userCount, nextUserCount)
     // If this is a user with data
     if (view !== "delete_request" && view !== "data_deleted") {
       if (availableCountries.map(c => c.id).includes(userCountry)){

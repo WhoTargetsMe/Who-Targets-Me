@@ -136,8 +136,8 @@ const triggerMenu = (fbStoryId) => {
 const adsOnPage = () => {
 
   let adverts = []; // Pass adverts back to cycle
-  const lang = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; // Extract the language preferance of the client
-  const sponsoredValue = sponsoredText[lang] || sponsoredText.en; // Using the language, determine the correct word for 'sponsored', default to english
+  // const lang = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; // Extract the language preferance of the client
+  // const sponsoredValue = sponsoredText[lang] || sponsoredText.en; // Using the language, determine the correct word for 'sponsored', default to english
 
   $(sprintf('a.fbPrivacyAudienceIndicator')).each((index, advert) => { // Loop over every advert
 
@@ -181,16 +181,18 @@ const adsOnPage = () => {
 
         const link2 = nsub.text() || '';
         const isad2 = !link2.match(/\d+/g);
-        // console.log('nsub.text()', nsub, link2, isad2, nsub.text())
+        // console.log('fbStoryId, nsub.text()', fbStoryId, nsub, link2, isad2, nsub.text())
 
-        let isad3 = 1;
-        sponsoredValue.toLowerCase().split('').forEach(l => {
-          if (link2.toLowerCase().indexOf(l) < 0) {
-            isad3--;
-          }
-        });
-        isad3 = isad3 > 0;
-        // console.log('ISAD', isad, isad2, isad3);
+        let isad3 = 0;
+        Object.keys(sponsoredText).forEach(lang => {
+          const sponsoredValue = sponsoredText[lang];
+          sponsoredValue.toLowerCase().split('').forEach(l => {
+            if (link2.toLowerCase().indexOf(l) > -1) {
+              isad3++;
+            }
+          });
+        })
+        // console.log('ISAD', fbStoryId, isad, isad2, isad3);
         // console.log('container TRIAL', fbStoryId, menuOwnerId, 'offsetHeight=', link ? link.get(0): 'Not an ad')
 
         if (fetched) {
