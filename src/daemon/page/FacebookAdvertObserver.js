@@ -14,7 +14,7 @@ const sponsoredText = {
   'hu': 'Hirde', //tés',
   'it': 'Spons', //onrizzata',
   'ja': '広告', // '',
-  'nb': 'Spons', //et',
+  'no': 'Spons', //et',
   'nl': 'Gespo', //nsord',
   'nn': 'Spons', //a',
   'pl': 'Spons', //orowane',
