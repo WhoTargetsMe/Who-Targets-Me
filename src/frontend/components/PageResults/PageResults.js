@@ -54,7 +54,7 @@ export default class PageResults extends Component {
         return chrome.storage.promise.local.get()
           .then((result) => {
             this.setState({userData: response.jsonData.data, language: result.language})
-            console.log('user data', response, response.jsonData, result.language)
+            // console.log('user data', response, response.jsonData, result.language)
           })
           .catch((error) => {
             console.log(error)
