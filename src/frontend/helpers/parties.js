@@ -142,7 +142,7 @@ export const availableParties = {
     {entityId: 9, party:'Feministiskt initiativ', shortName: 'FI', color: '#cd1b68'},
     {entityId: 10, party:'Alternativ för Sverige', shortName: 'AfS', color: '#19489D'},
     {entityId: 11, party:'Medborgerlig Samling', shortName: 'MED', color: '#28416f'},
-    {entityId: 12, party:'Annat', shortName: 'ANN', color: '#cccccc'},
+    {entityId: 12, party:'Annat', shortName: 'Annat', color: '#cccccc'},
   ],
   'AU': [
     {entityId: 1, party:'Liberal Party', shortName: 'Lib', color: '#0047AB'},
