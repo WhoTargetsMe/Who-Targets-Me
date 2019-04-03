@@ -111,11 +111,11 @@ export const PartyAds = (props) => {
           <Row className='headerRow'>
             <Col sm="4/20" className='colHeader'>{strings.results.page}</Col>
             <Col sm="8/20" className='colHeader'>{strings.results.text}</Col>
-            <Col sm="3/20" className='colHeader'>{strings.results.seen}</Col>
+            <Col sm="3/20" className='colHeader'>{strings.results.instances}</Col>
             <Col sm="3/20" className='colHeader'>{strings.results.targeting}</Col>
           </Row>
           {props.ads.map((ad, j) => {
-            const displayTime = ad.createdAt.slice(8,10) + '/' + ad.createdAt.slice(5,7) + '/' + ad.createdAt.slice(0,4);
+            // const displayTime = ad.createdAt.slice(8,10) + '/' + ad.createdAt.slice(5,7) + '/' + ad.createdAt.slice(0,4);
             return (
               <Row key={`tablerow-${j}`} style={{borderBottom: '1px solid #ccc', marginBottom: '10px'}}>
                 <Col sm="4/20" className='adCol'>
@@ -125,7 +125,7 @@ export const PartyAds = (props) => {
                   {ad.text.map((t,i) => <p key={`txt-${i}`}>{t.length > 120 ? t.slice(0,120)+'...' : t}</p>)}
                   <a href={ad.url} className='link'>{strings.results.view_ad}</a>
                 </Col>
-                <Col sm="3/20" className='adCol'>{displayTime}</Col>
+                <Col sm="3/20" className='adCol' style={{textAlign: 'center'}}>{ad.count}</Col>
                 <Col sm="3/20" className='adCol'>
                 {
                   ad.noRationaleMessage && ad.noRationaleMessage === "Not available" ?
@@ -152,11 +152,11 @@ export const PartyAds = (props) => {
             <Row className='headerRow'>
               <Col sm="4/20" className='colHeader'>{strings.results.page}</Col>
               <Col sm="8/20" className='colHeader'>{strings.results.text}</Col>
-              <Col sm="3/20" className='colHeader'>{strings.results.seen}</Col>
+              <Col sm="3/20" className='colHeader'>{strings.results.instances}</Col>
               <Col sm="3/20" className='colHeader'>{strings.results.targeting}</Col>
             </Row>
             {props.ads.map((ad, j) => {
-              const displayTime = ad.createdAt.slice(8,10) + '/' + ad.createdAt.slice(5,7) + '/' + ad.createdAt.slice(0,4);
+              // const displayTime = ad.createdAt.slice(8,10) + '/' + ad.createdAt.slice(5,7) + '/' + ad.createdAt.slice(0,4);
               return (
                 <Row key={`tablerow-${j}`} style={{borderBottom: '1px solid #ccc', marginBottom: '10px'}}>
                   <Col sm="4/20" className='adCol'>
@@ -166,7 +166,7 @@ export const PartyAds = (props) => {
                     {ad.text.map((t,i) => <p key={`txt-${i}`}>{t.length > 120 ? t.slice(0,120)+'...' : t}</p>)}
                     <a href={ad.url} className='link'>{strings.results.view_ad}</a>
                   </Col>
-                  <Col sm="3/20" className='adCol'>{displayTime}</Col>
+                  <Col sm="3/20" className='adCol' style={{textAlign: 'center'}}>{ad.count}</Col>
                   <Col sm="3/20" className='adCol'>
                   {
                     ad.noRationaleMessage && ad.noRationaleMessage === "Not available" ?
@@ -188,13 +188,13 @@ export const RationalesView = (props) => {
   // console.log('RationalesView props', props)
 
   const ad = props.ads.filter(ad => ad.postId === props.postId)[0];
-  const displayTime = ad.createdAt.slice(8,10) + '/' + ad.createdAt.slice(5,7) + '/' + ad.createdAt.slice(0,4);
+  // const displayTime = ad.createdAt.slice(8,10) + '/' + ad.createdAt.slice(5,7) + '/' + ad.createdAt.slice(0,4);
   return (
     <div className='boxNoFlex whiteBackground'>
       <Row className='headerRow'>
         <Col sm="4/20" className='colHeader'>{strings.results.page}</Col>
         <Col sm="8/20" className='colHeader'>{strings.results.text}</Col>
-        <Col sm="3/20" className='colHeader'>{strings.results.seen}</Col>
+        <Col sm="3/20" className='colHeader'>{strings.results.instances}</Col>
         <Col sm="3/20" className='colHeader'>{strings.results.targeting}</Col>
       </Row>
 
@@ -205,7 +205,7 @@ export const RationalesView = (props) => {
         <Col sm="8/20" className="text adCol">
           {ad.text.map((t,i) => <p key={`txt-${i}`}>{t}</p>)}
           <a href={ad.url} className='link'>{strings.results.view_ad}</a></Col>
-        <Col sm="3/20" className='adCol'>{displayTime}</Col>
+        <Col sm="3/20" className='adCol' style={{textAlign: 'center'}}>{ad.count}</Col>
         <Col sm="3/20" className='adCol'>
           <span className="link" onClick={props.hideTargeting}>Hide</span>
         </Col>
