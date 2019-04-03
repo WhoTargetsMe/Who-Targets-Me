@@ -220,6 +220,7 @@ export const availableParties = {
     {entityId: 14, party:'ש״ס', shortName: 'SHS', color: 'brown'},
     {entityId: 16, party:'רעמ-בלד', shortName: 'DAM', color: 'red'},
     {entityId: 17, party:'אחר', shortName: 'OTH', color: 'lightgrey'},
+    {entityId: 18, party:'Zehut', shortName: 'ZEH', color: '#0F486C'},
   ],
   'ES': [
     {entityId: 1, party:'PSOE', shortName: 'PSOE', color: '#e30613'},
