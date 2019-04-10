@@ -89,6 +89,7 @@ const strings = new LocalizedStrings({
       targeting: 'Targeting',
       view_ad: 'View ad',
       check_rationale: 'Why did I see this?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -201,6 +202,7 @@ const strings = new LocalizedStrings({
       targeting: 'Gezielt beworben',
       view_ad: 'Zeige Werbung an',
       check_rationale: 'Warum habe ich das gesehen?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -313,6 +315,7 @@ const strings = new LocalizedStrings({
       targeting: 'Segmentación',
       view_ad: 'Ver anuncio',
       check_rationale: '¿Por qué he visto esto?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -425,6 +428,7 @@ const strings = new LocalizedStrings({
       targeting: 'Obiettivo',
       view_ad: 'Visualizza annuncio',
       check_rationale: 'Perché l\'ho visto?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -537,6 +541,7 @@ const strings = new LocalizedStrings({
       targeting: 'Cél',
       view_ad: 'Hirdetés megtekintése',
       check_rationale: 'Miért láttam ezt?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -649,6 +654,7 @@ const strings = new LocalizedStrings({
       targeting: 'Таргетирование',
       view_ad: 'Просмотреть объявление',
       check_rationale: 'Почему я вижу это объявление?',
+      update_profile: 'Обновить профиль',
     },
     links: {
       website: {
@@ -761,6 +767,7 @@ const strings = new LocalizedStrings({
       targeting: 'Mērķis',
       view_ad: 'Skatīt reklāmu',
       check_rationale: 'Kāpēc es to redzēju?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -875,6 +882,7 @@ const strings = new LocalizedStrings({
       targeting: 'Alvo',
       view_ad: 'Ver anúncio',
       check_rationale: 'Por que eu vi isso?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -987,6 +995,7 @@ const strings = new LocalizedStrings({
       targeting: 'Riktade mot',
       view_ad: 'Se annons',
       check_rationale: 'Varför ser jag det här?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -1099,6 +1108,7 @@ const strings = new LocalizedStrings({
       targeting: 'Таргетування',
       view_ad: 'Переглянути оголошення',
       check_rationale: 'Чому я бачу це оголошення?',
+      update_profile: 'Оновити профіль',
     },
     links: {
       website: {
@@ -1211,6 +1221,7 @@ const strings = new LocalizedStrings({
       targeting: 'Kohdentaminen',
       view_ad: 'Näytä mainos',
       check_rationale: 'Katso kohdentamisen tapa?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -1323,6 +1334,7 @@ const strings = new LocalizedStrings({
       targeting: 'Cible',
       view_ad: 'Voir l\'annonce',
       check_rationale: 'Pourquoi j\'ai vu ça?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -1435,6 +1447,7 @@ const strings = new LocalizedStrings({
       targeting: 'Doelwit',
       view_ad: 'Bekijk advertentie',
       check_rationale: 'Waarom heb ik dit gezien?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -1547,6 +1560,7 @@ const strings = new LocalizedStrings({
       targeting: 'יעד',
       view_ad: 'הצג מודעה',
       check_rationale: 'למה ראיתי את זה?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -1659,6 +1673,7 @@ const strings = new LocalizedStrings({
       targeting: 'Мишена',
       view_ad: 'Преглед на рекламата',
       check_rationale: 'Защо видях това?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -1771,6 +1786,7 @@ const strings = new LocalizedStrings({
       targeting: 'Cílová',
       view_ad: 'Zobrazit reklamu',
       check_rationale: 'Proč jsem to viděl?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -1883,6 +1899,7 @@ const strings = new LocalizedStrings({
       targeting: 'Sihtmärk',
       view_ad: 'Vaata reklaami',
       check_rationale: 'Miks ma seda nägin?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -1995,6 +2012,7 @@ const strings = new LocalizedStrings({
       targeting: 'Στόχος',
       view_ad: 'Προβολή διαφήμισης',
       check_rationale: 'Γιατί το έχω δει',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -2107,6 +2125,7 @@ const strings = new LocalizedStrings({
       targeting: 'Насочване',
       view_ad: 'Преглед на рекламата',
       check_rationale: 'Зошто го видов ова?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -2219,6 +2238,7 @@ const strings = new LocalizedStrings({
       targeting: 'Kierowanie',
       view_ad: 'Wyświetl reklamę',
       check_rationale: 'Dlaczego to widziałem?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -2331,6 +2351,7 @@ const strings = new LocalizedStrings({
       targeting: 'Direcționarea',
       view_ad: 'Afișați anunțul',
       check_rationale: 'De ce am văzut asta?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -2443,6 +2464,7 @@ const strings = new LocalizedStrings({
       targeting: 'Zacielenia',
       view_ad: 'Zobraziť reklamu',
       check_rationale: 'Prečo som to videl?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -2555,6 +2577,7 @@ const strings = new LocalizedStrings({
       targeting: 'Ciljanje',
       view_ad: 'Prikaži oglas',
       check_rationale: 'Zakaj sem to videl?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -2667,6 +2690,7 @@ const strings = new LocalizedStrings({
       targeting: 'Mira',
       view_ad: 'Ara r-reklam',
       check_rationale: 'Għaliex rajt dan?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -2779,6 +2803,7 @@ const strings = new LocalizedStrings({
       targeting: 'Cilj',
       view_ad: 'Pogledajte oglas',
       check_rationale: 'Zašto sam to vidio?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -2891,6 +2916,7 @@ const strings = new LocalizedStrings({
       targeting: 'Rettet mod',
       view_ad: 'Vis annonce',
       check_rationale: 'Hvorfor har jeg ser dette?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
@@ -3003,6 +3029,7 @@ const strings = new LocalizedStrings({
       targeting: 'Díriú ar',
       view_ad: 'Amharc ad',
       check_rationale: 'Cén fáth go raibh mé a fheiceáil seo?',
+      update_profile: 'Update your profile',
     },
     links: {
       website: {
