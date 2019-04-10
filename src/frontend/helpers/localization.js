@@ -2915,7 +2915,7 @@ const strings = new LocalizedStrings({
       },
     },
   },
-  en: {
+  ie: {
     who_targets_me: 'Who Targets Me?',
     loading: 'Loading, go raibh maith agat as do foighne',
     register: {

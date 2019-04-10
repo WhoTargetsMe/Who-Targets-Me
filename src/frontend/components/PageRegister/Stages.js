@@ -5,16 +5,16 @@ import {Button, InputGroup, FormInput, FormField, FormSelect, FormRow, Spinner, 
 import api from '../../helpers/api.js';
 import { countries, countries_in_native_lang } from './countries.js';
 import languages from './languages.js';
-import {
-  OxfordSurvey0,
-  OxfordSurvey1,
-  OxfordSurvey2,
-  OxfordSurvey3,
-  OxfordSurvey4,
-  OxfordSurvey5,
-  OxfordSurvey6
-  } from '../OxfordSurvey/OxfordSurvey.js';
-import {schema} from '../OxfordSurvey/SurveyFields.js';
+// import {
+//   OxfordSurvey0,
+//   OxfordSurvey1,
+//   OxfordSurvey2,
+//   OxfordSurvey3,
+//   OxfordSurvey4,
+//   OxfordSurvey5,
+//   OxfordSurvey6
+//   } from '../OxfordSurvey/OxfordSurvey.js';
+// import {schema} from '../OxfordSurvey/SurveyFields.js';
 import FacebookIcon from './icon_facebook.svg';
 import TwitterIcon from './icon_twitter.svg';
 import Logo from '../Shell/wtm_logo_border.png';
@@ -663,7 +663,7 @@ class OxfordSurvey extends Component {
   }
 
   getSurvey(survey) {
-    // console.log("REQUESTING survey")
+    // Survey for US users is disabled
     this.setState({loadingSurvey: true})
     api.get('general/survey', {query: {survey}})
       .then((response) => {
@@ -947,9 +947,9 @@ const signupStages = [
   {
     component: <PoliticalAffiliationSelector/>,
   },
-  {
-    component: <OxfordSurvey/>,
-  },
+  // {
+  //   component: <OxfordSurvey/>,
+  // },
   {
     component: <AttemptSignup/>,
   },
