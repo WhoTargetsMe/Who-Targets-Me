@@ -89,7 +89,10 @@ const strings = new LocalizedStrings({
       targeting: 'Targeting',
       view_ad: 'View ad',
       check_rationale: 'Why did I see this?',
+    },
+    update: {
       update_profile: 'Update your profile',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -198,11 +201,14 @@ const strings = new LocalizedStrings({
       page: 'Seite',
       text: 'Text',
       seen: 'Gesehen',
-      instances: 'Instances',
+      instances: 'Instanzen',
       targeting: 'Gezielt beworben',
       view_ad: 'Zeige Werbung an',
       check_rationale: 'Warum habe ich das gesehen?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Aktualisiere dein Profil',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -259,8 +265,8 @@ const strings = new LocalizedStrings({
       share2: ' para ayudar a otros ciudadanos a descubrir la publicidad a la que están siendo expuestos',
       share3: 'Más de %i personas en %s ya se han instalado ¿De quién soy el blanco?',
       share4: '¿Nos ayudas a llegar a %i compartiendo en tus redes sociales?',
-      shareOnFacebook: "Compartir en Facebook",
-      shareOnTwitter: "Compartir en Twitter",
+      shareOnFacebook: "Facebook",
+      shareOnTwitter: "Twitter",
       skip: "Saltar",
       shareFacebook: "¿De quién soy el blanco? está investigando la publicidad política y electoral altamente segmentada en redes sociales y yo les estoy ayudando. Únete y descubre de quién eres el blanco https://whotargets.me",
       shareTwitter: "@WhoTargetsMe está investigando la publicidad electoral y política en redes sociales y yo les estoy ayudando. Únete y descubre de quién eres el blanco https://whotargets.me",
@@ -311,11 +317,14 @@ const strings = new LocalizedStrings({
       page: 'Página',
       text: 'Texto',
       seen: 'Fecha',
-      instances: 'Instances',
+      instances: 'Instancias',
       targeting: 'Segmentación',
       view_ad: 'Ver anuncio',
       check_rationale: '¿Por qué he visto esto?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Actualiza tu perfil',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -372,8 +381,8 @@ const strings = new LocalizedStrings({
       share2: ' per aiutare le persone a conoscere gli annunci politici mirati',
       share3: 'Oltre %i persone in %s partecipano a Who Targets Me.',
       share4: 'Condividerai il progetto e aiutaci ad arrivare a %i?',
-      shareOnFacebook: 'Condividi su Facebook',
-      shareOnTwitter: 'Condividi su Twitter',
+      shareOnFacebook: 'Facebook',
+      shareOnTwitter: 'Twitter',
       skip: 'Salta',
       shareFacebook: 'Who Targets Me sta studiando la pubblicità sui social media politici. Li sto aiutando Unisciti a me e scopri chi ti sta bersagliando: https://whotargets.me',
       shareTwitter: '@whotargetsme sta studiando la pubblicità sui social media politici. Li sto aiutando Unisciti a me e scopri chi ti sta bersagliando: https://whotargets.me',
@@ -424,11 +433,14 @@ const strings = new LocalizedStrings({
       page: 'Pagina',
       text: 'Testo',
       seen: 'Visto',
-      instances: 'Instances',
+      instances: 'Istanze',
       targeting: 'Obiettivo',
       view_ad: 'Visualizza annuncio',
       check_rationale: 'Perché l\'ho visto?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Aggiorna il tuo profilo',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -485,8 +497,8 @@ const strings = new LocalizedStrings({
       share2: ' hogy segítse az embereket a célzott politikai hirdetésekről.',
       share3: 'Több mint %i ember vesz részt a Célkeresztben, %s',
       share4: 'Ossza meg a projektet és segítsen elérni a %i-at?',
-      shareOnFacebook: 'Megosztom a Facebookon',
-      shareOnTwitter: 'Megosztom a Twitteren',
+      shareOnFacebook: 'Facebookon',
+      shareOnTwitter: 'Twitteren',
       skip: 'Ezt most kihagyom',
       shareFacebook: 'WhoTargetsMe vizsgálja a politikai szociális média reklámozását. Segítek nekik. Csatlakozz hozzám, és megtudd, hogy ki célozza meg: https://whotargets.me',
       shareTwitter: '@WhoTargetsMe vizsgálja a politikai szociális média reklámozását. Segítek nekik. Csatlakozz hozzám, és megtudd, hogy ki célozza meg: https://whotargets.me',
@@ -537,11 +549,14 @@ const strings = new LocalizedStrings({
       page: 'Oldal',
       text: 'Szöveg',
       seen: 'Látott',
-      instances: 'Instances',
+      instances: 'Példányok',
       targeting: 'Cél',
       view_ad: 'Hirdetés megtekintése',
       check_rationale: 'Miért láttam ezt?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Frissítse profilját',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -654,7 +669,10 @@ const strings = new LocalizedStrings({
       targeting: 'Таргетирование',
       view_ad: 'Просмотреть объявление',
       check_rationale: 'Почему я вижу это объявление?',
+    },
+    update: {
       update_profile: 'Обновить профиль',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -763,11 +781,14 @@ const strings = new LocalizedStrings({
       page: 'Lappuse',
       text: 'Teksts',
       seen: 'Redzēts',
-      instances: 'Instances',
+      instances: 'Gadījumi',
       targeting: 'Mērķis',
       view_ad: 'Skatīt reklāmu',
       check_rationale: 'Kāpēc es to redzēju?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Atjaunināt savu profilu',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -878,11 +899,14 @@ const strings = new LocalizedStrings({
       page: 'Página',
       text: 'Texto',
       seen: 'Visto',
-      instances: 'Instances',
+      instances: 'Instâncias',
       targeting: 'Alvo',
       view_ad: 'Ver anúncio',
       check_rationale: 'Por que eu vi isso?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Atualize seu perfil',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -991,11 +1015,14 @@ const strings = new LocalizedStrings({
       page: 'Sida',
       text: 'Text',
       seen: 'Sett',
-      instances: 'Instances',
+      instances: 'Instanser',
       targeting: 'Riktade mot',
       view_ad: 'Se annons',
       check_rationale: 'Varför ser jag det här?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Uppdatera din profil',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -1108,7 +1135,10 @@ const strings = new LocalizedStrings({
       targeting: 'Таргетування',
       view_ad: 'Переглянути оголошення',
       check_rationale: 'Чому я бачу це оголошення?',
+    },
+    update: {
       update_profile: 'Оновити профіль',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -1217,11 +1247,14 @@ const strings = new LocalizedStrings({
       page: 'Sivu',
       text: 'Teksti',
       seen: 'Nähty',
-      instances: 'Instances',
+      instances: 'Instansseja',
       targeting: 'Kohdentaminen',
       view_ad: 'Näytä mainos',
       check_rationale: 'Katso kohdentamisen tapa?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Päivitä profiilisi',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -1330,11 +1363,14 @@ const strings = new LocalizedStrings({
       page: 'Page',
       text: 'Texte',
       seen: 'Vu',
-      instances: 'Instances',
+      instances: 'Les instances',
       targeting: 'Cible',
       view_ad: 'Voir l\'annonce',
       check_rationale: 'Pourquoi j\'ai vu ça?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Mettre à jour votre profil',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -1443,11 +1479,14 @@ const strings = new LocalizedStrings({
       page: 'Pagina',
       text: 'Tekst',
       seen: 'Zien',
-      instances: 'Instances',
+      instances: 'Instanties',
       targeting: 'Doelwit',
       view_ad: 'Bekijk advertentie',
       check_rationale: 'Waarom heb ik dit gezien?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Update je profiel',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -1556,11 +1595,14 @@ const strings = new LocalizedStrings({
       page: 'עמוד',
       text: 'טקסט',
       seen: 'נראה',
-      instances: 'Instances',
+      instances: 'מקרים',
       targeting: 'יעד',
       view_ad: 'הצג מודעה',
       check_rationale: 'למה ראיתי את זה?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'עדכן את הפרופיל שלך',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -1669,11 +1711,14 @@ const strings = new LocalizedStrings({
       page: 'Страница',
       text: 'Текст',
       seen: 'Видян',
-      instances: 'Instances',
+      instances: 'Случаите',
       targeting: 'Мишена',
       view_ad: 'Преглед на рекламата',
       check_rationale: 'Защо видях това?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Актуализиране на вашия профил',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -1782,11 +1827,14 @@ const strings = new LocalizedStrings({
       page: 'Stránka',
       text: 'Text',
       seen: 'Viděn',
-      instances: 'Instances',
+      instances: 'Případy',
       targeting: 'Cílová',
       view_ad: 'Zobrazit reklamu',
       check_rationale: 'Proč jsem to viděl?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Aktualizujte svůj profil',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -1895,11 +1943,14 @@ const strings = new LocalizedStrings({
       page: 'Lehekülg',
       text: 'Tekst',
       seen: 'Nähtud',
-      instances: 'Instances',
+      instances: 'Juhtudel',
       targeting: 'Sihtmärk',
       view_ad: 'Vaata reklaami',
       check_rationale: 'Miks ma seda nägin?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Uuenda oma profiili',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -2008,11 +2059,14 @@ const strings = new LocalizedStrings({
       page: 'Σελίδα',
       text: 'Κείμενο',
       seen: 'Βλέποντας',
-      instances: 'Instances',
+      instances: 'παρουσίες',
       targeting: 'Στόχος',
       view_ad: 'Προβολή διαφήμισης',
       check_rationale: 'Γιατί το έχω δει',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Ενημέρωση του προφίλ σας',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -2121,11 +2175,14 @@ const strings = new LocalizedStrings({
       page: 'Страница',
       text: 'Текст',
       seen: 'Види',
-      instances: 'Instances',
+      instances: 'Случаите',
       targeting: 'Насочване',
       view_ad: 'Преглед на рекламата',
       check_rationale: 'Зошто го видов ова?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Ажурирајте го вашиот профил',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -2234,11 +2291,14 @@ const strings = new LocalizedStrings({
       page: 'Strona',
       text: 'Tekst',
       seen: 'Widziany',
-      instances: 'Instances',
+      instances: 'Instancje',
       targeting: 'Kierowanie',
       view_ad: 'Wyświetl reklamę',
       check_rationale: 'Dlaczego to widziałem?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Zaktualizuj swój profil',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -2347,11 +2407,14 @@ const strings = new LocalizedStrings({
       page: 'Pagină',
       text: 'Text',
       seen: 'Văzut',
-      instances: 'Instances',
+      instances: 'Instanțe',
       targeting: 'Direcționarea',
       view_ad: 'Afișați anunțul',
       check_rationale: 'De ce am văzut asta?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Actualizeaza-ti profilul',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -2460,11 +2523,14 @@ const strings = new LocalizedStrings({
       page: 'Strana',
       text: 'Text',
       seen: 'Vidieť',
-      instances: 'Instances',
+      instances: 'Prípady',
       targeting: 'Zacielenia',
       view_ad: 'Zobraziť reklamu',
       check_rationale: 'Prečo som to videl?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Aktualizujte svoj profil',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -2573,11 +2639,14 @@ const strings = new LocalizedStrings({
       page: 'Stran',
       text: 'Tekst',
       seen: 'Videti',
-      instances: 'Instances',
+      instances: 'Primerki',
       targeting: 'Ciljanje',
       view_ad: 'Prikaži oglas',
       check_rationale: 'Zakaj sem to videl?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Posodobite svoj profil',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -2686,11 +2755,14 @@ const strings = new LocalizedStrings({
       page: 'Paġna',
       text: 'Test',
       seen: 'Qiegħed',
-      instances: 'Instances',
+      instances: 'Każijiet',
       targeting: 'Mira',
       view_ad: 'Ara r-reklam',
       check_rationale: 'Għaliex rajt dan?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Taġġorna l-profil tiegħek',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -2799,11 +2871,14 @@ const strings = new LocalizedStrings({
       page: 'Stranica',
       text: 'Tekst',
       seen: 'Vidio',
-      instances: 'Instances',
+      instances: 'Slučajevi',
       targeting: 'Cilj',
       view_ad: 'Pogledajte oglas',
       check_rationale: 'Zašto sam to vidio?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Ažurirajte svoj profil',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -2912,11 +2987,14 @@ const strings = new LocalizedStrings({
       page: 'Side',
       text: 'Tekst',
       seen: 'Set',
-      instances: 'Instances',
+      instances: 'Tilfælde',
       targeting: 'Rettet mod',
       view_ad: 'Vis annonce',
       check_rationale: 'Hvorfor har jeg ser dette?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Opdater din profil',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {
@@ -3025,11 +3103,14 @@ const strings = new LocalizedStrings({
       page: 'Leathanach',
       text: 'Téacs',
       seen: 'Le feiceáil',
-      instances: 'Instances',
+      instances: 'Cásanna',
       targeting: 'Díriú ar',
       view_ad: 'Amharc ad',
       check_rationale: 'Cén fáth go raibh mé a fheiceáil seo?',
-      update_profile: 'Update your profile',
+    },
+    update: {
+      update_profile: 'Nuashonraigh do phróifíl',
+      updated_success: 'Thank you! Your profile is updated successfully!'
     },
     links: {
       website: {

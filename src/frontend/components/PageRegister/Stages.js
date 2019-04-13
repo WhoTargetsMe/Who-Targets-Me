@@ -31,12 +31,16 @@ for (let i=0; i<keys.length; i++) {
   countryOptions.push(country)
 }
 
-const Container = ({survey, children, country}) => (
+const Container = ({survey, children, country, updating_profile}) => (
   <div className="CenterContainer_outer">
     <div className="CenterContainer_inner">
       <img src={country === 'BR' ? LogoBR : country === 'FI' ? LogoFI : Logo} className='logo'/>
       <h2 className={survey ? 'settingUp smallText' : 'settingUp'}>
-        {survey ? 'Oxford Internet Institute Research Survey' : strings.register.setting_up}</h2>
+        {survey ? 'Oxford Internet Institute Research Survey' :
+          updating_profile ? strings.update.update_profile :
+          strings.register.setting_up
+        }
+      </h2>
       <div style={{margin: '0 auto', padding: '0px 20px'}}>
         {children}
       </div>
@@ -66,11 +70,12 @@ class LanguageSelector extends Component {
 
     const languageOptions = languages;
     const {language, loadingLanguage} = this.state;
-
+    const updating_profile = this.props.updating_profile;
+    
     return (
       <span className="LanguageSelector" style={{overflow: 'hidden'}}>
 
-        <Container>
+        <Container updating_profile={updating_profile}>
           <div className="fullwidth" style={{overflow: 'hidden'}}>
             <p>{strings.register.welcome1 || 'Who Targets Me helps people understand how targeted social'}</p>
             <p>{strings.register.welcome2 || 'media advertising is used to persuade them.'}</p>
@@ -98,10 +103,11 @@ class LanguageSelector extends Component {
 
 class TermsPrivacy extends Component {
   render() {
-    const {back, next, signupState} = this.props;
+    const {back, next, signupState, updating_profile} = this.props;
+
     return (
       <span>
-        <Container>
+        <Container updating_profile={updating_profile}>
           <div className="fullwidth" style={{marginBottom: '20px'}}>
             <p dangerouslySetInnerHTML={{__html: strings.register.terms}}></p>
           </div>
@@ -162,12 +168,12 @@ class CountrySelector extends Component {
   }
 
   render() {
-    const {back, next, signupState} = this.props;
+    const {back, next, signupState, updating_profile} = this.props;
     const {loadingLocation, country, countryDisplay, inputValue} = this.state;
     // console.log('country state', this.state)
     return (
       <span>
-        <Container country={country ? country.countryCode : ''}>
+        <Container country={country ? country.countryCode : ''} updating_profile={updating_profile}>
           <div className="fullwidth pageTitle">
             <p>{strings.register.welcome1}</p>
             <p>{strings.register.welcome2}</p>
@@ -268,13 +274,13 @@ class PostcodeSelector extends Component {
   }
 
   render() {
-    const {back, next, signupState: {country = {}}} = this.props;
+    const {back, next, signupState: {country = {}}, updating_profile} = this.props;
     const {inputValue, checkingPostcode, postcodeError} = this.state;
-    const {countryCode} = country
+    const {countryCode} = country;
 
     return (
       <span>
-        <Container country={countryCode}>
+        <Container country={countryCode} updating_profile={updating_profile}>
           <div className="fullwidth pageTitle">
             <h3>{strings.register.enter_postcode}</h3>
           </div>
@@ -372,9 +378,11 @@ class PostcodeSelector extends Component {
 class GenderSelector extends Component {
 
   render() {
-    const {back, next, signupState} = this.props;
+    const {back, next, signupState, updating_profile} = this.props;
     return (
-      <Container country={signupState.country ? signupState.country.countryCode : ''}>
+      <Container country={signupState.country ? signupState.country.countryCode : ''}
+        updating_profile={updating_profile}
+      >
         <div className="fullwidth pageTitle">
           <h3>{strings.register.gender}</h3>
         </div>
@@ -419,10 +427,12 @@ class AgeSelector extends Component {
   }
 
   render() {
-    const {back, next, signupState} = this.props;
+    const {back, next, signupState, updating_profile} = this.props;
     const {inputValue, allowContinue} = this.state;
     return (
-      <Container country={signupState.country ? signupState.country.countryCode : ''}>
+      <Container country={signupState.country ? signupState.country.countryCode : ''}
+        updating_profile={updating_profile}
+      >
         <div className="fullwidth pageTitle">
           <h3>{strings.register.years_of_age}</h3>
         </div>
@@ -492,7 +502,7 @@ class PoliticalAffiliationSelector extends Component {
   }
 
   render() {
-    const {back, next, signupState} = this.props;
+    const {back, next, signupState, updating_profile} = this.props;
 
     // if country == US - us_labels, else - non_us_labels
     let labels = strings.register.non_us_labels;
@@ -507,7 +517,9 @@ class PoliticalAffiliationSelector extends Component {
     }
 
     return (
-      <Container country={signupState.country ? signupState.country.countryCode : ''}>
+      <Container country={signupState.country ? signupState.country.countryCode : ''}
+        updating_profile={updating_profile}
+      >
         <div className="fullwidth pageTitle">
           <h3>{strings.register.political_affiliation}</h3>
           <p>{strings.register.political_affiliation_description}</p>
@@ -584,42 +596,59 @@ class AttemptSignup extends Component {
 
   register() {
     const {age, gender, postcode, country, political_affiliation} = this.props.signupState;
-    const {next, signupState} = this.props;
+    const {next, signupState, updating_profile, access_token} = this.props;
     let {survey} = this.props.signupState;
     if (!survey) { survey = null; }
+    const email = null;
     this.setState({awaitingResponse: true, error: null});
     // console.log('api.post', age, gender, postcode, country, political_affiliation, survey)
-    api.post('user/create', {json: {age, gender, postcode, country: country.countryCode, political_affiliation, survey}})
+    api.post('user/create', {
+      json: {age,
+        gender,
+        postcode,
+        country: country.countryCode,
+        political_affiliation,
+        survey,
+        email,
+        update: updating_profile
+      }
+    })
       .then((response) => { // The rest of the validation is down to the server
         // console.log('user/create',response.jsonData.data)
         if(response.jsonData.errorMessage !== undefined) {
           throw new Error(response.jsonData.errorMessage);
         }
-        chrome.storage.promise.local.set({'general_token': response.jsonData.data.token})
+        let general_token = response.jsonData.data.token;
+        if (updating_profile) {
+          general_token = access_token;
+        }
+        chrome.storage.promise.local.set({general_token})
           .then((res) => {
             // console.log('chrome.storage.promise.local',res, response.jsonData.data.token)
             next({userCount: response.jsonData.data.userCount});
           })
           .catch((e) => {
             console.log(e);
-            this.setState({error: strings.register.unknown_error, awaitingResponse: false})
+            this.setState({error: strings.register.unknown_error, awaitingResponse: false});
           });
       })
       .catch((error) => {
         if(error.response) {
-          this.setState({error: error.response.data.errorMessage, awaitingResponse: false})
-        }else {
-          this.setState({error: error.toString(), awaitingResponse: false})
+          this.setState({error: error.response.data.errorMessage, awaitingResponse: false});
+        } else {
+          this.setState({error: error.toString(), awaitingResponse: false});
         }
       })
   }
 
   render() {
-    const {back, next} = this.props;
+    const {back, next, updating_profile} = this.props;
     const {awaitingResponse, error} = this.state;
     // console.log('attemptRegistration', awaitingResponse, error)
     return (
-      <Container country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}>
+      <Container country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}
+        updating_profile={updating_profile}
+      >
         <div className="fullwidth" style={{marginBottom: '20px'}}>
           <h2>{strings.register.confirming} {awaitingResponse && <Spinner size="md" />}</h2>
           {error &&
@@ -850,7 +879,7 @@ const shareLinkTwitter = (title = strings.register.shareTwitter) => {
 class PostSignupShare extends Component {
 
   render() {
-    const {next, signupState} = this.props;
+    const {next, signupState, updating_profile} = this.props;
     const userCountry = signupState.country ? signupState.country.countryCode : null;
     const userCountryNative = countries_in_native_lang[userCountry];
     const input = signupState.userCount || null; //chrome.storage.promise.local.get('userCount') || null;
@@ -859,6 +888,7 @@ class PostSignupShare extends Component {
     return (
       <Container country={signupState.country ? signupState.country.countryCode : ''}>
         {!userCountry && <div className="fullwidth pageTitle" style={{margin: '0px 50px'}}>
+          {updating_profile && <h3>{strings.update.updated_success}</h3>}
           <h3>{strings.register.share}</h3>
         </div>}
 
@@ -897,6 +927,7 @@ class PostSignupShare extends Component {
 
         {userCountry && <Row style={{backgroundColor: 'transparent', minHeight: '120px', color: 'black'}}>
           <Col sm="1">
+            {updating_profile && <h3>{strings.update.updated_success}</h3>}
             <div className="statbox" style={{height: '140px', backgroundColor: 'transparent'}}>
             <div style={{padding: '5px 15px', height: '120px', margin: 'auto', textAlign: 'center'}}>
               <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '25px'}}>{sprintf(strings.register.share3, userCount, userCountryNative)}</span>
@@ -926,36 +957,36 @@ class PostSignupShare extends Component {
 }
 
 const signupStages = [
-  {
-    component: <LanguageSelector/>,
-  },
-  {
-    component: <TermsPrivacy/>,
-  },
-  {
-    component: <CountrySelector/>,
-  },
-  {
-    component: <PostcodeSelector/>,
-  },
-  {
-    component: <GenderSelector/>,
-  },
-  {
-    component: <AgeSelector/>,
-  },
-  {
-    component: <PoliticalAffiliationSelector/>,
-  },
-  // {
-  //   component: <OxfordSurvey/>,
-  // },
-  {
-    component: <AttemptSignup/>,
-  },
-  {
-    component: <PostSignupShare/>,
-  }
-];
+      {
+        component: <LanguageSelector/>,
+      },
+      {
+        component: <TermsPrivacy/>,
+      },
+      {
+        component: <CountrySelector/>,
+      },
+      {
+        component: <PostcodeSelector/>,
+      },
+      {
+        component: <GenderSelector/>,
+      },
+      {
+        component: <AgeSelector/>,
+      },
+      {
+        component: <PoliticalAffiliationSelector/>,
+      },
+      // {
+      //   component: <OxfordSurvey/>,
+      // },
+      {
+        component: <AttemptSignup/>,
+      },
+      {
+        component: <PostSignupShare/>,
+      }
+    ];
 
 export default signupStages;

@@ -45,7 +45,6 @@ export default class PageResults extends Component {
     this.showTargetingFunc = this.showTargetingFunc.bind(this);
     this.hideTargetingFunc = this.hideTargetingFunc.bind(this);
     this.showAdvr = this.showAdvr.bind(this);
-    this.updateProfile = this.updateProfile.bind(this);
   }
 
   refreshUserData() {
@@ -205,10 +204,6 @@ export default class PageResults extends Component {
     }
 
     this.setState({party: parties[partyIndex], showingTargeting: false});
-  }
-
-  updateProfile() {
-    console.log('Update user profile')
   }
 
   render() {
@@ -461,10 +456,10 @@ export default class PageResults extends Component {
             {view === "data_deleted" ? <span>Data deleted</span> :
               <span className='link_underline' style={{cursor: 'pointer'}} onClick={(e) => this.requestDeleteData(e, view)}>{strings.results.delete_data}</span>}
           </span>
-          {/* <span>
+          <span>
             <span>&nbsp;|&nbsp;&nbsp;</span>
-            <span className='link_underline' style={{cursor: 'pointer'}} onClick={this.updateProfile}>{strings.results.update_profile}</span>
-          </span>*/}
+            <span className='link_underline' style={{cursor: 'pointer'}} onClick={() => this.props.updateProfile(true)}>{strings.update.update_profile}</span>
+          </span>
           {/* <Button type="link" href={strings.links.facebook.url} style={{color: '#6d84b4'}}>{strings.links.facebook.title}</Button>
           <Button type="link" href={strings.links.twitter.url} style={{color: '#00aced'}}>{strings.links.twitter.title}</Button>
           <Button type="link" onClick={() => changeLocale('en')}>English</Button>

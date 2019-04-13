@@ -11,25 +11,38 @@ export default class PageRegister extends Component {
   constructor() {
     super()
     this.state = {
-      signupStage: 0
+      signupStage: 0,
     }
 
     this.attemptRegistration = this.attemptRegistration.bind(this);
     this.next = this.next.bind(this);
     this.back = this.back.bind(this);
   }
+  componentWillMount() {
+    if (this.props.updating_profile) {
+      this.props.api.get('user')
+        .then((response) => {
+          this.setState({country: {countryCode: response.jsonData.data.country}})
+        })
+        .catch((error) => {
+          console.log(error)
+        });
+      }
+  }
 
   render() {
     let {signupStage} = this.state;
-    // Here you can enable the survey at stage 7
+    // Here country collection is disabled for updating_profile route
     // const usSignup = (this.state.country && this.state.country.countryCode === "US") && strings.getLanguage() === "en";
-    // if (signupStage === 7) { //&& !usSignup
-    //   signupStage += 1
-    // }
+    if (signupStage === 2 && this.props.updating_profile) { //&& !usSignup
+      signupStage += 1
+    }
     const childProps = { // Clone component to inject new props
       signupState: this.state,
       back: this.back,
       next: this.next,
+      updating_profile: this.props.updating_profile,
+      access_token: this.props.access_token,
     };
     // console.log('signupState', this.state)
     return (
@@ -53,11 +66,11 @@ export default class PageRegister extends Component {
 
   next(stateChange = {}) { // Change which stage is shown, updating the state
     let {signupStage} = this.state;
-    // Here you can enable the survey at stage 7
+    // Here country collection is disabled for updating_profile route
     // const usSignup = (this.state.country && this.state.country.countryCode === "US") && strings.getLanguage() === "en";
-    // if (signupStage === 7){ //&& !usSignup) {
-    //   signupStage += 1
-    // }
+    if (signupStage === 2 && this.props.updating_profile){ //&& !usSignup) {
+      signupStage += 1
+    }
     const {registrationComplete} = this.props;
     // console.log("NEXT, signupStage to be increased", signupStage, stateChange)
     if(signupStage + 1 >= signupStages.length) {
