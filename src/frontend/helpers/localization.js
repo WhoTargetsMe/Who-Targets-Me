@@ -11,6 +11,14 @@ const strings = new LocalizedStrings({
       welcome4: 'so we know your next election and voting system',
       select_language: 'Select your language',
       terms: '<span>By continuing you agree to the <a href="https://whotargets.me/en/terms/">terms and conditions</a> and <a href="https://whotargets.me/en/privacy-policy/">privacy policy</a></span>',
+      terms1: 'By continuing you agree to the',
+      terms2: 'terms and conditions',
+      terms3: 'and',
+      terms4: 'privacy policy',
+      terms5: 'This browser extension collects and stores:',
+      terms6: 'An optional anonymous profile created by you (location, language setting, age, gender, your general political view)',
+      terms7: 'The ads that appear in your Facebook newsfeed (including the time and date you saw them)',
+      terms8: 'You can uninstall the extension and/or delete the data you’ve contributed to the project at any time. Your data is yours and anonymous - we will never attempt to identify you.',
       agree: 'I Agree',
       back: 'Back',
       next: 'Next',
@@ -92,7 +100,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Update your profile',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Thank you. Your profile was successfully updated.',
     },
     links: {
       website: {
@@ -127,6 +135,14 @@ const strings = new LocalizedStrings({
       welcome4: 'Wir kennen deine nächste Wahl und dein nächstes Wahlsystem.',
       select_language: 'Bitte wähle deine Sprache',
       terms: '<span>Indem du fortfährst, stimmst du den Allgemeinen <a href="https://whotargets.me/en/terms/">Geschäftsbedingungen</a> und der <a href="https://whotargets.me/en/privacy-policy/">Datenschutzerklärung</a> zu.</span>',
+      terms1: 'Indem du fortfährst, stimmst du den Allgemeinen',
+      terms2: 'Geschäftsbedingungen',
+      terms3: 'und der',
+      terms4: 'Datenschutzerklärung zu',
+      terms5: 'Diese Browser-Erweiterung sammelt und speichert:',
+      terms6: 'Ein optionales anonymes Profil von Ihnen erstellt (Ort, Spracheinstellung, Alter, Geschlecht, Ihre allgemeine politische Ansicht)',
+      terms7: 'Die Anzeigen, die in Ihrem Facebook-Newsfeed (einschließlich Datum und Uhrzeit Sie sie gesehen haben) erscheinen',
+      terms8: 'Sie können die Erweiterung deinstallieren und / oder löschen Sie die Daten, die Sie jederzeit zum Projekt beigetragen haben. Ihre Daten sind bei Ihnen und anonym - wir werden Dich nie zu identifizieren versuchen.',
       agree: 'Ich stimme zu',
       back: 'Zurück',
       next: 'Weiter',
@@ -208,7 +224,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Aktualisiere dein Profil',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Vielen Dank. Dein Profil wurde erfolgreich aktualisiert.',
     },
     links: {
       website: {
@@ -243,6 +259,14 @@ const strings = new LocalizedStrings({
       welcome4: 'para que podamos conocer mejor tu sistema electoral y las próximas elecciones en tu país',
       select_language: "Por favor, selecciona tu idioma",
       terms: '<span>Al continuar aceptas los <a href="https://whotargets.me/en/terms/">términos de uso</a> y <a href="https://whotargets.me/en/privacy-policy/">la política de privacidad</a></span>',
+      terms1: 'Al continuar aceptas los',
+      terms2: 'términos de uso',
+      terms3: 'y',
+      terms4: 'la política de privacidad',
+      terms5: 'Esta extensión para el navegador recoge y almacena:',
+      terms6: 'Un perfil anónimo opcional creado por usted (ubicación, configuración de idioma, edad, sexo, su punto de vista político general)',
+      terms7: 'Los anuncios que aparecen en su suministro de noticias de Facebook (incluyendo la fecha y hora que los viste)',
+      terms8: 'Puede desinstalar la extensión y / o eliminar los datos que ha contribuido al proyecto en cualquier momento. Sus datos es suya y anónima - nunca vamos a tratar de identificarlo.',
       agree: "Acepto",
       back: "Volver",
       next: "Siguiente",
@@ -324,7 +348,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Actualiza tu perfil',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Gracias. Su perfil se ha actualizado correctamente.',
     },
     links: {
       website: {
@@ -359,6 +383,14 @@ const strings = new LocalizedStrings({
       welcome4: 'quindi conosciamo il tuo prossimo sistema elettorale e di voto',
       select_language: "Seleziona la tua lingua preferita",
       terms: '<span>Procedendo con la registrazione accetti <a href="https://whotargets.me/en/terms/">i termini di utilizzo</a> e <a href="https://whotargets.me/en/privacy-policy/">la privacy policy</a></span>',
+      terms1: 'Procedendo con la registrazione accetti',
+      terms2: 'i termini di utilizzo',
+      terms3: 'e',
+      terms4: 'la privacy policy',
+      terms5: 'Questa estensione per il browser raccoglie e memorizza:',
+      terms6: 'Un profilo anonimo opzionale creato da voi (posizione, impostazione della lingua, età, sesso, la vista politico generale)',
+      terms7: 'Gli annunci che appaiono nel vostro newsfeed di Facebook (tra cui la data e l\'ora che li hai visti)',
+      terms8: 'È possibile disinstallare l\'estensione e / o cancellare i dati che hai contribuito al progetto in qualsiasi momento. I tuoi dati sono tuo e anonima - non saremo mai tentare di identificare l\'utente.',
       agree: 'Accetto',
       back: 'Indietro',
       next: 'Prossimo',
@@ -440,7 +472,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Aggiorna il tuo profilo',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Grazie. Il tuo profilo è stato aggiornato con successo.',
     },
     links: {
       website: {
@@ -475,6 +507,14 @@ const strings = new LocalizedStrings({
       welcome4: 'tehát ismerjük a következő választási és szavazási rendszert',
       select_language: "Válasszon nyelvet",
       terms: '<span>A folytatással elfogadja a <a href="https://whotargets.me/en/terms/">felhasználási feltételeket</a> és <a href="https://whotargets.me/en/privacy-policy/">az adatkezelési irányelveket</a></span>',
+      terms1: 'A folytatással elfogadja a',
+      terms2: 'felhasználási feltételeket',
+      terms3: 'és',
+      terms4: 'az adatkezelési irányelveket',
+      terms5: 'Ez a böngésző kiterjesztés összegyűjti és tárolja:',
+      terms6: 'Egy opcionális névtelen profilt az Ön által létrehozott (hely, nyelv beállítás, kor, nem, az általános politikai nézet)',
+      terms7: 'A hirdetések jelennek meg a Facebook hírcsatorna (beleértve az időt és a dátumot, hogy látta őket)',
+      terms8: 'Akkor távolítsa el a hosszabbító és / vagy törli az adatokat, amit hozzájárult a projekt bármikor. Adatai tiéd, és anonim - soha nem fogjuk próbálja az Ön azonosítására.',
       agree: 'Elfogadom',
       back: 'Vissza',
       next: 'Tovább',
@@ -556,7 +596,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Frissítse profilját',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: "Köszönöm. Az Ön profilja sikeresen frissítve.",
     },
     links: {
       website: {
@@ -591,6 +631,14 @@ const strings = new LocalizedStrings({
       welcome4: 'Чтобы мы знали, когда у вас будут следующие выборы.',
       select_language: 'Выберите нужный язык',
       terms: '<span>Продолжая, вы соглашаетесь с <a href="https://whotargets.me/en/terms/">условиями и положениями</a> и <a href="https://whotargets.me/en/privacy-policy/">политикой конфиденциальности</a></span>',
+      terms1: 'Продолжая, вы соглашаетесь с',
+      terms2: 'условиями и положениями',
+      terms3: 'и',
+      terms4: 'политикой конфиденциальности',
+      terms5: 'Это расширение браузера собирает и сохраняет:',
+      terms6: 'Анонимный профиль, созданный вами (индекс, настройки языка, возраст, пол, ваше общее политическое мнение)',
+      terms7: 'Рекламные объявления, которые появляются в вашей ленте Facebook (включая дату и время просмотра)',
+      terms8: 'Вы можете удалить расширение и/или данные, которые вы предоставили проекту, в любое время. Ваши данные анонимизированны и пренадлежат вам - мы никогда не будем пытаться идентифицировать вас.',
       agree: 'Согласен',
       back: 'Назад',
       next: 'Вперед',
@@ -672,7 +720,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Обновить профиль',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Спасибо. Ваш профиль был успешно обновлен.',
     },
     links: {
       website: {
@@ -707,6 +755,14 @@ const strings = new LocalizedStrings({
       welcome4: 'Lai mēs zinātu, kad jums ir nākamās vēlēšanas.',
       select_language: 'Lūdzu, izvēlieties vēlamo valodu',
       terms: '<span>Turpinot jūs piekrītat <a href="https://whotargets.me/en/terms/">lietošanas noteikumiem</a> un <a href="https://whotargets.me/en/privacy-policy/">konfidencialitātes politikai</a></span>',
+      terms1: 'Turpinot jūs piekrītat',
+      terms2: 'lietošanas noteikumiem',
+      terms3: 'un',
+      terms4: 'konfidencialitātes politikai',
+      terms5: 'Šī pārlūkprogramma paplašinājums apkopo un uzglabā:',
+      terms6: 'Izvēles anonīms profils izveidots ar jums (atrašanās vieta, valodas iestatījumu, vecums, dzimums, vispārīgu informāciju par jūsu politiskie uzskati)',
+      terms7: 'Reklāmas, kas parādās jūsu Facebook newsfeed (tostarp laiks un datums, kad redzēju tos)',
+      terms8: 'Jūs varat atinstalēt paplašinājumu un / vai dzēst datus, kurus esat veicināja projektam jebkurā laikā. Jūsu dati ir jūsu un anonīms - mēs nekad mēģinājums jūs identificētu.',
       agree: 'Piekrītu',
       back: 'Atpakaļ',
       next: 'Tālāk',
@@ -788,7 +844,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Atjaunināt savu profilu',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Paldies. Jūsu profils ir veiksmīgi atjaunināts.',
     },
     links: {
       website: {
@@ -823,6 +879,14 @@ const strings = new LocalizedStrings({
       welcome4: 'Então, nós sabemos o seu próximo sistema de eleição e votação',
       select_language: 'Por favor, selecione seu idioma preferido',
       terms: '<span>Ao continuar, você estará concordando com os <a href="https://whotargets.me/en/terms/">termos de uso</a> e <a href="https://whotargets.me/en/privacy-policy/">Política de Privacidade</a></span>',
+      terms1: 'Ao continuar, você estará concordando com os',
+      terms2: 'termos de uso',
+      terms3: 'e',
+      terms4: 'Política de Privacidade',
+      terms5: 'Esta extensão do navegador coleta e armazena:',
+      terms6: 'Um perfil anônimo opcional criado por você (localização, configuração de idioma, idade, sexo, sua visão política geral)',
+      terms7: 'Os anúncios que aparecem em seu feed de notícias Facebook (incluindo a data ea hora que você viu-los)',
+      terms8: 'Você pode desinstalar a extensão e / ou apagar os dados que contribuíram para o projeto a qualquer momento. Seus dados são seus e anônimo - nós nunca tentará identificá-lo.',
       agree: 'Eu concordo',
       back: 'Voltar',
       next: 'Avançar',
@@ -906,7 +970,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Atualize seu perfil',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Obrigado. Seu perfil foi atualizado com sucesso.',
     },
     links: {
       website: {
@@ -941,6 +1005,14 @@ const strings = new LocalizedStrings({
       welcome4: 'Så vi vet när ditt nästa val är och hur ditt valsystem fungerar.',
       select_language: 'Välj språk',
       terms: '<span>Genom att fårtsätta så godkänner du  <a href="https://whotargets.me/en/terms/">användarvilkoren</a> och <a href="https://whotargets.me/en/privacy-policy/">integritetspolicyn</a></span>',
+      terms1: 'Genom att fårtsätta så godkänner du',
+      terms2: 'användarvilkoren',
+      terms3: 'och',
+      terms4: 'integritetspolicyn',
+      terms5: 'Denna webbläsartillägg samlar in och lagrar:',
+      terms6: 'En valfri anonym profil som skapats av dig (plats, språkinställning, ålder, kön, din allmänna politiska vy)',
+      terms7: 'De annonser som visas i ditt Facebook nyhets (inklusive tid och datum du såg dem)',
+      terms8: 'Du kan avinstallera tillägget och / eller radera data som du har bidragit till projektet när som helst. Dina uppgifter är ditt och och anonym - vi kommer aldrig att försöka identifiera dig.',
       agree: 'Jag godkänner',
       back: 'Tillbaka',
       next: 'Nästa',
@@ -1022,7 +1094,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Uppdatera din profil',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Tack. Din profil har uppdaterats.',
     },
     links: {
       website: {
@@ -1056,7 +1128,15 @@ const strings = new LocalizedStrings({
       welcome3: 'це допоможе показати вам відповідну версію Who Targets Me.',
       welcome4: 'щоб ми мали інформацію про наступні вибори у вашому регіоні та виборчу систему',
       select_language: 'Оберіть мову',
-      terms: '<span>Продовжуючи користуватися додатком, ви надаєте згоду з <a href="https://whotargets.me/en/terms/">Умовами та Правилами користування</a> та <a href="https://whotargets.me/en/privacy-policy/">політикою конфіденційності</a>.</span>',
+      terms: '<span>Продовжуючи користуватися додатком, ви надаєте згоду з <a href="https://whotargets.me/en/terms/">Умовами та Правилами користування</a> та <a href="https://whotargets.me/en/privacy-policy/">політикою конфіденційності</a></span>',
+      terms1: 'Продовжуючи користуватися додатком, ви надаєте згоду з',
+      terms2: 'Умовами та Правилами користування',
+      terms3: 'та',
+      terms4: 'політикою конфіденційності',
+      terms5: 'Цей додаток збирає та зберігає такі дані:',
+      terms6: 'Створений вами анонімний профіль (місцезнаходження на основі індексу, налаштування мови, вік, стать, ваші загальні політичні вподобання)',
+      terms7: 'Рекламні оголошення, які з\'являються у вашій стрічці новин Facebook (в тому числі час та дату перегляду оголошення)',
+      terms8: 'Ви можете деінсталювати цей додаток та/або дані, які ви надали під час участі у проекті, у будь-який час. Ваші дані анонімізовані та належать вам - ми ніколи не намагатимемося ідентифікувати вас.',
       agree: 'Погоджуюсь',
       back: 'Назад',
       next: 'Вперед',
@@ -1138,7 +1218,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Оновити профіль',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Дякуємо. Ваш профіль був успішно оновлений.',
     },
     links: {
       website: {
@@ -1173,6 +1253,14 @@ const strings = new LocalizedStrings({
       welcome4: 'niin tiedämme milloin seuraavat vaalit tapahtuvat maassasi',
       select_language: 'Valitse kielesi',
       terms: '<span>Jatkamalla hyväksyt myös <a href="https://whotargets.me/en/terms/">palvelun käyttöehdot</a> ja <a href="https://whotargets.me/en/privacy-policy/">yksityisyyskäytäntömme</a></span>',
+      terms1: 'Jatkamalla hyväksyt myös',
+      terms2: 'palvelun käyttöehdot',
+      terms3: 'ja',
+      terms4: 'yksityisyyskäytäntömme',
+      terms5: 'Tämä selainlaajennus kerää ja tallentaa:',
+      terms6: 'Valinnainen anonyymin profiilin luotu sinulle (sijainti, kieliasetuksen, ikä, sukupuoli, yleistä poliittista kantaa)',
+      terms7: 'mainoksia, jotka näkyvät Facebookin uutissyöte (esimerkiksi ajan ja päivämäärän näit niitä)',
+      terms8: 'Voit poistaa laajennuksen ja / tai poistaa tietoja olet auttaneet projektia milloin tahansa. Tietosi on sinun ja anonyymi - emme koskaan yritä tunnistamiseen.',
       agree: 'Hyväksyn',
       back: 'Edellinen',
       next: 'Seuraava',
@@ -1254,7 +1342,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Päivitä profiilisi',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Kiitos. Profiilisi päivittäminen onnistui.',
     },
     links: {
       website: {
@@ -1289,6 +1377,14 @@ const strings = new LocalizedStrings({
       welcome4: 'nous savons ainsi quand sont vos prochaines élections et quel est votre système de vote',
       select_language: 'Sélectionnez votre langue',
       terms: '<span>En procédant, vous acceptez nos <a href="https://whotargets.me/en/terms/">conditions générales</a> et notre <a href="https://whotargets.me/en/privacy-policy/">politique de confidentialité</a></span>',
+      terms1: 'En procédant, vous acceptez nos',
+      terms2: 'conditions générales',
+      terms3: 'et notre',
+      terms4: 'politique de confidentialité',
+      terms5: 'Cette extension du navigateur recueille et stocke:',
+      terms6: 'Un option profil anonyme créé par vous (emplacement, réglage de la langue, l\'âge, le sexe, votre point de vue politique générale)',
+      terms7: 'Les annonces qui apparaissent dans votre fil d\'actualité Facebook (y compris l\'heure et la date vous les avez vus)',
+      terms8: 'Vous pouvez désinstaller l\'extension et / ou supprimer les données que vous avez contribué au projet à tout moment. Vos données est le vôtre et anonyme - nous ne pourrons jamais tenter de vous identifier.',
       agree: 'Accepter',
       back: 'Précédent',
       next: 'Suivant',
@@ -1370,7 +1466,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Mettre à jour votre profil',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Je vous remercie. Votre profil a été mis à jour avec succès.',
     },
     links: {
       website: {
@@ -1405,6 +1501,14 @@ const strings = new LocalizedStrings({
       welcome4: 'zodat wij uw eerstvolgende verkiezingen en kiessysteem kunnen bepalen',
       select_language: 'Kies uw taal',
       terms: '<span>Door verder te gaan ga je akkoord met de <a href="https://whotargets.me/en/terms/">voorwaarden</a> and <a href="https://whotargets.me/en/privacy-policy/">de privacyverklaring</a></span>',
+      terms1: 'Door verder te gaan ga je akkoord met de',
+      terms2: 'voorwaarden',
+      terms3: 'and',
+      terms4: 'de privacyverklaring',
+      terms5: 'Deze browser extensie verzamelt en bewaart:',
+      terms6: 'Een optionele anonieme profiel gemaakt door u (locatie, taalinstelling, leeftijd, geslacht, uw algemene politieke mening)',
+      terms7: 'De advertenties die in uw Facebook-nieuwsfeed verschijnen (met inbegrip van de tijd en de datum waarop u ze zag)',
+      terms8: 'U kunt de extensie verwijderen en / of de gegevens die u heeft bijgedragen aan het project te allen tijde verwijderen. Uw gegevens van jou is en anoniem - we zullen nooit proberen om u te identificeren.',
       agree: 'Akkoord',
       back: 'Vorige',
       next: 'Volgende',
@@ -1486,7 +1590,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Update je profiel',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Dank je. Je profiel is bijgewerkt.'
     },
     links: {
       website: {
@@ -1521,6 +1625,14 @@ const strings = new LocalizedStrings({
       welcome4: '   ', //'כדי שנכיר את מערכת הבחירות הבאה שלכם',
       select_language: 'בחרו את השפה שלכם',
       terms: '<span>אנא אשרו <a href="https://whotargets.me/en/terms/">את תנאי השימוש</a> ואת <a href="https://whotargets.me/en/privacy-policy/">הצהרת הפרטיות</a> </span>',
+      terms1: 'אנא אשרו',
+      terms2: 'את תנאי השימוש',
+      terms3: 'ואת',
+      terms4: 'הצהרת הפרטיות',
+      terms5: 'הרחבת דפדפן זה אוספת ומאחסנת:',
+      terms6: 'פרופיל אנונימי אופציונלי שנוצרו על ידך (מיקום, שפה הגדרה, גיל, מין, השקפה פוליטית כללית שלך)',
+      terms7: 'המודעות המופיעות בעדכון החדשות פייסבוק שלך (כולל את השעה והתאריך שראית אותם)',
+      terms8: 'אתה יכול להסיר את ההארכה ו / או למחוק את הנתונים שאספה תרם לפרויקט בכל עת. הנתונים שלך הוא שלך ואנונימי - אנחנו אף פעם לא ננסה לזהות אותך.',
       agree: 'אני מסכימ/ה',
       back: 'הקודם',
       next: 'הבא',
@@ -1602,7 +1714,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'עדכן את הפרופיל שלך',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'תודה. הפרופיל שלך עודכן בהצלחה.',
     },
     links: {
       website: {
@@ -1637,6 +1749,14 @@ const strings = new LocalizedStrings({
       welcome4: 'за да знаем следващата ви система за избори и гласуване',
       select_language: 'Изберете език',
       terms: '<span>Продължавайки, Вие се съгласявате с <a href="https://whotargets.me/en/terms/">terms и conditions</a> и <a href="https://whotargets.me/en/privacy-policy/">privacy policy</a></span>',
+      terms1: 'Продължавайки, Вие се съгласявате с',
+      terms2: 'правила и условия',
+      terms3: 'and',
+      terms4: 'декларация за поверителност',
+      terms5: 'Това разширение браузър събира и съхранява:',
+      terms6: 'Като опция се предлага анонимен профил, създаден от вас (местоположение, настройката за език, възраст, пол, вашият общото политическо становище)',
+      terms7: 'Рекламите, които се показват във Facebook новинарски поток (включително датата и часа ги видях)',
+      terms8: 'Можете да деинсталирате разширение и / или изтриване на данните, които сте допринесли за проекта по всяко време. Вашите данни е твое и анонимен - ние никога няма да се опита да ви идентифицира.',
       agree: 'Съгласен съм',
       back: 'Връщане',
       next: 'Напред',
@@ -1718,7 +1838,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Актуализиране на вашия профил',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Благодаря ти. Вашият профил е актуализирана успешно.',
     },
     links: {
       website: {
@@ -1753,6 +1873,14 @@ const strings = new LocalizedStrings({
       welcome4: 'abychom zjistili, jak budete příště volit a čím se při volbách řídíte',
       select_language: 'Zvolte jazyk',
       terms: '<span>Budete-li pokračovat, souhlasíte s <a href="https://whotargets.me/en/terms/">podmínkami</a> a <a href="https://whotargets.me/en/privacy-policy/">zásadami ochrany soukromí</a></span>',
+      terms1: 'Budete-li pokračovat, souhlasíte s',
+      terms2: 'podmínkami',
+      terms3: 'a',
+      terms4: 'zásadami ochrany soukromí',
+      terms5: 'Toto rozšíření prohlížeče sbírá a ukládá:',
+      terms6: 'Volitelný anonymní profil vytvořený vás (umístění, nastavení jazyka, věku, pohlaví, váš celkový politický pohled)',
+      terms7: 'Reklamy, které se zobrazují ve vašem Facebook kanál zpráv (včetně času a data si je viděl)',
+      terms8: 'Můžete odinstalovat rozšíření a / nebo odstranění dat, které jste přispěli k projektu kdykoli. Vaše data jsou vaše a anonymní - nikdy nebudeme pokoušet k vaší identifikaci.',
       agree: 'Souhlasím',
       back: 'Zpět',
       next: 'Další',
@@ -1834,7 +1962,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Aktualizujte svůj profil',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Děkuji. Váš profil byl úspěšně aktualizován.',
     },
     links: {
       website: {
@@ -1869,6 +1997,14 @@ const strings = new LocalizedStrings({
       welcome4: 'aitab meil teada teie järgmisi valimisi ja hääletamise süsteemi',
       select_language: 'Valige oma keel',
       terms: '<span>Jätkamisel nõustute <a href="https://whotargets.me/en/terms/">kasutustingimustega</a> ja <a href="https://whotargets.me/en/privacy-policy/">eraelu puutumatuse normidega</a></span>',
+      terms1: 'Jätkamisel nõustute',
+      terms2: 'kasutustingimustega',
+      terms3: 'ja',
+      terms4: 'eraelu puutumatuse normidega',
+      terms5: 'See brauserilaiendus kogub ja salvestab:',
+      terms6: 'Valikuline anonüümne profiili teie enda loodud (asukoht, keel seade, vanuse, soo, teie üldist poliitilist vaadet)',
+      terms7: 'reklaame, mis ilmuvad teie Facebook uudistevoog (sealhulgas kuupäev ja kellaaeg nägid neid)',
+      terms8: 'Võite eemaldada pikendamine ja / või kustutab andmed olete aidanud projekti igal ajal. Teie andmed on sinu ja anonüümne - me kunagi püüdke tuvastamiseks.',
       agree: 'Nõustun',
       back: 'Tagasi',
       next: 'Järgmine',
@@ -1950,7 +2086,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Uuenda oma profiili',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Aitäh. Teie profiil edukalt uuendatud.',
     },
     links: {
       website: {
@@ -1984,7 +2120,15 @@ const strings = new LocalizedStrings({
       welcome3: 'Βοηθήστε μας να σας δείξουμε τη σωστή έκδοση του Who Targets Me?',
       welcome4: 'Ώστε να ξέρουμε τις επόμενες εκλογές και το σύστημα εκλογής',
       select_language: 'Επιλέξτε τη γλώσσα σας',
-      terms: '<span>Συνεχίζοντας, συμφωνείτε με τους <a href=»https://whotargets.me/en/terms/»>όρους και προϋποθέσεις</a> και την <a href=»https://whotargets.me/en/privacy-policy/»>πολιτική απορρήτου</a></span>',
+      terms: '<span>Συνεχίζοντας, συμφωνείτε με τους <a href="https://whotargets.me/en/terms"/>όρους και προϋποθέσεις</a> και την <a href="https://whotargets.me/en/privacy-policy"/>πολιτική απορρήτου</a></span>',
+      terms1: 'Συνεχίζοντας, συμφωνείτε με τους',
+      terms2: 'όρους και προϋποθέσεις',
+      terms3: 'και την',
+      terms4: 'πολιτική απορρήτου',
+      terms5: 'Αυτή η επέκταση του προγράμματος περιήγησης συλλέγει και αποθηκεύει:',
+      terms6: 'Ένα προαιρετικό ανώνυμο προφίλ που δημιουργήθηκε από εσάς (τοποθεσία, ρύθμιση γλώσσας, την ηλικία, το φύλο, τη γενική πολιτική σας άποψη)',
+      terms7: 'Οι διαφημίσεις που εμφανίζονται στο Facebook newsfeed σας (συμπεριλαμβανομένου του χρόνου και την ημερομηνία που τα είδα)',
+      terms8: 'Μπορείτε να καταργήσετε την εγκατάσταση της επέκτασης και / ή να διαγράψετε τα δεδομένα που έχετε συνεισφέρει στο έργο ανά πάσα στιγμή. Τα δεδομένα σας είναι δική σας και ανώνυμα - ποτέ δεν θα προσπαθήσει να σας αναγνωρίσει.',
       agree: 'Συμφωνώ',
       back: 'Πίσω',
       next: 'Επόμενο',
@@ -2066,7 +2210,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Ενημέρωση του προφίλ σας',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Ευχαριστώ. Το προφίλ σας ενημερώθηκε επιτυχώς.',
     },
     links: {
       website: {
@@ -2101,6 +2245,14 @@ const strings = new LocalizedStrings({
       welcome4: 'значи, го знаеме вашиот следен изборен и гласачки систем',
       select_language: 'Изберете го вашиот јазик',
       terms: '<span>Продолжувајќи се согласувате со <a href="https://whotargets.me/en/terms/">правилата и условите</a> и <a href="https://whotargets.me/en/privacy-policy/">политика за приватност</a></span>',
+      terms1: 'Продолжувајќи се согласувате со',
+      terms2: 'правилата и условите',
+      terms3: 'и',
+      terms4: 'политика за приватност',
+      terms5: 'Оваа екстензија пребарувач собира и продавници:',
+      terms6: 'Изборен анонимни профил создаден од вас (локација, поставување јазик, возраст, пол, вашиот општ политички став)',
+      terms7: 'На рекламите, кои се појавуваат во вашиот Фејсбук newsfeed (вклучувајќи го времето и датумот што ги видов)',
+      terms8: 'Можете да деинсталирање на продолжување и / или бришење на податоците сте придонеле за проектот во секое време. Вашите податоци е твое и анонимен - ние никогаш не ќе се обиде да ве идентификува.',
       agree: 'Се согласувам',
       back: 'Назад',
       next: 'Следно',
@@ -2182,7 +2334,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Ажурирајте го вашиот профил',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Ви благодарам. Твојот профил е успешно ажурирана.',
     },
     links: {
       website: {
@@ -2217,6 +2369,14 @@ const strings = new LocalizedStrings({
       welcome4: 'abyśmy znali następne wybory, w których będziesz głosować, i system głosowania',
       select_language: 'Wybierz język',
       terms: '<span>Kontynuując, akceptujesz <a href="https://whotargets.me/en/terms/">regulamin</a> i <a href="https://whotargets.me/en/privacy-policy/">politykę prywatności</a></span>',
+      terms1: 'Kontynuując, akceptujesz',
+      terms2: 'regulamin',
+      terms3: 'i',
+      terms4: 'politykę prywatności',
+      terms5: 'To rozszerzenie przeglądarki gromadzi i przechowuje:',
+      terms6: 'Opcjonalny anonimowy profil stworzony przez Ciebie (położenie, ustawienie języka, wieku, płci, twój widok ogólny polityczny)',
+      terms7: 'Reklamy, które pojawiają się w twojej kanału informacyjnego Facebooku (łącznie z datą i godziną ich SAW)',
+      terms8: 'można odinstalować rozszerzenie i / lub usuwać dane, które już przyczyniło się do projektu w dowolnym momencie. Twoje dane są twoje i anonimowy - nigdy nie będziemy próbować zidentyfikować.',
       agree: 'Akceptuję',
       back: 'Wróć',
       next: 'Dalej',
@@ -2298,7 +2458,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Zaktualizuj swój profil',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Dziękuję Ci. Twój profil został pomyślnie zaktualizowany.',
     },
     links: {
       website: {
@@ -2333,6 +2493,14 @@ const strings = new LocalizedStrings({
       welcome4: 'astfel putem şti exact când sunt următoarele alegeri la dvs. precum şi sistemul de vot',
       select_language: 'Selectaţi limba',
       terms: '<span>Continuând, înseamnă că sunteţi de acord cu <a href="https://whotargets.me/en/terms/">termenii şi condiţiile</a> şi <a href="https://whotargets.me/en/privacy-policy/">politica privind confidenţialitatea datelor</a></span>',
+      terms1: 'Continuând, înseamnă că sunteţi de acord cu',
+      terms2: 'termenii şi condiţiile',
+      terms3: 'şi',
+      terms4: 'politica privind confidenţialitatea datelor',
+      terms5: 'Această extensie de browser colectează și stochează:',
+      terms6: 'Un profil de anonim opțional creat de tine (locație, setarea de limbă, vârstă, sex, opinia dumneavoastră generală politică)',
+      terms7: 'Anunțurile care apar în feed de știri Facebook (inclusiv ora și data la care le-a văzut)',
+      terms8: 'Puteți dezinstala extensia și / sau șterge datele pe care le-ați contribuit la proiect în orice moment. Datele dvs. este a ta și anonim - nu vom încerca să vă identificați.',
       agree: 'De acord',
       back: 'Înapoi',
       next: 'Înainte',
@@ -2414,7 +2582,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Actualizeaza-ti profilul',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Mulțumesc. Profilul dvs. a fost actualizat cu succes.',
     },
     links: {
       website: {
@@ -2449,6 +2617,14 @@ const strings = new LocalizedStrings({
       welcome4: 'aby sme poznali Váš budúci volebný i hlasovací systém',
       select_language: 'Vyberte si jazyk',
       terms: '<span>V prípade, že pokračujete v prezeraní stránky, vyjadrujete súhlas s <a href="https://whotargets.me/en/terms/">podmienkami </a> a <a href="https://whotargets.me/en/privacy-policy/">politikou ochrany osobných údajov</a></span>',
+      terms1: 'V prípade, že pokračujete v prezeraní stránky, vyjadrujete súhlas s',
+      terms2: 'podmienkami',
+      terms3: 'a',
+      terms4: 'politikou ochrany osobných údajov',
+      terms5: 'Toto rozšírenie prehliadača zbiera a ukladá:',
+      terms6: 'Voliteľný anonymné profil vytvorený vás (umiestnenie, nastavenie jazyka, veku, pohlavia, váš celkový politický pohľad)',
+      terms7: 'Reklamy, ktoré sa zobrazujú vo vašom Facebook kanál správ (vrátane času a dátumu si ich videl)',
+      terms8: 'Môžete odinštalovať rozšírenie a / alebo odstránenie dát, ktoré ste prispeli k projektu kedykoľvek. Vaše dáta sú vaše a anonymné - nikdy nebudeme pokúšať na vašu identifikáciu.',
       agree: 'Súhlasím',
       back: 'Späť',
       next: 'Ďalej',
@@ -2530,7 +2706,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Aktualizujte svoj profil',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Ďakujem. Váš profil bol úspešne aktualizovaný.',
     },
     links: {
       website: {
@@ -2565,6 +2741,14 @@ const strings = new LocalizedStrings({
       welcome4: 'tako poznamo vaš naslednji volilni in glasovalni sistem',
       select_language: 'Izberite svoj jezik',
       terms: '<span>Z nadaljevanjem se strinjate s <a href="https://whotargets.me/en/terms/">pogoji uporabe</a> in <a href="https://whotargets.me/en/privacy-policy/">politiko varovanja zasebnosti</a></span>',
+      terms1: 'Z nadaljevanjem se strinjate s',
+      terms2: 'pogoji uporabe',
+      terms3: 'in',
+      terms4: 'politiko varovanja zasebnosti',
+      terms5: 'Ta razširitev brskalnika zbira in shranjuje:',
+      terms6: 'Opcijski anonimno profil, ki ste ga (lokacija, jezik nastavitev, starost, spol, vaš splošni politični pogled)',
+      terms7: 'Oglasi, ki se pojavljajo na vašem Facebook obvestilih (vključno s časom in datumom jih videli)',
+      terms8: 'Lahko odstranite razširitev in / ali izbrisati podatke, ki ste jih prispevali k projektu v vsakem trenutku. Vaši podatki je vaša in anonimno - nikoli ne bomo poskušali za identifikacijo.',
       agree: 'Strinjam se',
       back: 'Nazaj',
       next: 'Naprej',
@@ -2646,7 +2830,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Posodobite svoj profil',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Hvala vam. Tvoj profil je bil uspešno posodobljen.',
     },
     links: {
       website: {
@@ -2681,6 +2865,14 @@ const strings = new LocalizedStrings({
       welcome4: 'Sabiex inkunu nafu l-elezzjoni li ġejja u s-sistema ta\' votazzjoni tiegħek',
       select_language: 'Agħżel il-lingwa tiegħek',
       terms: '<span>Jekk tkompli tkun qed taqbel għal <a href="https://whotargets.me/en/terms/">terms and conditions</a> u <a href="https://whotargets.me/en/privacy-policy/">privacy policy</a></span>',
+      terms1: 'Jekk tkompli tkun qed taqbel għal',
+      terms2: 'termini u kundizzjonijiet',
+      terms3: 'u',
+      terms4: 'politika tal-privatezza',
+      terms5: 'Din l-estensjoni browser jiġbor u mħażen:',
+      terms6: 'Profil anonima fakultattiv maħluqa minnek (post, l-iffissar lingwa, età, sess, il-fehma politika tiegħek ġenerali)',
+      terms7: 'Il-reklami li jidhru fil newsfeed Facebook tiegħek (inkluż il-ħin u d-data inti raw lilhom)',
+      terms8: 'Tista \'uninstall l-estensjoni u / jew iħassar l-informazzjoni li inti stajt kkontribwew għall-proġett fi kwalunkwe ħin. Id-dejta tiegħek hu tiegħek u anonimu - aħna qatt se tipprova tidentifika lilek.',
       agree: 'Naqbel',
       back: 'Lura',
       next: 'Li Jmiss',
@@ -2762,7 +2954,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Taġġorna l-profil tiegħek',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Grazzi. Profil tiegħek ġiet aġġornata b\'suċċess.',
     },
     links: {
       website: {
@@ -2797,6 +2989,14 @@ const strings = new LocalizedStrings({
       welcome4: 'kako bismo znali za vaše sljedeće izbore i glasački sustav',
       select_language: 'Izaberite jezik',
       terms: '<span>Nastavkom pristajete na <a href="https://whotargets.me/en/terms/">uvjete korištenja</a> i na <a href="https://whotargets.me/en/privacy-policy/">pravila privatnosti</a></span>',
+      terms1: 'Nastavkom pristajete na',
+      terms2: 'uvjete korištenja',
+      terms3: 'i na',
+      terms4: 'pravila privatnosti',
+      terms5: 'Ovo proširenje preglednika prikuplja i pohranjuje:',
+      terms6: 'Opcionalno anonimni profil stvoren od strane vas (mjesto, postavka jezika, dob, spol, vaš opći politički pogled)',
+      terms7: 'Oglasi koji se pojavljuju u svoj Facebook feed vijesti (uključujući vrijeme i datum ste ih vidjeli)',
+      terms8: 'Možete deinstalirati proširenje i / ili izbrisati podatke koje ste pridonijeli projektu u bilo kojem trenutku. Vaši podaci je tvoje i anonimno - mi nikada neće pokušati identificirati.',
       agree: "Pristajem",
       back: "Natrag",
       next: "Sljedeće",
@@ -2878,7 +3078,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Ažurirajte svoj profil',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Hvala vam. Vaš profil je uspješno ažuriran.',
     },
     links: {
       website: {
@@ -2905,79 +3105,87 @@ const strings = new LocalizedStrings({
   },
   dk: {
     who_targets_me: 'Who Targets Me?',
-    loading: 'Loading, tak for din tålmodighed',
+    loading: 'Loader. Tak for din tålmodighed.',
     register: {
-      welcome1: 'Who Targets Me hjælper folk til at forstå, hvordan målrettet social',
-      welcome2: 'medier reklame bruges til at overtale dem.',
-      welcome3: 'Hjælper os til at vise dig den rigtige version af Who Targets Me.',
-      welcome4: 'Så vi ved din næste valg og afstemningssystem',
-      select_language: 'Vælg dit sprog',
-      terms: '<span>Ved at fortsætte accepterer du <a href="https://whotargets.me/en/terms/">vilkår og betingelser</a> og <a href="https://whotargets.me/en/privacy-policy/">fortrolighedspolitik</a></span>',
+      welcome1: 'Who Targets Me hjælper folk til at forstå, hvordan målrettet annoncering',
+      welcome2: 'på sociale medier bruges til at påvirke deres holdninger.',
+      welcome3: 'Hjælp os til at vise dig den korrekte udgave af Who Targets Me,',
+      welcome4: 'så vi kender din næste folkeafstemning og dit valgsystem.',
+      select_language: 'Vælg sprog',
+      terms: '<span>Ved at fortsætte accepterer du vore <a href="https://whotargets.me/en/terms/">vilkår og betingelser</a> og <a href="https://whotargets.me/en/privacy-policy/">privatlivspolitik</a></span>',
+      terms1: 'Ved at fortsætte accepterer du vore',
+      terms2: 'vilkår og betingelser',
+      terms3: 'og',
+      terms4: 'privatlivspolitik',
+      terms5: 'Denne browser-tilføjelse indsamler og gemmer:',
+      terms6: 'En valgfri anonym profil, som er oprettet af dig (geografisk placering, sprog, alder, køn, dit overordnede politiske ståsted)',
+      terms7: 'De annoncer, der optræder i dit Facebook-newsfeed (inklusive det tidspunkt, du så dem)',
+      terms8: 'Du kan til enhver tid fjerne browser-udvidelsen og/eller slette de data, du har bidraget til projektet med. Dine data er dine og er anonym. Vi vil aldrig forsøge at identificere dig.',
       agree: 'Jeg er enig',
-      back: 'Næste',
-      next: 'Next',
+      back: 'Tilbage',
+      next: 'Næste',
       country: 'Land',
       enter_country: 'Vælg dit land',
       postcode: 'Postnummer',
       enter_postcode: 'Indtast venligst dit postnummer',
-      postcode_error: 'Det ser ud som du har indtastet et ugyldigt postnummer',
-      gender: 'Dit køn',
-      male: 'Han',
+      postcode_error: 'Det ser ud til, du har indtastet et ugyldigt postnummer.',
+      gender: 'Køn',
+      male: 'Mand',
       female: 'Kvinde',
       other: 'Andet',
-      years_of_age: 'Hvor gammel er du (i år)?',
+      years_of_age: 'Hvor gammel er du (antal år)?',
       age: 'Alder',
-      confirming: 'Bekræftelse dine oplysninger',
+      confirming: 'Bekræft dine oplysninger',
       request_error: 'Serveren svarede med følgende meddelelse:',
-      unknown_error: 'Ukendt fejl, hvis dette fortsætter så kontakt!',
-      share: 'Del projektet for at hjælpe dine venner at lære mere om de målrettede politiske annoncer, de ser.',
-      share1: 'Del dine resultater',
-      share2: ' at hjælpe folk med at lære om målrettede politiske annoncer.',
-      share3: 'Over %i mennesker i %s deltager i Who Targets Me.',
+      unknown_error: 'Ukendt fejl. Hvis dette fortsætter, må du meget gerne tage fat i os!',
+      share: 'Del projektet for at hjælpe dine venner med at blive klogere på de målrettede politiske annoncer, de ser.',
+      share1: 'Del dine resultater.',
+      share2: ' for at hjælpe med at blive klogere på målrettet politisk annoncering.',
+      share3: 'Over %i personer i %s deltager i Who Targets Me.',
       share4: 'Vil du dele projektet og hjælpe os med at komme til %i?',
       shareOnFacebook: 'Facebook',
       shareOnTwitter: 'Twitter',
-      skip: 'Springe',
-      shareFacebook: 'Who Targets Me er at undersøge politisk sociale medier reklame. Jeg hjælper dem. Deltag mig og finde ud af, hvem der målrettet dig: https://whotargets.me',
-      shareTwitter: '@WhoTargetsMe undersøger politisk sociale medier reklame. Jeg hjælper dem. Deltag mig og finde ud af, hvem der målrettet dig: https://whotargets.me',
-      political_affiliation: 'Din politiske synspunkter',
-      political_affiliation_description: 'De fleste mennesker tænker på politik som havende en \'forlod\' og en \'rigtige\'. Hvordan vil du beskrive dine egne synspunkter?',
-      us_labels: ['Ingen tilhørsforhold', 'Meget liberal', 'Moderat liberal', 'Lidt liberal', 'Center', 'Lidt konservativ', 'Moderat konservativ', 'Meget konservativ'],
-      non_us_labels: ['Ingen tilhørsforhold', 'Meget venstre', 'Moderat venstre fløj', 'Lidt venstre fløj', 'Center', 'Lidt højrefløj', 'Moderat højrefløj', 'Meget højrefløj'],
-      would_rather_not_say: 'Ville hellere ikke sige',
-      county: 'Amt',
-      setting_up: 'Sætte op...',
+      skip: 'Spring over',
+      shareFacebook: 'Who Targets Me undersøger politisk annoncering på sociale medier. Jeg hjælper dem. Deltag sammen med mig og find ud af, hvem der målretter annoncer til dig: https://whotargets.me',
+      shareTwitter: '@WhoTargetsMe undersøger politisk annoncering på sociale medier. Jeg hjælper dem. Deltag sammen med mig og find ud af, hvem der målretter annoncer til dig: https://whotargets.me',
+      political_affiliation: 'Dit politiske ståsted',
+      political_affiliation_description: 'De fleste mennesker tænker på politik i forhold til \'venstre-orienteret\' og \'højre-orienteret\'. Hvordan vil du beskrive dine egne synspunkter?',
+      us_labels: ['Intet ståsted', 'Meget venstre-orienteret', 'Moderat venstre-orienteret', 'Lidt venstre-orienteret', 'Centrum', 'Lidt højre-orienteret', 'Moderat højre-orienteret', 'Meget højre-orienteret'],
+      non_us_labels: ['Intet ståsted', 'Meget venstre-orienteret', 'Moderat venstre-orienteret', 'Lidt venstre-orienteret', 'Centrum', 'Lidt højre-orienteret', 'Moderat højre-orienteret', 'Meget højre-orienteret'],
+      would_rather_not_say: 'Det vil jeg helst ikke oplyse',
+      county: 'Region',
+      setting_up: 'Installerer...',
     },
     results: {
       my_constituency: 'Min valgkreds',
-      constituency_size: 'Du er en af %i frivillige i %s, kan du hjælpe os med at nå %i?',
-      constituency_size_one: 'Du er den første frivillige i %s!. Kan du hjælpe os med at finde mere?',
-      no_results_explanation: 'Resultaterne vil blive vist her, når vi har nok data. Fortsæt med at bruge Facebook som normalt og igen om et par dage. ',
-      no_country_explanation1: "Vi vil være at bringe personlige resultater til ",
-      no_country_explanation2: " snart. I mellemtiden fortsætter med at bruge Facebook som normalt og tak for at deltage i Who Targets Me.",
-      delete_request: "Sletning af dine data vil gøre det utilgængelige for forskning Du har tre valgmuligheder:",
+      constituency_size: 'Du er en af %i frivillige i %s. Kan du hjælpe os med at nå op på %i?',
+      constituency_size_one: 'Du er den første frivillige i %s!. Kan du hjælpe os med at finde flere?',
+      no_results_explanation: 'Dine resultater vil blive vist her, når vi har nok data. Fortsæt med at bruge Facebook som normalt og kig igen om et par dage.',
+      no_country_explanation1: "Vi vil bringe personlige resultater ",
+      no_country_explanation2: " snart. Fortsæt i mellemtiden med at bruge Facebook som normalt. Tak for din deltagelse i Who Targets Me.",
+      delete_request: "Sletning af dine data vil gøre dem utilgængelige for forskningen. Du har tre valgmuligheder:",
       data_deleted: "Dine data er blevet slettet, og ingen nye data indsamles.",
-      data_deleted2: "Du kan nu fjerne den ved at højreklikke på Who Targets Me ikon i din browsers værktøjslinje, og vælge 'Fjern ...'",
-      data_deleted3: "Tak igen for at deltage. Du kan fortsætte med at følge opdateringer om projektet via Twitter, Facebook og vores e-mail liste.",
+      data_deleted2: "Du kan nu fjerne browser-tilføjelsen ved at højre-klikke på Who Targets Me-ikonet i din browsers værktøjslinje og vælge 'Fjern ...'",
+      data_deleted3: "Endnu en gang tak for din deltagelse. Du kan fortsætte med at få opdateringer om projektet via Twitter, Facebook og vores mailing-liste.",
       delete_data: "Slet data",
-      delete_data_message: "Sletter alle data, du har indsamlet med Who Targets Me sammen med din anonyme profil.",
+      delete_data_message: "Sletter alle data, du har indsamlet med Who Targets Me, og din anonyme profil.",
       remove_WTM: "Fjern WTM",
-      remove_WTM_message: "Lige på ikonet udvidelse og vælg 'Fjern ...'",
-      remove_WTM_message2: "Bevarer dine data og anonym profil til forskning.",
-      cancel: "Afbestille",
-      cancel_message: "Gå tilbage til den foregående skærm og fortsætte med at bruge Who Targets Me",
-      uninstall: "Hvis du vil afinstallere, skal du højreklikke på ikonet udvidelse",
-      shareFacebook1: "% de politiske annoncer, jeg ser på Facebook er fra ",
-      shareFacebook2: ". Installer Who Targets Me i din browser for at finde ud af, hvem der forsøger at vinde din stemme med målrettede sociale medier annoncer. https://whotargets.me",
-      shareTwitter1: "% de politiske annoncer, jeg ser på Facebook er fra ",
-      shareTwitter2: ". Installer Who Targets Me i din browser for at finde ud af, hvem der forsøger at vinde din stemme med målrettede sociale medier annoncer. https://whotargets.me",
-      results_screen1: "Du bliver ramt af ", //  {part navn}.// You are being targeted by {party name}.
+      remove_WTM_message: "Højre-klik på browser-tilføjelsens ikon og vælg 'Fjern...'",
+      remove_WTM_message2: "Bevarer dine data og din anonyme profil til forskningen.",
+      cancel: "Annuller",
+      cancel_message: "Gå tilbage til den foregående skærm og fortsæt med at bruge Who Targets Me",
+      uninstall: "Hvis du vil afinstallere, skal du højre-klikke på browser-tilføjelsens ikon",
+      shareFacebook1: "% de politiske annoncer, jeg ser på Facebook, er fra ",
+      shareFacebook2: ". Installer Who Targets Me i din browser for at finde ud af, hvem der forsøger at få din stemme ved hjælp af målrettede annoncer på de sociale medier. https://whotargets.me",
+      shareTwitter1: "% de politiske annoncer, jeg ser på Facebook, er fra ",
+      shareTwitter2: ". Installer Who Targets Me i din browser for at finde ud af, hvem der forsøger at få din stemme ved hjælp af målrettede annoncer på de sociale medier. https://whotargets.me",
+      results_screen1: "Målretter annoncer til dig ", // You are being targeted by {party name}.
       results_screen2: "I alt har du set ", // In total you've seen {quantity} political ads,
       results_screen3: " politiske annoncer, hvoraf ", //of which.
       results_screen4: " var fra ", //{quantity} were from {party name}
-      gathering_data: 'Indsamling af data ...',
-      click_a_bar: 'Klik på en bar for at se de annoncer, du har set fra dem',
-      how_did_we_calc: 'Hvordan har vi beregner dette?',
+      gathering_data: 'Indsamler data...',
+      click_a_bar: 'Klik på en søjle for at se de annoncer, du har set fra dem',
+      how_did_we_calc: 'Hvordan har vi beregnet dette?',
       ad: 'ann',
       ads: 'ann',
       ads_from: 'annoncer fra',
@@ -2988,13 +3196,13 @@ const strings = new LocalizedStrings({
       text: 'Tekst',
       seen: 'Set',
       instances: 'Tilfælde',
-      targeting: 'Rettet mod',
+      targeting: 'Målrettet til',
       view_ad: 'Vis annonce',
-      check_rationale: 'Hvorfor har jeg ser dette?',
+      check_rationale: 'Hvorfor har jeg set dette?',
     },
     update: {
       update_profile: 'Opdater din profil',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Tak skal du have. Din profil blev opdateret.',
     },
     links: {
       website: {
@@ -3029,6 +3237,14 @@ const strings = new LocalizedStrings({
       welcome4: 'Mar sin, tá a fhios againn do toghadh agus a vótálfaidh córas seo chugainn.',
       select_language: 'Roghnaigh do theanga',
       terms: '<span>Trí leanúint aontaíonn tú leis na téarmaí <a href="https://whotargets.me/en/terms/">agus coinníollacha</a> agus <a href="https://whotargets.me/en/privacy-policy/">beartas príobháideachais</a></span>',
+      terms1: 'Trí leanúint aontaíonn tú leis na téarmaí',
+      terms2: 'agus coinníollacha',
+      terms3: 'agus',
+      terms4: 'beartas príobháideachais',
+      terms5: 'Bailíonn an síneadh bhrabhsálaí agus siopaí:',
+      terms6: 'An próifíl roghnach gan ainm cruthaithe ag tú (suíomh, leagan teanga, aois, inscne, do thuairim polaitiúla ginearálta)',
+      terms7: 'Na fógraí sin le feiceáil i do Newsfeed Facebook (lena n-áirítear an t-am agus an dáta a chonaic tú iad)',
+      terms8: 'Is féidir leat a dhíshuiteáil an síneadh agus / nó a scriosadh na sonraí atá tú a chuidigh leis an tionscadal ag am ar bith. Tá do shonraí mise agus gan ainm - ní bheidh muid ag iarracht chun tú a aithint.',
       agree: 'Aontaím',
       back: 'Ar ais',
       next: 'Ar Aghaidh',
@@ -3110,7 +3326,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Nuashonraigh do phróifíl',
-      updated_success: 'Thank you! Your profile is updated successfully!'
+      updated_success: 'Go raibh maith agat. Cuireadh do phróifíl nuashonraithe go rathúil.',
     },
     links: {
       website: {

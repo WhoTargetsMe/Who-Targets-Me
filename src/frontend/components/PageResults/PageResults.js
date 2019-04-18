@@ -145,7 +145,11 @@ export default class PageResults extends Component {
               let text = html.jsmods.markup[0][1].__html;
               text = text.slice(0,text.indexOf('gear'));
               stopWords.forEach(w => text = text.replace(w, ''));
-              return <Rationale content={{__html: text}} />;
+              const re = /\<(.*?)\>/g
+              const filt = text.replace(re, ' ')
+                .replace(/\s\./g, "\.").replace('  ', '')
+                .replace(/&#039;/g, "\'").replace(/&quot;/g, '"')
+              return <Rationale content={filt} />;
             });
             rationalesFetched = rationalesFetched.filter(c => c);
             // console.log('rationalesFetched=>', rationalesFetched, rationalesFetched.length)
@@ -523,7 +527,7 @@ function validateEmail(email) {
 const Rationale = (props) => {
     return (
       <div style={{position: 'relative'}}>
-        <div className="rationale" dangerouslySetInnerHTML={props.content} />
+        <div className="rationale">{props.content}</div>
       </div>
     )
 }

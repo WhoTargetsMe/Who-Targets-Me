@@ -71,7 +71,7 @@ class LanguageSelector extends Component {
     const languageOptions = languages;
     const {language, loadingLanguage} = this.state;
     const updating_profile = this.props.updating_profile;
-    
+
     return (
       <span className="LanguageSelector" style={{overflow: 'hidden'}}>
 
@@ -108,8 +108,16 @@ class TermsPrivacy extends Component {
     return (
       <span>
         <Container updating_profile={updating_profile}>
-          <div className="fullwidth" style={{marginBottom: '20px'}}>
-            <p dangerouslySetInnerHTML={{__html: strings.register.terms}}></p>
+          <div className="fullwidth" style={{margin: 'auto', marginBottom: '20px', width: 650, textAlign: 'left'}}>
+            <p><b>{strings.register.terms5}</b></p>
+            <ul>
+              <li style={{listStyle: 'disc'}}>{strings.register.terms6}</li>
+              <li style={{listStyle: 'disc'}}>{strings.register.terms7}</li>
+            </ul>
+            <p>{strings.register.terms8}</p>
+            <p>
+              <span>{`${strings.register.terms1} `}<a href="https://whotargets.me/en/terms/">{strings.register.terms2}</a>{` ${strings.register.terms3} `}<a href="https://whotargets.me/en/privacy-policy/">{strings.register.terms4}.</a></span>
+            </p>
           </div>
           {signupState.language === 'il' ? <div className="fullwidth">
             <Button type="hollow-success" style={{marginRight: '20px'}} onClick={next}>{String.fromCharCode("171")} {strings.register.agree}</Button>
