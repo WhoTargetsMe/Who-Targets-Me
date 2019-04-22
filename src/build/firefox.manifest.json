@@ -1,5 +1,5 @@
 {
-	"version": "1.2.23",
+	"version": "1.2.26",
 	"name": "__MSG_appName__",
 	"manifest_version": 2,
 	"description": "__MSG_appDesc__",
@@ -14,7 +14,6 @@
 		"storage",
 		"*://facebook.com/*",
 		"*://www.facebook.com/*",
-		"*://b53fh4tb0h.execute-api.eu-central-1.amazonaws.com/*",
 		"*://msih3yho6h.execute-api.eu-central-1.amazonaws.com/*",
 		"*://*.whotargets.me/*",
 		"*://whotargets.me/*"
