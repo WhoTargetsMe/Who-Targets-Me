@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Col, Row, Spinner } from 'elemental';
+import {availableParties} from '../../helpers/parties.js'; //, availablePages
 import strings, {changeLocale} from '../../helpers/localization.js';
 import './PageResults.css';
 
@@ -7,30 +8,29 @@ const reduFunc = (a, b) => a + b;
 
 export const PartyChart = (props) => {
 
-  let maxHeight = 180;
-  let partiesDisplay = props.advertisers.sort((a,b) => parseInt(b.count)-parseInt(a.count))
-  // console.log('partiesDisplay-1', partiesDisplay)
+  let maxHeight = 150;
+  let parties = [], partiesDisplay = [];
 
   // group under OTHERS if there are more than 10 advertisers
-  if (partiesDisplay.length > 10){
-    partiesDisplay = partiesDisplay.slice(0,5)
-    const userSeenSum5 = partiesDisplay.map(d => parseInt(d.count)).reduce(reduFunc,0)
-    partiesDisplay.push({
-      "advertiserName": "OTHERS",
-      "count": props.userSeenSum - userSeenSum5,
-    })
-  }
+  // if (partiesDisplay.length > 10){
+  //   partiesDisplay = partiesDisplay.slice(0,5)
+  //   const userSeenSum5 = partiesDisplay.map(d => parseInt(d.count)).reduce(reduFunc,0)
+  //   partiesDisplay.push({
+  //     "advertiserName": "OTHERS",
+  //     "count": props.userSeenSum - userSeenSum5,
+  //   })
+  // }
 
-  for (let i=0; i<partiesDisplay.length; i++){
-    partiesDisplay[i] = Object.assign({},
-      partiesDisplay[i],
-      {height: (partiesDisplay[i].count/props.userSeenSum*maxHeight).toFixed(0)+'px'},
-      {color: partiesDisplay[i].partyDetails.color || '#999999'})
-  }
+  for (let i=0; i<props.advertisers.length; i++){
+    parties.push(Object.assign({},
+      props.advertisers[i],
+      {height: (props.advertisers[i].count/props.userSeenSum*maxHeight).toFixed(0)+'px'},
+      {color: props.advertisers[i].partyDetails.color || '#999999'})
+  )}
   // console.log('partiesDisplay-2', partiesDisplay)
   for (let i=0; i<props.displayLabels.length; i++){
-    if (!partiesDisplay.map(p => p.advertiserName).includes(props.displayLabels[i])){
-      partiesDisplay.push(Object.assign({},
+    if (!parties.map(p => p.advertiserName).includes(props.displayLabels[i])){
+      parties.push(Object.assign({},
         {advertiserName: props.displayLabels[i],
         height: '0px',
         color:'#999999',
@@ -38,6 +38,9 @@ export const PartyChart = (props) => {
       }))
     }
   }
+  props.displayLabels.forEach(l => {
+    partiesDisplay.push(parties.find(g => g.advertiserName === l));
+  });
   // console.log('partiesDisplay-3', props.displayLabels, partiesDisplay)
   return(
     <div className='container'>
@@ -217,6 +220,48 @@ export const RationalesView = (props) => {
           <div>{props.rationales[props.postId].rationales}</div>
         </Col>
       </Row>
+    </div>
+  )
+}
+
+export const PartyChartFilters = (props) => {
+
+  let maxHeight = 160; //former = 180
+  let partiesDisplay = []; //.sort((a,b) => parseInt(b.count)-parseInt(a.count))
+
+  for (let i=0; i<props.displayLabels.length; i++){
+    const advr = props.advertisers.find(f => f.party === props.displayLabels[i]) ||
+      {party: props.displayLabels[i], percentage: 0.0, color: '#999999', height: 0,
+        title: availableParties[props.userCountry].find(p => p.shortName === props.displayLabels[i]).party}
+    if (advr.percentage > 0) {
+      partiesDisplay.push(Object.assign({},
+        advr,
+        {title: advr.partyDetails.party},
+        {height: ((advr.percentage/100)*maxHeight).toFixed(0)+'px'},
+        {color: advr.partyDetails.color || '#999999'}))
+    } else {
+      partiesDisplay.push(advr);
+    }
+  }
+  return(
+    <div className='container'>
+      <div className='chart'>
+        {partiesDisplay.map((elt, i) =>
+          <div key={`bar-${i}`}
+          className='bar'
+          style={{height: elt.height, backgroundColor: elt.color}}
+          title={elt.title}
+          ></div>
+        )}
+      </div>
+      <div className='labels'>
+        {partiesDisplay.map((elt, i) =>
+          <div key={`label-${i}`} className='label'>
+            <div className="name" title={elt.party}>{elt.party.toUpperCase().slice(0,6)}</div>
+            <div className="labtext">{`${elt.percentage}%`}</div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

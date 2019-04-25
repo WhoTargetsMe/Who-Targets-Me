@@ -7,7 +7,7 @@ import strings, {changeLocale} from '../../helpers/localization.js';
 import {availableCountries, availableParties} from '../../helpers/parties.js'; //, availablePages
 import {getUserCount} from '../../helpers/functions.js';
 
-import { PartyChart, PartyAds, RationalesView } from './TargetingResults.js';
+import { PartyChart, PartyAds, RationalesView, PartyChartFilters } from './TargetingResults.js';
 import { DeleteRequestPage } from './DeleteRequestPage.js';
 import { countries, countries_in_native_lang } from '../PageRegister/countries.js';
 import IMGLogo from '../Shell/logo.svg';
@@ -15,6 +15,8 @@ import Logo from '../Shell/wtm_logo_border.png';
 import LogoBR from '../Shell/wtm_logo_br.png';
 import LogoFI from '../Shell/wtm_logo_fi.png';
 import IMGFirstPlace from './firstplace.png';
+
+import {mockdata} from './mockdata.js';
 
 import './PageResults.css';
 
@@ -34,7 +36,9 @@ export default class PageResults extends Component {
       rationales: [],
       loadingRationales: false,
       postId: null,
-      language: null,
+      language: 'en',//null,
+      filters: null,
+      tabIndex: 'general',
     }
     this.updateUser = this.updateUser.bind(this);
     this.requestDeleteData = this.requestDeleteData.bind(this);
@@ -45,24 +49,53 @@ export default class PageResults extends Component {
     this.showTargetingFunc = this.showTargetingFunc.bind(this);
     this.hideTargetingFunc = this.hideTargetingFunc.bind(this);
     this.showAdvr = this.showAdvr.bind(this);
+    this.handleTabClick = this.handleTabClick.bind(this);
+    this.filtersExtract = this.filtersExtract.bind(this);
+  }
+
+  filtersExtract(data, availableParties){
+    let filters = {};
+    const _filters = data.filters;
+    Object.keys(_filters).forEach(key => {
+      let lst = []
+      _filters[key].forEach(obj => {
+        const partyDetails = availableParties[data.country].filter(p => obj.party.toLowerCase() === p.shortName.toLowerCase())[0];
+        const res = Object.assign({}, obj, {partyDetails: partyDetails});
+        lst.push(res);
+      })
+      filters[key] = lst;
+    })
+    return filters;
   }
 
   refreshUserData() {
     console.log("REQUESTING USER DATA")
-    this.props.api.get('user')
-      .then((response) => {
-        return chrome.storage.promise.local.get()
-          .then((result) => {
-            this.setState({userData: response.jsonData.data, language: result.language})
-            // console.log('user data', response, response.jsonData, result.language)
+    return chrome.storage.promise.local.get().then(result => {
+      let lastUpdated = result.lastUpdated || null;
+      if (lastUpdated && (Math.floor(Math.abs(new Date()-lastUpdated)) / 1000 / 60 / 60 ) > 24) {
+        lastUpdated = null;
+      }
+      if (lastUpdated) {
+        return chrome.storage.promise.local.get().then(res => {
+          const filters = this.filtersExtract(res.userData, availableParties);
+          this.setState({userData: res.userData, filters, language: res.language});
+        })
+      } else {
+        this.props.api.get('user')
+          .then((response) => {
+            lastUpdated = new Date();
+            const filters = this.filtersExtract(response.jsonData.data, availableParties);
+            chrome.storage.promise.local.set({'userData': response.jsonData.data, lastUpdated});
+            this.setState({userData: response.jsonData.data, filters, language: result.language});
+            // console.log('user data', response.jsonData, result.language, lastUpdated);
           })
           .catch((error) => {
-            console.log(error)
-          })
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+            console.log(error);
+        })
+      }
+    }).catch((error) => {
+      console.log(error);
+    })
   }
 
   componentWillMount() {
@@ -210,6 +243,10 @@ export default class PageResults extends Component {
     this.setState({party: parties[partyIndex], showingTargeting: false});
   }
 
+  handleTabClick(tabIndex){
+    this.setState({tabIndex});
+  }
+
   render() {
     if(!this.state.userData) {
       return (
@@ -315,6 +352,13 @@ export default class PageResults extends Component {
         partyPercAmongParties = ((party.count/userSeenPartiesSum)*100).toFixed(0)
       }
     }
+    const filterLabels = {
+      general: 'Your ads',
+      country: 'All '+ userCountry, geo: 'Your area',
+      sex_male: 'Men', sex_female: 'Women',
+      age_lt45: '< 45s', age_gt45: '> 45s',
+      polit_left: 'Left wing', polit_right: 'Right wing',
+    }
 
     return (
       <div className="PageResults">
@@ -359,26 +403,70 @@ export default class PageResults extends Component {
           </Col>
         </Row>
 
-        <Row>
+        <Row style={{minHeight: 257, backgroundColor: '#f2f2f2'}}>
         <Col sm="1">
           <div className="statbox mainstatbox">
             { view === "display_parties" && this.state.userData && this.state.userData.advertisers &&
               !this.state.showAds && !this.state.loadingAds &&
-              <div style={(userCountry === 'BR' || userCountry === 'FI') ? {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', maxHeight: '200px'} : {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap'}}>
-                <footer>
-                  <span style={{marginRight: 0}}>{`${strings.results.click_a_bar} |  `}</span>
-                  <a className='link' style={{marginLeft: 7}} target='_blank' href={userCountry === 'FI' ? 'http://okf.fi/vaalivahti-rationale' : 'https://whotargets.me/en/defining-political-ads/'}>{strings.results.how_did_we_calc}</a>
-                </footer>
-                <PartyChart
-                  advertisers={parties}
-                  userSeenSum={userSeenPartiesSum}
-                  displayLabels={displayLabels}
-                  showBarInfo={this.showBarInfo}
-                  language={this.state.language}
-                  />
-
-              </div>
-            }
+              <div>
+                <div className='tabs'>
+                {Object.keys(filterLabels).map(f =>
+                  <Tab filter={filterLabels[f]}
+                    active={this.state.tabIndex === f}
+                    handleTabClick={() => this.handleTabClick(f)}
+                    key={`tab-${f}`}
+                    />
+                  )}
+                </div>
+                {this.state.tabIndex === 'general' ? <div style={(userCountry === 'BR' || userCountry === 'FI') ? {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', maxHeight: '200px'} : {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap'}}>
+                  <PartyChart
+                    advertisers={parties}
+                    userSeenSum={userSeenPartiesSum}
+                    displayLabels={displayLabels}
+                    showBarInfo={this.showBarInfo}
+                    language={this.state.language}
+                    />
+                    <footer>
+                    <span style={{marginRight: 0}}>{`${strings.results.click_a_bar} |  `}</span>
+                    <a className='link' style={{marginLeft: 7}} target='_blank' href={userCountry === 'FI' ? 'http://okf.fi/vaalivahti-rationale' : 'https://whotargets.me/en/defining-political-ads/'}>{strings.results.how_did_we_calc}</a>
+                    </footer>
+                </div> :
+                <div style={(userCountry === 'BR' || userCountry === 'FI') ?
+                  {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', maxHeight: '200px'} :
+                  {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap'}}
+                >
+                  {this.state.tabIndex === 'geo' ?
+                    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '220px', width: 650, marginLeft: 0}}>
+                      {this.state.userData.postcode ?
+                        <h3 className='subMessage'>
+                          {strings.results.coming_soon}
+                        </h3> :
+                        <div>
+                          <h3 className='subMessage'>
+                            {strings.update.update_postcode}
+                            <span className='link_underline'
+                              style={{cursor: 'pointer', fontStyle: 'italic', fontSize: '18px', marginLeft: 5}}
+                              onClick={() => this.props.updateProfile(true)}
+                            >
+                              {strings.update.update_profile.toLowerCase()}
+                          </span>
+                          </h3>
+                        </div>
+                      }
+                    </div> : <div>
+                      <PartyChartFilters
+                        advertisers={this.state.filters[this.state.tabIndex]}
+                        displayLabels={displayLabels}
+                        language={this.state.language}
+                        userCountry={userCountry}
+                        />
+                      <footer>
+                      <a className='link' style={{marginLeft: 7}} target='_blank' href={userCountry === 'FI' ? 'http://okf.fi/vaalivahti-rationale' : 'https://whotargets.me/en/defining-political-ads/'}>{strings.results.how_did_we_calc}</a>
+                      </footer>
+                    </div>}
+                </div>
+              }
+            </div>}
             { (this.state.loadingAds || this.state.loadingRationales) && <Spinner size="md" className='centeredSpinner'/>}
             { view === "display_parties" && this.state.userData && this.state.userData.advertisers &&
               this.state.showAds && !this.state.loadingRationales &&
@@ -489,7 +577,12 @@ export default class PageResults extends Component {
   }
 } // End of PageResults class
 
-
+const Tab = (props) => (
+  <div className={props.active ? 'tab tabActive' : 'tab'}
+    onClick={props.handleTabClick}>
+    {props.filter}
+  </div>
+)
 const shareLinkFB = ([party, userCountry, partyPercAmongParties]) => {
   let title = ''
   if (party) {

@@ -97,9 +97,11 @@ const strings = new LocalizedStrings({
       targeting: 'Targeting',
       view_ad: 'View ad',
       check_rationale: 'Why did I see this?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Update your profile',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Thank you. Your profile was successfully updated.',
     },
     links: {
@@ -221,9 +223,11 @@ const strings = new LocalizedStrings({
       targeting: 'Gezielt beworben',
       view_ad: 'Zeige Werbung an',
       check_rationale: 'Warum habe ich das gesehen?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Aktualisiere dein Profil',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Vielen Dank. Dein Profil wurde erfolgreich aktualisiert.',
     },
     links: {
@@ -345,9 +349,11 @@ const strings = new LocalizedStrings({
       targeting: 'Segmentación',
       view_ad: 'Ver anuncio',
       check_rationale: '¿Por qué he visto esto?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Actualiza tu perfil',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Gracias. Su perfil se ha actualizado correctamente.',
     },
     links: {
@@ -469,9 +475,11 @@ const strings = new LocalizedStrings({
       targeting: 'Obiettivo',
       view_ad: 'Visualizza annuncio',
       check_rationale: 'Perché l\'ho visto?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Aggiorna il tuo profilo',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Grazie. Il tuo profilo è stato aggiornato con successo.',
     },
     links: {
@@ -593,9 +601,11 @@ const strings = new LocalizedStrings({
       targeting: 'Cél',
       view_ad: 'Hirdetés megtekintése',
       check_rationale: 'Miért láttam ezt?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Frissítse profilját',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: "Köszönöm. Az Ön profilja sikeresen frissítve.",
     },
     links: {
@@ -717,9 +727,11 @@ const strings = new LocalizedStrings({
       targeting: 'Таргетирование',
       view_ad: 'Просмотреть объявление',
       check_rationale: 'Почему я вижу это объявление?',
+      coming_soon: 'Скоро...',
     },
     update: {
       update_profile: 'Обновить профиль',
+      update_postcode: 'Для того, чтобы показать эти данные, нам необходимо знать ваш почтовый индекс. Вы можете обновить свой профиль здесь:',
       updated_success: 'Спасибо. Ваш профиль был успешно обновлен.',
     },
     links: {
@@ -841,9 +853,11 @@ const strings = new LocalizedStrings({
       targeting: 'Mērķis',
       view_ad: 'Skatīt reklāmu',
       check_rationale: 'Kāpēc es to redzēju?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Atjaunināt savu profilu',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Paldies. Jūsu profils ir veiksmīgi atjaunināts.',
     },
     links: {
@@ -967,9 +981,11 @@ const strings = new LocalizedStrings({
       targeting: 'Alvo',
       view_ad: 'Ver anúncio',
       check_rationale: 'Por que eu vi isso?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Atualize seu perfil',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Obrigado. Seu perfil foi atualizado com sucesso.',
     },
     links: {
@@ -1091,9 +1107,11 @@ const strings = new LocalizedStrings({
       targeting: 'Riktade mot',
       view_ad: 'Se annons',
       check_rationale: 'Varför ser jag det här?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Uppdatera din profil',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Tack. Din profil har uppdaterats.',
     },
     links: {
@@ -1215,9 +1233,11 @@ const strings = new LocalizedStrings({
       targeting: 'Таргетування',
       view_ad: 'Переглянути оголошення',
       check_rationale: 'Чому я бачу це оголошення?',
+      coming_soon: 'Незабаром...',
     },
     update: {
       update_profile: 'Оновити профіль',
+      update_postcode: 'Щоб надати вам цю інформацію, нам потрібно знати ваш поштовий індекс. Ви можете оновити свій профіль тут:',
       updated_success: 'Дякуємо. Ваш профіль був успішно оновлений.',
     },
     links: {
@@ -1339,9 +1359,11 @@ const strings = new LocalizedStrings({
       targeting: 'Kohdentaminen',
       view_ad: 'Näytä mainos',
       check_rationale: 'Katso kohdentamisen tapa?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Päivitä profiilisi',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Kiitos. Profiilisi päivittäminen onnistui.',
     },
     links: {
@@ -1463,9 +1485,11 @@ const strings = new LocalizedStrings({
       targeting: 'Cible',
       view_ad: 'Voir l\'annonce',
       check_rationale: 'Pourquoi j\'ai vu ça?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Mettre à jour votre profil',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Je vous remercie. Votre profil a été mis à jour avec succès.',
     },
     links: {
@@ -1587,9 +1611,11 @@ const strings = new LocalizedStrings({
       targeting: 'Doelwit',
       view_ad: 'Bekijk advertentie',
       check_rationale: 'Waarom heb ik dit gezien?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Update je profiel',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Dank je. Je profiel is bijgewerkt.'
     },
     links: {
@@ -1711,9 +1737,11 @@ const strings = new LocalizedStrings({
       targeting: 'יעד',
       view_ad: 'הצג מודעה',
       check_rationale: 'למה ראיתי את זה?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'עדכן את הפרופיל שלך',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'תודה. הפרופיל שלך עודכן בהצלחה.',
     },
     links: {
@@ -1835,9 +1863,11 @@ const strings = new LocalizedStrings({
       targeting: 'Мишена',
       view_ad: 'Преглед на рекламата',
       check_rationale: 'Защо видях това?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Актуализиране на вашия профил',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Благодаря ти. Вашият профил е актуализирана успешно.',
     },
     links: {
@@ -1959,9 +1989,11 @@ const strings = new LocalizedStrings({
       targeting: 'Cílová',
       view_ad: 'Zobrazit reklamu',
       check_rationale: 'Proč jsem to viděl?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Aktualizujte svůj profil',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Děkuji. Váš profil byl úspěšně aktualizován.',
     },
     links: {
@@ -2083,9 +2115,11 @@ const strings = new LocalizedStrings({
       targeting: 'Sihtmärk',
       view_ad: 'Vaata reklaami',
       check_rationale: 'Miks ma seda nägin?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Uuenda oma profiili',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Aitäh. Teie profiil edukalt uuendatud.',
     },
     links: {
@@ -2207,9 +2241,11 @@ const strings = new LocalizedStrings({
       targeting: 'Στόχος',
       view_ad: 'Προβολή διαφήμισης',
       check_rationale: 'Γιατί το έχω δει',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Ενημέρωση του προφίλ σας',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Ευχαριστώ. Το προφίλ σας ενημερώθηκε επιτυχώς.',
     },
     links: {
@@ -2331,9 +2367,11 @@ const strings = new LocalizedStrings({
       targeting: 'Насочване',
       view_ad: 'Преглед на рекламата',
       check_rationale: 'Зошто го видов ова?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Ажурирајте го вашиот профил',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Ви благодарам. Твојот профил е успешно ажурирана.',
     },
     links: {
@@ -2455,9 +2493,11 @@ const strings = new LocalizedStrings({
       targeting: 'Kierowanie',
       view_ad: 'Wyświetl reklamę',
       check_rationale: 'Dlaczego to widziałem?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Zaktualizuj swój profil',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Dziękuję Ci. Twój profil został pomyślnie zaktualizowany.',
     },
     links: {
@@ -2579,9 +2619,11 @@ const strings = new LocalizedStrings({
       targeting: 'Direcționarea',
       view_ad: 'Afișați anunțul',
       check_rationale: 'De ce am văzut asta?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Actualizeaza-ti profilul',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Mulțumesc. Profilul dvs. a fost actualizat cu succes.',
     },
     links: {
@@ -2703,9 +2745,11 @@ const strings = new LocalizedStrings({
       targeting: 'Zacielenia',
       view_ad: 'Zobraziť reklamu',
       check_rationale: 'Prečo som to videl?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Aktualizujte svoj profil',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Ďakujem. Váš profil bol úspešne aktualizovaný.',
     },
     links: {
@@ -2827,9 +2871,11 @@ const strings = new LocalizedStrings({
       targeting: 'Ciljanje',
       view_ad: 'Prikaži oglas',
       check_rationale: 'Zakaj sem to videl?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Posodobite svoj profil',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Hvala vam. Tvoj profil je bil uspešno posodobljen.',
     },
     links: {
@@ -2951,9 +2997,11 @@ const strings = new LocalizedStrings({
       targeting: 'Mira',
       view_ad: 'Ara r-reklam',
       check_rationale: 'Għaliex rajt dan?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Taġġorna l-profil tiegħek',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Grazzi. Profil tiegħek ġiet aġġornata b\'suċċess.',
     },
     links: {
@@ -3075,9 +3123,11 @@ const strings = new LocalizedStrings({
       targeting: 'Cilj',
       view_ad: 'Pogledajte oglas',
       check_rationale: 'Zašto sam to vidio?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Ažurirajte svoj profil',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Hvala vam. Vaš profil je uspješno ažuriran.',
     },
     links: {
@@ -3199,9 +3249,11 @@ const strings = new LocalizedStrings({
       targeting: 'Målrettet til',
       view_ad: 'Vis annonce',
       check_rationale: 'Hvorfor har jeg set dette?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Opdater din profil',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Tak skal du have. Din profil blev opdateret.',
     },
     links: {
@@ -3323,9 +3375,11 @@ const strings = new LocalizedStrings({
       targeting: 'Díriú ar',
       view_ad: 'Amharc ad',
       check_rationale: 'Cén fáth go raibh mé a fheiceáil seo?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Nuashonraigh do phróifíl',
+      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
       updated_success: 'Go raibh maith agat. Cuireadh do phróifíl nuashonraithe go rathúil.',
     },
     links: {
