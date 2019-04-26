@@ -76,10 +76,8 @@ export default class PageResults extends Component {
         lastUpdated = null;
       }
       if (lastUpdated) {
-        return chrome.storage.promise.local.get().then(res => {
-          const filters = this.filtersExtract(res.userData, availableParties);
-          this.setState({userData: res.userData, filters, language: res.language});
-        })
+        const filters = this.filtersExtract(result.userData, availableParties);
+        this.setState({userData: result.userData, filters, language: result.language});
       } else {
         this.props.api.get('user')
           .then((response) => {
@@ -428,7 +426,7 @@ export default class PageResults extends Component {
                     />
                     <footer>
                     <span style={{marginRight: 0}}>{`${strings.results.click_a_bar} |  `}</span>
-                    <a className='link' style={{marginLeft: 7}} target='_blank' href={userCountry === 'FI' ? 'http://okf.fi/vaalivahti-rationale' : 'https://whotargets.me/en/defining-political-ads/'}>{strings.results.how_did_we_calc}</a>
+                    <a className='link' style={{marginLeft: 7}} target='_blank' href={userCountry === 'FI' ? 'http://okf.fi/vaalivahti-rationale' : 'https://whotargets.me/en/defining-political-ads/'}>{strings.results.how_did_we_calc2}</a>
                     </footer>
                 </div> :
                 <div style={(userCountry === 'BR' || userCountry === 'FI') ?
@@ -461,7 +459,8 @@ export default class PageResults extends Component {
                         userCountry={userCountry}
                         />
                       <footer>
-                      <a className='link' style={{marginLeft: 7}} target='_blank' href={userCountry === 'FI' ? 'http://okf.fi/vaalivahti-rationale' : 'https://whotargets.me/en/defining-political-ads/'}>{strings.results.how_did_we_calc}</a>
+                      <span style={{marginLeft: 30}}>{`${strings.results.how_did_we_calc1} ${countries[userCountry]}  |  `}</span>
+                      <a className='link' style={{marginLeft: 7}} target='_blank' href={userCountry === 'FI' ? 'http://okf.fi/vaalivahti-rationale' : 'https://whotargets.me/en/defining-political-ads/'}>{strings.results.how_did_we_calc2}</a>
                       </footer>
                     </div>}
                 </div>
@@ -488,9 +487,57 @@ export default class PageResults extends Component {
               </div>
             }
             { view === "no_party" &&
-              <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px'}}>
-                <h3 className='subMessage'>{strings.results.no_results_explanation}</h3>
-              </div>
+              <div>
+                <div className='tabs'>
+                {Object.keys(filterLabels).map(f =>
+                  <Tab filter={filterLabels[f]}
+                    active={this.state.tabIndex === f}
+                    handleTabClick={() => this.handleTabClick(f)}
+                    key={`tab-${f}`}
+                    />
+                  )}
+                </div>
+                {this.state.tabIndex === 'general' ?
+                  <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px'}}>
+                    <h3 className='subMessage'>{strings.results.no_results_explanation}</h3>
+                  </div> :
+                  <div style={(userCountry === 'BR' || userCountry === 'FI') ?
+                    {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', maxHeight: '200px'} :
+                    {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap'}}
+                  >
+                  {this.state.tabIndex === 'geo' ?
+                    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '220px', width: 650, marginLeft: 0}}>
+                      {this.state.userData.postcode ?
+                        <h3 className='subMessage'>
+                          {strings.results.coming_soon}
+                        </h3> :
+                        <div>
+                          <h3 className='subMessage'>
+                            {strings.update.update_postcode}
+                            <span className='link_underline'
+                              style={{cursor: 'pointer', fontStyle: 'italic', fontSize: '18px', marginLeft: 5}}
+                              onClick={() => this.props.updateProfile(true)}
+                            >
+                              {strings.update.update_profile.toLowerCase()}
+                          </span>
+                          </h3>
+                        </div>
+                      }
+                    </div> : <div>
+                      <PartyChartFilters
+                        advertisers={this.state.filters[this.state.tabIndex]}
+                        displayLabels={displayLabels}
+                        language={this.state.language}
+                        userCountry={userCountry}
+                        />
+                      <footer>
+                      <span style={{marginLeft: 30}}>{`${strings.results.how_did_we_calc1} ${countries[userCountry]}  |  `}</span>
+                      <a className='link' style={{marginLeft: 7}} target='_blank' href={userCountry === 'FI' ? 'http://okf.fi/vaalivahti-rationale' : 'https://whotargets.me/en/defining-political-ads/'}>{strings.results.how_did_we_calc2}</a>
+                      </footer>
+                    </div>}
+                </div>
+              }
+            </div>
             }
             { view === "no_country" &&
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px'}}>
@@ -539,7 +586,8 @@ export default class PageResults extends Component {
 
       <Row style={{textAlign: 'center', fontSize: '10px', paddingLeft: '20px'}}>
         <div style={{padding: '5px 15px 0px 15px',
-        lineHeight: `${strings.links.privacy.title.length+strings.links.terms.title.length+strings.results.uninstall.length < 110 ? '30px' : '15px'}`, textAlign: 'left'}}>
+        lineHeight: `${strings.links.privacy.title.length+strings.links.terms.title.length+strings.results.uninstall.length
+          +strings.results.delete_data.length+strings.update.update_profile.length < 110 ? '30px' : '15px'}`, textAlign: 'left'}}>
           <a href={strings.links.website.url} target='_blank' style={{color: 'white'}}> &#169; Who Targets Me? Ltd</a> &nbsp;|&nbsp;&nbsp;
           <a href={strings.links.privacy.url} target='_blank' style={{color: 'white'}}>{`${strings.links.privacy.title}`}</a>&nbsp;|&nbsp;&nbsp;
           <a href={strings.links.terms.url} target='_blank' style={{color: 'white'}}>{`${strings.links.terms.title}`}</a>&nbsp;|&nbsp;&nbsp;

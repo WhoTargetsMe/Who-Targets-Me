@@ -11,16 +11,6 @@ export const PartyChart = (props) => {
   let maxHeight = 150;
   let parties = [], partiesDisplay = [];
 
-  // group under OTHERS if there are more than 10 advertisers
-  // if (partiesDisplay.length > 10){
-  //   partiesDisplay = partiesDisplay.slice(0,5)
-  //   const userSeenSum5 = partiesDisplay.map(d => parseInt(d.count)).reduce(reduFunc,0)
-  //   partiesDisplay.push({
-  //     "advertiserName": "OTHERS",
-  //     "count": props.userSeenSum - userSeenSum5,
-  //   })
-  // }
-
   for (let i=0; i<props.advertisers.length; i++){
     parties.push(Object.assign({},
       props.advertisers[i],

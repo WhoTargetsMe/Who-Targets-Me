@@ -83,7 +83,8 @@ const strings = new LocalizedStrings({
       results_screen4: " were from ", //{quantity} were from {party name}
       gathering_data: 'Gathering data...',
       click_a_bar: 'Click a bar to view the ads you’ve seen from them',
-      how_did_we_calc: 'How did we calculate this?',
+      how_did_we_calc1: 'Compiled from data created by other users in ',
+      how_did_we_calc2: 'How did we calculate this?',
       ad: 'ad',
       ads: 'ads',
       ads_from: 'ads from',
@@ -98,10 +99,11 @@ const strings = new LocalizedStrings({
       view_ad: 'View ad',
       check_rationale: 'Why did I see this?',
       coming_soon: 'Coming soon...',
+
     },
     update: {
       update_profile: 'Update your profile',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'To show this data we need to know your postcode. Please ',
       updated_success: 'Thank you. Your profile was successfully updated.',
     },
     links: {
@@ -209,7 +211,8 @@ const strings = new LocalizedStrings({
       results_screen4: "  kamen aus ", //{quantity} were from {party name}
       gathering_data: 'Sammelt Daten...',
       click_a_bar: 'Klicke auf eine Leiste, um die Werbung zu sehen, die du von ihnen bekommen hast',
-      how_did_we_calc: 'Wie haben wir as berechnet?',
+      how_did_we_calc1: 'Zusammengestellt von Daten, die von anderen Benutzern in‘erstellt wird ',
+      how_did_we_calc2: 'Wie haben wir as berechnet?',
       ad: 'anz',
       ads: 'anz',
       ads_from: 'anzeigen von',
@@ -223,11 +226,11 @@ const strings = new LocalizedStrings({
       targeting: 'Gezielt beworben',
       view_ad: 'Zeige Werbung an',
       check_rationale: 'Warum habe ich das gesehen?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Demnächst...',
     },
     update: {
       update_profile: 'Aktualisiere dein Profil',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'Um zu zeigen, diese Daten benötigen wir Ihre Postleitzahl kennen. Bitte ',
       updated_success: 'Vielen Dank. Dein Profil wurde erfolgreich aktualisiert.',
     },
     links: {
@@ -335,7 +338,8 @@ const strings = new LocalizedStrings({
       results_screen4: " eran de ", //{quantity} were from {party name}
       gathering_data: 'Recopilando datos...',
       click_a_bar: 'Haz click en cualquiera de las barras para ver los anuncios de cada partido',
-      how_did_we_calc: '¿Cómo hemos calculado esto?',
+      how_did_we_calc1: 'Elaborado a partir de datos creados por otros usuarios de ',
+      how_did_we_calc2: '¿Cómo hemos calculado esto?',
       ad: 'anun',
       ads: 'anun',
       ads_from: 'anuncios de',
@@ -349,11 +353,11 @@ const strings = new LocalizedStrings({
       targeting: 'Segmentación',
       view_ad: 'Ver anuncio',
       check_rationale: '¿Por qué he visto esto?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Próximamente...',
     },
     update: {
       update_profile: 'Actualiza tu perfil',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'Para mostrar estos datos que necesitamos saber su código postal. Por favor ',
       updated_success: 'Gracias. Su perfil se ha actualizado correctamente.',
     },
     links: {
@@ -461,7 +465,8 @@ const strings = new LocalizedStrings({
       results_screen4: " provenivano ", //{quantity} were from {party name}
       gathering_data: 'Raccolta dei dati ...',
       click_a_bar: 'Fai clic su una barra per visualizzare gli annunci che hai visto da loro',
-      how_did_we_calc: 'Come lo abbiamo calcolato?',
+      how_did_we_calc1: 'Compilato da quelli derivanti da altri utenti in',
+      how_did_we_calc2: 'Come lo abbiamo calcolato?',
       ad: 'ann',
       ads: 'ann',
       ads_from: 'annunci da',
@@ -475,11 +480,11 @@ const strings = new LocalizedStrings({
       targeting: 'Obiettivo',
       view_ad: 'Visualizza annuncio',
       check_rationale: 'Perché l\'ho visto?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Prossimamente...',
     },
     update: {
       update_profile: 'Aggiorna il tuo profilo',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'Per mostrare questi dati abbiamo bisogno di conoscere il codice postale. Per favore ',
       updated_success: 'Grazie. Il tuo profilo è stato aggiornato con successo.',
     },
     links: {
@@ -587,7 +592,8 @@ const strings = new LocalizedStrings({
       results_screen4: " a ", //{quantity} were from {party name}
       gathering_data: 'Raccolta dati...',
       click_a_bar: 'Kattintson egy sávra, hogy megtekinthesse az általuk látott hirdetéseket',
-      how_did_we_calc: 'Hogyan számítottuk ki?',
+      how_did_we_calc1: 'Összeállított adatok más felhasználók által létrehozott in',
+      how_did_we_calc2: 'Hogyan számítottuk ki?',
       ad: 'rekl',
       ads: 'rekl',
       ads_from: 'hirdetések a',
@@ -601,11 +607,11 @@ const strings = new LocalizedStrings({
       targeting: 'Cél',
       view_ad: 'Hirdetés megtekintése',
       check_rationale: 'Miért láttam ezt?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Hamarosan...',
     },
     update: {
       update_profile: 'Frissítse profilját',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'Ahhoz, hogy mutassa meg neki ezt tudnunk kell, hogy az irányítószámot. Kérem ',
       updated_success: "Köszönöm. Az Ön profilja sikeresen frissítve.",
     },
     links: {
@@ -713,7 +719,8 @@ const strings = new LocalizedStrings({
       results_screen4: " были от ", //{quantity} were from {party name}.
       gathering_data: 'Сбор данных...',
       click_a_bar: 'Нажмите на столбец диагараммы, чтобы просмотреть объявления от этого рекламодателя',
-      how_did_we_calc: 'Как мы это рассчитали?',
+      how_did_we_calc1: 'Расчитано на основе данных, созданных другими пользователями в ',
+      how_did_we_calc2: 'Как мы это рассчитали?',
       ad: 'рекл',
       ads: 'рекл',
       ads_from: 'объявлений от',
@@ -731,7 +738,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Обновить профиль',
-      update_postcode: 'Для того, чтобы показать эти данные, нам необходимо знать ваш почтовый индекс. Вы можете обновить свой профиль здесь:',
+      update_postcode: 'Для того, чтобы показать эти данные, нам необходимо знать ваш почтовый индекс. Пожалуйста, ',
       updated_success: 'Спасибо. Ваш профиль был успешно обновлен.',
     },
     links: {
@@ -839,7 +846,8 @@ const strings = new LocalizedStrings({
       results_screen4: " bija no ", //{quantity} were from {party name}
       gathering_data: 'Datu vākšana ...',
       click_a_bar: 'Noklikšķiniet uz joslas, lai skatītu no tām redzamās reklāmas',
-      how_did_we_calc: 'Kā mēs to aprēķinājām?',
+      how_did_we_calc1: 'Apkopoti no datiem, kas izveidoti ar citiem lietotājiem ',
+      how_did_we_calc2: 'Kā mēs to aprēķinājām?',
       ad: 'rekl',
       ads: 'rekl',
       ads_from: 'reklāmas no',
@@ -853,11 +861,11 @@ const strings = new LocalizedStrings({
       targeting: 'Mērķis',
       view_ad: 'Skatīt reklāmu',
       check_rationale: 'Kāpēc es to redzēju?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Drīzumā...',
     },
     update: {
       update_profile: 'Atjaunināt savu profilu',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'Lai parādītu šo informāciju, kas mums ir nepieciešams zināt jūsu pasta indeksu. Lūdzu ',
       updated_success: 'Paldies. Jūsu profils ir veiksmīgi atjaunināts.',
     },
     links: {
@@ -967,7 +975,8 @@ const strings = new LocalizedStrings({
       results_screen4: " eram de ", //{quantity} were from {party name}
       gathering_data: 'Coleção de dados...',
       click_a_bar: 'Clique em uma barra para ver os anúncios que você viu deles',
-      how_did_we_calc: 'Como nós calculamos isso?',
+      how_did_we_calc1: 'Compilados a partir de dados criados por outros usuários em ',
+      how_did_we_calc2: 'Como nós calculamos isso?',
       ad: 'anun',
       ads: 'anun',
       ads_from: 'anúncios de',
@@ -981,11 +990,11 @@ const strings = new LocalizedStrings({
       targeting: 'Alvo',
       view_ad: 'Ver anúncio',
       check_rationale: 'Por que eu vi isso?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Em breve...',
     },
     update: {
       update_profile: 'Atualize seu perfil',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'Para mostrar esses dados, precisamos saber o seu código postal. Por favor ',
       updated_success: 'Obrigado. Seu perfil foi atualizado com sucesso.',
     },
     links: {
@@ -1093,7 +1102,8 @@ const strings = new LocalizedStrings({
       results_screen4: " är från ", //{quantity} were from {party name}
       gathering_data: 'Samlar in data...',
       click_a_bar: 'Klicka på en stapel för att se vilka annonser de riktat mot dig.',
-      how_did_we_calc: 'Hur räknade vi ut det här?',
+      how_did_we_calc1: 'Sammanställt från data som skapats av andra användare i ',
+      how_did_we_calc2: 'Hur räknade vi ut det här?',
       ad: 'ann',
       ads: 'ann',
       ads_from: 'Annonser från',
@@ -1107,11 +1117,11 @@ const strings = new LocalizedStrings({
       targeting: 'Riktade mot',
       view_ad: 'Se annons',
       check_rationale: 'Varför ser jag det här?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Kommer snart...',
     },
     update: {
       update_profile: 'Uppdatera din profil',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'För att visa dessa data vi behöver veta ditt postnummer. Snälla du ',
       updated_success: 'Tack. Din profil har uppdaterats.',
     },
     links: {
@@ -1219,7 +1229,8 @@ const strings = new LocalizedStrings({
       results_screen4: " були від ", //{quantity} were from {party name}
       gathering_data: 'Збір даних...',
       click_a_bar: 'Натисніть на стовпчик, щоб переглянути оголошення від цього рекламодавця',
-      how_did_we_calc: 'Як ми це розрахували?',
+      how_did_we_calc1: 'Розраховано на основі даних, наданих іншими користувачами у ',
+      how_did_we_calc2: 'Як ми це розрахували?',
       ad: 'рекл',
       ads: 'рекл',
       ads_from: 'оголошень від',
@@ -1237,7 +1248,7 @@ const strings = new LocalizedStrings({
     },
     update: {
       update_profile: 'Оновити профіль',
-      update_postcode: 'Щоб надати вам цю інформацію, нам потрібно знати ваш поштовий індекс. Ви можете оновити свій профіль тут:',
+      update_postcode: 'Щоб надати вам цю інформацію, нам потрібно знати ваш поштовий індекс. Будь ласка, ',
       updated_success: 'Дякуємо. Ваш профіль був успішно оновлений.',
     },
     links: {
@@ -1345,7 +1356,8 @@ const strings = new LocalizedStrings({
       results_screen4: " olivat peräisin seuraavilta tahoilta: ", //{quantity} were from {party name}
       gathering_data: 'Kerätään dataa...',
       click_a_bar: 'Klikkaa palkkia nähdäksesi kyseiseltä taholta näkemäsi mainokset',
-      how_did_we_calc: 'Kuinka laskimme tämän?',
+      how_did_we_calc1: 'Koottu tieto luomia muiden käyttäjien',
+      how_did_we_calc2: 'Kuinka laskimme tämän?',
       ad: 'kpl',
       ads: 'kpl',
       ads_from: 'mainosta lähteestä',
@@ -1359,11 +1371,11 @@ const strings = new LocalizedStrings({
       targeting: 'Kohdentaminen',
       view_ad: 'Näytä mainos',
       check_rationale: 'Katso kohdentamisen tapa?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Tulossa pian...',
     },
     update: {
       update_profile: 'Päivitä profiilisi',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'Näyttämään näitä tietoja meidän täytyy tietää postinumeron. Ole kiltti ',
       updated_success: 'Kiitos. Profiilisi päivittäminen onnistui.',
     },
     links: {
@@ -1471,7 +1483,8 @@ const strings = new LocalizedStrings({
       results_screen4: " viennent de ", //{quantity} were from {party name}
       gathering_data: 'Collecte de données...',
       click_a_bar: 'Cliquez sur une barre pour afficher les annonces que vous avez vues.',
-      how_did_we_calc: 'Comment l\'avons-nous calculé?',
+      how_did_we_calc1: 'Compilé à partir des données créées par d\'autres utilisateurs ',
+      how_did_we_calc2: 'Comment l\'avons-nous calculé?',
       ad: 'ann',
       ads: 'ann',
       ads_from: 'annonces de',
@@ -1485,11 +1498,11 @@ const strings = new LocalizedStrings({
       targeting: 'Cible',
       view_ad: 'Voir l\'annonce',
       check_rationale: 'Pourquoi j\'ai vu ça?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Arrive bientôt...',
     },
     update: {
       update_profile: 'Mettre à jour votre profil',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'Pour afficher ces données nous avons besoin de connaître votre code postal. S\'il vous plaît ',
       updated_success: 'Je vous remercie. Votre profil a été mis à jour avec succès.',
     },
     links: {
@@ -1597,7 +1610,8 @@ const strings = new LocalizedStrings({
       results_screen4: " waren van ", //{quantity} were from {party name}
       gathering_data: 'Gegevensverzameling ...',
       click_a_bar: 'Klik op een balk om de advertenties te bekijken die u van hen hebt gezien',
-      how_did_we_calc: 'Hoe hebben we het berekend?',
+      how_did_we_calc1: 'Samengesteld op basis van gegevens die zijn gemaakt door andere gebruikers in ',
+      how_did_we_calc2: 'Hoe hebben we het berekend?',
       ad: 'ad',
       ads: 'ad',
       ads_from: 'advertenties van',
@@ -1611,11 +1625,11 @@ const strings = new LocalizedStrings({
       targeting: 'Doelwit',
       view_ad: 'Bekijk advertentie',
       check_rationale: 'Waarom heb ik dit gezien?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Komt binnenkort...',
     },
     update: {
       update_profile: 'Update je profiel',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'Om deze gegevens die we nodig hebben om uw postcode te weten te tonen. Gelieve ',
       updated_success: 'Dank je. Je profiel is bijgewerkt.'
     },
     links: {
@@ -1723,7 +1737,8 @@ const strings = new LocalizedStrings({
       results_screen4: " היו של ", //{quantity} were from {party name}
       gathering_data: '...איסוף נתונים',
       click_a_bar: 'לחץ על העמודה כדי לראות את המודעות שקיבלת מהעמודים המשויכים למפלגה',
-      how_did_we_calc: 'איך חישבנו את זה',
+      how_did_we_calc1: ' מנתונים נוצרו על ידי משתמשים אחרים',
+      how_did_we_calc2: 'איך חישבנו את זה',
       ad: 'ad',
       ads: 'ads',
       ads_from: 'מודעה/ות',
@@ -1737,11 +1752,11 @@ const strings = new LocalizedStrings({
       targeting: 'יעד',
       view_ad: 'הצג מודעה',
       check_rationale: 'למה ראיתי את זה?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'בקרוב...',
     },
     update: {
       update_profile: 'עדכן את הפרופיל שלך',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'כדי להראות נתונים זה אנחנו צריכים לדעת על המיקוד שלך. אנא ',
       updated_success: 'תודה. הפרופיל שלך עודכן בהצלחה.',
     },
     links: {
@@ -1849,7 +1864,8 @@ const strings = new LocalizedStrings({
       results_screen4: " са от ", //{quantity} were from {party name}
       gathering_data: 'Събиране на данни...',
       click_a_bar: 'Кликнете върху лента, за да видите рекламите, които сте видели от тях',
-      how_did_we_calc: 'Как го изчислихме?',
+      how_did_we_calc1: 'Съставена от данни, създадени от други потребители на ',
+      how_did_we_calc2: 'Как го изчислихме?',
       ad: 'рекл',
       ads: 'рекл',
       ads_from: 'реклами от',
@@ -1863,11 +1879,11 @@ const strings = new LocalizedStrings({
       targeting: 'Мишена',
       view_ad: 'Преглед на рекламата',
       check_rationale: 'Защо видях това?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Очаквайте скоро...',
     },
     update: {
       update_profile: 'Актуализиране на вашия профил',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'За да се покаже на тези данни трябва да знаем вашата пощенски код. Моля те ',
       updated_success: 'Благодаря ти. Вашият профил е актуализирана успешно.',
     },
     links: {
@@ -1975,7 +1991,8 @@ const strings = new LocalizedStrings({
       results_screen4: " bylo od ", //{quantity} were from {party name}
       gathering_data: 'Sběr dat...',
       click_a_bar: 'Kliknutím na lištu zobrazíte reklamy, které jste z nich viděli',
-      how_did_we_calc: 'Jak jsme to vypočítali?',
+      how_did_we_calc1: 'Sestaven z dat vytvořených jinými uživateli v',
+      how_did_we_calc2: 'Jak jsme to vypočítali?',
       ad: 'rekl',
       ads: 'rekl',
       ads_from: 'reklamy ze',
@@ -1989,11 +2006,11 @@ const strings = new LocalizedStrings({
       targeting: 'Cílová',
       view_ad: 'Zobrazit reklamu',
       check_rationale: 'Proč jsem to viděl?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Brzy...',
     },
     update: {
       update_profile: 'Aktualizujte svůj profil',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'Chcete-li zobrazit tyto údaje, které potřebujeme znát své poštovní směrovací číslo. Prosím ',
       updated_success: 'Děkuji. Váš profil byl úspěšně aktualizován.',
     },
     links: {
@@ -2101,7 +2118,8 @@ const strings = new LocalizedStrings({
       results_screen4: " pärinevad ", //{quantity} were from {party name}
       gathering_data: 'Andmete kogumine...',
       click_a_bar: 'Klõpsake ribal, et vaadata neilt nähtavaid reklaame',
-      how_did_we_calc: 'Kuidas me seda arvutasime?',
+      how_did_we_calc1: 'Sestaven z dat vytvořených jinými uživateli v ',
+      how_did_we_calc2: 'Kuidas me seda arvutasime?',
       ad: 'rekl',
       ads: 'rekl',
       ads_from: 'reklaami',
@@ -2115,11 +2133,11 @@ const strings = new LocalizedStrings({
       targeting: 'Sihtmärk',
       view_ad: 'Vaata reklaami',
       check_rationale: 'Miks ma seda nägin?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Tulekul...',
     },
     update: {
       update_profile: 'Uuenda oma profiili',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'Et näidata neid andmeid peame teadma oma sihtnumber. Palun ',
       updated_success: 'Aitäh. Teie profiil edukalt uuendatud.',
     },
     links: {
@@ -2227,7 +2245,8 @@ const strings = new LocalizedStrings({
       results_screen4: " προέρχονται από ", //{quantity} were from {party name}
       gathering_data: 'Συλλογή δεδομένων...',
       click_a_bar: 'Κάντε κλικ σε μια γραμμή για να δείτε τις διαφημίσεις που έχετε δει από αυτές',
-      how_did_we_calc: 'Πώς το υπολογίσαμε?',
+      how_did_we_calc1: 'Καταρτίζονται από τα δεδομένα που δημιουργούνται από άλλους χρήστες ',
+      how_did_we_calc2: 'Πώς το υπολογίσαμε?',
       ad: 'διαφ',
       ads: 'διαφ',
       ads_from: 'διαφημίσεις από',
@@ -2241,11 +2260,11 @@ const strings = new LocalizedStrings({
       targeting: 'Στόχος',
       view_ad: 'Προβολή διαφήμισης',
       check_rationale: 'Γιατί το έχω δει',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Ερχομαι συντομα...',
     },
     update: {
       update_profile: 'Ενημέρωση του προφίλ σας',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'Για να εμφανίσετε αυτά τα δεδομένα πρέπει να ξέρουμε ταχυδρομικό κώδικα σας. Σας παρακαλούμε ',
       updated_success: 'Ευχαριστώ. Το προφίλ σας ενημερώθηκε επιτυχώς.',
     },
     links: {
@@ -2353,7 +2372,8 @@ const strings = new LocalizedStrings({
       results_screen4: " беа од ", //{quantity} were from {party name}
       gathering_data: 'Собирање на податоци...',
       click_a_bar: 'Кликни на лента, за да ги видите рекламите, кои сте виделе од нив',
-      how_did_we_calc: 'Како ја пресметавме?',
+      how_did_we_calc1: 'Составени од податоци создадени од страна на други корисници ',
+      how_did_we_calc2: 'Како ја пресметавме?',
       ad: 'рекл',
       ads: 'рекл',
       ads_from: 'реклами од',
@@ -2367,11 +2387,11 @@ const strings = new LocalizedStrings({
       targeting: 'Насочване',
       view_ad: 'Преглед на рекламата',
       check_rationale: 'Зошто го видов ова?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Наскоро...',
     },
     update: {
       update_profile: 'Ажурирајте го вашиот профил',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'За да се покаже овие податоци треба да се знае вашиот поштенски код. Ве молиме ',
       updated_success: 'Ви благодарам. Твојот профил е успешно ажурирана.',
     },
     links: {
@@ -2479,7 +2499,8 @@ const strings = new LocalizedStrings({
       results_screen4: " pochodziło od ", //{quantity} were from {party name}
       gathering_data: 'Zbieranie danych...',
       click_a_bar: 'Kliknij pasek, aby wyświetlić reklamy, które z nich widziałeś',
-      how_did_we_calc: 'Jak to obliczyliśmy?',
+      how_did_we_calc1: 'Zestawiane z danymi utworzonymi przez innych użytkowników w ',
+      how_did_we_calc2: 'Jak to obliczyliśmy?',
       ad: 'rekl',
       ads: 'rekl',
       ads_from: 'reklam z',
@@ -2493,11 +2514,11 @@ const strings = new LocalizedStrings({
       targeting: 'Kierowanie',
       view_ad: 'Wyświetl reklamę',
       check_rationale: 'Dlaczego to widziałem?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Wkrótce...',
     },
     update: {
       update_profile: 'Zaktualizuj swój profil',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'Aby wyświetlić te dane, musimy znać swój kod pocztowy. Proszę ',
       updated_success: 'Dziękuję Ci. Twój profil został pomyślnie zaktualizowany.',
     },
     links: {
@@ -2605,7 +2626,8 @@ const strings = new LocalizedStrings({
       results_screen4: " au fost de la ", //{quantity} were from {party name}
       gathering_data: 'Colectare de date...',
       click_a_bar: 'Faceți clic pe o bară pentru a vedea anunțurile pe care le-ați văzut de la ele',
-      how_did_we_calc: 'Cum l-am calculat?',
+      how_did_we_calc1: 'Compilat din datele create de alți utilizatori din',
+      how_did_we_calc2: 'Cum l-am calculat?',
       ad: 'recl',
       ads: 'recl',
       ads_from: 'anunțuri de',
@@ -2619,11 +2641,11 @@ const strings = new LocalizedStrings({
       targeting: 'Direcționarea',
       view_ad: 'Afișați anunțul',
       check_rationale: 'De ce am văzut asta?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'In curand...',
     },
     update: {
       update_profile: 'Actualizeaza-ti profilul',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'Pentru a afișa aceste date trebuie să știm codul poștal. Vă rog ',
       updated_success: 'Mulțumesc. Profilul dvs. a fost actualizat cu succes.',
     },
     links: {
@@ -2731,7 +2753,8 @@ const strings = new LocalizedStrings({
       results_screen4: " boli zadané organizácie ", //{quantity} were from {party name}
       gathering_data: 'Zber dát...',
       click_a_bar: 'Ak chcete zobraziť reklamy, ktoré ste z nich videli, kliknite na panel',
-      how_did_we_calc: 'Ako sme to vypočítali?',
+      how_did_we_calc1: 'Zostavený z dát vytvorených inými užívateľmi v ',
+      how_did_we_calc2: 'Ako sme to vypočítali?',
       ad: 'rekl',
       ads: 'rekl',
       ads_from: 'reklám od',
@@ -2745,11 +2768,11 @@ const strings = new LocalizedStrings({
       targeting: 'Zacielenia',
       view_ad: 'Zobraziť reklamu',
       check_rationale: 'Prečo som to videl?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Už čoskoro...',
     },
     update: {
       update_profile: 'Aktualizujte svoj profil',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'Ak chcete zobraziť tieto údaje, ktoré potrebujeme poznať svoje poštové smerovacie číslo. prosím ',
       updated_success: 'Ďakujem. Váš profil bol úspešne aktualizovaný.',
     },
     links: {
@@ -2857,7 +2880,8 @@ const strings = new LocalizedStrings({
       results_screen4: " je bilo od ", //{quantity} were from {party name}
       gathering_data: 'Zbiranje podatkov...',
       click_a_bar: 'Kliknite vrstico, da si ogledate oglase, ki ste jih videli',
-      how_did_we_calc: 'Kako smo ga izračunali?',
+      how_did_we_calc1: 'Na podlagi podatkov, ki jih drugi uporabniki v ustvarili ',
+      how_did_we_calc2: 'Kako smo ga izračunali?',
       ad: 'ogl',
       ads: 'ogl',
       ads_from: 'oglasov osebe',
@@ -2871,11 +2895,11 @@ const strings = new LocalizedStrings({
       targeting: 'Ciljanje',
       view_ad: 'Prikaži oglas',
       check_rationale: 'Zakaj sem to videl?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Prihaja kmalu...',
     },
     update: {
       update_profile: 'Posodobite svoj profil',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'Za prikaz teh podatkov moramo vedeti vašo poštno številko. Prosim ',
       updated_success: 'Hvala vam. Tvoj profil je bil uspešno posodobljen.',
     },
     links: {
@@ -2983,7 +3007,8 @@ const strings = new LocalizedStrings({
       results_screen4: " kienu minn ", //{quantity} were from {party name}
       gathering_data: 'Ġbir ta \'data...',
       click_a_bar: 'Ak chcete zobraziť reklamy, ktoré ste z nich videli, kliknite na panel',
-      how_did_we_calc: 'Kif għamilna?',
+      how_did_we_calc1: 'Miġbura minn dejta maħluqa minn utenti oħra fil-',
+      how_did_we_calc2: 'Kif għamilna?',
       ad: 'rekl',
       ads: 'rekl',
       ads_from: 'riklami minn',
@@ -2997,11 +3022,11 @@ const strings = new LocalizedStrings({
       targeting: 'Mira',
       view_ad: 'Ara r-reklam',
       check_rationale: 'Għaliex rajt dan?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Ġej dalwaqt...',
     },
     update: {
       update_profile: 'Taġġorna l-profil tiegħek',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'Biex turi din id-data għandna bżonn inkunu nafu kodiċi postali tiegħek. Jekk jogħġbok ',
       updated_success: 'Grazzi. Profil tiegħek ġiet aġġornata b\'suċċess.',
     },
     links: {
@@ -3109,7 +3134,8 @@ const strings = new LocalizedStrings({
       results_screen4: " su bili od ", //{quantity} were from {party name}
       gathering_data: 'Prikupljanje podataka...',
       click_a_bar: 'Kliknite traku da biste vidjeli oglase koje ste vidjeli',
-      how_did_we_calc: 'Kako smo ga izračunali?',
+      how_did_we_calc1: 'Sastavljen od podataka stvorenih od strane drugih korisnika u',
+      how_did_we_calc2: 'Kako smo ga izračunali?',
       ad: 'ogl',
       ads: 'ogl',
       ads_from: 'oglase od',
@@ -3123,11 +3149,11 @@ const strings = new LocalizedStrings({
       targeting: 'Cilj',
       view_ad: 'Pogledajte oglas',
       check_rationale: 'Zašto sam to vidio?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Dolazi uskoro...',
     },
     update: {
       update_profile: 'Ažurirajte svoj profil',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'Za prikaz ove podatke trebamo znati svoj poštanski broj. Molim ',
       updated_success: 'Hvala vam. Vaš profil je uspješno ažuriran.',
     },
     links: {
@@ -3235,7 +3261,8 @@ const strings = new LocalizedStrings({
       results_screen4: " var fra ", //{quantity} were from {party name}
       gathering_data: 'Indsamler data...',
       click_a_bar: 'Klik på en søjle for at se de annoncer, du har set fra dem',
-      how_did_we_calc: 'Hvordan har vi beregnet dette?',
+      how_did_we_calc1: 'Udarbejdet af data oprettet af andre brugere i ',
+      how_did_we_calc2: 'Hvordan har vi beregnet dette?',
       ad: 'ann',
       ads: 'ann',
       ads_from: 'annoncer fra',
@@ -3249,11 +3276,11 @@ const strings = new LocalizedStrings({
       targeting: 'Målrettet til',
       view_ad: 'Vis annonce',
       check_rationale: 'Hvorfor har jeg set dette?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Kommer snart ... ',
     },
     update: {
       update_profile: 'Opdater din profil',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'For at vise disse data vi har brug for at kende dit postnummer. Vær venlig ',
       updated_success: 'Tak skal du have. Din profil blev opdateret.',
     },
     links: {
@@ -3361,7 +3388,8 @@ const strings = new LocalizedStrings({
       results_screen4: "ba ó", //{quantity} were from {party name}
       gathering_data: 'Bailiú Sonraí ...',
       click_a_bar: 'Cliceáil barra chun féachaint ar an ad tú atá le feiceáil uathu',
-      how_did_we_calc: 'Conas a fuair muid ríomh seo?',
+      how_did_we_calc1: 'Tiomsaithe ó sonraí uile arna gcruthú ag úsáideoirí eile i ',
+      how_did_we_calc2: 'Conas a fuair muid ríomh seo?',
       ad: 'ad',
       ads: 'ads',
       ads_from: 'ads ó',
@@ -3375,11 +3403,11 @@ const strings = new LocalizedStrings({
       targeting: 'Díriú ar',
       view_ad: 'Amharc ad',
       check_rationale: 'Cén fáth go raibh mé a fheiceáil seo?',
-      coming_soon: 'Coming soon...',
+      coming_soon: 'Ag teacht go luath...',
     },
     update: {
       update_profile: 'Nuashonraigh do phróifíl',
-      update_postcode: 'To show this data we need your postcode. You can update your profile here:',
+      update_postcode: 'A thaispeáint na sonraí sin is gá dúinn a fhios do cód poist. Le do thoil ',
       updated_success: 'Go raibh maith agat. Cuireadh do phróifíl nuashonraithe go rathúil.',
     },
     links: {
