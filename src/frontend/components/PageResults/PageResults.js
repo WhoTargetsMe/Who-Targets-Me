@@ -72,7 +72,7 @@ export default class PageResults extends Component {
     console.log("REQUESTING USER DATA")
     return chrome.storage.promise.local.get().then(result => {
       let lastUpdated = result.lastUpdated || null;
-      if (lastUpdated && (Math.floor(Math.abs(new Date()-lastUpdated)) / 1000 / 60 / 60 ) > 24) {
+      if (lastUpdated && (Math.floor(Math.abs(new Date()-new Date(lastUpdated))) / 1000 / 60 / 60 ) > 24) {
         lastUpdated = null;
       }
       if (lastUpdated) {
@@ -81,7 +81,8 @@ export default class PageResults extends Component {
       } else {
         this.props.api.get('user')
           .then((response) => {
-            lastUpdated = new Date();
+            let start = new Date();
+            lastUpdated = start.getFullYear().toString() + '-' + (start.getMonth() + 1).toString() + '-' + start.getDate().toString();
             const filters = this.filtersExtract(response.jsonData.data, availableParties);
             chrome.storage.promise.local.set({'userData': response.jsonData.data, lastUpdated});
             this.setState({userData: response.jsonData.data, filters, language: result.language});
