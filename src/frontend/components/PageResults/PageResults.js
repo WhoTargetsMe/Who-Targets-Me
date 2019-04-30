@@ -75,6 +75,9 @@ export default class PageResults extends Component {
       if (lastUpdated && (Math.floor(Math.abs(new Date()-new Date(lastUpdated))) / 1000 / 60 / 60 ) > 24) {
         lastUpdated = null;
       }
+      if (typeof lastUpdated === 'object') {
+        lastUpdated = null;
+      }
       if (lastUpdated) {
         const filters = this.filtersExtract(result.userData, availableParties);
         this.setState({userData: result.userData, filters, language: result.language});
