@@ -133,7 +133,6 @@
   border-bottom: 2px solid #f2f2f2;
   justify-content: space-around;
   min-height: 130px;
-  width: 600px;
 }
 .labels{
   display: flex;

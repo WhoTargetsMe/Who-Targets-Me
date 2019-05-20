@@ -14,6 +14,7 @@ export const PartyChart = (props) => {
   for (let i=0; i<props.advertisers.length; i++){
     parties.push(Object.assign({},
       props.advertisers[i],
+      {title: props.advertisers[i].partyDetails.party},
       {height: (props.advertisers[i].count/props.userSeenSum*maxHeight).toFixed(0)+'px'},
       {color: props.advertisers[i].partyDetails.color || '#999999'})
   )}
@@ -31,13 +32,14 @@ export const PartyChart = (props) => {
   props.displayLabels.forEach(l => {
     partiesDisplay.push(parties.find(g => g.advertiserName === l));
   });
-  // console.log('partiesDisplay-3', props.displayLabels, partiesDisplay)
+  // console.log('partiesDisplay-3', props, partiesDisplay)
   return(
     <div className='container'>
-      <div className='chart'>
+      <div className='chart' style={{width: 600}}>
         {partiesDisplay.map((elt, i) =>
           <div key={`bar-${i}`}
           className='bar'
+          title={elt.title}
           style={{height: elt.height, backgroundColor: elt.color}}
           onClick={() => props.showBarInfo(elt.advertiserName)}
           ></div>
@@ -46,7 +48,7 @@ export const PartyChart = (props) => {
       <div className='labels'>
         {partiesDisplay.map((elt, i) =>
           <div key={`label-${i}`} className='label'>
-            <div className="name" title={elt.advertiserName}>{elt.advertiserName.toUpperCase().slice(0,6)}</div>
+            <div className="name" title={props.partyList[elt.advertiserName]}>{elt.advertiserName.toUpperCase().slice(0,6)}</div>
             <div className="labtext">{parseInt(elt.count) === 1 ? `${elt.count} ${strings.results.ad}` : `${elt.count} ${strings.results.ads}`}</div>
             <div className="labtext">{`${(parseInt(elt.count)/props.userSeenSum*100).toFixed(0)}%`}</div>
           </div>
@@ -233,6 +235,7 @@ export const PartyChartFilters = (props) => {
       partiesDisplay.push(advr);
     }
   }
+  // console.log('filters', partiesDisplay)
   return(
     <div className='container'>
       <div className='chart'>
@@ -247,7 +250,7 @@ export const PartyChartFilters = (props) => {
       <div className='labels'>
         {partiesDisplay.map((elt, i) =>
           <div key={`label-${i}`} className='label'>
-            <div className="name" title={elt.party}>{elt.party.toUpperCase().slice(0,6)}</div>
+            <div className="name" title={props.partyList[elt.party]}>{elt.party.toUpperCase().slice(0,6)}</div>
             <div className="labtext">{`${elt.percentage}%`}</div>
           </div>
         )}

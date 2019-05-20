@@ -272,11 +272,13 @@ export default class PageResults extends Component {
     const userCountry = this.state.userData.country;
     const userCountryNative = countries_in_native_lang[userCountry];
     const advertisers = this.state.userData.advertisers;
-    let displayLabels = [];
+    let displayLabels = [], partyList = {};
     if (availableCountries.map(c => c.id).includes(userCountry) && availableParties[userCountry].length > 0) {
       displayLabels = availableParties[userCountry].map(p => p.shortName);
+      displayLabels.forEach(l => {
+        partyList[l] = availableParties[userCountry].find(p => p.shortName === l).party;
+      });
     }
-
     let parties = [];
     // if there is at least one advertiser and country labels are available
     if (advertisers.length > 0 && availableCountries.map(c => c.id).includes(userCountry)){
@@ -420,22 +422,26 @@ export default class PageResults extends Component {
                     />
                   )}
                 </div>
-                {this.state.tabIndex === 'general' ? <div style={(userCountry === 'BR' || userCountry === 'FI') ? {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', maxHeight: '200px'} : {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap'}}>
+                {this.state.tabIndex === 'general' ?
+                  <div style={(userCountry === 'BR' || userCountry === 'FI') ?
+                    {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', maxHeight: '200px',width: 700} :
+                    {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', width: 700}}>
                   <PartyChart
                     advertisers={parties}
                     userSeenSum={userSeenPartiesSum}
                     displayLabels={displayLabels}
+                    partyList={partyList}
                     showBarInfo={this.showBarInfo}
                     language={this.state.language}
                     />
                     <footer>
-                    <span style={{marginRight: 0}}>{`${strings.results.click_a_bar} |  `}</span>
+                    <span style={{marginLeft: 30, marginRight: 0}}>{`${strings.results.click_a_bar} |  `}</span>
                     <a className='link' style={{marginLeft: 7}} target='_blank' href={userCountry === 'FI' ? 'http://okf.fi/vaalivahti-rationale' : 'https://whotargets.me/en/defining-political-ads/'}>{strings.results.how_did_we_calc2}</a>
                     </footer>
                 </div> :
-                <div style={(userCountry === 'BR' || userCountry === 'FI') ?
-                  {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', maxHeight: '200px'} :
-                  {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap'}}
+                <div style={['BR', 'FI'].includes(userCountry) ?
+                  {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', maxHeight: '200px', width: 700} :
+                  {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', width: 700}}
                 >
                   {this.state.tabIndex === 'geo' ?
                     <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '220px', width: 650, marginLeft: 0}}>
@@ -459,6 +465,7 @@ export default class PageResults extends Component {
                       <PartyChartFilters
                         advertisers={this.state.filters[this.state.tabIndex]}
                         displayLabels={displayLabels}
+                        partyList={partyList}
                         language={this.state.language}
                         userCountry={userCountry}
                         />
@@ -505,9 +512,9 @@ export default class PageResults extends Component {
                   <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px'}}>
                     <h3 className='subMessage'>{strings.results.no_results_explanation}</h3>
                   </div> :
-                  <div style={(userCountry === 'BR' || userCountry === 'FI') ?
-                    {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', maxHeight: '200px'} :
-                    {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap'}}
+                  <div style={['BR', 'FI'].includes(userCountry) ?
+                    {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', maxHeight: '200px', width: 700} :
+                    {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', width: 700}}
                   >
                   {this.state.tabIndex === 'geo' ?
                     <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '220px', width: 650, marginLeft: 0}}>
@@ -531,6 +538,7 @@ export default class PageResults extends Component {
                       <PartyChartFilters
                         advertisers={this.state.filters[this.state.tabIndex]}
                         displayLabels={displayLabels}
+                        partyList={partyList}
                         language={this.state.language}
                         userCountry={userCountry}
                         />
