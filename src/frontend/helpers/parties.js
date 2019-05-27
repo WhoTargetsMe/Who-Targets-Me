@@ -88,6 +88,9 @@ export const availableParties = {
     {entityId: 17, party:'Együtt', shortName: 'EGY', color: '#ffff00'},
     {entityId: 18, party:'Párbeszéd', shortName: 'PAR', color: 'lightgreen'},
     {entityId: 20, party:'Más', shortName: 'MAS', color: 'grey'},
+    {entityId: 7, party:'Kereszténydemokrata Néppárt', shortName: 'KDNP', color: '#006612'},
+    {entityId: 8, party:'Demokratikus Koalíció', shortName: 'DK', color: '#0068aa'},
+    {entityId: 9, party:'Párbeszéd Magyarországért', shortName: 'PM', color: '#7cac24'},
     {entityId: 6, party:'Egyéb', shortName: 'OTH', color: '#ccc'},
   ],
   'CA': [
@@ -302,6 +305,9 @@ export const availableParties = {
     {entityId: 6, party:'Partito Liberale Italiano', shortName: 'PL', color: '#f1b900'},
     {entityId: 7, party:'Partito Socialista Italiano', shortName: 'PSI', color: '#fefefe'},
     {entityId: 8, party:'Più Europa', shortName: 'PiuE', color: '#fec115'},
+    {entityId: 10, party:'Liberi e Uguali', shortName: 'LeU', color: '#ed3733'},
+    {entityId: 11, party:'Unione di Centro', shortName: 'UdC', color: '#00aff3'},
+    {entityId: 12, party:'Noi con l`Italia', shortName: 'NcL', color: '#417294'},
     {entityId: 9, party:'Altro', shortName: 'OTH', color: '#ccc'},
   ],
   'BE': [
@@ -311,6 +317,11 @@ export const availableParties = {
     {entityId: 4, party:'Socialistische Partij Anders', shortName: 'SP', color: '#307104'},
     {entityId: 5, party:'Groen', shortName: 'GROEN', color: '#04847a'},
     {entityId: 6, party:'Vlaams Belang', shortName: 'VB', color: '#fecf03'},
+    {entityId: 8, party:'Parti Socialiste', shortName: 'PS', color: '#ff0000'},
+    {entityId: 9, party:'Mouvement Réformateur', shortName: 'MR', color: '#6ac6d5'},
+    {entityId: 10, party:'Centre démocrate humaniste', shortName: 'cdH', color: '#eb732d'},
+    {entityId: 11, party:'Ecolo', shortName: 'Ecolo', color: '#098c39'},
+    {entityId: 12, party:'Christlich Soziale Partei', shortName: 'CSP', color: '#ff8613'},
     {entityId: 7, party:'Others', shortName: 'OTH', color: '#ccc'},
   ],
   'BG': [
@@ -328,6 +339,7 @@ export const availableParties = {
     {entityId: 5, party:'Κίνημα Αλληλεγγύη', shortName: 'KA', color: '#b22f19'},
     {entityId: 6, party:'Κίνημα Οικολόγων - Συνεργασία Πολιτών', shortName: 'KOSP', color: '#4a8b5c'},
     {entityId: 7, party:'Εθνικό Λαϊκό Μέτωπο', shortName: 'ELAM', color: '#2764ad'},
+    {entityId: 9, party:'Κινήμα Σοσιαλδημοκρατών', shortName: 'EDEK', color: '#164f46'},
     {entityId: 8, party:'Άλλο', shortName: 'OTH', color: '#ccc'},
   ],
   'CZ': [
@@ -340,6 +352,7 @@ export const availableParties = {
     {entityId: 7, party:'Křesťanská a demokratická unie – Československá strana lidová', shortName: 'KDU', color: '#f6c402'},
     {entityId: 8, party:'Strana svobodných občanů', shortName: 'SVOB', color: '#009682'},
     {entityId: 9, party:'Strana zelených', shortName: 'ZEL', color: '#60b34c'},
+    {entityId: 11, party:'TOP 09 + STAN', shortName: 'TOP', color: '#e4031f'},
     {entityId: 10, party:'Jiné', shortName: 'OTH', color: '#ccc'},
   ],
   'DK': [
@@ -349,6 +362,7 @@ export const availableParties = {
     {entityId: 4, party:'Socialistisk Folkeparti', shortName: 'F', color: '#bf031a'},
     {entityId: 5, party:'Det Konservative Folkeparti', shortName: 'C', color: '#00593c'},
     {entityId: 6, party:'Folkebevægelsen mod EU', shortName: 'N', color: '#304d87'},
+    {entityId: 8, party:'Det Radikale Venstre', shortName: 'B', color: '#d3007f'},
     {entityId: 7, party:'Andet', shortName: 'OTH', color: '#ccc'},
   ],
   'EE': [
@@ -357,6 +371,7 @@ export const availableParties = {
     {entityId: 3, party:'Isamaa', shortName: 'I', color: '#009ce2'},
     {entityId: 4, party:'Eesti Vabaerakond', shortName: 'EVA', color: '#0089d1'},
     {entityId: 5, party:'Eesti Konservatiivne Rahvaerakond', shortName: 'EKRE', color: '#0089d1'},
+    {entityId: 7, party:'Eesti Keskerakond', shortName: 'K', color: '#007557'},
     {entityId: 6, party:'Muu', shortName: 'OTH', color: '#ccc'},
   ],
   'GR': [
@@ -367,6 +382,7 @@ export const availableParties = {
     {entityId: 5, party:'Το Ποτάμι', shortName: 'POT', color: '#5395c7'},
     {entityId: 6, party:'Ανεξάρτητοι Έλληνες', shortName: 'ANEL', color: '#234a9d'},
     {entityId: 7, party:'Ένωση Κεντρώων', shortName: 'EK', color: '#fdb300'},
+    {entityId: 9, party:'Κομμουνιστικό Κόμμα Ελλάδας', shortName: 'KKE', color: '#e30714'},
     {entityId: 8, party:'Άλλο', shortName: 'OTH', color: '#ccc'},
   ],
   'LT': [
@@ -379,6 +395,7 @@ export const availableParties = {
     {entityId: 7, party:'Lietuvos Žaliųjų Partija', shortName: 'LZP', color: '#7a9342'},
     {entityId: 8, party:'Lietuvos centro partija', shortName: 'LCP', color: 'grey'},
     {entityId: 9, party:'Lietuvos sarašas', shortName: 'LS', color: '#980001'},
+    {entityId: 11, party:'Darbo partija', shortName: 'DP', color: '#385296'},
     {entityId: 10, party:'Kiti', shortName: 'OTH', color: '#ccc'},
   ],
   'LU': [
@@ -404,6 +421,9 @@ export const availableParties = {
     {entityId: 4, party:'LIVRE', shortName: 'L', color: '#a3c660'},
     {entityId: 5, party:'Partido Democrático Republicano', shortName: 'PDR', color: '#000000'},
     {entityId: 6, party:'Partido Social Democrata', shortName: 'PSD', color: '#f4650d'},
+    {entityId: 8, party:'Bloco de Esquerda', shortName: 'BE', color: '#e10514'},
+    {entityId: 9, party:'Centro Democrático e Social – Partido Popular', shortName: 'CDSPP', color: '#4da6db'},
+    {entityId: 10, party:'Partido da Terra', shortName: 'MPT', color: '#2a963a'},
     {entityId: 7, party:'Outro', shortName: 'OTH', color: '#ccc'},
   ],
   'RO': [
@@ -412,6 +432,7 @@ export const availableParties = {
     {entityId: 3, party:'Uniunea Salvați România', shortName: 'USR', color: '#00aae6'},
     {entityId: 4, party:'Uniunea Democrată Maghiară din România', shortName: 'UDMR', color: '#2a6633'},
     {entityId: 5, party:'Alianța Liberalilor și Democraților', shortName: 'ALDE', color: '#0c5794'},
+    {entityId: 7, party:'Partidul Mișcarea Populară', shortName: 'PMP', color: '#a6ce38'},
     {entityId: 6, party:'Altceva', shortName: 'OTH', color: '#ccc'},
   ],
   'SK': [
@@ -422,6 +443,9 @@ export const availableParties = {
     {entityId: 5, party:'SME RODINA – Boris Kollár', shortName: 'ROD', color: '#0d3f92'},
     {entityId: 6, party:'Most–Híd', shortName: 'Most', color: '#ee7d0b'},
     {entityId: 7, party:'Slovenská konzervatívna strana', shortName: 'SKS', color: '#385296'},
+    {entityId: 9, party:'Obyčajní ľudia a nezávislé osobnosti', shortName: 'OLaNO', color: '#b4c800'},
+    {entityId: 10, party:'Strana maďarskej komunity', shortName: 'SMK', color: '#348000'},
+    {entityId: 11, party:'Slovenská demokratická a kresťanská únia – Demokratická strana', shortName: 'SDKU', color: '#0d3f92'},
     {entityId: 8, party:'Iné', shortName: 'OTH', color: '#ccc'},
   ],
   'SI': [
@@ -432,12 +456,15 @@ export const availableParties = {
     {entityId: 5, party:'Levica', shortName: 'Levica', color: '#e10514'},
     {entityId: 6, party:'Stranka Alenke Bratušek', shortName: 'SAB', color: '#00aae6'},
     {entityId: 7, party:'Slovenska nacionalna stranka', shortName: 'SNS', color: '#eed923'},
+    {entityId: 9, party:'Demokratična stranka upokojencev Slovenije', shortName: 'DeSUS', color: '#a6ce38'},
+    {entityId: 10, party:'Nova Slovenija - Krščanski demokrati', shortName: 'NSi', color: '#00aae6'},
     {entityId: 8, party:'Drugo', shortName: 'OTH', color: '#ccc'},
   ],
   'LI': [
     {entityId: 1, party:'Fortschrittliche Bürgerpartei', shortName: 'FBP', color: '#27326a'},
-    {entityId: 2, party:'Die Unabhängigen', shortName: 'VU', color: '#e10514'},
-    {entityId: 3, party:'Freie Liste', shortName: 'DU', color: '#ffffff'},
+    {entityId: 5, party:'Vaterländische Union', shortName: 'VU', color: '#e10514'},
+    {entityId: 2, party:'Die Unabhängigen', shortName: 'DU', color: '#ffffff'},
+    {entityId: 3, party:'Freie Liste', shortName: 'FL', color: '#60b34c'},
     {entityId: 4, party:'Others', shortName: 'OTH', color: '#ccc'},
   ],
   'PL': [
@@ -450,6 +477,8 @@ export const availableParties = {
     {entityId: 7, party:'Solidarna Polska', shortName: 'SP', color: '##005ca8'},
     {entityId: 8, party:'Wolność', shortName: 'WOL', color: '#ffcb0a'},
     {entityId: 9, party:'Kongres Nowej Prawicy', shortName: 'KNP', color: '#000000'},
+    {entityId: 11, party:'Polskie Stronnictwo Ludowe', shortName: 'PSL', color: '#2a963a'},
+    {entityId: 12, party:'Prawica Rzeczypospolitej', shortName: 'PR', color: '#be0000'},
     {entityId: 10, party:'Inne', shortName: 'OTH', color: '#ccc'},
   ],
   // 'MK': [
