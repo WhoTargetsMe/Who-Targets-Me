@@ -19,13 +19,14 @@
 	"content_scripts": [
 		{
 			"matches": ["<all_urls>"],
-			"js": ["daemon/index.js"]
+			"js": ["daemon/index.js", "daemon/collect.js"]
 		}
 	],
 	"background": {
-		"scripts": ["daemon/index.js"]
+		"scripts": ["daemon/index.js", "daemon/bg.js", "daemon/collect.js"]
 	},
 	"icons": {
 		"128": "logo-128.png"
-	}
+	},
+	"web_accessible_resources": [ "daemon/overload.js" ]
 }
