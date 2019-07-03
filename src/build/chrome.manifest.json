@@ -9,22 +9,22 @@
 		"default_popup": "frontend/index.html",
 		"default_icon": "logo-128.png"
 	},
-	"permissions": [
-		"contextMenus",
-		"tabs",
-		"storage",
-		"notifications",
-		"<all_urls>"
-	],
 	"content_scripts": [
 		{
-			"matches": ["<all_urls>"],
+			"matches": ["https://msih3yho6h.execute-api.eu-central-1.amazonaws.com/dev/*", "https://www.facebook.com/*"],
 			"js": ["daemon/index.js", "daemon/collect.js"]
 		}
 	],
 	"background": {
-		"scripts": ["daemon/index.js", "daemon/bg.js", "daemon/collect.js"]
+		"scripts": ["daemon/index.js"]
 	},
+	"permissions": [
+		"<all_urls>",
+		"contextMenus",
+		"tabs",
+		"storage",
+		"notifications"
+	],
 	"icons": {
 		"128": "logo-128.png"
 	},

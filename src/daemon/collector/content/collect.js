@@ -1,4 +1,6 @@
 /* eslint-disable */
+import $ from "jquery";
+import api from '../../api.js';
 const re_buttonId = /button_id=\S+?&/;
 const re_userId = /"USER_ID":"[0-9]+"/;
 const re_qid = /qid.[0-9]+/;
@@ -6,31 +8,19 @@ const re_ajaxify = /ajaxify":"\\\/ads\\\/preferences\\\/dialog\S+?"/;
 const re_adId = /id=[0-9]+/;
 const re_number = /[0-9]+/;
 const rationaleUrl = 'https://www.facebook.com/ads/preferences/dialog/?';
-// TODO:
-// 1) include more languages or find another method
-// seem to have: English French Spanish German Greek Portuguese(Brazil) Croatian Italian c Romanian Chinse Hindi Serbian Rusian Japannese Thai Polish
-// 2) add our identification method for SPONSORED text
-// 3) replace with Set()? -> Array.prototype.unique = function unique()
-// 4) getGrabbed() seem to have no effect
-// 5) a lot of 'continue' statements can be replaced by negation logic
-// 6) processFrontAd() should be fit to WTM's scrapping logic
-// 7) let ADSA; -> perhaps not used
-const sponsoredText = ['Sponsored', 'Sponsorisé', 'Commandité', 'Publicidad', 'Gesponsert', 'Χορηγούμενη', 'Patrocinado', 'Plaćeni oglas', 'Sponsorizzata ', 'Sponsorizzato', 'Sponsorizat', '赞助内容', 'مُموَّل', 'प्रायोजित', 'Спонзорисано', 'Реклама', '広告', 'ได้รับการสนับสนุน', 'Sponsorowane'];
-const more_link = ['Story options', 'Options des actualités', "Options de l’actualité", 'Opciones de la historia', 'Meldungsoptionen', 'Story-Optionen', 'Επιλογές ανακοινώσεων', 'Επιλογές ανακoίνωσης', 'Opções da história', 'Opções do story', 'Opcije priče', 'Opzioni per la notizia', 'Opţiuni pentru articol', '动态选项', 'خيارات القصص', 'कहानी विकल्प', 'Опције приче', 'Параметры новостей', '記事オプション', '記事のオプション', 'ตัวเลือกเรื่องราว', 'Opcje zdarzeń'];
-const menu_label = ["Report or learn more", "Signaler ou en savoir plus", "Reportar u obtener más información", "Melde dies oder erfahre mehr darüber", "Υποβάλετε αναφορά ή μάθετε περισσότερα", "Denuncie ou saiba mais", "Prijavi ili saznaj više", "Segnala od ottieni maggiori informazioni", "Raportează sau află mai multe"];
+const sponsoredText = ['Sponsorjat','Sponzorované','Спонзорирано', 'Χορηγούμενη','Sponsitud','Sponzorováno','Спонсорирано', 'ממומן', 'Sponsoroitu','Sponsrad', 'Apmaksāta reklāma', 'Sponsorlu','Sponsrad','Спонзорисано','Sponzorované','Sponsa','Gesponsord','Sponset','Hirdetés', 'Sponsoreret', 'Sponzorováno', 'Sponsored', 'Sponsorisé', 'Commandité', 'Publicidad', 'Gesponsert', 'Χορηγούμενη', 'Patrocinado', 'Plaćeni oglas', 'Sponsorizzata ', 'Sponsorizzato', 'Sponsorizat', '赞助内容', 'مُموَّل', 'प्रायोजित', 'Спонзорисано', 'Реклама', '広告', 'ได้รับการสนับสนุน', 'Sponsorowane'];
 const politAdSubtitle = "entry_type=political_ad_subtitle";
 const non_ad = 'adsCategoryTitleLink';
-const AJAXIFYPATTERNSIDEAD= /"\\\/ads\\\/preferences\\\/dialog\S+?"/
-const ADIDPATTERN = /id=[0-9]+/;
 const interval = 5000;
-
 
 let asyncParams = {};
 let asyncParamsGet = {};
 let frontadqueue = {};
+let postedQueue = [];
+
 
 function updateAsyncParams() {
-  data = { asyncParams: true }
+  const data = { asyncParams: true }
   window.postMessage(data,"*")
 }
 updateAsyncParams();
@@ -39,13 +29,17 @@ function getUserId() {
   return document.getElementsByTagName('head')[0].innerText.match(re_userId)[0].match(/[0-9]+/)[0];
 }
 
-Array.prototype.unique = function unique() {
-  var self = this;
-  return self.filter(function(a) {
-    var that = this;
-    return !that[a] ? that[a] = true : false;
-  },{});
+function isNumeric(value) {
+    return /^\d+$/.test(value);
 }
+
+// Array.prototype.unique = function unique() {
+//   var self = this;
+//   return self.filter(function(a) {
+//     var that = this;
+//     return !that[a] ? that[a] = true : false;
+//   },{});
+// }
 
 function addToFrontAdQueue(ad) {
   if (Object.keys(frontadqueue).length === 0) {
@@ -61,15 +55,13 @@ function addToFrontAdQueue(ad) {
 }
 
 function getAdFromButton(qId,buttonId) {
-    console.log('getAdFromButton(qId,buttonId)', qId,buttonId);
-    console.log(frontadqueue);
-    console.log(Object.keys(frontadqueue));
+  // console.log('getAdFromButton(qId,buttonId)', qId,buttonId);
+  // console.log(frontadqueue);
   for (let i in frontadqueue) {
-    console.log(qId);
-    console.log(buttonId, frontadqueue[i].buttonId);
-    if ((frontadqueue[i].buttonId === buttonId)) {
+    if (frontadqueue[i].buttonId === buttonId) {
         let ad = frontadqueue[i];
-        frontadqueue[i]= { raw_ad: "" };
+        frontadqueue[i] = { raw_ad: "" };
+        // console.log('getAdFromButton(qId,buttonId) AD?', ad);
         return ad;
     }
   }
@@ -77,28 +69,22 @@ function getAdFromButton(qId,buttonId) {
 };
 
 function getMoreButtonFrontAd(adFrame) {
-  const links = adFrame.getElementsByTagName('a');
-  for (let i=0; i<links.length; i++) {
-    if (more_link.indexOf(links[i].getAttribute("aria-label")) > -1) {
-      return links[i];
-    }
-  }
+  return adFrame.querySelector('a[data-testid="post_chevron_button"]');
 }
 
-//Returns the button id that is going to be used for identifying the rationale link when we hover over
 function getButtonIdAdFrame(adFrame) {
   const moreButton = getMoreButtonFrontAd(adFrame);
   return moreButton.parentElement.id;
 }
 
 function hoverOverButton(adFrame) {
+  // console.log('HOVERING - hoverOverButton' );
   const moreButton = getMoreButtonFrontAd(adFrame);
   moreButton.dispatchEvent(new MouseEvent('mouseover'));
 }
 
 function getExplanationUrlFrontAds(frontAd,adData) {
-  console.log('Processing frontAd' );
-  // hide element; toggleOpacity(sideAd); get menu
+  // console.log('Processing - getExplanationUrlFrontAds' );
   const buttonId = getButtonIdAdFrame(frontAd);
   adData.buttonId = buttonId;
   addToFrontAdQueue(adData);
@@ -139,8 +125,8 @@ function filterFrontAds(lst) {
     if (sponsoredText.indexOf(lst[i].text) > -1
       && (lst[i].getAttribute('class') && lst[i].getAttribute('class').indexOf(non_ad) < 0)
       && !isScrolledIntoView(lst[i]) ){
-        console.log(lst[i])
-        console.log('*****************HIDDEN*************');
+        // console.log(lst[i])
+        // console.log('******filter Front Ads**HIDDEN********');
     }
   }
   return newLst;
@@ -156,8 +142,8 @@ function filteredClassedAds(lst) {
     if (sponsoredText.indexOf(lst[i].text) > -1
       && (lst[i].getAttribute('class') && lst[i].getAttribute('class').indexOf(non_ad) < 0)
       && !isScrolledIntoView(lst[i])) {
-      console.log(lst[i])
-      console.log('*****************HIDDEN*************');
+      // console.log(lst[i])
+      // console.log('******filtered Classed Ads****HIDDEN******');
     }
   }
   return newLst;
@@ -174,7 +160,7 @@ function filterCollectedAds(ads) {
   let filteredAds = [];
   for (let i=0; i<ads.length; i++) {
     let ad = ads[i];
-    if (ad.className.indexOf(ad_collected) > -1) {
+    if (ad.className.indexOf('ad_collected') > -1) {
       continue;
     }
     filteredAds.push(ad);
@@ -195,10 +181,10 @@ function filterSheets(sheets) {
 }
 
 function findSponsoredClass(sheet) {
-  if ((!sheet.hasOwnProperty('rules')) || (!sheet.hasOwnProperty('cssRules'))) {
+  if (!sheet.hasOwnProperty('rules') || !sheet.hasOwnProperty('cssRules')) {
     return;
   }
-  let rules = sheet.hasOwnProperty('rules')? sheet.rules : sheet.cssRules
+  let rules = sheet.hasOwnProperty('rules') ? sheet.rules : sheet.cssRules;
   if (!rules) { return; }
 
   for (let i=0; i<rules.length; i++) {
@@ -219,13 +205,13 @@ function findSponsoredClass(sheet) {
 function getSponsoredFromClasses(filteredSheets) {
   for (let i=0; i<filteredSheets.length; i++) {
     try {
-      sponsoredClass = findSponsoredClass(filteredSheets[i]);
+      const sponsoredClass = findSponsoredClass(filteredSheets[i]);
       if (sponsoredClass) {
         return sponsoredClass.slice(1, sponsoredClass.length)
       }
     }
     catch(err) {
-      console.log("Exception in getSponsoredFromClasses, " + i);
+      // console.log("Exception in getSponsoredFromClasses, " + i);
       console.log(err);
     }
   }
@@ -283,15 +269,6 @@ function findFrontAdsWithHiddenLetters() {
   return links;
 }
 
-function getGrabbed(links){
-    let elems = document.getElementsByClassName('grab_me')
-    for (let i=0;i<elems.length;i++) {
-        links.push(elems[i])
-        elems[i].classList.remove('grab_me')
-    }
-    return links;
-}
-
 function getChildren(n, skipMe) {
   let r = [];
   for ( ; n; n = n.nextSibling ) {
@@ -328,70 +305,41 @@ function findFrontAdsWithHiddenLettersSiblings(){
 }
 
 function getFrontAdFrames() {
-    let links = document.getElementsByTagName('a');
-    links = filterFrontAds(links);
+  let links = document.getElementsByTagName('a');
+  links = filterFrontAds(links);
 
-    Array.prototype.push.apply(links, getFrontAdsByClass());
-    links = links.unique();
+  links = links.concat(getFrontAdsByClass())
+  links = links.concat(findFrontAdsWithHiddenLetters())
+  links = links.concat(findFrontAdsWithHiddenLettersSiblings())
+  links = [...new Set(links)]
 
-    Array.prototype.push.apply(links,findFrontAdsWithHiddenLetters());
-
-    Array.prototype.push.apply(links,findFrontAdsWithHiddenLettersSiblings());
-
-    links = getGrabbed(links);
-
-    let already_in_list = new Set([]);
-//    console.log(links)
-    let frontAds = [];
-    for (let i=0; i<links.length; i++) {
-      const link = links[i];
-      const frame = getParentAdDiv(link);
-      if (already_in_list.has(frame.id)) {
-        continue;
-      }
-      frontAds.push(frame);
-      already_in_list.add(frame.id)
-    }
-//    frontAds = frontAds.unique();
-    return filterCollectedAds(frontAds);
+  let frontAds = [];
+  for (let i = 0; i < links.length; i++) {
+    const frame = getParentAdDiv(links[i]);
+    frontAds.push(frame);
+  }
+  return filterCollectedAds(frontAds);
 }
 
-let ADSA;
 // This should be fit to our methods
 function processFrontAd(frontAd) {
   frontAd.className += " " + "ad_collected";
-  console.log(frontAd)
-  ADSA = frontAd;
-  let info =  getAdvertiserId(frontAd);
-
-  var advertiser_facebook_id = info?info[0]:"";
-  var advertiser_facebook_page = info?info[1]:"";
-  var advertiser_facebook_profile_pic = info?info[2]:"";
-
-  var raw_ad = frontAd.innerHTML;
+  var raw_ad = $(frontAd).parent().html();
+  // console.log('raw_ad ------ collected', frontAd)
   var timestamp = (new Date).getTime();
-  var pos = getPos(frontAd);
-  var offsetX = pos.x;
-  var offsetY = pos.y;
-  var type = "frontAd";
-  var user_id = getUserId();
   return {
     'raw_ad':raw_ad,
-    'timestamp':timestamp,
-    'offsetX':offsetX,'offsetY':offsetY,
-    'type':type,
-    advertiser_facebook_id:advertiser_facebook_id,
-    advertiser_facebook_page:advertiser_facebook_page
+    'timestamp':timestamp
   }
 }
 
-
+// THIS WORKS
 function grabFrontAds() {
   if (window.location.href.indexOf('ads/preferences') === -1) {
     try {
-      console.log('Grabbing front ads...')
+      // console.log('Grabbing front ads...')
       const frontAds = getFrontAdFrames();
-      console.log(frontAds);
+      // console.log(frontAds);
       for (let i=0; i<frontAds.length; i++) {
         let adData = processFrontAd(frontAds[i]);
         adData['message_type'] = 'front_ad_info';
@@ -404,215 +352,93 @@ function grabFrontAds() {
   setTimeout(grabFrontAds, interval);
 }
 
-function get_dropdown_ad_menus(doc){
-  const links = doc.getElementsByTagName('a');
-  let menus = [];
-  for (let i=0; i<links.length; i++){
-    var link = links[i];
-    var menuLabel = link.getAttribute("aria-label");
-    if (menuLabel && menu_label.indexOf(menuLabel) > -1) {
-      menus.push(link);
-    }
-  }
-  return menus;
+function sendRationale(adId, adData, explanation) {
+  if (postedQueue.includes(adId)) { return; }
+  postedQueue.push(adId);
+  // console.log('Update QUEUE++++++RESULT', postedQueue)
+  // console.log('sendExplanationDB  BG called', adId)
+  // addToCrawledExplanations(CURRENT_USER_ID,adId);
+  // send to db
+  const container = $(adData.raw_ad); //$(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
+  const fbStoryId = container.attr('id');
+  let finalPayload = { // Queue advert for server
+    typeId: 'FBADVERT',
+    extVersion: adData.extVersion,
+    payload: [{
+      type: 'FBADVERTRATIONALE',
+      related: fbStoryId,
+      html: explanation
+    }]
+  };
+  // console.log('OBSERVER-From Rationale --> finalPayload', finalPayload)
+  api.addMiddleware(request => {request.options.headers['Authorization'] = adData.token});
+  api.post('log/raw', {json: finalPayload})
+    .then((response) => {
+      // response completed, no log
+    });
+  container.addClass('fetched_r');
 }
-
-
-function getSideAds() {
-  let ads = {};
-  let menus = get_dropdown_ad_menus(document);
-  for (var i=0;i<menus.length;i++) {
-    var menu = menus[i]
-//        putting quotes in numbers because of javascript mismanagement of bigints
-    if (filterCollectedAds([menu.parentElement.parentElement.parentElement]).length==0) {
-        continue
-    }
-    var adId = JSON.parse(menu.getAttribute('data-gt').replace(/([\[:])?(\d+)([,\}\]])/g, "$1\"$2\"$3"))['data_to_log']['ad_id'].toString();
-    var advertiserId = JSON.parse(menu.getAttribute('data-gt').replace(/([\[:])?(\d+)([,\}\]])/g, "$1\"$2\"$3"))['data_to_log']['ad_account_id'].toString();
-    var isCollected = false;
-
-    ads[adId] = {};
-    ads[adId]['domAD'] =menu.parentElement.parentElement.parentElement;
-    ads[adId]['ad_account_id'] = advertiserId;
-  }
-  return ads;
-}
-
-function processSideAd(sideAdObj, adId) {
-  let sideAd = sideAdObj['domAD'];
-  sideAd.className += " " + 'ad_collected';
-
-  const raw_ad = sideAd.innerHTML;
-  const timestamp = (new Date()).getTime();
-  const pos = getPos(sideAd);
-  const offsetX = pos.x;
-  const offsetY = pos.y;
-  const type = 'sideAd';
-  const fb_id = adId;
-  const fb_advertiser_id = sideAdObj[ad_account_id];
-  //    console.log(fb_advertiser_id);
-  var user_id = getUserId();
-  return {'raw_ad':raw_ad,'timestamp':timestamp,'offsetX':offsetX,'offsetY':offsetY,'type':type,'user_id':user_id,'fb_id':fb_id,'fb_advertiser_id':fb_advertiser_id}
-}
-
-function grabParamsFromSideAdAjaxify(resp) {
-  try {
-    var text = resp.replaceAll('\\\\\\','\\').replaceAll('\\\\','\\').replaceAll('amp;','');
-    var requestParams = text.match(AJAXIFYPATTERNSIDEAD)[0].replace('"\\\/ads\\\/preferences\\\/dialog\\\/?','');
-    requestParams = requestParams.slice(0,requestParams.length-2);
-    var adId = requestParams.match(ADIDPATTERN)[0].match(re_number)[0];
-    return { requestParams:requestParams, adId:adId }
-  } catch (e) {
-    console.log('Exception in grabParamsFromSideAdAjaxify');
-    console.log(e);
-  }
-  return null;
-}
-
-var createObjFromURI = function(params) {
-  var uri = decodeURI(params);
-  var chunks = uri.split('&');
-  var params = Object();
-
-  for (var i=0; i < chunks.length ; i++) {
-    var chunk = chunks[i].split('=');
-    if(chunk[0].search("\\[\\]") !== -1) {
-        if( typeof params[chunk[0]] === 'undefined' ) {
-            params[chunk[0]] = decodeURIComponent([chunk[1]]);
-
-        } else {
-            params[chunk[0]].push(decodeURIComponent(chunk[1]));
-        }
-    } else {
-        params[chunk[0]] = decodeURIComponent(chunk[1]);
-    }
-  }
-  return params;
-}
-
-// THIS WORKS
-function grabAds() {
-  if (Object.keys(asyncParams).length === 0) {
-      updateAsyncParams();
-      console.log("need to update asyncparams...");
-      setTimeout(grabAds, interval);
-      return;
-  }
-  if (window.location.href.indexOf('ads/preferences') < 0) {
-    sideAds = getSideAds();
-    const noNewAds = Object.keys(sideAds).length;
-
-    if (noNewAds > 0) {
-      let adsToProcessKeys =Object.keys(sideAds);
-      //        console.log(adsToProcessKeys);
-      for (var i=0; i<adsToProcessKeys.length; i++) {
-          let adId = adsToProcessKeys[i];
-          console.log('Processing '+ adId); //Processing 23843628508070050
-          let adData = processSideAd(sideAds[adId],adId);
-          adData['message_type'] = 'side_ad_info';
-
-          var sideAd = sideAds[adId];
-          var menus = get_dropdown_ad_menus(sideAd['domAD']);
-          var link = menus[0].getAttribute('ajaxify')
-          var urlAj = '/ajax/a.php?'
-          var pars = createObjFromURI(link.replace(urlAj,''));
-          var paramsFinal = Object.assign(pars, asyncParams)
-          paramsFinal['nctr[_mod]']='pagelet_ego_pane';
-          var oldGetParams = asyncParamsGet;
-          updateAsyncParams();
-          console.log('grabAds - adId', adId);
-
-         $.ajax({
-             type: 'POST',
-             url: '/ajax/a.php?dpr=1',
-             data: paramsFinal,
-             success: function(resp) {
-                 var results = grabParamsFromSideAdAjaxify(resp);
-                 if (!results) {
-                     console.log("Couldn't grab...")
-                     console.log(resp)
-                     return;
-                 }
-                adData.explanationUrl = rationaleUrl + results.requestParams + '&' + $.param(oldGetParams);
-                chrome.runtime.sendMessage(adData);//, function(response) {console.log(response)});
-                return;
-             }
-         });
-      }
-    }
-  }
-  setTimeout(grabAds, interval);
-}
-
-// ISCALLED
-function onMessageFunction(msg,sender,sendResponse) {
-  if (!sender.tab) {
-    console.log('FROM background');
-    console.log(msg);
-  }
-
-  if (msg.explanation) {
-    console.log('AdID: ' +msg.adId +'. EXPLANATION: ' + strip(msg.explanation))
-  }
-}
-
 
 window.addEventListener("message", function(event) {
   // We only accept messages from ourselves
   if (event.source != window) { return; }
 
   if (event.data.adButton) {
-    console.log('Data received');
-    console.log(event.data);
+    const qId = event.data.qId;
+    const buttonId = event.data.buttonId
+    let adData = getAdFromButton(qId, buttonId);
+    if (adData){
+      adData.fb_id = event.data.adId;
+      adData.explanationUrl = rationaleUrl + event.data.requestParams + '&' + $.param(event.data.asyncParams);
+      // console.log('adData ==== ', adData);
 
-    var qId = event.data.qId;
-    var buttonId = event.data.buttonId
-    var adData = getAdFromButton(qId, buttonId);
-    adData.fb_id = event.data.adId;
-    adData.explanationUrl = rationaleUrl + event.data.requestParams + '&' + $.param(event.data.asyncParams);
-    console.log('adData ==== ', adData);
-    chrome.runtime.sendMessage(adData, function(response) {
-      console.log(response)
-    });
+      // send to db and call for rationales
+      const container = $(adData.raw_ad); //$(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
+      const fbStoryId = container.attr('id');
+      let extVersion = chrome.runtime.getManifest().version;
+      // console.log('OBSERVER-From Collect--> extVersion', extVersion, fbStoryId)
+      const finalPayload = { // Queue advert for server
+        typeId: 'FBADVERT',
+        extVersion,
+        payload: [{
+          type: 'FBADVERT',
+          related: fbStoryId,
+          html: container.html()
+        }]
+      };
+      // console.log('OBSERVER-From Collect--> finalPayload', finalPayload)
+
+      chrome.storage.promise.local.get('general_token')
+        .then((result) => {
+          if (result) {
+            api.addMiddleware(request => {request.options.headers['Authorization'] = result.general_token});
+            api.post('log/raw', {json: finalPayload})
+              .then((response) => {
+                // response completed, no log
+              });
+              container.addClass('fetched');
+              adData.extVersion = extVersion;
+              adData.token = result.general_token;
+              window.postMessage(adData, '*')
+            }
+        }).catch((error) => {
+          console.log(error);
+        });
+    }
     return;
   }
-  //    console.log(event.data)
+
+  if (event.data.postRationale) {
+    const {adId, adData, explanation} = event.data.postRationale;
+    sendRationale(adId, adData, explanation);
+    return;
+  }
+
+  // console.log('PASSED', event.data)
   if (event.data.asyncParamsReady) {
       asyncParams = event.data.paramsPost;
       asyncParamsGet = event.data.paramsGet;
   }
-
-  // if (event.data.type && (event.data.type === 'advertisersData')){
-  //     console.log("Content script received message: ");
-  //     console.log(event.data)
-  //     var data = event.data;
-  //     data['user_id'] = getUserId();
-  //     data['timestamp'] = (new Date).getTime();
-  //     chrome.runtime.sendMessage(data);
-  //   }
 });
 
-function getBrowser() {
-  if (navigator.userAgent.search("Chrome") >= 0) {
-    return 'chrome';
-  }
-  if (navigator.userAgent.search("Firefox") >= 0) {
-    return 'firefox';
-  }
-  return null;
-}
-
-if (getBrowser() === 'chrome') {
-  chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
-    onMessageFunction(msg, sender, sendResponse)
-  });
-}
-
-if (getBrowser() === 'firefox') {
-  browser.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
-    onMessageFunction(msg, sender, sendResponse)
-  });
-}
-
-grabAds();
 grabFrontAds();

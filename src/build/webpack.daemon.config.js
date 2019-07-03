@@ -11,7 +11,6 @@ module.exports = {
     entry: {
       'index': __dirname + "/../daemon/index.js",
       'overload': __dirname + "/../daemon/collector/overload/index.js",
-      'bg': __dirname + "/../daemon/collector/content/bg.js",
       'collect': __dirname + "/../daemon/collector/content/collect.js"
     },
     output: {

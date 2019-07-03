@@ -1,12 +1,20 @@
+import $ from "jquery";
+import api from '../../api.js';
+import PromisePool from 'es6-promise-pool';
+
 const re_buttonId = /button_id=\S+?&/;
 const re_userId = /"USER_ID":"[0-9]+"/;
 const re_qid = /qid.[0-9]+/;
 const re_ajaxify = /ajaxify":"\\\/ads\\\/preferences\\\/dialog\S+?"/;
+const re_replace_ajaxify = 'ajaxify":"\\\/ads\\\/preferences\\\/dialog\\\/?'
 const re_adId = /id=[0-9]+/;
 const re_number = /[0-9]+/;
 const rationaleUrl = 'https://www.facebook.com/ads/preferences/dialog/?';
-
-
+const ABOUT_THIS_FACEBOOK_AD =['facebook'];
+const RATE_LIMIT_MSG = ['it looks like you were misusing this feature by going too fast','correctement en allant trop vite'];
+let WAIT_FOR_TWO_HOURS = false;
+let EXPLANATION_REQUESTS = {};
+let R_PROBLEMATIC = [];
 
 function updateAsyncParams() {
   data = { asyncParams: true }
@@ -17,7 +25,7 @@ function getQid(url) {
   try {
       return  url.match(re_qid)[0].match(re_number)[0];
   } catch (exp) {
-      console.log('Exception in getQid:');
+      // console.log('Exception in getQid:');
       console.log(exp);
       }
   return null;
@@ -27,11 +35,20 @@ function getButtonId(url) {
     try {
       return url.match(re_buttonId)[0].replace('button_id=','').replace('&','');
     } catch (e) {
-      console.log('Exception in getButtonId:');
+      // console.log('Exception in getButtonId:');
       console.log(e);
       }
   return null;
 };
+
+function getRQueue() {
+  // console.log('getRQueue called')
+    if (!localStorage.rQueue) {
+        localStorage.rQueue = JSON.stringify({});
+    }
+    return JSON.parse(localStorage.rQueue);
+}
+const R_QUEUE = getRQueue();
 
 function initXHR() {
     var XHR = XMLHttpRequest.prototype;
@@ -51,41 +68,34 @@ function initXHR() {
     XHR.send = function(postData) {
       this.addEventListener('load', function() {
         if (this._url.indexOf && this._url.indexOf('options_menu/?button_id=') > -1) {
-            var qId = getQid(this._url);
-            var buttonId = getButtonId(this._url);
+            const qId = getQid(this._url);
+            const buttonId = getButtonId(this._url);
+            // console.log('qId,buttonId', qId,buttonId) //6697934782114047175 u_fetchstream_1_1d
 
-            if (!qId || !buttonId) {
-                return true;
-            }
-
-            console.log('qId,buttonId', qId,buttonId) //6697934782114047175 u_fetchstream_1_1d
-            var requestParams;
+            if (!qId || !buttonId) { return true; }
+            let requestParams;
             try {
-              requestParams = this.responseText.match(re_ajaxify)[0].replace('ajaxify":"\\\/ads\\\/preferences\\\/dialog\\\/?','');
+              requestParams = this.responseText.match(re_ajaxify)[0].replace(re_replace_ajaxify,'');
             } catch (e) {
               return;
             }
 
             requestParams = requestParams.slice(0,requestParams.length-1);
-            console.log('requestParams', requestParams)
-            /*id=23843784846620302&optout_url=\u00252Fsettings\u00252F\u00253Ftab\u00253Dads&page_type=16&serialized_nfx_action_info=\u00257B\u002522options_button_id\u002522\u00253A\u002522u_fetchstream_1_1d\u002522\u00252C\u002522story_dom_id\u002522\u00253A\u002522u_fetchstream_1_19\u002522\u00252C\u002522ft\u002522\u00253A\u00257B\u002522qid\u002522\u00253A\u0025226697934782114047175\u002522\u00252C\u002522mf_story_key\u002522\u00253A\u0025228073045320092729992\u002522\u00252C\u002522is_sponsored\u002522\u00253A\u0025221\u002522\u00252C\u002522ei\u002522\u00253A\u002522AI\u00255Cu0040176e3f21942ea8300058dfcdd5afa146\u002522\u00252C\u002522top_level_post_id\u002522\u00253A\u0025222630899456934518\u002522\u00252C\u002522content_owner_id_new\u002522\u00253A\u002522726282547396228\u002522\u00252C\u002522page_id\u002522\u00253A\u002522726282547396228\u002522\u00252C\u002522src\u002522\u00253A\u00252210\u002522\u00252C\u002522story_location\u002522\u00253A\u0025225\u002522\u00252C\u002522story_attachment_style\u002522\u00253A\u002522share\u002522\u00252C\u002522view_time\u002522\u00253A\u0025221559484466\u002522\u00252C\u002522page_insights\u002522\u00253A\u00257B\u002522726282547396228\u002522\u00253A\u00257B\u002522role\u002522\u00253A1\u00252C\u002522page_id\u002522\u00253A726282547396228\u00252C\u002522post_context\u002522\u00253A\u00257B\u002522story_fbid\u002522\u00253A2630899456934518\u00252C\u002522publish_time\u002522\u00253A1558676503\u00252C\u002522story_name\u002522\u00253A\u002522EntStatusCreationStory\u002522\u00252C\u002522object_fbtype\u002522\u00253A266\u00257D\u00252C\u002522actor_id\u002522\u00253A726282547396228\u00252C\u002522psn\u002522\u00253A\u002522EntStatusCreationStory\u002522\u00252C\u002522sl\u002522\u00253A5\u00252C\u002522dm\u002522\u00253A\u00257B\u002522isShare\u002522\u00253A1\u00252C\u002522originalPostOwnerID\u002522\u00253A0\u00257D\u00252C\u002522targets\u002522\u00253A\u00255B\u00257B\u002522page_id\u002522\u00253A726282547396228\u00252C\u002522actor_id\u002522\u00253A726282547396228\u00252C\u002522role\u002522\u00253A1\u00252C\u002522post_id\u002522\u00253A2630899456934518\u00252C\u002522share_id\u002522\u00253A0\u00257D\u00255D\u00257D\u00257D\u00257D\u00252C\u002522story_location\u002522\u00253A\u002522feed\u002522\u00252C\u002522hideable_token\u002522\u00253A\u002522MzIzNrCwtDQxNbM0NjE1tKhzzSsJLkksKS12LkpNLMnMzwsuyS-qrDOsMzcyM7IwMjUxN7Y0MzKyqKszqAMA\u002522\u00252C\u002522story_permalink_token\u002522\u00253A\u002522S\u00253A_I391313867673164\u00253ASca_I726282547396228ca2630899456934518\u00253Aaca1ca\u00257Bica2630899456934518\u00253Bsca35ca\u00255C\u002522AI\u00255Cu0040176e3f21942ea8300058dfccdd5afa146\u00255C\u002522\u00253B\u00257D\u002522\u00252C\u002522initial_action_name\u002522\u00253A\u002522HIDE_ADVERTISER\u002522\u00257D&session_id=20406&use_adchoices=1
-            */
+            // console.log('requestParams', requestParams)
+            const adId = requestParams.match(re_adId)[0].match(/[0-9]+/)[0];
+            const asyncParams = window.require('getAsyncParams')('POST');
 
-            var adId = requestParams.match(re_adId)[0].match(/[0-9]+/)[0];
-            var asyncParams = window.require('getAsyncParams')('POST');
-
-            var data = {
-              qId:qId,
-              buttonId:buttonId,
-              requestParams:requestParams,
-              adId:adId,
-              adButton:true,
-              asyncParams:asyncParams
+            const data = {
+              qId,
+              buttonId,
+              requestParams,
+              adId,
+              asyncParams,
+              adButton:true
             };
-            console.log('DATA', data);
-
+            // console.log('DATA', data);
             window.postMessage(data,'*');
-            return
+            return;
         }
 //            /* Method        */ this._method
 //            /* URL           */ this._url
@@ -96,23 +106,79 @@ function initXHR() {
   };
 };
 
+function getIndexFromList(txt, lst) {
+  txt = txt.toLowerCase();
+  for (let i=0; i<lst.length; i++) {
+    if (txt.indexOf(lst[i]) > -1) {
+      return txt.indexOf(lst[i]);
+    }
+  }
+  return -1;
+}
+
+function getExplanationsManually(adData) {
+  // console.log('getExplanationsManually called', adData.fb_id, new Date())
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("GET", adData.explanationUrl, true);
+  xmlhttp.onload = function (e) {
+    if (xmlhttp.readyState === 4 && xmlhttp.status === 200){
+      const response = xmlhttp.responseText;
+      const html = JSON.parse(response.slice(9));
+      const parsed = html.jsmods.markup[0][1].__html;
+      const expStart = getIndexFromList(parsed, ABOUT_THIS_FACEBOOK_AD);
+
+      if (getIndexFromList(response, RATE_LIMIT_MSG) > -1) {
+        // console.log('Problem with parsing ' + url);
+        console.log('RATE LIMITED')
+        console.log((new Date));
+        // console.log(response);
+        WAIT_FOR_TWO_HOURS = true;
+        R_QUEUE[adData.fb_id] =
+          {adId: adData.fb_id, explanationUrl:adData.explanationUrl, timestamp:adData.timestamp}
+        return;
+      }
+      // console.log('Found FB rationale text', expStart);
+
+     if (expStart === -1) {
+        // console.log('Havent found FB text. Check the method.')
+        R_PROBLEMATIC.push(response);
+      }
+
+      window.postMessage({
+        postRationale: {adId: adData.fb_id, adData, explanation: response}
+      }, "*");
+    }}
+  xmlhttp.send(null);
+}
+
 
 function addListeners() {
-  window.postMessage({asyncParams:true},"*"); //update params
+  window.postMessage({asyncParams:true}, "*"); //update params
   window.addEventListener("message", function(event) {
-    console.log('messageListener', event);
-    if (event.source !== window){
-        return;
+    // console.log('messageListener', event.data);
+    if (event.source !== window) {
+      return;
     }
-    if (event.data.asyncParams) {
-        var data = {
-          asyncParamsReady:true,
-          paramsPost: window.require('getAsyncParams')('POST'),
-          paramsGet: window.require('getAsyncParams')('GET')
-        };
-        console.log('Asynch Params required - ', data);
-        window.postMessage(data,'*');
-        return true;
+    if (event.data.postRationale) {
+      // console.log('postRationale in listener - returning')
+      return;
+    }
+    if (event.data.explanationUrl) {
+      // console.log('!!!! caught explanationUrl')
+      return new Promise((resolve) => setTimeout(resolve(), 1000 * parseInt(Math.random()*10)))
+        .then(() => {
+          getExplanationsManually(event.data);
+        })
+    }
+    if (event.data.asyncParams && !event.data.explanationUrl) {
+      const data = {
+        asyncParamsReady:true,
+        paramsPost: window.require('getAsyncParams')('POST'),
+        paramsGet: window.require('getAsyncParams')('GET')
+      };
+      // console.log('Asynch Params required - ', data);
+      window.postMessage(data,'*');
+      return;
     }
   });
   setTimeout(initXHR(), 5000);
