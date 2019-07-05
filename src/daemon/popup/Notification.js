@@ -14,13 +14,11 @@ export const initPopup = function() {
     </div>
     <div id="popup_close" style="flex:1;min-width:10px;max-width:10px;font-weight:bold;cursor:pointer;margin-top:3px;">X</div>
     </div>`)
-    $('#popup_container').on('click', function(e){
-      e.preventDefault();
+    $('#popup_container').on('click', function(){
       $(this).hide();
       chrome.storage.promise.local.set({'is_notified': 'yes'});
     });
-    $('#popup_close').on('click', function(e){
-      e.preventDefault();
+    $('#popup_close').on('click', function(){
       $('#popup_container').hide();
       chrome.storage.promise.local.set({'is_notified': 'yes'});
     });
