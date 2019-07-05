@@ -55,13 +55,13 @@ function addToFrontAdQueue(ad) {
 }
 
 function getAdFromButton(qId,buttonId) {
-  // console.log('getAdFromButton(qId,buttonId)', qId,buttonId);
-  // console.log(frontadqueue);
+  console.log('getAdFromButton(qId,buttonId)', qId,buttonId);
+  console.log(frontadqueue);
   for (let i in frontadqueue) {
     if (frontadqueue[i].buttonId === buttonId) {
         let ad = frontadqueue[i];
         frontadqueue[i] = { raw_ad: "" };
-        // console.log('getAdFromButton(qId,buttonId) AD?', ad);
+        console.log('getAdFromButton(qId,buttonId) AD?', ad);
         return ad;
     }
   }
@@ -78,13 +78,13 @@ function getButtonIdAdFrame(adFrame) {
 }
 
 function hoverOverButton(adFrame) {
-  // console.log('HOVERING - hoverOverButton' );
+  console.log('HOVERING - hoverOverButton' );
   const moreButton = getMoreButtonFrontAd(adFrame);
   moreButton.dispatchEvent(new MouseEvent('mouseover'));
 }
 
 function getExplanationUrlFrontAds(frontAd,adData) {
-  // console.log('Processing - getExplanationUrlFrontAds' );
+  console.log('Processing - getExplanationUrlFrontAds' );
   const buttonId = getButtonIdAdFrame(frontAd);
   adData.buttonId = buttonId;
   addToFrontAdQueue(adData);
@@ -125,8 +125,8 @@ function filterFrontAds(lst) {
     if (sponsoredText.indexOf(lst[i].text) > -1
       && (lst[i].getAttribute('class') && lst[i].getAttribute('class').indexOf(non_ad) < 0)
       && !isScrolledIntoView(lst[i]) ){
-        // console.log(lst[i])
-        // console.log('******filter Front Ads**HIDDEN********');
+        console.log(lst[i])
+        console.log('******filter Front Ads**HIDDEN********');
     }
   }
   return newLst;
@@ -211,7 +211,7 @@ function getSponsoredFromClasses(filteredSheets) {
       }
     }
     catch(err) {
-      // console.log("Exception in getSponsoredFromClasses, " + i);
+      console.log("Exception in getSponsoredFromClasses, " + i);
       console.log(err);
     }
   }
@@ -325,7 +325,7 @@ function getFrontAdFrames() {
 function processFrontAd(frontAd) {
   frontAd.className += " " + "ad_collected";
   var raw_ad = $(frontAd).parent().html();
-  // console.log('raw_ad ------ collected', frontAd)
+  console.log('raw_ad ------ collected', raw_ad)
   var timestamp = (new Date).getTime();
   return {
     'raw_ad':raw_ad,
@@ -337,9 +337,9 @@ function processFrontAd(frontAd) {
 function grabFrontAds() {
   if (window.location.href.indexOf('ads/preferences') === -1) {
     try {
-      // console.log('Grabbing front ads...')
+      console.log('Grabbing front ads...')
       const frontAds = getFrontAdFrames();
-      // console.log(frontAds);
+      console.log(frontAds);
       for (let i=0; i<frontAds.length; i++) {
         let adData = processFrontAd(frontAds[i]);
         adData['message_type'] = 'front_ad_info';
@@ -355,9 +355,9 @@ function grabFrontAds() {
 function sendRationale(adId, adData, explanation) {
   if (postedQueue.includes(adId)) { return; }
   postedQueue.push(adId);
-  // console.log('Update QUEUE++++++RESULT', postedQueue)
-  // console.log('sendExplanationDB  BG called', adId)
-  // addToCrawledExplanations(CURRENT_USER_ID,adId);
+  console.log('Update QUEUE++++++RESULT', postedQueue)
+  console.log('sendExplanationDB  BG called', adId)
+
   // send to db
   const container = $(adData.raw_ad); //$(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
   const fbStoryId = container.attr('id');
@@ -370,7 +370,7 @@ function sendRationale(adId, adData, explanation) {
       html: explanation
     }]
   };
-  // console.log('OBSERVER-From Rationale --> finalPayload', finalPayload)
+  console.log('OBSERVER-From Rationale --> finalPayload', finalPayload)
   api.addMiddleware(request => {request.options.headers['Authorization'] = adData.token});
   api.post('log/raw', {json: finalPayload})
     .then((response) => {
@@ -390,13 +390,13 @@ window.addEventListener("message", function(event) {
     if (adData){
       adData.fb_id = event.data.adId;
       adData.explanationUrl = rationaleUrl + event.data.requestParams + '&' + $.param(event.data.asyncParams);
-      // console.log('adData ==== ', adData);
+      console.log('adData ==== ', adData);
 
       // send to db and call for rationales
       const container = $(adData.raw_ad); //$(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
       const fbStoryId = container.attr('id');
       let extVersion = chrome.runtime.getManifest().version;
-      // console.log('OBSERVER-From Collect--> extVersion', extVersion, fbStoryId)
+      console.log('OBSERVER-From Collect--> extVersion', extVersion, fbStoryId)
       const finalPayload = { // Queue advert for server
         typeId: 'FBADVERT',
         extVersion,
@@ -406,7 +406,7 @@ window.addEventListener("message", function(event) {
           html: container.html()
         }]
       };
-      // console.log('OBSERVER-From Collect--> finalPayload', finalPayload)
+      console.log('OBSERVER-From Collect--> finalPayload', finalPayload)
 
       chrome.storage.promise.local.get('general_token')
         .then((result) => {
@@ -434,7 +434,7 @@ window.addEventListener("message", function(event) {
     return;
   }
 
-  // console.log('PASSED', event.data)
+  console.log('PASSED', event.data)
   if (event.data.asyncParamsReady) {
       asyncParams = event.data.paramsPost;
       asyncParamsGet = event.data.paramsGet;
