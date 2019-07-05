@@ -1,13 +1,17 @@
+// import $ from "jquery";
 import FacebookAdvertObserver from './page/FacebookAdvertObserver.js';
 import '../common/chromeStorage.js';
 import initBackground from './background';
 import api from './api.js';
+import strings from '../frontend/helpers/localization.js';
+import {initPopup} from './popup/Notification.js';
+
 
 const initPage = () => {
   FacebookAdvertObserver.run();
 };
 
-chrome.storage.promise.local.get('general_token')
+chrome.storage.promise.local.get()
   .then((result) => {
     if (result.general_token) { // Client is authenticated
       api.addMiddleware(request => {
@@ -17,6 +21,9 @@ chrome.storage.promise.local.get('general_token')
         initBackground();
       } else {
         initPage();
+      }
+      if (!result.is_notified || result.is_notified !== 'yes') {
+        initPopup();
       }
     } else {
       // No auth token found

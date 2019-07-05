@@ -16,7 +16,7 @@ import LogoBR from '../Shell/wtm_logo_br.png';
 import LogoFI from '../Shell/wtm_logo_fi.png';
 import IMGFirstPlace from './firstplace.png';
 
-import {mockdata} from './mockdata.js';
+// import {mockdata} from './mockdata.js';
 
 import './PageResults.css';
 

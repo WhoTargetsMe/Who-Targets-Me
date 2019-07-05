@@ -102,6 +102,8 @@ const strings = new LocalizedStrings({
 
     },
     update: {
+      notification1: 'Hello! We\’re improving the way the <a href="https://whotargets.me/en/" target="_blank">Who Targets Me</a> extension collects data on political advertising. In a few days you will receive a message regarding this update that asks for new permissions.',
+      notification2: "Accepting this change will allow you to once again see how ads are being  targeted at you. Please accept these changes to continue contributing to the project. Thank you!",
       update_profile: 'Update your profile',
       update_postcode: 'To show this data we need to know your postcode. Please ',
       updated_success: 'Thank you. Your profile was successfully updated.',
