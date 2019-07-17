@@ -8,10 +8,14 @@ var browser = process.env.BROWSER || 'chrome';
 var build_dir = __dirname + '/../../build/' + browser;
 
 module.exports = {
-    entry: __dirname + "/../daemon/index.js",
+    entry: {
+      'index': __dirname + "/../daemon/index.js",
+      'overload': __dirname + "/../daemon/collector/overload/index.js",
+      'collect': __dirname + "/../daemon/collector/content/collect.js"
+    },
     output: {
         path: build_dir + '/daemon',
-        filename: "index.js"
+        filename: "[name].js"
     },
     devtool: 'source-map',
     plugins: [

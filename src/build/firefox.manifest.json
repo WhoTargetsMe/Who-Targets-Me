@@ -21,7 +21,7 @@
 	"content_scripts": [
 		{
 			"matches": ["*://facebook.com/*","*://*.facebook.com/*"],
-			"js": ["daemon/index.js"]
+			"js": ["daemon/index.js", "daemon/collect.js"]
 		}
 	],
 	"background": {
@@ -29,5 +29,6 @@
 	},
 	"icons": {
 		"128": "logo-128.png"
-	}
+	},
+	"web_accessible_resources": [ "daemon/overload.js" ]
 }

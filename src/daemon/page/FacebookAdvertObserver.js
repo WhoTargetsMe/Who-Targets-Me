@@ -236,11 +236,11 @@ const adsOnPage = () => {
                         }]
                       };
                       // console.log('OBSERVER-From Ads--> finalPayload', finalPayload)
-                      api.post('log/raw', {json: finalPayload})
-                        .then((response) => {
-                          // response completed, no log
-                        });
-                        container.addClass('fetched');
+                      // api.post('log/raw', {json: finalPayload})
+                      //   .then((response) => {
+                      //     // response completed, no log
+                      //   });
+                      //   container.addClass('fetched');
                         return Promise.resolve({fbStoryId});
                     }) //then()..
 
