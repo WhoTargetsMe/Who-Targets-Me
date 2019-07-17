@@ -33,14 +33,6 @@ function isNumeric(value) {
     return /^\d+$/.test(value);
 }
 
-// Array.prototype.unique = function unique() {
-//   var self = this;
-//   return self.filter(function(a) {
-//     var that = this;
-//     return !that[a] ? that[a] = true : false;
-//   },{});
-// }
-
 function addToFrontAdQueue(ad) {
   if (Object.keys(frontadqueue).length === 0) {
     frontadqueue[0] = ad;
@@ -78,7 +70,7 @@ function getButtonIdAdFrame(adFrame) {
 }
 
 function hoverOverButton(adFrame) {
-  console.log('HOVERING - hoverOverButton' );
+  // console.log('HOVERING - hoverOverButton' );
   const moreButton = getMoreButtonFrontAd(adFrame);
   moreButton.dispatchEvent(new MouseEvent('mouseover'));
 }
@@ -324,12 +316,15 @@ function getFrontAdFrames() {
 // This should be fit to our methods
 function processFrontAd(frontAd) {
   frontAd.className += " " + "ad_collected";
-  var raw_ad = $(frontAd).parent().html();
-  console.log('raw_ad ------ collected', raw_ad)
+  const raw_ad = $(frontAd).html();
+  const parent_id = $(frontAd).attr('id');
+  console.log('raw_ad ------ collected', frontAd)
+  console.log('raw_ad ------ parent_id', parent_id)
   var timestamp = (new Date).getTime();
   return {
-    'raw_ad':raw_ad,
-    'timestamp':timestamp
+    raw_ad,
+    timestamp,
+    parent_id
   }
 }
 
@@ -360,7 +355,11 @@ function sendRationale(adId, adData, explanation) {
 
   // send to db
   const container = $(adData.raw_ad); //$(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
-  const fbStoryId = container.attr('id');
+  let fbStoryId = container.attr('id');
+  if (adData.parent_id && adData.parent_id.indexOf("hyperfeed") > -1) {
+    fbStoryId = adData.parent_id;
+  }
+
   let finalPayload = { // Queue advert for server
     typeId: 'FBADVERT',
     extVersion: adData.extVersion,
@@ -394,7 +393,10 @@ window.addEventListener("message", function(event) {
 
       // send to db and call for rationales
       const container = $(adData.raw_ad); //$(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
-      const fbStoryId = container.attr('id');
+      let fbStoryId = container.attr('id');
+      if (adData.parent_id && adData.parent_id.indexOf("hyperfeed") > -1) {
+        fbStoryId = adData.parent_id;
+      }
       let extVersion = chrome.runtime.getManifest().version;
       console.log('OBSERVER-From Collect--> extVersion', extVersion, fbStoryId)
       const finalPayload = { // Queue advert for server
