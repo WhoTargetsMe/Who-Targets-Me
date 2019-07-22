@@ -6,9 +6,12 @@ import { initCollector } from './collector';
 import api from './api.js';
 import strings from '../frontend/helpers/localization.js';
 import {initPopup} from './popup/Notification.js';
+import {optOutHelper} from './page/optout.js';
+//import {getCandidateIds} from './page/getCandidateIds.js';
 
 
 const initPage = () => {
+  //getCandidateIds();
   FacebookAdvertObserver.run();
   initCollector();
 };
@@ -27,6 +30,8 @@ chrome.storage.promise.local.get()
       if (!result.is_notified || result.is_notified !== 'yes') {
         initPopup();
       }
+      optOutHelper();
+      
     } else {
       // No auth token found
     }

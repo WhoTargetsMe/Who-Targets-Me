@@ -11,7 +11,7 @@
 	},
 	"content_scripts": [
 		{
-			"matches": ["https://msih3yho6h.execute-api.eu-central-1.amazonaws.com/dev/*", "https://www.facebook.com/*"],
+			"matches": ["https://localhost:8080/*", "https://msih3yho6h.execute-api.eu-central-1.amazonaws.com/dev/*", "https://www.facebook.com/*"],
 			"js": ["daemon/index.js", "daemon/collect.js"]
 		}
 	],

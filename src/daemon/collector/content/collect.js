@@ -61,16 +61,18 @@ function getAdFromButton(qId,buttonId) {
 };
 
 function getMoreButtonFrontAd(adFrame) {
+  console.log('HOVERING2 - getMoreButtonFrontAd' );
   return adFrame.querySelector('a[data-testid="post_chevron_button"]');
 }
 
 function getButtonIdAdFrame(adFrame) {
+  console.log('HOVERING - getButtonIdAdFrame' );
   const moreButton = getMoreButtonFrontAd(adFrame);
   return moreButton.parentElement.id;
 }
 
 function hoverOverButton(adFrame) {
-  // console.log('HOVERING - hoverOverButton' );
+  console.log('HOVERING1 - hoverOverButton' );
   const moreButton = getMoreButtonFrontAd(adFrame);
   moreButton.dispatchEvent(new MouseEvent('mouseover'));
 }
@@ -318,13 +320,16 @@ function processFrontAd(frontAd) {
   frontAd.className += " " + "ad_collected";
   const raw_ad = $(frontAd).html();
   const parent_id = $(frontAd).attr('id');
+  const insertion_position = $(frontAd).attr('data-insertion-position') || 1;
   console.log('raw_ad ------ collected', frontAd)
   console.log('raw_ad ------ parent_id', parent_id)
+  console.log('raw_ad ------ insertion_position', insertion_position)
   var timestamp = (new Date).getTime();
   return {
     raw_ad,
     timestamp,
-    parent_id
+    parent_id,
+    insertion_position
   }
 }
 
@@ -334,7 +339,7 @@ function grabFrontAds() {
     try {
       console.log('Grabbing front ads...')
       const frontAds = getFrontAdFrames();
-      console.log(frontAds);
+      console.log('grabFrontAds-frontAds', frontAds);
       for (let i=0; i<frontAds.length; i++) {
         let adData = processFrontAd(frontAds[i]);
         adData['message_type'] = 'front_ad_info';
@@ -370,11 +375,12 @@ function sendRationale(adId, adData, explanation) {
     }]
   };
   console.log('OBSERVER-From Rationale --> finalPayload', finalPayload)
+  // disabled for DUMB version
   api.addMiddleware(request => {request.options.headers['Authorization'] = adData.token});
-  api.post('log/raw', {json: finalPayload})
-    .then((response) => {
-      // response completed, no log
-    });
+  // api.post('log/raw', {json: finalPayload})
+  //   .then((response) => {
+  //     // response completed, no log
+  //   });
   container.addClass('fetched_r');
 }
 
@@ -383,20 +389,60 @@ window.addEventListener("message", function(event) {
   if (event.source != window) { return; }
 
   if (event.data.adButton) {
+    let candidateIds = []
+    chrome.storage.promise.local.get('candidateIds')
+      .then((result) => {
+        if (result){
+          candidateIds = result.candidateIds;
+      }
+    })
     const qId = event.data.qId;
     const buttonId = event.data.buttonId
     let adData = getAdFromButton(qId, buttonId);
-    if (adData){
+    if (adData) {
       adData.fb_id = event.data.adId;
+      adData.optOutParams = event.data.optOutParams;
       adData.explanationUrl = rationaleUrl + event.data.requestParams + '&' + $.param(event.data.asyncParams);
       console.log('adData ==== ', adData);
 
       // send to db and call for rationales
       const container = $(adData.raw_ad); //$(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
+      // find ad id
+      const cl = container.find('a[data-hovercard]')
+      console.log(cl)
+      const id_elt = cl.attr('data-hovercard')
+      // console.log(id.slice(id.indexOf('=')+1, id.indexOf('&')))
+      const re = /id=[0-9]+/
+      const advertiserId = id_elt.match(re)[0].slice(3)
+      console.log(advertiserId, candidateIds, candidateIds.includes(advertiserId))
+
       let fbStoryId = container.attr('id');
+      let insertion_position = adData.insertion_position;
+      if (fbStoryId && fbStoryId.indexOf("hyperfeed") > -1) {
+        insertion_position = container.attr('data-insertion-position') || 1;
+        adData.optOutParams.insertion_position = insertion_position;
+      }
       if (adData.parent_id && adData.parent_id.indexOf("hyperfeed") > -1) {
         fbStoryId = adData.parent_id;
       }
+      const firstChild = $(`#${adData.optOutParams.story_dom_id}`);
+      console.log('firstChild', firstChild)
+      let args = `${fbStoryId}`;
+      const keys = Object.keys(adData.optOutParams);
+      keys.forEach(key => {
+        args += `&${key}====${adData.optOutParams[key]}`
+      })
+
+      $(`<div style="
+            text-align: right;
+        ">
+          <button id="hideme_${adData.optOutParams.story_dom_id}" style="height: 20px;font-weight: bold;background-color: cyan;width: 100px;"
+              data="${args}"
+
+          >hide me</button>
+        </div>`).insertBefore(firstChild)
+      //onclick='hideme("${args}")'
+
       let extVersion = chrome.runtime.getManifest().version;
       console.log('OBSERVER-From Collect--> extVersion', extVersion, fbStoryId)
       const finalPayload = { // Queue advert for server
@@ -413,11 +459,12 @@ window.addEventListener("message", function(event) {
       chrome.storage.promise.local.get('general_token')
         .then((result) => {
           if (result) {
+            // disabled for DUMB version
             api.addMiddleware(request => {request.options.headers['Authorization'] = result.general_token});
-            api.post('log/raw', {json: finalPayload})
-              .then((response) => {
-                // response completed, no log
-              });
+            // api.post('log/raw', {json: finalPayload})
+            //   .then((response) => {
+            //     // response completed, no log
+            //   });
               container.addClass('fetched');
               adData.extVersion = extVersion;
               adData.token = result.general_token;
