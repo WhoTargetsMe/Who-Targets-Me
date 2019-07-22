@@ -184,4 +184,4 @@ function addListeners() {
   setTimeout(initXHR(), 5000);
 };
 
-addListeners();
+setTimeout(addListeners(), 15000);
