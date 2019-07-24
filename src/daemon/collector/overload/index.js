@@ -90,7 +90,7 @@ function initXHR() {
         if (this._url.indexOf && this._url.indexOf('options_menu/?button_id=') > -1) {
             const qId = getQid(this._url);
             const buttonId = getButtonId(this._url);
-            console.log('qId,buttonId', qId,buttonId) //6697934782114047175 u_fetchstream_1_1d
+            // console.log('qId,buttonId', qId,buttonId) //6697934782114047175 u_fetchstream_1_1d
 
             if (!qId || !buttonId) { return true; }
             let requestParams, optOutParams = {};
@@ -102,12 +102,15 @@ function initXHR() {
             }
             requestParams = requestParams.slice(0,requestParams.length-1);
             let escaped = decodeURIComponent(this.responseText);
-            console.log('escaped', escaped.slice(0,1000))
+            // console.log('escaped', escaped.slice(0,1000))
             optOutKeys.forEach(key => {
               let res = escaped.match(re_list[key]);
-              if (res) { res = res[1]; }
+              if (res) {
+                res = res[1].replace(/u00253A/g, ':').replace(/u00253B/g, ';').replace(/u002522/g, '____').replace(/u0040/g, '@').replace(/u002540/g, '@').replace(/u00253D/g, '=').replace(/u00257B/g, '{').replace(/u00257D/g, '}');
+                res = res.replace(/\\/g, '')
+              }
               else { res = `${key}-not-found` } // for case when not matched
-              console.log(key, re_list[key], res)
+              console.log(key, res)
               optOutParams[key] = res;
             })
 
@@ -128,7 +131,7 @@ function initXHR() {
               optOutParams,
             };
             console.log('DATA', data);
-            console.log('req params', requestParams);
+            // console.log('req params', requestParams);
             window.postMessage(data,'*');
             return;
         }
@@ -159,7 +162,7 @@ function getExplanationsManually(adData) {
     if (xmlhttp.readyState === 4 && xmlhttp.status === 200){
       const response = xmlhttp.responseText;
       const html = JSON.parse(response.slice(9));
-      const parsed = html.jsmods.markup[0][1].__html;
+      const parsed = html.jsmods ? html.jsmods.markup[0][1].__html : '';
       const expStart = getIndexFromList(parsed, ABOUT_THIS_FACEBOOK_AD);
 
       if (getIndexFromList(response, RATE_LIMIT_MSG) > -1) {
@@ -186,6 +189,19 @@ function getExplanationsManually(adData) {
   xmlhttp.send(null);
 }
 
+function param(object) {
+  let encodedString = '';
+  for (let prop in object) {
+      if (object.hasOwnProperty(prop)) {
+          if (encodedString.length > 0) {
+              encodedString += '&';
+          }
+          encodedString += encodeURI(prop + '=' + object[prop]);
+          encodedString = encodedString.replace(/____/g, '%22')
+      }
+  }
+  return encodedString;
+}
 
 function addListeners() {
   window.postMessage({asyncParams:true}, "*"); //update params
@@ -238,11 +254,10 @@ function addListeners() {
         if (request.status >= 200 && request.status < 400) {
             // Success!
             var respData = request.responseText.replace('for (;;);', '');
-            console.log('Response Data...')
+            console.log('request.status >= 200 Response Data...')
             console.log(respData);
-            // var data = {'data': adContents, 'type': 'adActivityData' };
-            // window.postMessage(data, '*');
           } else {
+            console.log('request.status Error...')
             // We reached our target server, but it returned an error
           }
       };
@@ -254,8 +269,9 @@ function addListeners() {
       argsSplit.forEach(arg => {
         params[arg.slice(0,arg.indexOf('===='))] = arg.slice(arg.indexOf('====')+4, arg.length);
       })
-      console.log("params2", params);
-      // request.send(param(params));
+      // console.log("params2", params);
+      console.log('param(params)', param(params))
+      request.send(param(params));
     }
   });
   setTimeout(initXHR(), 5000);

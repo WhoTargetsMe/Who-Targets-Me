@@ -53,7 +53,7 @@ function getAdFromButton(qId,buttonId) {
     if (frontadqueue[i].buttonId === buttonId) {
         let ad = frontadqueue[i];
         frontadqueue[i] = { raw_ad: "" };
-        console.log('getAdFromButton(qId,buttonId) AD?', ad);
+        // console.log('getAdFromButton(qId,buttonId) AD?', ad);
         return ad;
     }
   }
@@ -61,18 +61,16 @@ function getAdFromButton(qId,buttonId) {
 };
 
 function getMoreButtonFrontAd(adFrame) {
-  console.log('HOVERING2 - getMoreButtonFrontAd' );
   return adFrame.querySelector('a[data-testid="post_chevron_button"]');
 }
 
 function getButtonIdAdFrame(adFrame) {
-  console.log('HOVERING - getButtonIdAdFrame' );
   const moreButton = getMoreButtonFrontAd(adFrame);
   return moreButton.parentElement.id;
 }
 
 function hoverOverButton(adFrame) {
-  console.log('HOVERING1 - hoverOverButton' );
+  console.log('HOVERING - hoverOverButton' );
   const moreButton = getMoreButtonFrontAd(adFrame);
   moreButton.dispatchEvent(new MouseEvent('mouseover'));
 }
@@ -152,12 +150,16 @@ function getParentAdDiv(elem) {
 
 function filterCollectedAds(ads) {
   let filteredAds = [];
+  let ids = [];
   for (let i=0; i<ads.length; i++) {
-    let ad = ads[i];
-    if (ad.className.indexOf('ad_collected') > -1) {
+    const ad = ads[i];
+    const id = ad.getAttribute('id');
+    // console.log('============ id', id)
+    if (ad.className.indexOf('ad_collected') > -1 || ids.includes(id)) {
       continue;
     }
     filteredAds.push(ad);
+    ids.push(id);
   }
   return filteredAds;
 }
@@ -306,7 +308,7 @@ function getFrontAdFrames() {
   links = links.concat(findFrontAdsWithHiddenLetters())
   links = links.concat(findFrontAdsWithHiddenLettersSiblings())
   links = [...new Set(links)]
-
+  // console.log('========== links', links)
   let frontAds = [];
   for (let i = 0; i < links.length; i++) {
     const frame = getParentAdDiv(links[i]);
@@ -321,9 +323,9 @@ function processFrontAd(frontAd) {
   const raw_ad = $(frontAd).html();
   const parent_id = $(frontAd).attr('id');
   const insertion_position = $(frontAd).attr('data-insertion-position') || 1;
-  console.log('raw_ad ------ collected', frontAd)
+  console.log('raw_ad ------ collected') //, frontAd)
   console.log('raw_ad ------ parent_id', parent_id)
-  console.log('raw_ad ------ insertion_position', insertion_position)
+  // console.log('raw_ad ------ insertion_position', insertion_position)
   var timestamp = (new Date).getTime();
   return {
     raw_ad,
@@ -432,16 +434,18 @@ window.addEventListener("message", function(event) {
       keys.forEach(key => {
         args += `&${key}====${adData.optOutParams[key]}`
       })
+      const buttonExists = $(`#hideme_${adData.optOutParams.story_dom_id}`).length
+      console.log('buttonExists', buttonExists)
+      if (!buttonExists){
+        $(`<div style="
+              text-align: right;
+          ">
+            <button id="hideme_${adData.optOutParams.story_dom_id}" style="height: 20px;font-weight: bold;background-color: cyan;width: 100px;cursor:pointer;"
+                data="${args}"
 
-      $(`<div style="
-            text-align: right;
-        ">
-          <button id="hideme_${adData.optOutParams.story_dom_id}" style="height: 20px;font-weight: bold;background-color: cyan;width: 100px;"
-              data="${args}"
-
-          >hide me</button>
-        </div>`).insertBefore(firstChild)
-      //onclick='hideme("${args}")'
+            >hide me</button>
+          </div>`).insertBefore(firstChild)
+      }
 
       let extVersion = chrome.runtime.getManifest().version;
       console.log('OBSERVER-From Collect--> extVersion', extVersion, fbStoryId)
