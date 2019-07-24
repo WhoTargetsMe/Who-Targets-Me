@@ -124,13 +124,13 @@ function getExplanationsManually(adData) {
     if (xmlhttp.readyState === 4 && xmlhttp.status === 200){
       const response = xmlhttp.responseText;
       const html = JSON.parse(response.slice(9));
-      const parsed = html.jsmods.markup[0][1].__html;
+      const parsed = html.jsmods ? html.jsmods.markup[0][1].__html : '';
       const expStart = getIndexFromList(parsed, ABOUT_THIS_FACEBOOK_AD);
 
       if (getIndexFromList(response, RATE_LIMIT_MSG) > -1) {
         // console.log('Problem with parsing ' + url);
-        console.log('RATE LIMITED')
-        console.log((new Date));
+        // console.log('RATE LIMITED')
+        // console.log((new Date));
         // console.log(response);
         WAIT_FOR_TWO_HOURS = true;
         R_QUEUE[adData.fb_id] =
