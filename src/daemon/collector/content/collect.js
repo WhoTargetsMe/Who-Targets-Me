@@ -47,13 +47,13 @@ function addToFrontAdQueue(ad) {
 }
 
 function getAdFromButton(qId,buttonId) {
-  console.log('getAdFromButton(qId,buttonId)', qId,buttonId);
-  console.log(frontadqueue);
+  // console.log('getAdFromButton(qId,buttonId)', qId,buttonId);
+  // console.log(frontadqueue);
   for (let i in frontadqueue) {
     if (frontadqueue[i].buttonId === buttonId) {
         let ad = frontadqueue[i];
         frontadqueue[i] = { raw_ad: "" };
-        console.log('getAdFromButton(qId,buttonId) AD?', ad);
+        // console.log('getAdFromButton(qId,buttonId) AD?', ad);
         return ad;
     }
   }
@@ -372,7 +372,7 @@ function sendRationale(adId, adData, explanation) {
       html: explanation
     }]
   };
-  console.log('OBSERVER-From Rationale --> finalPayload', finalPayload)
+  // console.log('OBSERVER-From Rationale --> finalPayload', finalPayload)
   api.addMiddleware(request => {request.options.headers['Authorization'] = adData.token});
   api.post('log/raw', {json: finalPayload})
     .then((response) => {
@@ -392,7 +392,7 @@ window.addEventListener("message", function(event) {
     if (adData){
       adData.fb_id = event.data.adId;
       adData.explanationUrl = rationaleUrl + event.data.requestParams + '&' + $.param(event.data.asyncParams);
-      console.log('adData ==== ', adData);
+      // console.log('adData ==== ', adData);
 
       // send to db and call for rationales
       const container = $(adData.raw_ad); //$(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
@@ -411,7 +411,7 @@ window.addEventListener("message", function(event) {
           html: container.html()
         }]
       };
-      console.log('OBSERVER-From Collect--> finalPayload', finalPayload)
+      // console.log('OBSERVER-From Collect--> finalPayload', finalPayload)
 
       chrome.storage.promise.local.get('general_token')
         .then((result) => {
@@ -462,7 +462,7 @@ function checkLS() {
     }
   }
   window.localStorage.setItem('rq', JSON.stringify(res));
-  console.log('checkLS....', Math.random());
+  // console.log('checkLS....', Math.random());
 }
 
 window.setInterval(function(){ checkLS() }, CHECK_INTERVAL);

@@ -114,11 +114,11 @@ function getIndexFromList(txt, lst) {
 }
 
 function getRQ() {
-  console.log('getRQueue called')
+  // console.log('getRQueue called')
   let rq = JSON.parse(window.localStorage.getItem('rq'));
   let wu = JSON.parse(window.localStorage.getItem('wu'));
   if (!rq) {
-    console.log('getRQueue called - IF !window.localStorage.getItem(rq)')
+    // console.log('getRQueue called - IF !window.localStorage.getItem(rq)')
     window.localStorage.setItem('rq', JSON.stringify({}));
   }
   if (!wu){
@@ -149,7 +149,7 @@ function storeRQ(adData, WAIT_UNTIL) {
     adIds = keys.map(k => k.adId);
   }
   if (adIds.includes(adData.fb_id)) {
-    console.log('Already in RQ, returning...', adData.fb_id);
+    // console.log('Already in RQ, returning...', adData.fb_id);
     return;
   }
   RQ[nextNum] = {
@@ -160,16 +160,16 @@ function storeRQ(adData, WAIT_UNTIL) {
 
   window.localStorage.setItem('rq', JSON.stringify(RQ));
   window.localStorage.setItem('wu', JSON.stringify(WAIT_UNTIL.getTime()));
-  console.log('getRQ()', getRQ());
-  console.log('+++++ local variables', RQ, WAIT_UNTIL);
+  // console.log('getRQ()', getRQ());
+  // console.log('+++++ local variables', RQ, WAIT_UNTIL);
 }
 
 function getExplanationsManually(adData) {
-  console.log('getExplanationsManually called', adData.fb_id, new Date())
+  // console.log('getExplanationsManually called', adData.fb_id, new Date())
   const { WAIT_UNTIL_LS } = getRQ();
   if (WAIT_UNTIL_LS > WAIT_UNTIL) { WAIT_UNTIL = WAIT_UNTIL_LS }
   if (new Date() < WAIT_UNTIL) {
-    console.log('Not the time yet: WAIT_UNTIL', WAIT_UNTIL)
+    // console.log('Not the time yet: WAIT_UNTIL', WAIT_UNTIL)
     storeRQ(adData, WAIT_UNTIL);
     return;
   }
@@ -182,13 +182,13 @@ function getExplanationsManually(adData) {
       const html = JSON.parse(response.slice(9));
       const parsed = html.jsmods ? html.jsmods.markup[0][1].__html : '';
       const error = getIndexFromList(response.slice(0,50), ['error']) > -1;
-      console.log('response=', error, response.slice(0,50));
+      // console.log('response=', error, response.slice(0,50));
 
       if (error) {
         WAIT_UNTIL = new Date();
         WAIT_UNTIL.setMinutes(WAIT_UNTIL.getMinutes() + WU_INTERVAL);
-        console.log('ERROR, RATE LIMITED')
-        console.log('WAIT_UNTIL is set to =', WAIT_UNTIL);
+        // console.log('ERROR, RATE LIMITED')
+        // console.log('WAIT_UNTIL is set to =', WAIT_UNTIL);
         storeRQ(adData, WAIT_UNTIL);
         return;
       }
@@ -218,23 +218,23 @@ function retryStoredRQ() {
   window.localStorage.setItem('wu', JSON.stringify(WAIT_UNTIL.getTime()));
   window.localStorage.setItem('rq', JSON.stringify(RQ));
 
-  console.log('retryStoredRQ called', Math.random())
-  console.log('new Date() > WAIT_UNTIL?', new Date() > WAIT_UNTIL, WAIT_UNTIL)
+  // console.log('retryStoredRQ called', Math.random())
+  // console.log('new Date() > WAIT_UNTIL?', new Date() > WAIT_UNTIL, WAIT_UNTIL)
   if (new Date() > WAIT_UNTIL) {
     if (keys.length) {
       let data = RQ[keys[0]].adData;
       data.asyncParams = window.require('getAsyncParams')('POST');
-      console.log('retryStoredRQ popped adData', data);
+      // console.log('retryStoredRQ popped adData', data);
       delete RQ[keys[0]];
       window.localStorage.setItem('rq', JSON.stringify(RQ));
       window.localStorage.setItem('wu', JSON.stringify(WAIT_UNTIL.getTime()));
       getExplanationsManually(data);
     }
-    console.log('Nothing in RQ...');
+    // console.log('Nothing in RQ...');
   } else {
-    console.log('Not the time yet...');
-    console.log('+++++ local variables', RQ, WAIT_UNTIL);
-    console.log('+++++ browser variables', getRQ());
+    // console.log('Not the time yet...');
+    // console.log('+++++ local variables', RQ, WAIT_UNTIL);
+    // console.log('+++++ browser variables', getRQ());
   }
 }
 window.setInterval(function(){ retryStoredRQ() }, RQ_INTERVAL);
@@ -248,11 +248,11 @@ function addListeners() {
       return;
     }
     if (event.data.postRationale) {
-      console.log('postRationale in listener - returning')
+      // console.log('postRationale in listener - returning')
       return;
     }
     if (event.data.explanationUrl) {
-      console.log('!!!! caught explanationUrl', new Date())
+      // console.log('!!!! caught explanationUrl', new Date())
       let { WAIT_UNTIL_LS } = getRQ();
       if (WAIT_UNTIL_LS > WAIT_UNTIL) { WAIT_UNTIL = WAIT_UNTIL_LS }
       storeRQ(event.data, WAIT_UNTIL);
