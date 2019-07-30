@@ -111,6 +111,10 @@ export const PartyAds = (props) => {
           </Row>
           {props.ads.map((ad, j) => {
             // const displayTime = ad.createdAt.slice(8,10) + '/' + ad.createdAt.slice(5,7) + '/' + ad.createdAt.slice(0,4);
+            if (new Date(ad.createdAt) > new Date("2018-10-01T00:00:00.761Z") && new Date(ad.createdAt) < new Date("2019-07-25T00:00:00.761Z")) {
+              ad.noRationaleMessage = "Not available"
+            }
+            // console.log('ad log 1', ad)
             return (
               <Row key={`tablerow-${j}`} style={{borderBottom: '1px solid #ccc', marginBottom: '10px'}}>
                 <Col sm="4/20" className='adCol'>
@@ -123,7 +127,7 @@ export const PartyAds = (props) => {
                 <Col sm="3/20" className='adCol' style={{textAlign: 'center'}}>{ad.count}</Col>
                 <Col sm="3/20" className='adCol'>
                 {
-                  ad.noRationaleMessage && ad.noRationaleMessage === "Not available" ?
+                  (ad.noRationaleMessage && ad.noRationaleMessage === "Not available") ?
                     <span className="noLink">{ad.noRationaleMessage}</span> :
                     <span className="link" onClick={() => props.showTargeting(ad.postId)}>{ad.noRationaleMessage ? ad.noRationaleMessage : strings.results.check_rationale}</span>
                 }
@@ -152,6 +156,10 @@ export const PartyAds = (props) => {
             </Row>
             {props.ads.map((ad, j) => {
               // const displayTime = ad.createdAt.slice(8,10) + '/' + ad.createdAt.slice(5,7) + '/' + ad.createdAt.slice(0,4);
+              if (new Date(ad.createdAt) > new Date("2018-10-01T00:00:00.761Z") && new Date(ad.createdAt) < new Date("2019-07-25T00:00:00.761Z")) {
+                ad.noRationaleMessage = "Not available"
+              }
+              // console.log('ad log 2', ad)
               return (
                 <Row key={`tablerow-${j}`} style={{borderBottom: '1px solid #ccc', marginBottom: '10px'}}>
                   <Col sm="4/20" className='adCol'>

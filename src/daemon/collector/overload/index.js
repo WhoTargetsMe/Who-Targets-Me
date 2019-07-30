@@ -10,11 +10,12 @@ const re_replace_ajaxify = 'ajaxify":"\\\/ads\\\/preferences\\\/dialog\\\/?'
 const re_adId = /id=[0-9]+/;
 const re_number = /[0-9]+/;
 const rationaleUrl = 'https://www.facebook.com/ads/preferences/dialog/?';
-const ABOUT_THIS_FACEBOOK_AD =['facebook'];
-const RATE_LIMIT_MSG = ['it looks like you were misusing this feature by going too fast','correctement en allant trop vite'];
-let WAIT_FOR_TWO_HOURS = false;
 let EXPLANATION_REQUESTS = {};
 let R_PROBLEMATIC = [];
+let RQ = {};
+let WAIT_UNTIL = new Date();
+let RQ_INTERVAL = 65500; //ms
+let WU_INTERVAL = 30; //minutes
 
 function updateAsyncParams() {
   data = { asyncParams: true }
@@ -23,32 +24,24 @@ function updateAsyncParams() {
 
 function getQid(url) {
   try {
-      return  url.match(re_qid)[0].match(re_number)[0];
+    return url.match(re_qid)[0].match(re_number)[0];
   } catch (exp) {
       // console.log('Exception in getQid:');
-      console.log(exp);
-      }
+    console.log(exp);
+  }
   return null;
 };
 
 function getButtonId(url) {
-    try {
-      return url.match(re_buttonId)[0].replace('button_id=','').replace('&','');
-    } catch (e) {
-      // console.log('Exception in getButtonId:');
-      console.log(e);
-      }
+  try {
+    return url.match(re_buttonId)[0].replace('button_id=','').replace('&','');
+  } catch (e) {
+    // console.log('Exception in getButtonId:');
+    console.log(e);
+  }
   return null;
 };
 
-function getRQueue() {
-  // console.log('getRQueue called')
-    if (!localStorage.rQueue) {
-        localStorage.rQueue = JSON.stringify({});
-    }
-    return JSON.parse(localStorage.rQueue);
-}
-const R_QUEUE = getRQueue();
 
 function initXHR() {
     var XHR = XMLHttpRequest.prototype;
@@ -97,12 +90,16 @@ function initXHR() {
             window.postMessage(data,'*');
             return;
         }
-//            /* Method        */ this._method
-//            /* URL           */ this._url
-//            /* Response body */ this.responseText
-//            /* Request body  */ postData
+        //            /* Method        */ this._method
+        //            /* URL           */ this._url
+        //            /* Response body */ this.responseText
+        //            /* Request body  */ postData
     });
-    return send.apply(this, arguments);
+    try {
+      return send.apply(this, arguments);
+    } catch (err) {
+      console.log(err);
+    }
   };
 };
 
@@ -116,8 +113,67 @@ function getIndexFromList(txt, lst) {
   return -1;
 }
 
+function getRQ() {
+  console.log('getRQueue called')
+  let rq = JSON.parse(window.localStorage.getItem('rq'));
+  let wu = JSON.parse(window.localStorage.getItem('wu'));
+  if (!rq) {
+    console.log('getRQueue called - IF !window.localStorage.getItem(rq)')
+    window.localStorage.setItem('rq', JSON.stringify({}));
+  }
+  if (!wu){
+    window.localStorage.setItem('wu', JSON.stringify((new Date()).getTime()));
+  }
+  return {
+    'RQ_LS': JSON.parse(window.localStorage.getItem('rq')),
+    'WAIT_UNTIL_LS': new Date(JSON.parse(window.localStorage.getItem('wu')))
+  };
+}
+const { RQ_LS, WAIT_UNTIL_LS } = getRQ();
+RQ = RQ_LS;
+WAIT_UNTIL = WAIT_UNTIL_LS;
+
+function storeRQ(adData, WAIT_UNTIL) {
+  const { RQ_LS } = getRQ();
+  let keys = Object.keys(RQ).sort();
+  const keys_ls = Object.keys(RQ_LS).sort();
+  if (keys_ls.length > 0) {
+    keys = keys_ls;
+    RQ = RQ_LS;
+  }
+
+  let nextNum = 0;
+  let adIds = [];
+  if (keys.length) {
+    nextNum = parseInt(keys.slice(keys.length-1)) + 1;
+    adIds = keys.map(k => k.adId);
+  }
+  if (adIds.includes(adData.fb_id)) {
+    console.log('Already in RQ, returning...', adData.fb_id);
+    return;
+  }
+  RQ[nextNum] = {
+    adId: adData.fb_id,
+    adData,
+    wu: WAIT_UNTIL.getTime()
+  }
+
+  window.localStorage.setItem('rq', JSON.stringify(RQ));
+  window.localStorage.setItem('wu', JSON.stringify(WAIT_UNTIL.getTime()));
+  console.log('getRQ()', getRQ());
+  console.log('+++++ local variables', RQ, WAIT_UNTIL);
+}
+
 function getExplanationsManually(adData) {
-  // console.log('getExplanationsManually called', adData.fb_id, new Date())
+  console.log('getExplanationsManually called', adData.fb_id, new Date())
+  const { WAIT_UNTIL_LS } = getRQ();
+  if (WAIT_UNTIL_LS > WAIT_UNTIL) { WAIT_UNTIL = WAIT_UNTIL_LS }
+  if (new Date() < WAIT_UNTIL) {
+    console.log('Not the time yet: WAIT_UNTIL', WAIT_UNTIL)
+    storeRQ(adData, WAIT_UNTIL);
+    return;
+  }
+
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.open("GET", adData.explanationUrl, true);
   xmlhttp.onload = function (e) {
@@ -125,31 +181,63 @@ function getExplanationsManually(adData) {
       const response = xmlhttp.responseText;
       const html = JSON.parse(response.slice(9));
       const parsed = html.jsmods ? html.jsmods.markup[0][1].__html : '';
-      const expStart = getIndexFromList(parsed, ABOUT_THIS_FACEBOOK_AD);
+      const error = getIndexFromList(response.slice(0,50), ['error']) > -1;
+      console.log('response=', error, response.slice(0,50));
 
-      if (getIndexFromList(response, RATE_LIMIT_MSG) > -1) {
-        // console.log('Problem with parsing ' + url);
-        // console.log('RATE LIMITED')
-        // console.log((new Date));
-        // console.log(response);
-        WAIT_FOR_TWO_HOURS = true;
-        R_QUEUE[adData.fb_id] =
-          {adId: adData.fb_id, explanationUrl:adData.explanationUrl, timestamp:adData.timestamp}
+      if (error) {
+        WAIT_UNTIL = new Date();
+        WAIT_UNTIL.setMinutes(WAIT_UNTIL.getMinutes() + WU_INTERVAL);
+        console.log('ERROR, RATE LIMITED')
+        console.log('WAIT_UNTIL is set to =', WAIT_UNTIL);
+        storeRQ(adData, WAIT_UNTIL);
         return;
       }
-      // console.log('Found FB rationale text', expStart);
 
-     if (expStart === -1) {
+      const expStart = getIndexFromList(parsed, ['facebook']);
+      if (expStart === -1) {
         // console.log('Havent found FB text. Check the method.')
         R_PROBLEMATIC.push(response);
       }
-
       window.postMessage({
         postRationale: {adId: adData.fb_id, adData, explanation: response}
       }, "*");
-    }}
+    }
+  }
   xmlhttp.send(null);
 }
+
+function retryStoredRQ() {
+  const { RQ_LS, WAIT_UNTIL_LS } = getRQ();
+  if (WAIT_UNTIL_LS > WAIT_UNTIL) { WAIT_UNTIL = WAIT_UNTIL_LS }
+  let keys = Object.keys(RQ).sort();
+  const keys_ls = Object.keys(RQ_LS).sort();
+  if (keys_ls.length > 0) {
+    keys = keys_ls;
+    RQ = RQ_LS;
+  }
+  window.localStorage.setItem('wu', JSON.stringify(WAIT_UNTIL.getTime()));
+  window.localStorage.setItem('rq', JSON.stringify(RQ));
+
+  console.log('retryStoredRQ called', Math.random())
+  console.log('new Date() > WAIT_UNTIL?', new Date() > WAIT_UNTIL, WAIT_UNTIL)
+  if (new Date() > WAIT_UNTIL) {
+    if (keys.length) {
+      let data = RQ[keys[0]].adData;
+      data.asyncParams = window.require('getAsyncParams')('POST');
+      console.log('retryStoredRQ popped adData', data);
+      delete RQ[keys[0]];
+      window.localStorage.setItem('rq', JSON.stringify(RQ));
+      window.localStorage.setItem('wu', JSON.stringify(WAIT_UNTIL.getTime()));
+      getExplanationsManually(data);
+    }
+    console.log('Nothing in RQ...');
+  } else {
+    console.log('Not the time yet...');
+    console.log('+++++ local variables', RQ, WAIT_UNTIL);
+    console.log('+++++ browser variables', getRQ());
+  }
+}
+window.setInterval(function(){ retryStoredRQ() }, RQ_INTERVAL);
 
 
 function addListeners() {
@@ -160,15 +248,15 @@ function addListeners() {
       return;
     }
     if (event.data.postRationale) {
-      // console.log('postRationale in listener - returning')
+      console.log('postRationale in listener - returning')
       return;
     }
     if (event.data.explanationUrl) {
-      // console.log('!!!! caught explanationUrl')
-      return new Promise((resolve) => setTimeout(resolve(), 1000 * parseInt(Math.random()*10)))
-        .then(() => {
-          getExplanationsManually(event.data);
-        })
+      console.log('!!!! caught explanationUrl', new Date())
+      let { WAIT_UNTIL_LS } = getRQ();
+      if (WAIT_UNTIL_LS > WAIT_UNTIL) { WAIT_UNTIL = WAIT_UNTIL_LS }
+      storeRQ(event.data, WAIT_UNTIL);
+      // getExplanationsManually(event.data);
     }
     if (event.data.asyncParams && !event.data.explanationUrl) {
       const data = {
@@ -181,7 +269,7 @@ function addListeners() {
       return;
     }
   });
-  setTimeout(initXHR(), 5000);
+  window.setTimeout(initXHR(), 5000);
 };
 
-setTimeout(addListeners(), 15000);
+window.setTimeout(addListeners(), 15000);

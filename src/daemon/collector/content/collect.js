@@ -11,13 +11,13 @@ const rationaleUrl = 'https://www.facebook.com/ads/preferences/dialog/?';
 const sponsoredText = ['Sponsorjat','Sponzorované','Спонзорирано', 'Χορηγούμενη','Sponsitud','Sponzorováno','Спонсорирано', 'ממומן', 'Sponsoroitu','Sponsrad', 'Apmaksāta reklāma', 'Sponsorlu','Sponsrad','Спонзорисано','Sponzorované','Sponsa','Gesponsord','Sponset','Hirdetés', 'Sponsoreret', 'Sponzorováno', 'Sponsored', 'Sponsorisé', 'Commandité', 'Publicidad', 'Gesponsert', 'Χορηγούμενη', 'Patrocinado', 'Plaćeni oglas', 'Sponsorizzata ', 'Sponsorizzato', 'Sponsorizat', '赞助内容', 'مُموَّل', 'प्रायोजित', 'Спонзорисано', 'Реклама', '広告', 'ได้รับการสนับสนุน', 'Sponsorowane'];
 const politAdSubtitle = "entry_type=political_ad_subtitle";
 const non_ad = 'adsCategoryTitleLink';
-const interval = 5000;
+const INTERVAL = 5000;
 
 let asyncParams = {};
 let asyncParamsGet = {};
 let frontadqueue = {};
-let postedQueue = [];
-
+let POSTEDQUEUE = [];
+let CHECK_INTERVAL = 27000; //ms
 
 function updateAsyncParams() {
   const data = { asyncParams: true }
@@ -47,13 +47,13 @@ function addToFrontAdQueue(ad) {
 }
 
 function getAdFromButton(qId,buttonId) {
-  // console.log('getAdFromButton(qId,buttonId)', qId,buttonId);
-  // console.log(frontadqueue);
+  console.log('getAdFromButton(qId,buttonId)', qId,buttonId);
+  console.log(frontadqueue);
   for (let i in frontadqueue) {
     if (frontadqueue[i].buttonId === buttonId) {
         let ad = frontadqueue[i];
         frontadqueue[i] = { raw_ad: "" };
-        // console.log('getAdFromButton(qId,buttonId) AD?', ad);
+        console.log('getAdFromButton(qId,buttonId) AD?', ad);
         return ad;
     }
   }
@@ -347,13 +347,13 @@ function grabFrontAds() {
       console.log(err);
     }
   }
-  setTimeout(grabFrontAds, interval);
+  setTimeout(grabFrontAds, INTERVAL);
 }
 
 function sendRationale(adId, adData, explanation) {
-  if (postedQueue.includes(adId)) { return; }
-  postedQueue.push(adId);
-  // console.log('Update QUEUE++++++RESULT', postedQueue)
+  if (POSTEDQUEUE.includes(adId)) { return; }
+  POSTEDQUEUE.push(adId);
+  // console.log('Update QUEUE++++++RESULT', POSTEDQUEUE)
   // console.log('sendExplanationDB  BG called', adId)
 
   // send to db
@@ -372,7 +372,7 @@ function sendRationale(adId, adData, explanation) {
       html: explanation
     }]
   };
-  // console.log('OBSERVER-From Rationale --> finalPayload', finalPayload)
+  console.log('OBSERVER-From Rationale --> finalPayload', finalPayload)
   api.addMiddleware(request => {request.options.headers['Authorization'] = adData.token});
   api.post('log/raw', {json: finalPayload})
     .then((response) => {
@@ -392,7 +392,7 @@ window.addEventListener("message", function(event) {
     if (adData){
       adData.fb_id = event.data.adId;
       adData.explanationUrl = rationaleUrl + event.data.requestParams + '&' + $.param(event.data.asyncParams);
-      // console.log('adData ==== ', adData);
+      console.log('adData ==== ', adData);
 
       // send to db and call for rationales
       const container = $(adData.raw_ad); //$(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
@@ -411,7 +411,7 @@ window.addEventListener("message", function(event) {
           html: container.html()
         }]
       };
-      // console.log('OBSERVER-From Collect--> finalPayload', finalPayload)
+      console.log('OBSERVER-From Collect--> finalPayload', finalPayload)
 
       chrome.storage.promise.local.get('general_token')
         .then((result) => {
@@ -424,7 +424,8 @@ window.addEventListener("message", function(event) {
               container.addClass('fetched');
               adData.extVersion = extVersion;
               adData.token = result.general_token;
-              window.postMessage(adData, '*')
+              // console.log('Query rationale - 1', new Date())
+              setTimeout(function() {window.postMessage(adData, '*')}, 10000)// * parseInt(Math.random()*5+1));
             }
         }).catch((error) => {
           console.log(error);
@@ -446,4 +447,23 @@ window.addEventListener("message", function(event) {
   }
 });
 
+function checkLS() {
+  let rq = JSON.parse(window.localStorage.getItem('rq'));
+  let keys = Object.keys(rq).sort();
+  let visited = [];
+  let res = {};
+  if (keys.length) {
+    const adIds = keys.map(k => rq[k].adId);
+    for (let i=0; i<keys.length; i++) {
+      if (!visited.includes(adIds[i])) {
+        res[keys[i]] = rq[keys[i]];
+        visited.push(adIds[i]);
+      }
+    }
+  }
+  window.localStorage.setItem('rq', JSON.stringify(res));
+  console.log('checkLS....', Math.random());
+}
+
+window.setInterval(function(){ checkLS() }, CHECK_INTERVAL);
 grabFrontAds();
