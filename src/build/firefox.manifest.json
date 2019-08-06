@@ -1,5 +1,5 @@
 {
-	"version": "1.2.29",
+	"version": "1.2.33",
 	"name": "__MSG_appName__",
 	"manifest_version": 2,
 	"description": "__MSG_appDesc__",
@@ -10,11 +10,9 @@
 		"default_icon": "logo-128.png"
 	},
 	"permissions": [
-		"tabs",
 		"storage",
 		"*://facebook.com/*",
 		"*://www.facebook.com/*",
-		"*://msih3yho6h.execute-api.eu-central-1.amazonaws.com/*",
 		"*://*.whotargets.me/*",
 		"*://whotargets.me/*"
 	],
