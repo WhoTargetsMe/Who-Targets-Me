@@ -359,6 +359,19 @@ tr{
   display: inline-block;
   cursor: pointer;
 }
+.tabLong{
+  height: 35px;
+  width: 80px;
+  font-weight: 600;
+  font-size: 12px;
+  text-align: center;
+  vertical-align: middle;
+  background-color: white;
+  border-radius: 20% 20% 0% 0%;
+  display: inline-block;
+  cursor: pointer;
+  padding: 5px 5px 0px 5px;
+}
 .tabActive{
   background-color: #f2f2f2;
   border-bottom: none;

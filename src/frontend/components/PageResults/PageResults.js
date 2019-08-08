@@ -357,12 +357,19 @@ export default class PageResults extends Component {
       }
     }
     const filterLabels = {
-      general: 'Your ads',
-      country: 'All '+ userCountry, geo: 'Your area',
-      sex_male: 'Men', sex_female: 'Women',
-      age_lt45: '< 45s', age_gt45: '> 45s',
-      polit_left: 'Left wing', polit_right: 'Right wing',
+      general: strings.filters.general,
+      country: strings.filters.country + userCountry,
+      geo: strings.filters.geo,
+      sex_male: strings.filters.sex_male,
+      sex_female: strings.filters.sex_female,
+      age_lt45: strings.filters.age_lt45,
+      age_gt45: strings.filters.age_gt45,
+      polit_left: strings.filters.polit_left,
+      polit_right: strings.filters.polit_right,
     }
+    const longHeaderText = (2 + party.partyDetails.party.length + strings.results.results_screen1_before.length + strings.results.results_screen1_after.length) > 55;
+    const longLanguages = ['PL'];
+    const longName = longLanguages.includes(userCountry);
 
     return (
       <div className="PageResults">
@@ -387,15 +394,27 @@ export default class PageResults extends Component {
               }
               {
                 view === "display_parties" &&
-                <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: (userCountry === 'BR' || userCountry === 'FI') ? '0px' : '25px'}}>
+                <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: longHeaderText ? '0px' : '25px'}}>
                   {this.state.language === 'il' ? <div style={{flex: 1, minHeight: '40px'}}>
-                    <h3 className='mainHeader'>{`${strings.results.results_screen1} `}<span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span></h3>
+                    <h3 className='mainHeader'>
+                      {strings.results.results_screen1_before.length ? `${strings.results.results_screen1_before} ` : ''}
+                      <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>
+                        {party.partyDetails.party.toUpperCase()}
+                      </span>
+                      {strings.results.results_screen1_after ? ` ${strings.results.results_screen1_after}` : ''}
+                    </h3>
                     <h4 className='resultsSubHeader'>{`${strings.results.results_screen2} `}{userSeenPartiesSum} {` ${strings.results.results_screen3} `}
                         {party.count} ({partyPerc}%) {` ${strings.results.results_screen4} `} <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span>
                     </h4>
                   </div> :
                   <div style={{flex: 1, minHeight: '40px'}}>
-                    <h3 className='mainHeader'>{`${strings.results.results_screen1} `}<span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span></h3>
+                    <h3 className='mainHeader'>
+                      {strings.results.results_screen1_before.length ? `${strings.results.results_screen1_before} ` : ''}
+                      <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>
+                        {party.partyDetails.party.toUpperCase()}
+                      </span>
+                      {strings.results.results_screen1_after.length ? ` ${strings.results.results_screen1_after}` : ''}
+                    </h3>
                     <h4 className='resultsSubHeader'>{`${strings.results.results_screen2} `}{userSeenPartiesSum} {` ${strings.results.results_screen3} `}
                         {party.count} ({partyPerc}%) {` ${strings.results.results_screen4} `} <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span>.
                     </h4>
@@ -419,6 +438,7 @@ export default class PageResults extends Component {
                     active={this.state.tabIndex === f}
                     handleTabClick={() => this.handleTabClick(f)}
                     key={`tab-${f}`}
+                    longName={longName}
                     />
                   )}
                 </div>
@@ -505,6 +525,7 @@ export default class PageResults extends Component {
                     active={this.state.tabIndex === f}
                     handleTabClick={() => this.handleTabClick(f)}
                     key={`tab-${f}`}
+                    longName={longName}
                     />
                   )}
                 </div>
@@ -637,12 +658,14 @@ export default class PageResults extends Component {
   }
 } // End of PageResults class
 
-const Tab = (props) => (
-  <div className={props.active ? 'tab tabActive' : 'tab'}
-    onClick={props.handleTabClick}>
-    {props.filter}
-  </div>
-)
+const Tab = (props) => {
+  const tabClass = props.longName ? 'tabLong' : 'tab';
+  return ( <div className={props.active ? `${tabClass} tabActive` : tabClass}
+            onClick={props.handleTabClick}>
+            {props.filter}
+          </div>)
+}
+
 const shareLinkFB = ([party, userCountry, partyPercAmongParties]) => {
   let title = ''
   if (party) {
