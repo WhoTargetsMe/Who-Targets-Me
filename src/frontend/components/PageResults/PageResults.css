@@ -120,6 +120,7 @@
 }
 .container{
   display: flex;
+  width: 600px;
   flex-flow: column nowrap;
   height: 210px;
   min-height: 210px;
@@ -133,11 +134,13 @@
   border-bottom: 2px solid #f2f2f2;
   justify-content: space-around;
   min-height: 130px;
+  width: 600px;
 }
 .labels{
   display: flex;
   flex-shrink: 2;
   flex:1;
+  width: 600px;
 }
 .bar{
   max-width: 50px;

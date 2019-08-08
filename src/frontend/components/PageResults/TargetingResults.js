@@ -8,7 +8,7 @@ const reduFunc = (a, b) => a + b;
 
 export const PartyChart = (props) => {
 
-  let maxHeight = 150;
+  let maxHeight = 130;
   let parties = [], partiesDisplay = [];
 
   for (let i=0; i<props.advertisers.length; i++){

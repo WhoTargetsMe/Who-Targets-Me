@@ -367,7 +367,9 @@ export default class PageResults extends Component {
       polit_left: strings.filters.polit_left,
       polit_right: strings.filters.polit_right,
     }
-    const longHeaderText = (2 + party.partyDetails.party.length + strings.results.results_screen1_before.length + strings.results.results_screen1_after.length) > 55;
+    const headerTextLength = (2 + party.partyDetails.party.length + strings.results.results_screen1_before.length + strings.results.results_screen1_after.length)
+    const smallerText = headerTextLength > 55 && headerTextLength < 70;
+    const evenSmallerText = headerTextLength >= 70;
     const longLanguages = ['PL'];
     const longName = longLanguages.includes(userCountry);
 
@@ -394,26 +396,26 @@ export default class PageResults extends Component {
               }
               {
                 view === "display_parties" &&
-                <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: longHeaderText ? '0px' : '25px'}}>
+                <div style={{display: 'flex', flex: 1, alignItems: 'center', marginTop: evenSmallerText ? '0px' : smallerText ? '15px' : '25px'}}>
                   {this.state.language === 'il' ? <div style={{flex: 1, minHeight: '40px'}}>
-                    <h3 className='mainHeader'>
-                      {strings.results.results_screen1_before.length ? `${strings.results.results_screen1_before} ` : ''}
+                    <h3 className='mainHeader' style={smallerText ? { fontSize: 16 } : {}}>
+                      {strings.results.results_screen1_before.length > 1 ? `${strings.results.results_screen1_before} ` : ''}
                       <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>
                         {party.partyDetails.party.toUpperCase()}
                       </span>
-                      {strings.results.results_screen1_after ? ` ${strings.results.results_screen1_after}` : ''}
+                      {strings.results.results_screen1_after > 1 ? ` ${strings.results.results_screen1_after}` : ''}
                     </h3>
                     <h4 className='resultsSubHeader'>{`${strings.results.results_screen2} `}{userSeenPartiesSum} {` ${strings.results.results_screen3} `}
                         {party.count} ({partyPerc}%) {` ${strings.results.results_screen4} `} <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span>
                     </h4>
                   </div> :
                   <div style={{flex: 1, minHeight: '40px'}}>
-                    <h3 className='mainHeader'>
-                      {strings.results.results_screen1_before.length ? `${strings.results.results_screen1_before} ` : ''}
+                    <h3 className='mainHeader' style={smallerText ? { fontSize: 16 } : {}}>
+                      {strings.results.results_screen1_before.length > 1 ? `${strings.results.results_screen1_before} ` : ''}
                       <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>
                         {party.partyDetails.party.toUpperCase()}
                       </span>
-                      {strings.results.results_screen1_after.length ? ` ${strings.results.results_screen1_after}` : ''}
+                      {strings.results.results_screen1_after.length > 1 ? ` ${strings.results.results_screen1_after}` : ''}
                     </h3>
                     <h4 className='resultsSubHeader'>{`${strings.results.results_screen2} `}{userSeenPartiesSum} {` ${strings.results.results_screen3} `}
                         {party.count} ({partyPerc}%) {` ${strings.results.results_screen4} `} <span className='party' style={{color: party.partyDetails ? party.partyDetails.color : 'darkgrey' }}>{party.partyDetails.party.toUpperCase()}</span>.

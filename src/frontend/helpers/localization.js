@@ -78,7 +78,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% of the political ads I see on Facebook are from ",
       shareTwitter2: ". Install Who Targets Me in your browser to find out who's trying to win your vote with targeted social media ads. https://whotargets.me",
       results_screen1_before: "You are being targeted by ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "In total you've seen ", // In total you've seen {quantity} political ads,
       results_screen3: " political ads, of which ", //of which.
       results_screen4: " were from ", //{quantity} were from {party name}
@@ -217,7 +217,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% der politischen Anzeigen, die ich auf Facebook sehe, stammen von",
       shareTwitter2: ". Installiere Who Targets Me, um herauszufinden, wer politische Social-Media-Anzeigen verwendet, um deine Stimme zu gewinnen.",
       results_screen1_before: "Du wirst von ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "Insgesamt hast du ", // In total you've seen {quantity} political ads,
       results_screen3: " politische Anzeigen gesehen, von denen ", //of which.
       results_screen4: "  kamen aus ", //{quantity} were from {party name}
@@ -356,7 +356,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% de la publicidad política y electoral que veo en Facebook es de ",
       shareTwitter2: ". Instala ¿De quién soy el blanco? en tu navegador y descubre quién está tratando de conseguir tu voto con publicidad hipersegmentada en redes sociales https://whotargets.me",
       results_screen1_before: "Eres el blanco de ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "En total has visto ", // In total you've seen {quantity} political ads,
       results_screen3: " anuncios políticos o electorales, de los cuales ", //of which.
       results_screen4: " eran de ", //{quantity} were from {party name}
@@ -495,7 +495,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% delle pubblicità politiche che vedo su Facebook proviene dal ",
       shareTwitter2: ". Installa Who Targets Me per scoprire chi sta cercando di vincere il tuo voto con annunci di social media mirati https://whotargets.me",
       results_screen1_before: "Sei preso di mira da ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "In totale hai visto ", // In total you've seen {quantity} political ads,
       results_screen3: " annunci politici, di cui ", //of which.
       results_screen4: " provenivano ", //{quantity} were from {party name}
@@ -634,7 +634,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% a Facebookon megjelenő politikai hirdetések -a származik ",
       shareTwitter2: ". Telepítse a Célkeresztben a böngészőjébe, hogy megtudja, ki próbálja megnyerni a szavazást célzott közösségi médiahirdetésekkel. https://whotargets.me",
       results_screen1_before: "Célozza meg ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "Összesen ", // In total you've seen {quantity} political ads,
       results_screen3: " politikai hirdetést láttál, ebből ", //of which.
       results_screen4: " a ", //{quantity} were from {party name}
@@ -773,7 +773,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% политических рекламных объявлений в моей ленте Facebook получены от ",
       shareTwitter2: ". Установите Who Targets Me, чтобы узнать, кто использует политическую рекламу в социальных сетях, чтобы получить ваш голос. https://whotargets.me",
       results_screen1_before: "К вам пытается обратиться партия ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "В общей сложности вы видели ", // In total you've seen {quantity} political ads
       results_screen3: " политических рекламных объявлений, из которых ", //of which.
       results_screen4: " были от ", //{quantity} were from {party name}.
@@ -912,7 +912,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "Kā mērķauditoriju mani izvēlas ",
       shareTwitter2: ". Instalē Who Targets Me, lai noskaidrotu kuru politisko spēku sociālo tīklu reklāmas tiek izmantotas, lai iegūtu Tavu balsi. https://whotargets.me",
       results_screen1_before: "Jums ir mērķtiecīga ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "Kopumā esat redzējis ", // In total you've seen {quantity} political ads,
       results_screen3: " politiskās reklāmas, no kurām ", //of which.
       results_screen4: " bija no ", //{quantity} were from {party name}
@@ -1053,7 +1053,7 @@ const strings = new LocalizedStrings({
       shareFacebook2BR: ". Instale o Você Na Mira para descobrir quem está usando propaganda política nas redes sociais para ganhar seu voto. https://vocenamira.org.br",
       shareTwitter2BR: ". Instale o Você Na Mira para descobrir quem está usando propaganda política nas redes sociais para ganhar seu voto. https://vocenamira.org.br",
       results_screen1_before: "Tem como alvo ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "No total, você viu ", // In total you've seen {quantity} political ads,
       results_screen3: " anúncios políticos, dos quais ", //of which.
       results_screen4: " eram de ", //{quantity} were from {party name}
@@ -1192,7 +1192,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% av de politiska annonserna jag ser på Facebook är från ",
       shareTwitter2: ". Installera Who Targets Me för att förstå vem som använder politiska annonser i sociala medier för att vinna din röst. https://whotargets.me",
       results_screen1_before: "Du får annonser riktade mot dig från ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "Du har sammanlagt sett ", // In total you've seen {quantity} political ads,
       results_screen3: " politiska annonser där ", //of which.
       results_screen4: " är från ", //{quantity} were from {party name}
@@ -1331,7 +1331,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% політичних оголошень, що я бачу на Facebook, є від ",
       shareTwitter2: ". Встановіть Who Targets Me у вашому браузері, щоб дізнатися хто намагається завоювати ваш голос за допомогою таргетованої політичної реклами. https://whotargets.me",
       results_screen1_before: "Вас таргетує ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "Загалом ви побачили ", // In total you've seen {quantity} political ads,
       results_screen3: " політичних оголошень, з яких ", //of which.
       results_screen4: " були від ", //{quantity} were from {party name}
@@ -1470,7 +1470,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% poliittisista mainoksista jotka näen Facebookissa ovat lähteestä ",
       shareTwitter2: ". Asenna Vaalivahti selaimeesi nähdäksesi kuinka sinuun yritetään vaikuttaa somessa vaalien alla. http://vaalivahti.fi",
       results_screen1_before: "Sinuun kohdistetaan viestejä seuraavilta tahoilta ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "Yhteensä olet nähnyt ", // In total you've seen {quantity} political ads,
       results_screen3: " poliittista mainosta, joista ", //of which.
       results_screen4: " olivat peräisin seuraavilta tahoilta: ", //{quantity} were from {party name}
@@ -1609,7 +1609,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% des annonces politiques que je vois sur Facebook viennent de ",
       shareTwitter2: ". Installez Who Targets Me dans votre navigateur pour découvrir qui essaie de gagner votre vote à travers des annonces politiques ciblées sur les médias sociaux. https://whotargets.me",
       results_screen1_before: "Vous êtes la cible de ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "En tout, vous avez vu ", // In total you've seen {quantity} political ads,
       results_screen3: " annonces politiques, dont ", //of which.
       results_screen4: " viennent de ", //{quantity} were from {party name}
@@ -1748,7 +1748,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% van de politieke advertenties die ik op Facebook zie zijn van ",
       shareTwitter2: ". Installeer Who Targets Me in uw browser en ontdek wie probeert uw stem te winnen door middel van doelgerichte social media advertenties. https://whotargets.me",
       results_screen1_before: "U wordt benaderd door ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "In totaal heeft u ", // In total you've seen {quantity} political ads,
       results_screen3: " politieke advertenties, waarvan ", //of which.
       results_screen4: " waren van ", //{quantity} were from {party name}
@@ -1887,7 +1887,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% of the political ads I see on Facebook are from ",
       shareTwitter2: "התקינו את Who Targets Me בדפדפן שלכם כדי לגלות מי מנסה לקבל את הקול שלכם בעזרת מודעות מותאמות אישית ברשתות החברתיות. https://whotargets.me",
       results_screen1_before: "את/ה מקבל/ת מודעות מותאמות אישית מ ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: " בסך הכל ראית", // In total you've seen {quantity} political ads,
       results_screen3: " מודעות פוליטיות, מתוכן ", //of which.
       results_screen4: " היו של ", //{quantity} were from {party name}
@@ -2026,7 +2026,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% от политическите реклами, които виждам в Facebook са от ",
       shareTwitter2: ". Инсталирайте Who Targets Me в браузъра си, за да разберете кой се опитва да спечели вота ви с целеви реклами в социалните медии. https://whotargets.me",
       results_screen1_before: "Вие сте цел на ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "Видели сте общо ", // In total you've seen {quantity} political ads,
       results_screen3: " политически реклами, от които ", //of which.
       results_screen4: " са от ", //{quantity} were from {party name}
@@ -2165,7 +2165,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% politických reklam, které vídám na Facebooku, je od ",
       shareTwitter2: "Instalujte Kdo na mě cílí do svého prohlížeče a zjistěte, kdo se snaží získat váš hlas prostřednictvím cílených reklam v sociálních médiích https://whotargets.me",
       results_screen1_before: "Cílí na vás ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "Celkově jste shlédl/a ", // In total you've seen {quantity} political ads,
       results_screen3: " politických reklam, z nichž ", //of which.
       results_screen4: " bylo od ", //{quantity} were from {party name}
@@ -2304,7 +2304,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% poliitilistest reklaamidest, mis ma näen Facebookis pärinevad ",
       shareTwitter2: ". Selleks, et teada saada kes kasutab teie hääle saamiseks sihtgruppidele suunatud sotsiaalmeedia reklaami installeeriga oma brauserile Who Targets Me. https://whotargets.me",
       results_screen1_before: "Teile saadab sihtgruppidele suunatud reklaami ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "Kokku olete näinud ", // In total you've seen {quantity} political ads,
       results_screen3: " poliitilist reklaami, millest ", //of which.
       results_screen4: " pärinevad ", //{quantity} were from {party name}
@@ -2443,7 +2443,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% των πολιτικών διαφημίσεων που βλέπω στο Facebook προέρχονται από ",
       shareTwitter2: ". Εγκατάσταση του Who Targets Me? στον περιηγητή σας, για να δείτε ποιος προσπαθεί να κερδίσει την ψήφο σας με στοχευμένες διαφημίσεις στα κοινωνικά δίκτυα. https://whotargets.me",
       results_screen1_before: "Έχετε στοχοποιηθεί από ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "Συνολικά έχετε δει ", // In total you've seen {quantity} political ads,
       results_screen3: " πολιτικές διαφημίσεις από τις οποίες ", //of which.
       results_screen4: " προέρχονται από ", //{quantity} were from {party name}
@@ -2582,7 +2582,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% на политичките реклами што ги гледам на Фејсбук се од ",
       shareTwitter2: ". Инсталирајте Who Targets Me? на вашиот прелистувач за да дознаете кој се обидува да го добие вашиот глас со насочени реклами на социјалните медиуми https://whotargets.me",
       results_screen1_before: "Вие се таргетирани од ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "Во целост сте виделе ", // In total you've seen {quantity} political ads,
       results_screen3: " политички реклами од кои ", //of which.
       results_screen4: " беа од ", //{quantity} were from {party name}
@@ -2720,7 +2720,7 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Zainstaluj wtyczkę Kto Cię Namierzył w przeglądarce i dowiedz się, kto próbuje zdobyć Twój głos poprzez spersonalizowane reklamy w mediach społecznościowych. https://whotargets.me",
       shareTwitter1: "% reklam politycznych wyświetlanych mi na Facebooku pochodzi od ",
       shareTwitter2: ". Zainstaluj wtyczkę Kto Cię Namierzył w przeglądarce i dowiedz się, kto próbuje zdobyć Twój głos poprzez spersonalizowane reklamy w mediach społecznościowych. https://whotargets.me",
-      results_screen1_before: "", // You are being targeted by {party name}.
+      results_screen1_before: "X", // You are being targeted by {party name}.
       results_screen1_after: "kieruje do Ciebie spersonalizowane reklamy.", // You are being targeted by {party name}.
       results_screen2: "Łącznie wyświetlono Ci ", // In total you've seen {quantity} political ads,
       results_screen3: " reklam(y) polityczne/politycznych, z których ", //of which.
@@ -2860,7 +2860,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% din anunţurile politice pe care le văd pe Facebook sunt de la ",
       shareTwitter2: ". Instalaţi Who Targets Me în browser-ul dvs. pentru a afla cine încearcă să vă câştige votul prin anunţurile direcţionate de pe reţelele de socializare. https://whotargets.me",
       results_screen1_before: "Sunteţi vizat de către ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "În total, aţi văzut ", // In total you've seen {quantity} political ads,
       results_screen3: " anunţuri politice dintre care ", //of which.
       results_screen4: " au fost de la ", //{quantity} were from {party name}
@@ -2999,7 +2999,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% politických reklám, ktoré vidím na Facebooku sú z ",
       shareTwitter2: ". Nainštalujte si rozšírenie 'Who Targets Me?' na Vašom webovom prehliadači a zistite, kto sa snaží získať Váš hlas pomocou cielenej reklamy na sociálnych sieťach. https://whotargets.me",
       results_screen1_before: "Oslovovala Vás ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "Celkovo ste videli ", // In total you've seen {quantity} political ads,
       results_screen3: " politických reklám, z ktorých ", //of which.
       results_screen4: " boli zadané organizácie ", //{quantity} were from {party name}
@@ -3138,7 +3138,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% političnih oglasov, ki jih vidim na Facebook, pripada ",
       shareTwitter2: ". Namestite aplikacijo Who Targets Me v vaš brskalnik in ugotovite, kdo si želi pridobiti vaš glas s ciljno usmerjenim oglaševanjem v družbenih medijih. https://whotargets.me",
       results_screen1_before: "Za ciljno usmerjeno oglaševanje vaše podatke uporablja ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "Skupno ste videli ", // In total you've seen {quantity} political ads,
       results_screen3: " političnih oglasov, od katerih ", //of which.
       results_screen4: " je bilo od ", //{quantity} were from {party name}
@@ -3277,7 +3277,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% tar-reklami politiċi li nara fuq Facebook huma minn ",
       shareTwitter2: ". Installa Who Targets Me? fuq il-brawżer tiegħek biex tkun taf min qed jipprova jirbaħ il-vot tiegħek b\'reklami politiċi fuq il-midja soċjali.https://whotargets.me",
       results_screen1_before: "Inti tinsab fil-mira minn ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "B'kollox inti rajt ", // In total you've seen {quantity} political ads,
       results_screen3: " ta' reklami politiċi li minnhom ", //of which.
       results_screen4: " kienu minn ", //{quantity} were from {party name}
@@ -3416,7 +3416,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% političkih oglasa koje vidim na Facebooku su od ",
       shareTwitter2: ". Instalirajte Who Targets Me u svoj web preglednik kako biste saznali tko pokušava dobiti Vaš glas pomoću ciljanih oglasa na društvenim mrežama. https://whotargets.me",
       results_screen1_before: "Targetirani ste ste od ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "Ukupno ste vidjeli ", // In total you've seen {quantity} political ads,
       results_screen3: " političkih oglasa od kojih ", //of which.
       results_screen4: " su bili od ", //{quantity} were from {party name}
@@ -3555,7 +3555,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% de politiske annoncer, jeg ser på Facebook, er fra ",
       shareTwitter2: ". Installer Who Targets Me i din browser for at finde ud af, hvem der forsøger at få din stemme ved hjælp af målrettede annoncer på de sociale medier. https://whotargets.me",
       results_screen1_before: "Målretter annoncer til dig ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "I alt har du set ", // In total you've seen {quantity} political ads,
       results_screen3: " politiske annoncer, hvoraf ", //of which.
       results_screen4: " var fra ", //{quantity} were from {party name}
@@ -3694,7 +3694,7 @@ const strings = new LocalizedStrings({
       shareTwitter1: "% na fógraí polaitiúla Feicim ar Facebook ó ",
       shareTwitter2: ". Suiteáil Who Targets Me i do bhrabhsálaí chun fáil amach cé atá ag iarraidh a bhuachan do vóta tacaíocht shonrach fógraí meáin shóisialta. https://whotargets.me",
       results_screen1_before: "Tá tú a bheith mar sprioc ag ", // You are being targeted by {party name}.
-      results_screen1_after: '',
+      results_screen1_after: 'X',
       results_screen2: "Ar an iomlán tá tú ag feiceáil ", // In total you've seen {quantity} political ads,
       results_screen3: " fógraí polaitiúla, ar a bhfuil ", //of which.
       results_screen4: "ba ó", //{quantity} were from {party name}
