@@ -290,7 +290,7 @@ tr{
 /*Rationale*/
 .boxNoFlex {
   max-width: 100%;
-  max-height: 254px;
+  max-height: 220px;
   flex-flow: row nowrap;
   font-size: 0.8rem;
   overflow-y: scroll;
