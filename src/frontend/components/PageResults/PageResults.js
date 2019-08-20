@@ -54,6 +54,10 @@ export default class PageResults extends Component {
   }
 
   filtersExtract(data, availableParties){
+    if (!data || !data.filters || !data.filters.length) {
+      this.setState({view: 'no_country'});
+      return;
+    }
     let filters = {};
     const _filters = data.filters;
     Object.keys(_filters).forEach(key => {
@@ -93,10 +97,12 @@ export default class PageResults extends Component {
           })
           .catch((error) => {
             console.log(error);
+            this.setState({view: 'no_country'})
         })
       }
     }).catch((error) => {
       console.log(error);
+      this.setState({view: 'no_country'})
     })
   }
 
@@ -367,11 +373,19 @@ export default class PageResults extends Component {
       polit_left: strings.filters.polit_left,
       polit_right: strings.filters.polit_right,
     }
-    const headerTextLength = (2 + party.partyDetails.party.length + strings.results.results_screen1_before.length + strings.results.results_screen1_after.length)
+    let headerTextLength = 80;
+    if (party) {
+      headerTextLength = (2 + party.partyDetails.party.length + strings.results.results_screen1_before.length + strings.results.results_screen1_after.length);
+    }
     const smallerText = headerTextLength > 55 && headerTextLength < 70;
     const evenSmallerText = headerTextLength >= 70;
     const longLanguages = ['PL'];
     const longName = longLanguages.includes(userCountry);
+
+    // handle broken - fallback to 'no_country'
+    if (!this.state.filters || !this.state.filters.length) {
+      view = 'no_country';
+    }
 
     return (
       <div className="PageResults">
