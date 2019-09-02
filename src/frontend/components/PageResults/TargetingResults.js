@@ -226,7 +226,7 @@ export const RationalesView = (props) => {
 
 export const PartyChartFilters = (props) => {
 
-  let maxHeight = 160; //former = 180
+  let maxHeight = 130; //former = 180
   let partiesDisplay = []; //.sort((a,b) => parseInt(b.count)-parseInt(a.count))
 
   for (let i=0; i<props.displayLabels.length; i++){

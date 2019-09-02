@@ -54,7 +54,7 @@ export default class PageResults extends Component {
   }
 
   filtersExtract(data, availableParties){
-    if (!data || !data.filters || !data.filters.length) {
+    if (!data || !data.filters || !Object.keys(data.filters).length) {
       this.setState({view: 'no_country'});
       return;
     }
@@ -379,11 +379,11 @@ export default class PageResults extends Component {
     }
     const smallerText = headerTextLength > 55 && headerTextLength < 70;
     const evenSmallerText = headerTextLength >= 70;
-    const longLanguages = ['PL'];
-    const longName = longLanguages.includes(userCountry);
+    const longTabLanguages = ['PL'];
+    const longName = longTabLanguages.includes(userCountry) || longTabLanguages.includes(this.state.language.toUpperCase());
 
     // handle broken - fallback to 'no_country'
-    if (!this.state.filters || !this.state.filters.length) {
+    if (!this.state.filters || !Object.keys(this.state.filters).length) {
       view = 'no_country';
     }
 
@@ -547,7 +547,10 @@ export default class PageResults extends Component {
                 </div>
                 {this.state.tabIndex === 'general' ?
                   <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px'}}>
-                    <h3 className='subMessage'>{strings.results.no_results_explanation}</h3>
+                    <h3 className='subMessage'>
+                      <p>{strings.results.no_results_explanation}</p>
+                      <p>{strings.results.no_results_explanation1}</p>
+                    </h3>
                   </div> :
                   <div style={['BR', 'FI'].includes(userCountry) ?
                     {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', maxHeight: '200px', width: 700} :
