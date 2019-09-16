@@ -96,9 +96,10 @@ export const availableParties = {
   'CA': [
     {entityId: 1, party:'Liberal Party of Canada', shortName: 'Lib', color: '#EA6D6A'},
     {entityId: 2, party:'Conservative Party of Canada', shortName: 'Con', color: '#6495ED'},
-    {entityId: 3, party:'Green Party of Canada', shortName: 'Gre', color: '#F4A460'},
-    {entityId: 4, party:'New Democratic Party', shortName: 'NDP', color: '#99C955'},
-    {entityId: 5, party:'Bloc Québécois', shortName: 'Qué', color: '#87CEFA'},
+    {entityId: 4, party:'Green Party of Canada', shortName: 'Gre', color: '#99C955'},
+    {entityId: 3, party:'New Democratic Party', shortName: 'NDP', color: '#F4A460'},
+    {entityId: 5, party:'Bloc Québécois', shortName: 'BQ', color: '#87CEFA'},
+    {entityId: 7, party:'People`s Party', shortName: 'PP', color: '#83789E'},
     {entityId: 6, party:'Others', shortName: 'Oth', color: '#cccccc'},
   ],
   'LV': [

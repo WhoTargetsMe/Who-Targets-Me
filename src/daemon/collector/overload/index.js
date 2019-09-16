@@ -5,8 +5,8 @@ import PromisePool from 'es6-promise-pool';
 const re_buttonId = /button_id=\S+?&/;
 const re_userId = /"USER_ID":"[0-9]+"/;
 const re_qid = /qid.[0-9]+/;
-const re_ajaxify = /ajaxify":"\\\/ads\\\/preferences\\\/dialog\S+?"/;
-const re_replace_ajaxify = 'ajaxify":"\\\/ads\\\/preferences\\\/dialog\\\/?'
+
+const re_ajaxify = /ajaxify":"\\\/waist_content\\\/dialog\S+?"/;
 const re_adId = /id=[0-9]+/;
 const re_number = /[0-9]+/;
 const rationaleUrl = 'https://www.facebook.com/ads/preferences/dialog/?';
@@ -23,16 +23,18 @@ function updateAsyncParams() {
 }
 
 function getQid(url) {
+  // console.log('getQid(url)', url, url.match(re_qid))
   try {
     return url.match(re_qid)[0].match(re_number)[0];
   } catch (exp) {
-      // console.log('Exception in getQid:');
+    // console.log('Exception in getQid:');
     console.log(exp);
   }
   return null;
 };
 
 function getButtonId(url) {
+  // console.log('getButtonId(url)', url, url.match(re_buttonId))
   try {
     return url.match(re_buttonId)[0].replace('button_id=','').replace('&','');
   } catch (e) {
@@ -44,6 +46,7 @@ function getButtonId(url) {
 
 
 function initXHR() {
+  // console.log('initXHR is called')
     var XHR = XMLHttpRequest.prototype;
     // Remember references to original methods
     var open = XHR.open;
@@ -67,13 +70,15 @@ function initXHR() {
 
             if (!qId || !buttonId) { return true; }
             let requestParams;
+            // console.log('this.responseText', this.responseText)
             try {
-              requestParams = this.responseText.match(re_ajaxify)[0].replace(re_replace_ajaxify,'');
+              requestParams = this.responseText.match(re_ajaxify)[0];
+              requestParams = requestParams.slice(requestParams.indexOf('id='),requestParams.length-1);
             } catch (e) {
+              console.log('XHR.send error', e)
               return;
             }
 
-            requestParams = requestParams.slice(0,requestParams.length-1);
             // console.log('requestParams', requestParams)
             const adId = requestParams.match(re_adId)[0].match(/[0-9]+/)[0];
             const asyncParams = window.require('getAsyncParams')('POST');

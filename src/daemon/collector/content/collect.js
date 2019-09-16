@@ -34,6 +34,7 @@ function isNumeric(value) {
 }
 
 function addToFrontAdQueue(ad) {
+  // console.log('addToFrontAdQueue', ad)
   if (Object.keys(frontadqueue).length === 0) {
     frontadqueue[0] = ad;
     return;
@@ -72,7 +73,9 @@ function getButtonIdAdFrame(adFrame) {
 function hoverOverButton(adFrame) {
   // console.log('HOVERING - hoverOverButton' );
   const moreButton = getMoreButtonFrontAd(adFrame);
+  // console.log('HOVERING - moreButton', moreButton)
   moreButton.dispatchEvent(new MouseEvent('mouseover'));
+  $(moreButton).trigger('mouseover');
 }
 
 function getExplanationUrlFrontAds(frontAd,adData) {
@@ -382,6 +385,7 @@ function sendRationale(adId, adData, explanation) {
 }
 
 window.addEventListener("message", function(event) {
+  // console.log('EVENT!!!!', event)
   // We only accept messages from ourselves
   if (event.source != window) { return; }
 
