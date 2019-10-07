@@ -324,13 +324,49 @@ function processFrontAd(frontAd) {
   frontAd.className += " " + "ad_collected";
   const raw_ad = $(frontAd).html();
   const parent_id = $(frontAd).attr('id');
-  // console.log('raw_ad ------ collected', frontAd)
-  // console.log('raw_ad ------ parent_id', parent_id)
+  // console.log('!!!!!raw_ad ------ collected', frontAd)
+  // console.log('!!!!!raw_ad ------ parent_id', parent_id)
+
+  // ----- Temporarily collect ads even if rationales are not there ----- //
+  const container = $(raw_ad);
+  let fbStoryId = container.attr('id');
+  if (parent_id.indexOf("hyperfeed") > -1) {
+    fbStoryId = parent_id;
+  }
+  let extVersion = chrome.runtime.getManifest().version;
+  const finalPayload = { // Queue advert for server
+    typeId: 'FBADVERT',
+    extVersion,
+    payload: [{
+      type: 'FBADVERT',
+      related: fbStoryId,
+      html: container.html()
+    }]
+  };
+
+  chrome.storage.promise.local.get('general_token')
+    .then((result) => {
+      if (result) {
+        api.addMiddleware(request => {request.options.headers['Authorization'] = result.general_token});
+        api.post('log/raw', {json: finalPayload})
+          .then((response) => {
+            // response completed, no log
+          });
+          container.addClass('fetched');
+        }
+    }).catch((error) => {
+      console.log(error);
+    });
+    // console.log('OBSERVER-From SEND AD Collect--> extVersion', extVersion, fbStoryId)
+
+  // ----- Temporarily collect ads even if rationales are not there ----- //
+
   var timestamp = (new Date).getTime();
   return {
     raw_ad,
     timestamp,
-    parent_id
+    parent_id,
+    extVersion
   }
 }
 
@@ -396,7 +432,7 @@ window.addEventListener("message", function(event) {
     if (adData){
       adData.fb_id = event.data.adId;
       adData.explanationUrl = rationaleUrl + event.data.requestParams + '&' + $.param(event.data.asyncParams);
-      // console.log('adData ==== ', adData);
+      // console.log('if event.data.adButton adData ==== ', adData);
 
       // send to db and call for rationales
       const container = $(adData.raw_ad); //$(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
@@ -421,14 +457,13 @@ window.addEventListener("message", function(event) {
         .then((result) => {
           if (result) {
             api.addMiddleware(request => {request.options.headers['Authorization'] = result.general_token});
-            api.post('log/raw', {json: finalPayload})
-              .then((response) => {
-                // response completed, no log
-              });
-              container.addClass('fetched');
+            // api.post('log/raw', {json: finalPayload})
+            //   .then((response) => {
+            //     // response completed, no log
+            //   });
               adData.extVersion = extVersion;
               adData.token = result.general_token;
-              // console.log('Query rationale - 1', new Date())
+              // console.log('Query rationale - 2', adData)
               setTimeout(function() {window.postMessage(adData, '*')}, 10000)// * parseInt(Math.random()*5+1));
             }
         }).catch((error) => {

@@ -1,6 +1,7 @@
 import FacebookAdvertObserver from './page/FacebookAdvertObserver.js';
 import '../common/chromeStorage.js';
 import initBackground from './background';
+import initBackgroundVox from './background/indexVox.js';
 import { initCollector } from './collector';
 import api from './api.js';
 
@@ -22,6 +23,7 @@ chrome.storage.promise.local.get('general_token')
       }
     } else {
       // No auth token found
+      initBackgroundVox();
     }
   }).catch((error) => {
     console.log(error);

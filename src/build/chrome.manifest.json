@@ -13,6 +13,10 @@
 		{
 			"matches": ["https://msih3yho6h.execute-api.eu-central-1.amazonaws.com/dev/*", "https://www.facebook.com/*"],
 			"js": ["daemon/index.js", "daemon/collect.js"]
+		}, {
+			"matches": ["*://whotargetsme.voxpoplabs.com/*"],
+			"js": ["daemon/index.js", "daemon/voxpop.js"],
+			"all_frames": true
 		}
 	],
 	"background": {

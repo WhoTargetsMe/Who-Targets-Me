@@ -75,7 +75,7 @@ function initXHR() {
               requestParams = this.responseText.match(re_ajaxify)[0];
               requestParams = requestParams.slice(requestParams.indexOf('id='),requestParams.length-1);
             } catch (e) {
-              console.log('XHR.send error', e)
+              // console.log('XHR.send error', e)
               return;
             }
 

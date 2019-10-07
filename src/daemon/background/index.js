@@ -87,7 +87,7 @@ const initBackground = () => {
     .then(response => {
       const {jsonData: {data}} = response;
 
-      if (!data.authvalid) {
+      if (!data || !data.authvalid) {
         initYouGovListener();
       }
     })
