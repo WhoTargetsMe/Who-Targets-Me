@@ -19,6 +19,9 @@ const strings = new LocalizedStrings({
       terms6: 'An optional anonymous profile created by you (location, language setting, age, gender, your general political view)',
       terms7: 'The ads that appear in your Facebook newsfeed (including the time and date you saw them)',
       terms8: 'You can uninstall the extension and/or delete the data you’ve contributed to the project at any time. Your data is yours and anonymous - we will never attempt to identify you.',
+      terms_consent1: ['I have read and agree to the ', 'TERMS!terms and conditions.'],
+      terms_consent2: ['I have read the ', 'PP!privacy policy', '. I give my consent to the collection and processing of my personal data.'],
+      terms_consent3: ['I explicitly give my consent to the collection of my personal information as set out in the ', 'PP!privacy policy.'],
       agree: 'I Agree',
       back: 'Back',
       next: 'Next',
@@ -77,13 +80,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Install Who Targets Me in your browser to find out who's trying to win your vote with targeted social media ads. https://whotargets.me",
       shareTwitter1: "% of the political ads I see on Facebook are from ",
       shareTwitter2: ". Install Who Targets Me in your browser to find out who's trying to win your vote with targeted social media ads. https://whotargets.me",
-      results_screen1: "You are being targeted by ", // You are being targeted by {party name}.
+      results_screen1_before: "You are being targeted by ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "In total you've seen ", // In total you've seen {quantity} political ads,
       results_screen3: " political ads, of which ", //of which.
       results_screen4: " were from ", //{quantity} were from {party name}
       gathering_data: 'Gathering data...',
       click_a_bar: 'Click a bar to view the ads you’ve seen from them',
-      how_did_we_calc: 'How did we calculate this?',
+      how_did_we_calc1: 'Compiled from data created by other users in ',
+      how_did_we_calc2: 'How did we calculate this?',
       ad: 'ad',
       ads: 'ads',
       ads_from: 'ads from',
@@ -97,10 +102,23 @@ const strings = new LocalizedStrings({
       targeting: 'Targeting',
       view_ad: 'View ad',
       check_rationale: 'Why did I see this?',
+      coming_soon: 'Coming soon...',
     },
     update: {
       update_profile: 'Update your profile',
+      update_postcode: 'To show this data we need to know your postcode. Please ',
       updated_success: 'Thank you. Your profile was successfully updated.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -201,13 +219,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Installiere Who Targets Me, um herauszufinden, wer politische Social-Media-Anzeigen verwendet, um deine Stimme zu gewinnen.",
       shareTwitter1: "% der politischen Anzeigen, die ich auf Facebook sehe, stammen von",
       shareTwitter2: ". Installiere Who Targets Me, um herauszufinden, wer politische Social-Media-Anzeigen verwendet, um deine Stimme zu gewinnen.",
-      results_screen1: "Du wirst von ", // You are being targeted by {party name}.
+      results_screen1_before: "Du wirst von ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "Insgesamt hast du ", // In total you've seen {quantity} political ads,
       results_screen3: " politische Anzeigen gesehen, von denen ", //of which.
       results_screen4: "  kamen aus ", //{quantity} were from {party name}
       gathering_data: 'Sammelt Daten...',
       click_a_bar: 'Klicke auf eine Leiste, um die Werbung zu sehen, die du von ihnen bekommen hast',
-      how_did_we_calc: 'Wie haben wir as berechnet?',
+      how_did_we_calc1: 'Zusammengestellt von Daten, die von anderen Benutzern in‘erstellt wird ',
+      how_did_we_calc2: 'Wie haben wir as berechnet?',
       ad: 'anz',
       ads: 'anz',
       ads_from: 'anzeigen von',
@@ -221,10 +241,23 @@ const strings = new LocalizedStrings({
       targeting: 'Gezielt beworben',
       view_ad: 'Zeige Werbung an',
       check_rationale: 'Warum habe ich das gesehen?',
+      coming_soon: 'Demnächst...',
     },
     update: {
       update_profile: 'Aktualisiere dein Profil',
+      update_postcode: 'Um zu zeigen, diese Daten benötigen wir Ihre Postleitzahl kennen. Bitte ',
       updated_success: 'Vielen Dank. Dein Profil wurde erfolgreich aktualisiert.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -325,13 +358,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Instala ¿De quién soy el blanco? en tu navegador y descubre quién está tratando de conseguir tu voto con publicidad hipersegmentada en redes sociales https://whotargets.me",
       shareTwitter1: "% de la publicidad política y electoral que veo en Facebook es de ",
       shareTwitter2: ". Instala ¿De quién soy el blanco? en tu navegador y descubre quién está tratando de conseguir tu voto con publicidad hipersegmentada en redes sociales https://whotargets.me",
-      results_screen1: "Eres el blanco de ", // You are being targeted by {party name}.
+      results_screen1_before: "Eres el blanco de ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "En total has visto ", // In total you've seen {quantity} political ads,
       results_screen3: " anuncios políticos o electorales, de los cuales ", //of which.
       results_screen4: " eran de ", //{quantity} were from {party name}
       gathering_data: 'Recopilando datos...',
       click_a_bar: 'Haz click en cualquiera de las barras para ver los anuncios de cada partido',
-      how_did_we_calc: '¿Cómo hemos calculado esto?',
+      how_did_we_calc1: 'Elaborado a partir de datos creados por otros usuarios de ',
+      how_did_we_calc2: '¿Cómo hemos calculado esto?',
       ad: 'anun',
       ads: 'anun',
       ads_from: 'anuncios de',
@@ -345,10 +380,23 @@ const strings = new LocalizedStrings({
       targeting: 'Segmentación',
       view_ad: 'Ver anuncio',
       check_rationale: '¿Por qué he visto esto?',
+      coming_soon: 'Próximamente...',
     },
     update: {
       update_profile: 'Actualiza tu perfil',
+      update_postcode: 'Para mostrar estos datos que necesitamos saber su código postal. Por favor ',
       updated_success: 'Gracias. Su perfil se ha actualizado correctamente.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -449,13 +497,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Installa Who Targets Me per scoprire chi sta cercando di vincere il tuo voto con annunci di social media mirati https://whotargets.me",
       shareTwitter1: "% delle pubblicità politiche che vedo su Facebook proviene dal ",
       shareTwitter2: ". Installa Who Targets Me per scoprire chi sta cercando di vincere il tuo voto con annunci di social media mirati https://whotargets.me",
-      results_screen1: "Sei preso di mira da ", // You are being targeted by {party name}.
+      results_screen1_before: "Sei preso di mira da ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "In totale hai visto ", // In total you've seen {quantity} political ads,
       results_screen3: " annunci politici, di cui ", //of which.
       results_screen4: " provenivano ", //{quantity} were from {party name}
       gathering_data: 'Raccolta dei dati ...',
       click_a_bar: 'Fai clic su una barra per visualizzare gli annunci che hai visto da loro',
-      how_did_we_calc: 'Come lo abbiamo calcolato?',
+      how_did_we_calc1: 'Compilato da quelli derivanti da altri utenti in',
+      how_did_we_calc2: 'Come lo abbiamo calcolato?',
       ad: 'ann',
       ads: 'ann',
       ads_from: 'annunci da',
@@ -469,10 +519,23 @@ const strings = new LocalizedStrings({
       targeting: 'Obiettivo',
       view_ad: 'Visualizza annuncio',
       check_rationale: 'Perché l\'ho visto?',
+      coming_soon: 'Prossimamente...',
     },
     update: {
       update_profile: 'Aggiorna il tuo profilo',
+      update_postcode: 'Per mostrare questi dati abbiamo bisogno di conoscere il codice postale. Per favore ',
       updated_success: 'Grazie. Il tuo profilo è stato aggiornato con successo.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -573,13 +636,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Telepítse a Célkeresztben a böngészőjébe, hogy megtudja, ki próbálja megnyerni a szavazást célzott közösségi médiahirdetésekkel. https://whotargets.me",
       shareTwitter1: "% a Facebookon megjelenő politikai hirdetések -a származik ",
       shareTwitter2: ". Telepítse a Célkeresztben a böngészőjébe, hogy megtudja, ki próbálja megnyerni a szavazást célzott közösségi médiahirdetésekkel. https://whotargets.me",
-      results_screen1: "Célozza meg ", // You are being targeted by {party name}.
+      results_screen1_before: "Célozza meg ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "Összesen ", // In total you've seen {quantity} political ads,
       results_screen3: " politikai hirdetést láttál, ebből ", //of which.
       results_screen4: " a ", //{quantity} were from {party name}
       gathering_data: 'Raccolta dati...',
       click_a_bar: 'Kattintson egy sávra, hogy megtekinthesse az általuk látott hirdetéseket',
-      how_did_we_calc: 'Hogyan számítottuk ki?',
+      how_did_we_calc1: 'Összeállított adatok más felhasználók által létrehozott in',
+      how_did_we_calc2: 'Hogyan számítottuk ki?',
       ad: 'rekl',
       ads: 'rekl',
       ads_from: 'hirdetések a',
@@ -593,10 +658,23 @@ const strings = new LocalizedStrings({
       targeting: 'Cél',
       view_ad: 'Hirdetés megtekintése',
       check_rationale: 'Miért láttam ezt?',
+      coming_soon: 'Hamarosan...',
     },
     update: {
       update_profile: 'Frissítse profilját',
+      update_postcode: 'Ahhoz, hogy mutassa meg neki ezt tudnunk kell, hogy az irányítószámot. Kérem ',
       updated_success: "Köszönöm. Az Ön profilja sikeresen frissítve.",
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -697,13 +775,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: "Установите Who Targets Me, чтобы узнать, кто использует политическую рекламу в социальных сетях, чтобы получить ваш голос. https://whotargets.me",
       shareTwitter1: "% политических рекламных объявлений в моей ленте Facebook получены от ",
       shareTwitter2: ". Установите Who Targets Me, чтобы узнать, кто использует политическую рекламу в социальных сетях, чтобы получить ваш голос. https://whotargets.me",
-      results_screen1: "К вам пытается обратиться партия ", // You are being targeted by {party name}.
+      results_screen1_before: "К вам пытается обратиться партия ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "В общей сложности вы видели ", // In total you've seen {quantity} political ads
       results_screen3: " политических рекламных объявлений, из которых ", //of which.
       results_screen4: " были от ", //{quantity} were from {party name}.
       gathering_data: 'Сбор данных...',
       click_a_bar: 'Нажмите на столбец диагараммы, чтобы просмотреть объявления от этого рекламодателя',
-      how_did_we_calc: 'Как мы это рассчитали?',
+      how_did_we_calc1: 'Расчитано на основе данных, созданных другими пользователями в ',
+      how_did_we_calc2: 'Как мы это рассчитали?',
       ad: 'рекл',
       ads: 'рекл',
       ads_from: 'объявлений от',
@@ -717,10 +797,23 @@ const strings = new LocalizedStrings({
       targeting: 'Таргетирование',
       view_ad: 'Просмотреть объявление',
       check_rationale: 'Почему я вижу это объявление?',
+      coming_soon: 'Скоро...',
     },
     update: {
       update_profile: 'Обновить профиль',
+      update_postcode: 'Для того, чтобы показать эти данные, нам необходимо знать ваш почтовый индекс. Пожалуйста, ',
       updated_success: 'Спасибо. Ваш профиль был успешно обновлен.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -821,13 +914,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Instalē Who Targets Me, lai noskaidrotu kuru politisko spēku sociālo tīklu reklāmas tiek izmantotas, lai iegūtu Tavu balsi. https://whotargets.me",
       shareTwitter1: "Kā mērķauditoriju mani izvēlas ",
       shareTwitter2: ". Instalē Who Targets Me, lai noskaidrotu kuru politisko spēku sociālo tīklu reklāmas tiek izmantotas, lai iegūtu Tavu balsi. https://whotargets.me",
-      results_screen1: "Jums ir mērķtiecīga ", // You are being targeted by {party name}.
+      results_screen1_before: "Jums ir mērķtiecīga ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "Kopumā esat redzējis ", // In total you've seen {quantity} political ads,
       results_screen3: " politiskās reklāmas, no kurām ", //of which.
       results_screen4: " bija no ", //{quantity} were from {party name}
       gathering_data: 'Datu vākšana ...',
       click_a_bar: 'Noklikšķiniet uz joslas, lai skatītu no tām redzamās reklāmas',
-      how_did_we_calc: 'Kā mēs to aprēķinājām?',
+      how_did_we_calc1: 'Apkopoti no datiem, kas izveidoti ar citiem lietotājiem ',
+      how_did_we_calc2: 'Kā mēs to aprēķinājām?',
       ad: 'rekl',
       ads: 'rekl',
       ads_from: 'reklāmas no',
@@ -841,10 +936,23 @@ const strings = new LocalizedStrings({
       targeting: 'Mērķis',
       view_ad: 'Skatīt reklāmu',
       check_rationale: 'Kāpēc es to redzēju?',
+      coming_soon: 'Drīzumā...',
     },
     update: {
       update_profile: 'Atjaunināt savu profilu',
+      update_postcode: 'Lai parādītu šo informāciju, kas mums ir nepieciešams zināt jūsu pasta indeksu. Lūdzu ',
       updated_success: 'Paldies. Jūsu profils ir veiksmīgi atjaunināts.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -947,13 +1055,15 @@ const strings = new LocalizedStrings({
       shareTwitter2: ". Instale o Você Na Mira para descobrir quem está usando propaganda política nas redes sociais para ganhar seu voto. https://whotargets.me",
       shareFacebook2BR: ". Instale o Você Na Mira para descobrir quem está usando propaganda política nas redes sociais para ganhar seu voto. https://vocenamira.org.br",
       shareTwitter2BR: ". Instale o Você Na Mira para descobrir quem está usando propaganda política nas redes sociais para ganhar seu voto. https://vocenamira.org.br",
-      results_screen1: "Tem como alvo ", // You are being targeted by {party name}.
+      results_screen1_before: "Tem como alvo ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "No total, você viu ", // In total you've seen {quantity} political ads,
       results_screen3: " anúncios políticos, dos quais ", //of which.
       results_screen4: " eram de ", //{quantity} were from {party name}
       gathering_data: 'Coleção de dados...',
       click_a_bar: 'Clique em uma barra para ver os anúncios que você viu deles',
-      how_did_we_calc: 'Como nós calculamos isso?',
+      how_did_we_calc1: 'Compilados a partir de dados criados por outros usuários em ',
+      how_did_we_calc2: 'Como nós calculamos isso?',
       ad: 'anun',
       ads: 'anun',
       ads_from: 'anúncios de',
@@ -967,10 +1077,23 @@ const strings = new LocalizedStrings({
       targeting: 'Alvo',
       view_ad: 'Ver anúncio',
       check_rationale: 'Por que eu vi isso?',
+      coming_soon: 'Em breve...',
     },
     update: {
       update_profile: 'Atualize seu perfil',
+      update_postcode: 'Para mostrar esses dados, precisamos saber o seu código postal. Por favor ',
       updated_success: 'Obrigado. Seu perfil foi atualizado com sucesso.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -1071,13 +1194,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Installera Who Targets Me för att förstå vem som använder politiska annonser i sociala medier för att vinna din röst. https://whotargets.me",
       shareTwitter1: "% av de politiska annonserna jag ser på Facebook är från ",
       shareTwitter2: ". Installera Who Targets Me för att förstå vem som använder politiska annonser i sociala medier för att vinna din röst. https://whotargets.me",
-      results_screen1: "Du får annonser riktade mot dig från ", // You are being targeted by {party name}.
+      results_screen1_before: "Du får annonser riktade mot dig från ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "Du har sammanlagt sett ", // In total you've seen {quantity} political ads,
       results_screen3: " politiska annonser där ", //of which.
       results_screen4: " är från ", //{quantity} were from {party name}
       gathering_data: 'Samlar in data...',
       click_a_bar: 'Klicka på en stapel för att se vilka annonser de riktat mot dig.',
-      how_did_we_calc: 'Hur räknade vi ut det här?',
+      how_did_we_calc1: 'Sammanställt från data som skapats av andra användare i ',
+      how_did_we_calc2: 'Hur räknade vi ut det här?',
       ad: 'ann',
       ads: 'ann',
       ads_from: 'Annonser från',
@@ -1091,10 +1216,23 @@ const strings = new LocalizedStrings({
       targeting: 'Riktade mot',
       view_ad: 'Se annons',
       check_rationale: 'Varför ser jag det här?',
+      coming_soon: 'Kommer snart...',
     },
     update: {
       update_profile: 'Uppdatera din profil',
+      update_postcode: 'För att visa dessa data vi behöver veta ditt postnummer. Snälla du ',
       updated_success: 'Tack. Din profil har uppdaterats.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -1195,13 +1333,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Встановіть Who Targets Me у вашому браузері, щоб дізнатися хто намагається завоювати ваш голос за допомогою таргетованої політичної реклами. https://whotargets.me",
       shareTwitter1: "% політичних оголошень, що я бачу на Facebook, є від ",
       shareTwitter2: ". Встановіть Who Targets Me у вашому браузері, щоб дізнатися хто намагається завоювати ваш голос за допомогою таргетованої політичної реклами. https://whotargets.me",
-      results_screen1: "Вас таргетує ", // You are being targeted by {party name}.
+      results_screen1_before: "Вас таргетує ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "Загалом ви побачили ", // In total you've seen {quantity} political ads,
       results_screen3: " політичних оголошень, з яких ", //of which.
       results_screen4: " були від ", //{quantity} were from {party name}
       gathering_data: 'Збір даних...',
       click_a_bar: 'Натисніть на стовпчик, щоб переглянути оголошення від цього рекламодавця',
-      how_did_we_calc: 'Як ми це розрахували?',
+      how_did_we_calc1: 'Розраховано на основі даних, наданих іншими користувачами у ',
+      how_did_we_calc2: 'Як ми це розрахували?',
       ad: 'рекл',
       ads: 'рекл',
       ads_from: 'оголошень від',
@@ -1215,10 +1355,23 @@ const strings = new LocalizedStrings({
       targeting: 'Таргетування',
       view_ad: 'Переглянути оголошення',
       check_rationale: 'Чому я бачу це оголошення?',
+      coming_soon: 'Незабаром...',
     },
     update: {
       update_profile: 'Оновити профіль',
+      update_postcode: 'Щоб надати вам цю інформацію, нам потрібно знати ваш поштовий індекс. Будь ласка, ',
       updated_success: 'Дякуємо. Ваш профіль був успішно оновлений.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -1319,13 +1472,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Asenna Vaalivahti selaimeesi nähdäksesi kuinka sinuun yritetään vaikuttaa somessa vaalien alla. http://vaalivahti.fi",
       shareTwitter1: "% poliittisista mainoksista jotka näen Facebookissa ovat lähteestä ",
       shareTwitter2: ". Asenna Vaalivahti selaimeesi nähdäksesi kuinka sinuun yritetään vaikuttaa somessa vaalien alla. http://vaalivahti.fi",
-      results_screen1: "Sinuun kohdistetaan viestejä seuraavilta tahoilta ", // You are being targeted by {party name}.
+      results_screen1_before: "Sinuun kohdistetaan viestejä seuraavilta tahoilta ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "Yhteensä olet nähnyt ", // In total you've seen {quantity} political ads,
       results_screen3: " poliittista mainosta, joista ", //of which.
       results_screen4: " olivat peräisin seuraavilta tahoilta: ", //{quantity} were from {party name}
       gathering_data: 'Kerätään dataa...',
       click_a_bar: 'Klikkaa palkkia nähdäksesi kyseiseltä taholta näkemäsi mainokset',
-      how_did_we_calc: 'Kuinka laskimme tämän?',
+      how_did_we_calc1: 'Koottu tieto luomia muiden käyttäjien',
+      how_did_we_calc2: 'Kuinka laskimme tämän?',
       ad: 'kpl',
       ads: 'kpl',
       ads_from: 'mainosta lähteestä',
@@ -1339,10 +1494,23 @@ const strings = new LocalizedStrings({
       targeting: 'Kohdentaminen',
       view_ad: 'Näytä mainos',
       check_rationale: 'Katso kohdentamisen tapa?',
+      coming_soon: 'Tulossa pian...',
     },
     update: {
       update_profile: 'Päivitä profiilisi',
+      update_postcode: 'Näyttämään näitä tietoja meidän täytyy tietää postinumeron. Ole kiltti ',
       updated_success: 'Kiitos. Profiilisi päivittäminen onnistui.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -1443,13 +1611,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Installez Who Targets Me dans votre navigateur pour découvrir qui essaie de gagner votre vote à travers des annonces politiques ciblées sur les médias sociaux. https://whotargets.me",
       shareTwitter1: "% des annonces politiques que je vois sur Facebook viennent de ",
       shareTwitter2: ". Installez Who Targets Me dans votre navigateur pour découvrir qui essaie de gagner votre vote à travers des annonces politiques ciblées sur les médias sociaux. https://whotargets.me",
-      results_screen1: "Vous êtes la cible de ", // You are being targeted by {party name}.
+      results_screen1_before: "Vous êtes la cible de ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "En tout, vous avez vu ", // In total you've seen {quantity} political ads,
       results_screen3: " annonces politiques, dont ", //of which.
       results_screen4: " viennent de ", //{quantity} were from {party name}
       gathering_data: 'Collecte de données...',
       click_a_bar: 'Cliquez sur une barre pour afficher les annonces que vous avez vues.',
-      how_did_we_calc: 'Comment l\'avons-nous calculé?',
+      how_did_we_calc1: 'Compilé à partir des données créées par d\'autres utilisateurs ',
+      how_did_we_calc2: 'Comment l\'avons-nous calculé?',
       ad: 'ann',
       ads: 'ann',
       ads_from: 'annonces de',
@@ -1463,10 +1633,23 @@ const strings = new LocalizedStrings({
       targeting: 'Cible',
       view_ad: 'Voir l\'annonce',
       check_rationale: 'Pourquoi j\'ai vu ça?',
+      coming_soon: 'Arrive bientôt...',
     },
     update: {
       update_profile: 'Mettre à jour votre profil',
+      update_postcode: 'Pour afficher ces données nous avons besoin de connaître votre code postal. S\'il vous plaît ',
       updated_success: 'Je vous remercie. Votre profil a été mis à jour avec succès.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -1567,13 +1750,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Installeer Who Targets Me in uw browser en ontdek wie probeert uw stem te winnen door middel van doelgerichte social media advertenties. https://whotargets.me",
       shareTwitter1: "% van de politieke advertenties die ik op Facebook zie zijn van ",
       shareTwitter2: ". Installeer Who Targets Me in uw browser en ontdek wie probeert uw stem te winnen door middel van doelgerichte social media advertenties. https://whotargets.me",
-      results_screen1: "U wordt benaderd door ", // You are being targeted by {party name}.
+      results_screen1_before: "U wordt benaderd door ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "In totaal heeft u ", // In total you've seen {quantity} political ads,
       results_screen3: " politieke advertenties, waarvan ", //of which.
       results_screen4: " waren van ", //{quantity} were from {party name}
       gathering_data: 'Gegevensverzameling ...',
       click_a_bar: 'Klik op een balk om de advertenties te bekijken die u van hen hebt gezien',
-      how_did_we_calc: 'Hoe hebben we het berekend?',
+      how_did_we_calc1: 'Samengesteld op basis van gegevens die zijn gemaakt door andere gebruikers in ',
+      how_did_we_calc2: 'Hoe hebben we het berekend?',
       ad: 'ad',
       ads: 'ad',
       ads_from: 'advertenties van',
@@ -1587,10 +1772,23 @@ const strings = new LocalizedStrings({
       targeting: 'Doelwit',
       view_ad: 'Bekijk advertentie',
       check_rationale: 'Waarom heb ik dit gezien?',
+      coming_soon: 'Komt binnenkort...',
     },
     update: {
       update_profile: 'Update je profiel',
+      update_postcode: 'Om deze gegevens die we nodig hebben om uw postcode te weten te tonen. Gelieve ',
       updated_success: 'Dank je. Je profiel is bijgewerkt.'
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -1691,13 +1889,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: "התקינו את Who Targets Me בדפדפן שלכם כדי לגלות מי מנסה לקבל את הקול שלכם בעזרת מודעות מותאמות אישית ברשתות החברתיות. https://whotargets.me",
       shareTwitter1: "% of the political ads I see on Facebook are from ",
       shareTwitter2: "התקינו את Who Targets Me בדפדפן שלכם כדי לגלות מי מנסה לקבל את הקול שלכם בעזרת מודעות מותאמות אישית ברשתות החברתיות. https://whotargets.me",
-      results_screen1: "את/ה מקבל/ת מודעות מותאמות אישית מ ", // You are being targeted by {party name}.
+      results_screen1_before: "את/ה מקבל/ת מודעות מותאמות אישית מ ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: " בסך הכל ראית", // In total you've seen {quantity} political ads,
       results_screen3: " מודעות פוליטיות, מתוכן ", //of which.
       results_screen4: " היו של ", //{quantity} were from {party name}
       gathering_data: '...איסוף נתונים',
       click_a_bar: 'לחץ על העמודה כדי לראות את המודעות שקיבלת מהעמודים המשויכים למפלגה',
-      how_did_we_calc: 'איך חישבנו את זה',
+      how_did_we_calc1: ' מנתונים נוצרו על ידי משתמשים אחרים',
+      how_did_we_calc2: 'איך חישבנו את זה',
       ad: 'ad',
       ads: 'ads',
       ads_from: 'מודעה/ות',
@@ -1711,10 +1911,23 @@ const strings = new LocalizedStrings({
       targeting: 'יעד',
       view_ad: 'הצג מודעה',
       check_rationale: 'למה ראיתי את זה?',
+      coming_soon: 'בקרוב...',
     },
     update: {
       update_profile: 'עדכן את הפרופיל שלך',
+      update_postcode: 'כדי להראות נתונים זה אנחנו צריכים לדעת על המיקוד שלך. אנא ',
       updated_success: 'תודה. הפרופיל שלך עודכן בהצלחה.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -1815,13 +2028,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Инсталирайте Who Targets Me в браузъра си, за да разберете кой се опитва да спечели вота ви с целеви реклами в социалните медии. https://whotargets.me",
       shareTwitter1: "% от политическите реклами, които виждам в Facebook са от ",
       shareTwitter2: ". Инсталирайте Who Targets Me в браузъра си, за да разберете кой се опитва да спечели вота ви с целеви реклами в социалните медии. https://whotargets.me",
-      results_screen1: "Вие сте цел на ", // You are being targeted by {party name}.
+      results_screen1_before: "Вие сте цел на ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "Видели сте общо ", // In total you've seen {quantity} political ads,
       results_screen3: " политически реклами, от които ", //of which.
       results_screen4: " са от ", //{quantity} were from {party name}
       gathering_data: 'Събиране на данни...',
       click_a_bar: 'Кликнете върху лента, за да видите рекламите, които сте видели от тях',
-      how_did_we_calc: 'Как го изчислихме?',
+      how_did_we_calc1: 'Съставена от данни, създадени от други потребители на ',
+      how_did_we_calc2: 'Как го изчислихме?',
       ad: 'рекл',
       ads: 'рекл',
       ads_from: 'реклами от',
@@ -1835,10 +2050,23 @@ const strings = new LocalizedStrings({
       targeting: 'Мишена',
       view_ad: 'Преглед на рекламата',
       check_rationale: 'Защо видях това?',
+      coming_soon: 'Очаквайте скоро...',
     },
     update: {
       update_profile: 'Актуализиране на вашия профил',
+      update_postcode: 'За да се покаже на тези данни трябва да знаем вашата пощенски код. Моля те ',
       updated_success: 'Благодаря ти. Вашият профил е актуализирана успешно.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -1939,13 +2167,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Instalujte Kdo na mě cílí do svého prohlížeče a zjistěte, kdo se snaží získat váš hlas prostřednictvím cílených reklam v sociálních médiích https://whotargets.me",
       shareTwitter1: "% politických reklam, které vídám na Facebooku, je od ",
       shareTwitter2: "Instalujte Kdo na mě cílí do svého prohlížeče a zjistěte, kdo se snaží získat váš hlas prostřednictvím cílených reklam v sociálních médiích https://whotargets.me",
-      results_screen1: "Cílí na vás ", // You are being targeted by {party name}.
+      results_screen1_before: "Cílí na vás ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "Celkově jste shlédl/a ", // In total you've seen {quantity} political ads,
       results_screen3: " politických reklam, z nichž ", //of which.
       results_screen4: " bylo od ", //{quantity} were from {party name}
       gathering_data: 'Sběr dat...',
       click_a_bar: 'Kliknutím na lištu zobrazíte reklamy, které jste z nich viděli',
-      how_did_we_calc: 'Jak jsme to vypočítali?',
+      how_did_we_calc1: 'Sestaven z dat vytvořených jinými uživateli v',
+      how_did_we_calc2: 'Jak jsme to vypočítali?',
       ad: 'rekl',
       ads: 'rekl',
       ads_from: 'reklamy ze',
@@ -1959,10 +2189,23 @@ const strings = new LocalizedStrings({
       targeting: 'Cílová',
       view_ad: 'Zobrazit reklamu',
       check_rationale: 'Proč jsem to viděl?',
+      coming_soon: 'Brzy...',
     },
     update: {
       update_profile: 'Aktualizujte svůj profil',
+      update_postcode: 'Chcete-li zobrazit tyto údaje, které potřebujeme znát své poštovní směrovací číslo. Prosím ',
       updated_success: 'Děkuji. Váš profil byl úspěšně aktualizován.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -2063,13 +2306,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Selleks, et teada saada kes kasutab teie hääle saamiseks sihtgruppidele suunatud sotsiaalmeedia reklaami installeeriga oma brauserile Who Targets Me. https://whotargets.me",
       shareTwitter1: "% poliitilistest reklaamidest, mis ma näen Facebookis pärinevad ",
       shareTwitter2: ". Selleks, et teada saada kes kasutab teie hääle saamiseks sihtgruppidele suunatud sotsiaalmeedia reklaami installeeriga oma brauserile Who Targets Me. https://whotargets.me",
-      results_screen1: "Teile saadab sihtgruppidele suunatud reklaami ", // You are being targeted by {party name}.
+      results_screen1_before: "Teile saadab sihtgruppidele suunatud reklaami ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "Kokku olete näinud ", // In total you've seen {quantity} political ads,
       results_screen3: " poliitilist reklaami, millest ", //of which.
       results_screen4: " pärinevad ", //{quantity} were from {party name}
       gathering_data: 'Andmete kogumine...',
       click_a_bar: 'Klõpsake ribal, et vaadata neilt nähtavaid reklaame',
-      how_did_we_calc: 'Kuidas me seda arvutasime?',
+      how_did_we_calc1: 'Sestaven z dat vytvořených jinými uživateli v ',
+      how_did_we_calc2: 'Kuidas me seda arvutasime?',
       ad: 'rekl',
       ads: 'rekl',
       ads_from: 'reklaami',
@@ -2083,10 +2328,23 @@ const strings = new LocalizedStrings({
       targeting: 'Sihtmärk',
       view_ad: 'Vaata reklaami',
       check_rationale: 'Miks ma seda nägin?',
+      coming_soon: 'Tulekul...',
     },
     update: {
       update_profile: 'Uuenda oma profiili',
+      update_postcode: 'Et näidata neid andmeid peame teadma oma sihtnumber. Palun ',
       updated_success: 'Aitäh. Teie profiil edukalt uuendatud.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -2187,13 +2445,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Εγκατάσταση του Who Targets Me? στον περιηγητή σας, για να δείτε ποιος προσπαθεί να κερδίσει την ψήφο σας με στοχευμένες διαφημίσεις στα κοινωνικά δίκτυα. https://whotargets.me",
       shareTwitter1: "% των πολιτικών διαφημίσεων που βλέπω στο Facebook προέρχονται από ",
       shareTwitter2: ". Εγκατάσταση του Who Targets Me? στον περιηγητή σας, για να δείτε ποιος προσπαθεί να κερδίσει την ψήφο σας με στοχευμένες διαφημίσεις στα κοινωνικά δίκτυα. https://whotargets.me",
-      results_screen1: "Έχετε στοχοποιηθεί από ", // You are being targeted by {party name}.
+      results_screen1_before: "Έχετε στοχοποιηθεί από ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "Συνολικά έχετε δει ", // In total you've seen {quantity} political ads,
       results_screen3: " πολιτικές διαφημίσεις από τις οποίες ", //of which.
       results_screen4: " προέρχονται από ", //{quantity} were from {party name}
       gathering_data: 'Συλλογή δεδομένων...',
       click_a_bar: 'Κάντε κλικ σε μια γραμμή για να δείτε τις διαφημίσεις που έχετε δει από αυτές',
-      how_did_we_calc: 'Πώς το υπολογίσαμε?',
+      how_did_we_calc1: 'Καταρτίζονται από τα δεδομένα που δημιουργούνται από άλλους χρήστες ',
+      how_did_we_calc2: 'Πώς το υπολογίσαμε?',
       ad: 'διαφ',
       ads: 'διαφ',
       ads_from: 'διαφημίσεις από',
@@ -2207,10 +2467,23 @@ const strings = new LocalizedStrings({
       targeting: 'Στόχος',
       view_ad: 'Προβολή διαφήμισης',
       check_rationale: 'Γιατί το έχω δει',
+      coming_soon: 'Ερχομαι συντομα...',
     },
     update: {
       update_profile: 'Ενημέρωση του προφίλ σας',
+      update_postcode: 'Για να εμφανίσετε αυτά τα δεδομένα πρέπει να ξέρουμε ταχυδρομικό κώδικα σας. Σας παρακαλούμε ',
       updated_success: 'Ευχαριστώ. Το προφίλ σας ενημερώθηκε επιτυχώς.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -2311,13 +2584,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Инсталирајте Who Targets Me? на вашиот прелистувач за да дознаете кој се обидува да го добие вашиот глас со насочени реклами на социјалните медиуми https://whotargets.me",
       shareTwitter1: "% на политичките реклами што ги гледам на Фејсбук се од ",
       shareTwitter2: ". Инсталирајте Who Targets Me? на вашиот прелистувач за да дознаете кој се обидува да го добие вашиот глас со насочени реклами на социјалните медиуми https://whotargets.me",
-      results_screen1: "Вие се таргетирани од ", // You are being targeted by {party name}.
+      results_screen1_before: "Вие се таргетирани од ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "Во целост сте виделе ", // In total you've seen {quantity} political ads,
       results_screen3: " политички реклами од кои ", //of which.
       results_screen4: " беа од ", //{quantity} were from {party name}
       gathering_data: 'Собирање на податоци...',
       click_a_bar: 'Кликни на лента, за да ги видите рекламите, кои сте виделе од нив',
-      how_did_we_calc: 'Како ја пресметавме?',
+      how_did_we_calc1: 'Составени од податоци создадени од страна на други корисници ',
+      how_did_we_calc2: 'Како ја пресметавме?',
       ad: 'рекл',
       ads: 'рекл',
       ads_from: 'реклами од',
@@ -2331,10 +2606,23 @@ const strings = new LocalizedStrings({
       targeting: 'Насочване',
       view_ad: 'Преглед на рекламата',
       check_rationale: 'Зошто го видов ова?',
+      coming_soon: 'Наскоро...',
     },
     update: {
       update_profile: 'Ажурирајте го вашиот профил',
+      update_postcode: 'За да се покаже овие податоци треба да се знае вашиот поштенски код. Ве молиме ',
       updated_success: 'Ви благодарам. Твојот профил е успешно ажурирана.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -2360,23 +2648,23 @@ const strings = new LocalizedStrings({
     },
   },
   pl: {
-    who_targets_me: 'Who Targets Me?',
+    who_targets_me: 'Kto Cię Namierzył?',
     loading: 'Trwa ładowanie, dziękujemy za cierpliwość',
     register: {
-      welcome1: 'Who Targets Me? pomaga użytkownikom zrozumieć, jak kierowane reklamy',
+      welcome1: 'Kto Cię Namierzył pomaga użytkownikom zrozumieć, jak spersonalizowane reklamy',
       welcome2: 'w mediach społecznościowych są wykorzystywane, aby wpłynąć na ich opinie.',
-      welcome3: 'pomóż nam wyświetlić Ci właściwą wersję wtyczki Who Targets Me?,',
-      welcome4: 'abyśmy znali następne wybory, w których będziesz głosować, i system głosowania',
+      welcome3: 'Pomóż nam wyświetlić Ci właściwą wersję wtyczki Kto Cię Namierzył',
+      welcome4: 'abyśmy wiedzieli, kiedy w Twoim kraju są następne wybory i jaki jest system głosowania',
       select_language: 'Wybierz język',
       terms: '<span>Kontynuując, akceptujesz <a href="https://whotargets.me/en/terms/">regulamin</a> i <a href="https://whotargets.me/en/privacy-policy/">politykę prywatności</a></span>',
       terms1: 'Kontynuując, akceptujesz',
       terms2: 'regulamin',
       terms3: 'i',
       terms4: 'politykę prywatności',
-      terms5: 'To rozszerzenie przeglądarki gromadzi i przechowuje:',
-      terms6: 'Opcjonalny anonimowy profil stworzony przez Ciebie (położenie, ustawienie języka, wieku, płci, twój widok ogólny polityczny)',
-      terms7: 'Reklamy, które pojawiają się w twojej kanału informacyjnego Facebooku (łącznie z datą i godziną ich SAW)',
-      terms8: 'można odinstalować rozszerzenie i / lub usuwać dane, które już przyczyniło się do projektu w dowolnym momencie. Twoje dane są twoje i anonimowy - nigdy nie będziemy próbować zidentyfikować.',
+      terms5: 'Ta wtyczka zbiera i przechowuje:',
+      terms6: 'anonimowy profil stworzony przez Ciebie (lokalizacja, ustawienia języka, wiek, płeć i Twoje ogólne poglądy polityczne),',
+      terms7: 'reklamy, które wyświetlają Ci się w News Feedzie Facebooka (łącznie z godziną i datą, w jakich je zobaczyłeś/-łaś).',
+      terms8: 'W każdym momencie możesz odinstalować wtyczkę i/lub usunąć dane, które zebrała. Twoje dane są anonimowe - w żadnym momencie nie będziemy próbowali Cię zidentyfikować.',
       agree: 'Akceptuję',
       back: 'Wróć',
       next: 'Dalej',
@@ -2388,22 +2676,22 @@ const strings = new LocalizedStrings({
       gender: 'Twoja płeć',
       male: 'Mężczyzna',
       female: 'Kobieta',
-      other: 'Inne',
+      other: 'Inna',
       years_of_age: 'Ile masz lat?',
       age: 'Wiek',
       confirming: 'Potwierdź swoje dane',
       request_error: 'Serwer odpowiedział następującym komunikatem:',
       unknown_error: 'Nieznany błąd. Jeśli problem nie ustąpi, skontaktuj się z nami!',
-      share: 'Udostępnij projekt, aby pomóc znajomym dowiedzieć się więcej na temat kierowanych reklam politycznych.',
+      share: 'Udostępnij projekt, aby pomóc znajomym dowiedzieć się więcej na temat spersonalizowanych reklam politycznych.',
       share1: 'Udostępnij swoje wyniki,',
-      share2: ' aby pomóc ludziom dowiedzieć się więcej na temat kierowanych reklam politycznych.',
-      share3: 'Ponad %i osób w %s uczestniczy w Who Targets Me?',
+      share2: ' aby pomóc ludziom dowiedzieć się więcej na temat spersonalizowanych reklam politycznych.',
+      share3: 'Ponad %i osób w %s uczestniczy w Kto Cię Namierzył?',
       share4: 'Czy udostępnisz projekt i pomożesz nam osiągnąć %i?',
       shareOnFacebook: 'Facebook',
       shareOnTwitter: 'Twitter',
       skip: 'Pomiń',
-      shareFacebook: 'Who Targets Me bada reklamy polityczne w mediach społecznościowych. Pomagam w tym przedsięwzięciu. Dołącz do mnie i przekonaj się, kto kieruje do Ciebie reklamy: https://whotargets.me',
-      shareTwitter: '@WhoTargetsMe bada reklamy polityczne w mediach społecznościowych. Pomagam w tym przedsięwzięciu. Dołączcie do mnie i przekonajcie się, kto kieruje do Ciebie reklamy: https://whotargets.me',
+      shareFacebook: 'Kto Cię Namierzył bada reklamy polityczne w mediach społecznościowych. Pomagam w tej inicjatywie. Dołącz do mnie i przekonaj się, kto kieruje do Ciebie reklamy: https://whotargets.me',
+      shareTwitter: '@WhoTargetsMe (Kto Cię Namierzył) bada reklamy polityczne w mediach społecznościowych. Pomagam w tej inicjatywie. Dołączcie do mnie i przekonajcie się, kto kieruje do Was reklamy: https://whotargets.me',
       political_affiliation: 'Twoje poglądy polityczne',
       political_affiliation_description: 'Większość ludzi dzieli poglądy polityczne na \'lewicowe\' i \'prawicowe\'. Jak określiłbyś(-aś) swoje poglądy?',
       us_labels: ['Brak poglądów', 'Bardzo liberalne', 'Umiarkowanie liberalne', 'Odrobinę liberalne', 'Centrum', 'Odrobinę konserwatywne', 'Umiarkowanie konserwatywne', 'Bardzo konserwatywne'],
@@ -2416,32 +2704,35 @@ const strings = new LocalizedStrings({
       my_constituency: 'Mój okręg wyborczy',
       constituency_size: 'Jesteś jednym z %i wolontariuszy w %s, czy pomożesz nam dotrzeć do %i?',
       constituency_size_one: 'Jesteś pierwszym wolontariuszem w %s! Czy pomożesz nam znaleźć więcej wolontariuszy?',
-      no_results_explanation: 'Wyniki zostaną wyświetlone tutaj po zebraniu wystarczających danych. Używaj Facebooka tak, jak zwykle, i wróć za kilka dni.',
+      no_results_explanation: 'Wyniki będą dostępne po tym, jak na Facebooku wyświetli Ci się przynajmniej jedna reklama polityczna.',
+      no_results_explanation1: 'Korzystaj z Facebooka tak jak zwykle. Jeśli widziałeś/-łaś reklamę polityczną, ale mimo to wtyczka nie pokazuje żadnych wyników, napisz do nas na adres: wtyczka@panoptykon.org.',
       no_country_explanation1: "Wkrótce wprowadzimy spersonalizowane wyniki do kraju: ",
-      no_country_explanation2: ". Tymczasem używaj Facebooka tak, jak zwykle. Dziękujemy za udział w badaniu Who Targets Me",
-      delete_request: "Po usunięciu dane nie będą dostępne w badaniu. Masz trzy wybory:",
+      no_country_explanation2: ". Tymczasem używaj Facebooka tak, jak zwykle. Dziękujemy za udział w badaniu Kto Cię Namierzył.",
+      delete_request: "Po usunięciu dane nie będą dostępne dla badaczy. Masz trzy opcje:",
       data_deleted: "Twoje dane zostały usunięte i żadne nowe dane nie są gromadzone.",
-      data_deleted2: "Możesz teraz usunąć wtyczkę, klikając prawym przyciskiem myszy ikonę Who Targets Me w pasku narzędzi przeglądarki i wybierając opcję 'Usuń...'",
+      data_deleted2: "Możesz teraz usunąć wtyczkę, klikając prawym przyciskiem myszy ikonę Kto Cię Namierzył w pasku narzędzi przeglądarki i wybierając opcję 'Usuń...'",
       data_deleted3: "Jeszcze raz dziękujemy za udział. Możesz śledzić aktualności dotyczące projektu poprzez Twitter, Facebook lub naszą listę mailingową.",
       delete_data: "Usuń dane",
-      delete_data_message: "Usuwa wszystkie dane zgromadzone przez Ciebie w ramach badania Who Targets Me wraz z Twoim anonimowym profilem.",
-      remove_WTM: "Usuń WTM",
+      delete_data_message: "Usuwa wszystkie dane zgromadzone przez Ciebie w ramach badania Kto Cię Namierzył wraz z Twoim anonimowym profilem.",
+      remove_WTM: "Usuń WTM (Kto Cię Namierzył)",
       remove_WTM_message: "Kliknij prawym przyciskiem myszy ikonę wtyczki i wybierz 'Usuń...'",
       remove_WTM_message2: "Zachowuje Twoje dane i anonimowy profil na potrzeby badań.",
       cancel: "Anuluj",
-      cancel_message: "Nastąpi powrót do poprzedniego ekranu i będziesz w dalszym ciągu korzystać z wtyczki Who Targets Me",
+      cancel_message: "Nastąpi powrót do poprzedniego ekranu i będziesz w dalszym ciągu korzystać z wtyczki Kto Cię Namierzył",
       uninstall: "Aby odinstalować wtyczkę, kliknij prawym przyciskiem myszy jej ikonę",
       shareFacebook1: "% reklam politycznych wyświetlanych mi na Facebooku pochodzi od ",
-      shareFacebook2: ". Zainstaluj wtyczkę Who Targets Me w przeglądarce i dowiedz się, kto próbuje zdobyć Twój głos poprzez kierowane reklamy w mediach społecznościowych. https://whotargets.me",
+      shareFacebook2: ". Zainstaluj wtyczkę Kto Cię Namierzył w przeglądarce i dowiedz się, kto próbuje zdobyć Twój głos poprzez spersonalizowane reklamy w mediach społecznościowych. https://whotargets.me",
       shareTwitter1: "% reklam politycznych wyświetlanych mi na Facebooku pochodzi od ",
-      shareTwitter2: ". Zainstaluj wtyczkę Who Targets Me w przeglądarce i dowiedz się, kto próbuje zdobyć Twój głos poprzez kierowane reklamy w mediach społecznościowych. https://whotargets.me",
-      results_screen1: "Partia kieruje do Ciebie reklamy ", // You are being targeted by {party name}.
+      shareTwitter2: ". Zainstaluj wtyczkę Kto Cię Namierzył w przeglądarce i dowiedz się, kto próbuje zdobyć Twój głos poprzez spersonalizowane reklamy w mediach społecznościowych. https://whotargets.me",
+      results_screen1_before: "X", // You are being targeted by {party name}.
+      results_screen1_after: "kieruje do Ciebie spersonalizowane reklamy.", // You are being targeted by {party name}.
       results_screen2: "Łącznie wyświetlono Ci ", // In total you've seen {quantity} political ads,
       results_screen3: " reklam(y) polityczne/politycznych, z których ", //of which.
       results_screen4: " pochodziło od ", //{quantity} were from {party name}
       gathering_data: 'Zbieranie danych...',
-      click_a_bar: 'Kliknij pasek, aby wyświetlić reklamy, które z nich widziałeś',
-      how_did_we_calc: 'Jak to obliczyliśmy?',
+      click_a_bar: 'Kliknij pasek, aby wyświetlić reklamy, które zobaczyłeś/-łaś',
+      how_did_we_calc1: 'Zestawiane z danymi utworzonymi przez innych użytkowników w ',
+      how_did_we_calc2: 'Jak to obliczyliśmy?',
       ad: 'rekl',
       ads: 'rekl',
       ads_from: 'reklam z',
@@ -2454,11 +2745,24 @@ const strings = new LocalizedStrings({
       instances: 'Instancje',
       targeting: 'Kierowanie',
       view_ad: 'Wyświetl reklamę',
-      check_rationale: 'Dlaczego to widziałem?',
+      check_rationale: 'Dlaczego to widzę?',
+      coming_soon: 'Wkrótce...',
     },
     update: {
       update_profile: 'Zaktualizuj swój profil',
-      updated_success: 'Dziękuję Ci. Twój profil został pomyślnie zaktualizowany.',
+      update_postcode: 'Aby wyświetlić te dane, potrzebujemy znać Twój kod pocztowy. Prosimy ',
+      updated_success: 'Dziękujemy. Twój profil został zaktualizowany.',
+    },
+    filters: {
+      general: 'Twoje reklamy',
+      country: 'Wszystkie ',
+      geo: 'Twoja okolica',
+      sex_male: 'Mężczyźni',
+      sex_female: 'Kobiety',
+      age_lt45: '< 45 lat',
+      age_gt45: '> 45 lat',
+      polit_left: 'Lewica',
+      polit_right: 'Prawica',
     },
     links: {
       website: {
@@ -2559,13 +2863,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Instalaţi Who Targets Me în browser-ul dvs. pentru a afla cine încearcă să vă câştige votul prin anunţurile direcţionate de pe reţelele de socializare. https://whotargets.me",
       shareTwitter1: "% din anunţurile politice pe care le văd pe Facebook sunt de la ",
       shareTwitter2: ". Instalaţi Who Targets Me în browser-ul dvs. pentru a afla cine încearcă să vă câştige votul prin anunţurile direcţionate de pe reţelele de socializare. https://whotargets.me",
-      results_screen1: "Sunteţi vizat de către ", // You are being targeted by {party name}.
+      results_screen1_before: "Sunteţi vizat de către ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "În total, aţi văzut ", // In total you've seen {quantity} political ads,
       results_screen3: " anunţuri politice dintre care ", //of which.
       results_screen4: " au fost de la ", //{quantity} were from {party name}
       gathering_data: 'Colectare de date...',
       click_a_bar: 'Faceți clic pe o bară pentru a vedea anunțurile pe care le-ați văzut de la ele',
-      how_did_we_calc: 'Cum l-am calculat?',
+      how_did_we_calc1: 'Compilat din datele create de alți utilizatori din',
+      how_did_we_calc2: 'Cum l-am calculat?',
       ad: 'recl',
       ads: 'recl',
       ads_from: 'anunțuri de',
@@ -2579,10 +2885,23 @@ const strings = new LocalizedStrings({
       targeting: 'Direcționarea',
       view_ad: 'Afișați anunțul',
       check_rationale: 'De ce am văzut asta?',
+      coming_soon: 'In curand...',
     },
     update: {
       update_profile: 'Actualizeaza-ti profilul',
+      update_postcode: 'Pentru a afișa aceste date trebuie să știm codul poștal. Vă rog ',
       updated_success: 'Mulțumesc. Profilul dvs. a fost actualizat cu succes.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -2683,13 +3002,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Nainštalujte si rozšírenie 'Who Targets Me?' na Vašom webovom prehliadači a zistite, kto sa snaží získať Váš hlas pomocou cielenej reklamy na sociálnych sieťach. https://whotargets.me",
       shareTwitter1: "% politických reklám, ktoré vidím na Facebooku sú z ",
       shareTwitter2: ". Nainštalujte si rozšírenie 'Who Targets Me?' na Vašom webovom prehliadači a zistite, kto sa snaží získať Váš hlas pomocou cielenej reklamy na sociálnych sieťach. https://whotargets.me",
-      results_screen1: "Oslovovala Vás ", // You are being targeted by {party name}.
+      results_screen1_before: "Oslovovala Vás ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "Celkovo ste videli ", // In total you've seen {quantity} political ads,
       results_screen3: " politických reklám, z ktorých ", //of which.
       results_screen4: " boli zadané organizácie ", //{quantity} were from {party name}
       gathering_data: 'Zber dát...',
       click_a_bar: 'Ak chcete zobraziť reklamy, ktoré ste z nich videli, kliknite na panel',
-      how_did_we_calc: 'Ako sme to vypočítali?',
+      how_did_we_calc1: 'Zostavený z dát vytvorených inými užívateľmi v ',
+      how_did_we_calc2: 'Ako sme to vypočítali?',
       ad: 'rekl',
       ads: 'rekl',
       ads_from: 'reklám od',
@@ -2703,10 +3024,23 @@ const strings = new LocalizedStrings({
       targeting: 'Zacielenia',
       view_ad: 'Zobraziť reklamu',
       check_rationale: 'Prečo som to videl?',
+      coming_soon: 'Už čoskoro...',
     },
     update: {
       update_profile: 'Aktualizujte svoj profil',
+      update_postcode: 'Ak chcete zobraziť tieto údaje, ktoré potrebujeme poznať svoje poštové smerovacie číslo. prosím ',
       updated_success: 'Ďakujem. Váš profil bol úspešne aktualizovaný.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -2807,13 +3141,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Namestite aplikacijo Who Targets Me v vaš brskalnik in ugotovite, kdo si želi pridobiti vaš glas s ciljno usmerjenim oglaševanjem v družbenih medijih. https://whotargets.me",
       shareTwitter1: "% političnih oglasov, ki jih vidim na Facebook, pripada ",
       shareTwitter2: ". Namestite aplikacijo Who Targets Me v vaš brskalnik in ugotovite, kdo si želi pridobiti vaš glas s ciljno usmerjenim oglaševanjem v družbenih medijih. https://whotargets.me",
-      results_screen1: "Za ciljno usmerjeno oglaševanje vaše podatke uporablja ", // You are being targeted by {party name}.
+      results_screen1_before: "Za ciljno usmerjeno oglaševanje vaše podatke uporablja ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "Skupno ste videli ", // In total you've seen {quantity} political ads,
       results_screen3: " političnih oglasov, od katerih ", //of which.
       results_screen4: " je bilo od ", //{quantity} were from {party name}
       gathering_data: 'Zbiranje podatkov...',
       click_a_bar: 'Kliknite vrstico, da si ogledate oglase, ki ste jih videli',
-      how_did_we_calc: 'Kako smo ga izračunali?',
+      how_did_we_calc1: 'Na podlagi podatkov, ki jih drugi uporabniki v ustvarili ',
+      how_did_we_calc2: 'Kako smo ga izračunali?',
       ad: 'ogl',
       ads: 'ogl',
       ads_from: 'oglasov osebe',
@@ -2827,10 +3163,23 @@ const strings = new LocalizedStrings({
       targeting: 'Ciljanje',
       view_ad: 'Prikaži oglas',
       check_rationale: 'Zakaj sem to videl?',
+      coming_soon: 'Prihaja kmalu...',
     },
     update: {
       update_profile: 'Posodobite svoj profil',
+      update_postcode: 'Za prikaz teh podatkov moramo vedeti vašo poštno številko. Prosim ',
       updated_success: 'Hvala vam. Tvoj profil je bil uspešno posodobljen.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -2931,13 +3280,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Installa Who Targets Me? fuq il-brawżer tiegħek biex tkun taf min qed jipprova jirbaħ il-vot tiegħek b\'reklami politiċi fuq il-midja soċjali.https://whotargets.me",
       shareTwitter1: "% tar-reklami politiċi li nara fuq Facebook huma minn ",
       shareTwitter2: ". Installa Who Targets Me? fuq il-brawżer tiegħek biex tkun taf min qed jipprova jirbaħ il-vot tiegħek b\'reklami politiċi fuq il-midja soċjali.https://whotargets.me",
-      results_screen1: "Inti tinsab fil-mira minn ", // You are being targeted by {party name}.
+      results_screen1_before: "Inti tinsab fil-mira minn ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "B'kollox inti rajt ", // In total you've seen {quantity} political ads,
       results_screen3: " ta' reklami politiċi li minnhom ", //of which.
       results_screen4: " kienu minn ", //{quantity} were from {party name}
       gathering_data: 'Ġbir ta \'data...',
       click_a_bar: 'Ak chcete zobraziť reklamy, ktoré ste z nich videli, kliknite na panel',
-      how_did_we_calc: 'Kif għamilna?',
+      how_did_we_calc1: 'Miġbura minn dejta maħluqa minn utenti oħra fil-',
+      how_did_we_calc2: 'Kif għamilna?',
       ad: 'rekl',
       ads: 'rekl',
       ads_from: 'riklami minn',
@@ -2951,10 +3302,23 @@ const strings = new LocalizedStrings({
       targeting: 'Mira',
       view_ad: 'Ara r-reklam',
       check_rationale: 'Għaliex rajt dan?',
+      coming_soon: 'Ġej dalwaqt...',
     },
     update: {
       update_profile: 'Taġġorna l-profil tiegħek',
+      update_postcode: 'Biex turi din id-data għandna bżonn inkunu nafu kodiċi postali tiegħek. Jekk jogħġbok ',
       updated_success: 'Grazzi. Profil tiegħek ġiet aġġornata b\'suċċess.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -3055,13 +3419,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Instalirajte Who Targets Me u svoj web preglednik kako biste saznali tko pokušava dobiti Vaš glas pomoću ciljanih oglasa na društvenim mrežama. https://whotargets.me",
       shareTwitter1: "% političkih oglasa koje vidim na Facebooku su od ",
       shareTwitter2: ". Instalirajte Who Targets Me u svoj web preglednik kako biste saznali tko pokušava dobiti Vaš glas pomoću ciljanih oglasa na društvenim mrežama. https://whotargets.me",
-      results_screen1: "Targetirani ste ste od ", // You are being targeted by {party name}.
+      results_screen1_before: "Targetirani ste ste od ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "Ukupno ste vidjeli ", // In total you've seen {quantity} political ads,
       results_screen3: " političkih oglasa od kojih ", //of which.
       results_screen4: " su bili od ", //{quantity} were from {party name}
       gathering_data: 'Prikupljanje podataka...',
       click_a_bar: 'Kliknite traku da biste vidjeli oglase koje ste vidjeli',
-      how_did_we_calc: 'Kako smo ga izračunali?',
+      how_did_we_calc1: 'Sastavljen od podataka stvorenih od strane drugih korisnika u',
+      how_did_we_calc2: 'Kako smo ga izračunali?',
       ad: 'ogl',
       ads: 'ogl',
       ads_from: 'oglase od',
@@ -3075,10 +3441,23 @@ const strings = new LocalizedStrings({
       targeting: 'Cilj',
       view_ad: 'Pogledajte oglas',
       check_rationale: 'Zašto sam to vidio?',
+      coming_soon: 'Dolazi uskoro...',
     },
     update: {
       update_profile: 'Ažurirajte svoj profil',
+      update_postcode: 'Za prikaz ove podatke trebamo znati svoj poštanski broj. Molim ',
       updated_success: 'Hvala vam. Vaš profil je uspješno ažuriran.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -3179,13 +3558,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Installer Who Targets Me i din browser for at finde ud af, hvem der forsøger at få din stemme ved hjælp af målrettede annoncer på de sociale medier. https://whotargets.me",
       shareTwitter1: "% de politiske annoncer, jeg ser på Facebook, er fra ",
       shareTwitter2: ". Installer Who Targets Me i din browser for at finde ud af, hvem der forsøger at få din stemme ved hjælp af målrettede annoncer på de sociale medier. https://whotargets.me",
-      results_screen1: "Målretter annoncer til dig ", // You are being targeted by {party name}.
+      results_screen1_before: "Målretter annoncer til dig ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "I alt har du set ", // In total you've seen {quantity} political ads,
       results_screen3: " politiske annoncer, hvoraf ", //of which.
       results_screen4: " var fra ", //{quantity} were from {party name}
       gathering_data: 'Indsamler data...',
       click_a_bar: 'Klik på en søjle for at se de annoncer, du har set fra dem',
-      how_did_we_calc: 'Hvordan har vi beregnet dette?',
+      how_did_we_calc1: 'Udarbejdet af data oprettet af andre brugere i ',
+      how_did_we_calc2: 'Hvordan har vi beregnet dette?',
       ad: 'ann',
       ads: 'ann',
       ads_from: 'annoncer fra',
@@ -3199,10 +3580,23 @@ const strings = new LocalizedStrings({
       targeting: 'Målrettet til',
       view_ad: 'Vis annonce',
       check_rationale: 'Hvorfor har jeg set dette?',
+      coming_soon: 'Kommer snart ... ',
     },
     update: {
       update_profile: 'Opdater din profil',
+      update_postcode: 'For at vise disse data vi har brug for at kende dit postnummer. Vær venlig ',
       updated_success: 'Tak skal du have. Din profil blev opdateret.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {
@@ -3303,13 +3697,15 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Suiteáil Who Targets Me i do bhrabhsálaí chun fáil amach cé atá ag iarraidh a bhuachan do vóta tacaíocht shonrach fógraí meáin shóisialta. https://whotargets.me",
       shareTwitter1: "% na fógraí polaitiúla Feicim ar Facebook ó ",
       shareTwitter2: ". Suiteáil Who Targets Me i do bhrabhsálaí chun fáil amach cé atá ag iarraidh a bhuachan do vóta tacaíocht shonrach fógraí meáin shóisialta. https://whotargets.me",
-      results_screen1: "Tá tú a bheith mar sprioc ag ", // You are being targeted by {party name}.
+      results_screen1_before: "Tá tú a bheith mar sprioc ag ", // You are being targeted by {party name}.
+      results_screen1_after: 'X',
       results_screen2: "Ar an iomlán tá tú ag feiceáil ", // In total you've seen {quantity} political ads,
       results_screen3: " fógraí polaitiúla, ar a bhfuil ", //of which.
       results_screen4: "ba ó", //{quantity} were from {party name}
       gathering_data: 'Bailiú Sonraí ...',
       click_a_bar: 'Cliceáil barra chun féachaint ar an ad tú atá le feiceáil uathu',
-      how_did_we_calc: 'Conas a fuair muid ríomh seo?',
+      how_did_we_calc1: 'Tiomsaithe ó sonraí uile arna gcruthú ag úsáideoirí eile i ',
+      how_did_we_calc2: 'Conas a fuair muid ríomh seo?',
       ad: 'ad',
       ads: 'ads',
       ads_from: 'ads ó',
@@ -3323,10 +3719,23 @@ const strings = new LocalizedStrings({
       targeting: 'Díriú ar',
       view_ad: 'Amharc ad',
       check_rationale: 'Cén fáth go raibh mé a fheiceáil seo?',
+      coming_soon: 'Ag teacht go luath...',
     },
     update: {
       update_profile: 'Nuashonraigh do phróifíl',
+      update_postcode: 'A thaispeáint na sonraí sin is gá dúinn a fhios do cód poist. Le do thoil ',
       updated_success: 'Go raibh maith agat. Cuireadh do phróifíl nuashonraithe go rathúil.',
+    },
+    filters: {
+      general: 'Your ads',
+      country: 'All ',
+      geo: 'Your area',
+      sex_male: 'Men',
+      sex_female: 'Women',
+      age_lt45: '< 45s',
+      age_gt45: '> 45s',
+      polit_left: 'Left wing',
+      polit_right: 'Right wing',
     },
     links: {
       website: {

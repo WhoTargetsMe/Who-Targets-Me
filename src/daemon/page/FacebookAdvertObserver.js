@@ -174,7 +174,7 @@ const adsOnPage = () => {
         const menuOwnerId = $menuButton.attr("id");
         const container = $(`#${fbStoryId}`).closest('[data-testid="fbfeed_story"]');
         const fetched = container.hasClass('fetched');
-        const nsub = $(`#${fbStoryId}`).find('[data-testid^="story-sub"]')
+        const nsub = $(`#${fbStoryId}`).find('[data-testid*="sub"]')
 
         const link = nsub.find('a[role="link"]');
         const isad = (link && link.get(0)) ? link.get(0).offsetHeight: false;
@@ -236,11 +236,11 @@ const adsOnPage = () => {
                         }]
                       };
                       // console.log('OBSERVER-From Ads--> finalPayload', finalPayload)
-                      api.post('log/raw', {json: finalPayload})
-                        .then((response) => {
-                          // response completed, no log
-                        });
-                        container.addClass('fetched');
+                      // api.post('log/raw', {json: finalPayload})
+                      //   .then((response) => {
+                      //     // response completed, no log
+                      //   });
+                      //   container.addClass('fetched');
                         return Promise.resolve({fbStoryId});
                     }) //then()..
 

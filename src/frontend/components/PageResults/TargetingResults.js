@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Col, Row, Spinner } from 'elemental';
+import {availableParties} from '../../helpers/parties.js'; //, availablePages
 import strings, {changeLocale} from '../../helpers/localization.js';
 import './PageResults.css';
 
@@ -7,30 +8,20 @@ const reduFunc = (a, b) => a + b;
 
 export const PartyChart = (props) => {
 
-  let maxHeight = 180;
-  let partiesDisplay = props.advertisers.sort((a,b) => parseInt(b.count)-parseInt(a.count))
-  // console.log('partiesDisplay-1', partiesDisplay)
+  let maxHeight = 130;
+  let parties = [], partiesDisplay = [];
 
-  // group under OTHERS if there are more than 10 advertisers
-  if (partiesDisplay.length > 10){
-    partiesDisplay = partiesDisplay.slice(0,5)
-    const userSeenSum5 = partiesDisplay.map(d => parseInt(d.count)).reduce(reduFunc,0)
-    partiesDisplay.push({
-      "advertiserName": "OTHERS",
-      "count": props.userSeenSum - userSeenSum5,
-    })
-  }
-
-  for (let i=0; i<partiesDisplay.length; i++){
-    partiesDisplay[i] = Object.assign({},
-      partiesDisplay[i],
-      {height: (partiesDisplay[i].count/props.userSeenSum*maxHeight).toFixed(0)+'px'},
-      {color: partiesDisplay[i].partyDetails.color || '#999999'})
-  }
+  for (let i=0; i<props.advertisers.length; i++){
+    parties.push(Object.assign({},
+      props.advertisers[i],
+      {title: props.advertisers[i].partyDetails.party},
+      {height: (props.advertisers[i].count/props.userSeenSum*maxHeight).toFixed(0)+'px'},
+      {color: props.advertisers[i].partyDetails.color || '#999999'})
+  )}
   // console.log('partiesDisplay-2', partiesDisplay)
   for (let i=0; i<props.displayLabels.length; i++){
-    if (!partiesDisplay.map(p => p.advertiserName).includes(props.displayLabels[i])){
-      partiesDisplay.push(Object.assign({},
+    if (!parties.map(p => p.advertiserName).includes(props.displayLabels[i])){
+      parties.push(Object.assign({},
         {advertiserName: props.displayLabels[i],
         height: '0px',
         color:'#999999',
@@ -38,13 +29,17 @@ export const PartyChart = (props) => {
       }))
     }
   }
-  // console.log('partiesDisplay-3', props.displayLabels, partiesDisplay)
+  props.displayLabels.forEach(l => {
+    partiesDisplay.push(parties.find(g => g.advertiserName === l));
+  });
+  // console.log('partiesDisplay-3', props, partiesDisplay)
   return(
     <div className='container'>
-      <div className='chart'>
+      <div className='chart' style={{width: 600}}>
         {partiesDisplay.map((elt, i) =>
           <div key={`bar-${i}`}
           className='bar'
+          title={elt.title}
           style={{height: elt.height, backgroundColor: elt.color}}
           onClick={() => props.showBarInfo(elt.advertiserName)}
           ></div>
@@ -53,7 +48,7 @@ export const PartyChart = (props) => {
       <div className='labels'>
         {partiesDisplay.map((elt, i) =>
           <div key={`label-${i}`} className='label'>
-            <div className="name" title={elt.advertiserName}>{elt.advertiserName.toUpperCase().slice(0,6)}</div>
+            <div className="name" title={props.partyList[elt.advertiserName]}>{elt.advertiserName.toUpperCase().slice(0,6)}</div>
             <div className="labtext">{parseInt(elt.count) === 1 ? `${elt.count} ${strings.results.ad}` : `${elt.count} ${strings.results.ads}`}</div>
             <div className="labtext">{`${(parseInt(elt.count)/props.userSeenSum*100).toFixed(0)}%`}</div>
           </div>
@@ -116,6 +111,10 @@ export const PartyAds = (props) => {
           </Row>
           {props.ads.map((ad, j) => {
             // const displayTime = ad.createdAt.slice(8,10) + '/' + ad.createdAt.slice(5,7) + '/' + ad.createdAt.slice(0,4);
+            if (new Date(ad.createdAt) > new Date("2018-10-01T00:00:00.761Z") && new Date(ad.createdAt) < new Date("2019-07-25T00:00:00.761Z")) {
+              ad.noRationaleMessage = "Not available"
+            }
+            // console.log('ad log 1', ad)
             return (
               <Row key={`tablerow-${j}`} style={{borderBottom: '1px solid #ccc', marginBottom: '10px'}}>
                 <Col sm="4/20" className='adCol'>
@@ -128,7 +127,7 @@ export const PartyAds = (props) => {
                 <Col sm="3/20" className='adCol' style={{textAlign: 'center'}}>{ad.count}</Col>
                 <Col sm="3/20" className='adCol'>
                 {
-                  ad.noRationaleMessage && ad.noRationaleMessage === "Not available" ?
+                  (ad.noRationaleMessage && ad.noRationaleMessage === "Not available") ?
                     <span className="noLink">{ad.noRationaleMessage}</span> :
                     <span className="link" onClick={() => props.showTargeting(ad.postId)}>{ad.noRationaleMessage ? ad.noRationaleMessage : strings.results.check_rationale}</span>
                 }
@@ -157,6 +156,10 @@ export const PartyAds = (props) => {
             </Row>
             {props.ads.map((ad, j) => {
               // const displayTime = ad.createdAt.slice(8,10) + '/' + ad.createdAt.slice(5,7) + '/' + ad.createdAt.slice(0,4);
+              if (new Date(ad.createdAt) > new Date("2018-10-01T00:00:00.761Z") && new Date(ad.createdAt) < new Date("2019-07-25T00:00:00.761Z")) {
+                ad.noRationaleMessage = "Not available"
+              }
+              // console.log('ad log 2', ad)
               return (
                 <Row key={`tablerow-${j}`} style={{borderBottom: '1px solid #ccc', marginBottom: '10px'}}>
                   <Col sm="4/20" className='adCol'>
@@ -217,6 +220,49 @@ export const RationalesView = (props) => {
           <div>{props.rationales[props.postId].rationales}</div>
         </Col>
       </Row>
+    </div>
+  )
+}
+
+export const PartyChartFilters = (props) => {
+
+  let maxHeight = 130; //former = 180
+  let partiesDisplay = []; //.sort((a,b) => parseInt(b.count)-parseInt(a.count))
+
+  for (let i=0; i<props.displayLabels.length; i++){
+    const advr = props.advertisers.find(f => f.party === props.displayLabels[i]) ||
+      {party: props.displayLabels[i], percentage: 0.0, color: '#999999', height: 0,
+        title: availableParties[props.userCountry].find(p => p.shortName === props.displayLabels[i]).party}
+    if (advr.percentage > 0) {
+      partiesDisplay.push(Object.assign({},
+        advr,
+        {title: advr.partyDetails.party},
+        {height: ((advr.percentage/100)*maxHeight).toFixed(0)+'px'},
+        {color: advr.partyDetails.color || '#999999'}))
+    } else {
+      partiesDisplay.push(advr);
+    }
+  }
+  // console.log('filters', partiesDisplay)
+  return(
+    <div className='container'>
+      <div className='chart'>
+        {partiesDisplay.map((elt, i) =>
+          <div key={`bar-${i}`}
+          className='bar'
+          style={{height: elt.height, backgroundColor: elt.color}}
+          title={elt.title}
+          ></div>
+        )}
+      </div>
+      <div className='labels'>
+        {partiesDisplay.map((elt, i) =>
+          <div key={`label-${i}`} className='label'>
+            <div className="name" title={props.partyList[elt.party]}>{elt.party.toUpperCase().slice(0,6)}</div>
+            <div className="labtext">{`${elt.percentage}%`}</div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

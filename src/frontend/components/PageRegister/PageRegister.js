@@ -34,8 +34,8 @@ export default class PageRegister extends Component {
     let {signupStage} = this.state;
     // Here country collection is disabled for updating_profile route
     // const usSignup = (this.state.country && this.state.country.countryCode === "US") && strings.getLanguage() === "en";
-    if (signupStage === 2 && this.props.updating_profile) { //&& !usSignup
-      signupStage += 1
+    if (signupStage === 1 && this.props.updating_profile) { //&& !usSignup
+      signupStage += 2
     }
     const childProps = { // Clone component to inject new props
       signupState: this.state,
@@ -68,8 +68,8 @@ export default class PageRegister extends Component {
     let {signupStage} = this.state;
     // Here country collection is disabled for updating_profile route
     // const usSignup = (this.state.country && this.state.country.countryCode === "US") && strings.getLanguage() === "en";
-    if (signupStage === 2 && this.props.updating_profile){ //&& !usSignup) {
-      signupStage += 1
+    if (signupStage === 1 && this.props.updating_profile){ //&& !usSignup) {
+      signupStage += 2
     }
     const {registrationComplete} = this.props;
     // console.log("NEXT, signupStage to be increased", signupStage, stateChange)

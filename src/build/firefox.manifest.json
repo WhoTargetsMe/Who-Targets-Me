@@ -1,5 +1,5 @@
 {
-	"version": "1.2.26",
+	"version": "1.2.36",
 	"name": "__MSG_appName__",
 	"manifest_version": 2,
 	"description": "__MSG_appDesc__",
@@ -10,18 +10,16 @@
 		"default_icon": "logo-128.png"
 	},
 	"permissions": [
-		"tabs",
 		"storage",
 		"*://facebook.com/*",
 		"*://www.facebook.com/*",
-		"*://msih3yho6h.execute-api.eu-central-1.amazonaws.com/*",
 		"*://*.whotargets.me/*",
 		"*://whotargets.me/*"
 	],
 	"content_scripts": [
 		{
 			"matches": ["*://facebook.com/*","*://*.facebook.com/*"],
-			"js": ["daemon/index.js"]
+			"js": ["daemon/index.js", "daemon/collect.js"]
 		}
 	],
 	"background": {
@@ -29,5 +27,6 @@
 	},
 	"icons": {
 		"128": "logo-128.png"
-	}
+	},
+	"web_accessible_resources": [ "daemon/overload.js" ]
 }

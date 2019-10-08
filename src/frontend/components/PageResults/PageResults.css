@@ -35,12 +35,13 @@
 }
 .mainstatbox {
   background-color: #f2f2f2;
-  min-height: 300px;
-  max-height: 300px;
+  min-height: 260px;
+  max-height: 260px;
 }
 
 .statbox:last-child {
   margin-bottom: 0;
+  min-height: 150px;
 }
 
 .statbox.inverted {
@@ -119,9 +120,10 @@
 }
 .container{
   display: flex;
+  width: 600px;
   flex-flow: column nowrap;
-  height: 280px;
-  min-height: 280px;
+  height: 210px;
+  min-height: 210px;
   padding: 20px;
   font-size: 0.8rem;
   margin-left: 50px;
@@ -131,13 +133,14 @@
   flex:1;
   border-bottom: 2px solid #f2f2f2;
   justify-content: space-around;
-  min-height: 200px;
+  min-height: 130px;
   width: 600px;
 }
 .labels{
   display: flex;
   flex-shrink: 2;
   flex:1;
+  width: 600px;
 }
 .bar{
   max-width: 50px;
@@ -287,7 +290,7 @@ tr{
 /*Rationale*/
 .boxNoFlex {
   max-width: 100%;
-  max-height: 254px;
+  max-height: 220px;
   flex-flow: row nowrap;
   font-size: 0.8rem;
   overflow-y: scroll;
@@ -338,4 +341,41 @@ tr{
   font-weight: bold;
   text-align: left;
   margin: 15px 0px -15px 10px;
+}
+
+/* Tabs */
+.tabs{
+  position: absolute;
+  left: 30px;
+  top: -35px;
+}
+.tab{
+  height: 35px;
+  width: 80px;
+  font-weight: 600;
+  font-size: 13px;
+  text-align: center;
+  line-height: 35px;
+  vertical-align: middle;
+  background-color: white;
+  border-radius: 20% 20% 0% 0%;
+  display: inline-block;
+  cursor: pointer;
+}
+.tabLong{
+  height: 35px;
+  width: 80px;
+  font-weight: 600;
+  font-size: 12px;
+  text-align: center;
+  vertical-align: middle;
+  background-color: white;
+  border-radius: 20% 20% 0% 0%;
+  display: inline-block;
+  cursor: pointer;
+  padding: 5px 5px 0px 5px;
+}
+.tabActive{
+  background-color: #f2f2f2;
+  border-bottom: none;
 }

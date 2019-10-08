@@ -650,11 +650,11 @@ class AttemptSignup extends Component {
   }
 
   render() {
-    const {back, next, updating_profile} = this.props;
+    const {back, next, updating_profile, signupState} = this.props;
     const {awaitingResponse, error} = this.state;
     // console.log('attemptRegistration', awaitingResponse, error)
     return (
-      <Container country={this.props.signupState.country ? this.props.signupState.country.countryCode : ''}
+      <Container country={signupState.country ? signupState.country.countryCode : ''}
         updating_profile={updating_profile}
       >
         <div className="fullwidth" style={{marginBottom: '20px'}}>
