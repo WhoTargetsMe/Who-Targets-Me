@@ -11,7 +11,8 @@ module.exports = {
     entry: {
       'index': __dirname + "/../daemon/index.js",
       'overload': __dirname + "/../daemon/collector/overload/index.js",
-      'collect': __dirname + "/../daemon/collector/content/collect.js"
+      'collect': __dirname + "/../daemon/collector/content/collect.js",
+      'voxpop': __dirname + "/../daemon/background/indexVox.js"
     },
     output: {
         path: build_dir + '/daemon',
