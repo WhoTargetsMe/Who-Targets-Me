@@ -2,9 +2,10 @@ import api from '../api';
 import '../../common/chromeStorage.js';
 
 // Matches the URLs of participants in VoxPop survey, CA Oct 2019
-const REGEX = /http:\/\/whotargetsme.voxpoplabs\.com\/([a-zA-Z0-9]*)$/
-const MATCH_PATTERN = 'http://whotargetsme.voxpoplabs.com/*'
-const URL = 'whotargetsme.voxpoplabs.com'
+// const MATCH_PATTERN = 'http://whotargetsme.voxpoplabs.com/*'
+// const URL = 'whotargetsme.voxpoplabs.com'
+const MATCH_PATTERN = 'https://canada.whotargets.me/*'
+const URL = 'canada.whotargets.me'
 
 const createVoxPopUser = (participantId) => { // Create user record and get auth token without user details
   return new Promise((resolve, reject) => {
@@ -26,7 +27,7 @@ const createVoxPopUser = (participantId) => { // Create user record and get auth
 const checkVoxPopUrl = url => {
   // Check if the URL is VoxPop
   if (url.indexOf(URL) > -1) {
-    const userId = url.slice(url.indexOf(URL)+36, url.length);
+    const userId = url.slice(url.indexOf(URL)+29, url.length);
     // Remove listener and attempt to create a new user
     createVoxPopUser(userId)
       .then(token => {
