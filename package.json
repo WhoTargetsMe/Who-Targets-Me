@@ -15,7 +15,7 @@
   "author": "",
   "license": "UNLICENSED",
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "^0.19.0",
     "bluebird": "^3.5.1",
     "elemental": "*",
     "es6-promise-pool": "^2.5.0",
