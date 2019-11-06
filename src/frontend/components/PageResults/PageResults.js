@@ -517,7 +517,6 @@ export default class PageResults extends Component {
                       {this.state.userData.postcode && this.state.userData.country === 'GB' &&
                         this.state.userData.constituency && this.state.userData.constituency.name ?
                           <div>
-                            <h4>{`${this.state.userData.constituency.users} people in ${this.state.userData.constituency.name} are using WTM`}</h4>
                             <PartyChartFilters
                               advertisers={this.state.filters[this.state.tabIndex][this.state.userData.constituency.name.replace(',', '')]}
                               displayLabels={displayLabels}
