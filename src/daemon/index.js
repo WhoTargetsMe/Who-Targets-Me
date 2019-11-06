@@ -25,7 +25,7 @@ chrome.storage.promise.local.get()
       // one time Notification if this is a GB user with no geodata
       if ((!result.is_notified_GE || result.is_notified_GE !== 'yes')
         && (result.userData.country === 'GB'
-        && (!result.userData.constituency || (result.userData.constituency && result.userData.constituency.name === "Sevenoaks")))
+        && (!result.userData.constituency || (result.userData.constituency && !result.userData.constituency.name)))
       ) {
         initPopupGB();
       }
