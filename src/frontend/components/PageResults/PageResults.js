@@ -690,11 +690,17 @@ const shareLinkFB = ([party, userCountry, partyPercAmongParties]) => {
   if (party) {
     if (userCountry === "BR") {
       title = partyPercAmongParties + strings.results.shareFacebook1 + party + strings.results.shareFacebook2BR;
+    } else if (userCountry === "GB" && party.toLowerCase() === 'others') {
+      title = "I've installed @WhoTargetsMe to find out who is targeting my vote. Find out more at https://whotargets.me"
     } else {
       title = partyPercAmongParties + strings.results.shareFacebook1 + party + strings.results.shareFacebook2;
     }
   } else {
-    title = strings.register.shareFacebook;
+    if (userCountry === "GB") {
+      title = "I've installed @WhoTargetsMe to find out who is targeting my vote this General Election. Find out more at https://whotargets.me"
+    } else {
+      title = strings.register.shareFacebook;
+    }
   }
   return "http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwhotargets.me&title=" + encodeURIComponent(title) ;
 }
@@ -704,11 +710,17 @@ const shareLinkTwitter = ([party, userCountry, partyPercAmongParties]) => {
   if (party) {
     if (userCountry === "BR") {
       title = partyPercAmongParties + strings.results.shareTwitter1 + party + strings.results.shareTwitter2BR;
+    } else if (userCountry === "GB" && party.toLowerCase() === 'others') {
+      title = "I've installed @WhoTargetsMe to find out who is targeting my vote. Find out more at https://whotargets.me"
     } else {
       title = partyPercAmongParties + strings.results.shareTwitter1 + party + strings.results.shareTwitter2;
     }
   } else {
-    title = strings.register.shareTwitter;
+    if (userCountry === "GB") {
+      title = "I've installed @WhoTargetsMe to find out who is targeting my vote this General Election. Find out more at https://whotargets.me"
+    } else {
+      title = strings.register.shareTwitter;
+    }
   }
   return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(title) ;
 }
