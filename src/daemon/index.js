@@ -3,6 +3,7 @@ import '../common/chromeStorage.js';
 import initBackground from './background';
 import { initCollector } from './collector';
 import { initPopup } from './popup/Notification.js';
+import { initPopupGB } from './popup/NotificationGB.js';
 import api from './api.js';
 
 const initPage = () => {
@@ -21,11 +22,15 @@ chrome.storage.promise.local.get()
       } else {
         initPage();
       }
-
-      if (!result.is_notified_GE || result.is_notified_GE !== 'yes') {
-        initPopup();
+      // one time Notification if this is a GB user with no geodata
+      if ((!result.is_notified_GE || result.is_notified_GE !== 'yes')
+        && (result.userData.country === 'GB'
+        && (!result.userData.constituency || (result.userData.constituency && result.userData.constituency.name === "Sevenoaks")))
+      ) {
+        initPopupGB();
       }
     } else {
+      initPopup();
       // No auth token found
     }
   }).catch((error) => {

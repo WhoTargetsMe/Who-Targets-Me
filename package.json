@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "description": "Track the extent of digital political advertising, discover which parties are targeting you",
   "main": "index.js",
-  "apiUrl": "https://msih3yho6h.execute-api.eu-central-1.amazonaws.com/dev/",
+  "apiUrl": "https://localhost:8080/",
   "apiUrlLocal": "https://localhost:8080/",
   "scripts": {
     "dev-frontend-online": "BROWSER=chrome webpack --config src/build/webpack.frontend.config.js & BROWSER=chrome webpack-dev-server --config src/build/webpack.frontend.config.js",
