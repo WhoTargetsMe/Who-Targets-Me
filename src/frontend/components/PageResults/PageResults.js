@@ -5,7 +5,7 @@ import axios from 'axios';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts'
 import strings, {changeLocale} from '../../helpers/localization.js';
 import {availableCountries, availableParties} from '../../helpers/parties.js'; //, availablePages
-import {getUserCount} from '../../helpers/functions.js';
+import {getUserCount, getUserCountGB} from '../../helpers/functions.js';
 
 import { PartyChart, PartyAds, RationalesView, PartyChartFilters } from './TargetingResults.js';
 import { DeleteRequestPage } from './DeleteRequestPage.js';
@@ -69,7 +69,7 @@ export default class PageResults extends Component {
           lst.push(res);
         })
         filters[key] = lst;
-      } else {
+      } else if (key === 'geo' && Object.keys(_filters[key]).length > 0) {
         filters[key] = {};
         Object.keys(_filters[key]).forEach(k => {
           let lst = []
@@ -80,6 +80,8 @@ export default class PageResults extends Component {
           })
           filters[key][k] = lst;
         })
+      } else {
+        filters[key] = {}
       }
     })
     return filters;
@@ -358,7 +360,11 @@ export default class PageResults extends Component {
     let partyPercAmongParties = 0;
 
     const { userCount, nextUserCount } = getUserCount(this.state.userData.userCount);
-    // console.log('userCount, nextUserCount (page)', userCount, nextUserCount)
+    let userCountGB = null;
+    if (userCountry === 'GB' && this.state.userData.constituency) {
+      userCountGB = getUserCountGB(this.state.userData.constituency.users);
+    }
+    // console.log('userCount ', userCount)
     // If this is a user with data
     if (view !== "delete_request" && view !== "data_deleted") {
       if (availableCountries.map(c => c.id).includes(userCountry)){
@@ -402,7 +408,7 @@ export default class PageResults extends Component {
     if (!this.state.filters || !Object.keys(this.state.filters).length) {
       view = 'no_country';
     }
-
+    // console.log('this.state', this.state)
     return (
       <div className="PageResults">
         <Row>
@@ -500,8 +506,8 @@ export default class PageResults extends Component {
                       {this.state.userData.postcode && this.state.userData.country !== 'GB' ?
                         <h3 className='subMessage'>
                           {strings.results.coming_soon}
-                        </h3> : <div>{
-                        this.state.userData.country !== 'GB' ? <div>
+                        </h3> : <div>
+                        {this.state.userData.country !== 'GB' ? <div>
                           <h3 className='subMessage'>
                             {strings.update.update_postcode}
                             <span className='link_underline'
@@ -517,17 +523,28 @@ export default class PageResults extends Component {
                       {this.state.userData.postcode && this.state.userData.country === 'GB' &&
                         this.state.userData.constituency && this.state.userData.constituency.name ?
                           <div>
-                            <PartyChartFilters
-                              advertisers={this.state.filters[this.state.tabIndex][this.state.userData.constituency.name.replace(',', '')]}
-                              displayLabels={displayLabels}
-                              partyList={partyList}
-                              language={this.state.language}
-                              userCountry={userCountry}
-                              />
-                              <footer>
-                              <span style={{marginLeft: 30}}>{`${strings.results.how_did_we_calc1} ${countries[userCountry]}  |  `}</span>
-                              <a className='link' style={{marginLeft: 7}} target='_blank' href={userCountry === 'FI' ? 'http://okf.fi/vaalivahti-rationale' : 'https://whotargets.me/en/defining-political-ads/'}>{strings.results.how_did_we_calc2}</a>
-                              </footer>
+                          {this.state.filters[this.state.tabIndex] &&
+                            Object.keys(this.state.filters[this.state.tabIndex]).includes(this.state.userData.constituency.name.replace(',', '')) ?
+                            <div>
+                              <h4 style={{position: 'absolute', top: 30, left: '25%'}}>
+                                {`Data for constituency of ${this.state.userData.constituency.name}`}
+                              </h4>
+                              <PartyChartFilters
+                                advertisers={this.state.filters[this.state.tabIndex][this.state.userData.constituency.name.replace(',', '')]}
+                                displayLabels={displayLabels}
+                                partyList={partyList}
+                                language={this.state.language}
+                                userCountry={userCountry}
+                                />
+                                <footer>
+                                  <span style={{marginLeft: 30}}>{`${strings.results.how_did_we_calc1} ${countries[userCountry]}  |  `}</span>
+                                  <a className='link' style={{marginLeft: 7}} target='_blank' href={userCountry === 'FI' ? 'http://okf.fi/vaalivahti-rationale' : 'https://whotargets.me/en/defining-political-ads/'}>{strings.results.how_did_we_calc2}</a>
+                                </footer>
+                              </div> :
+                                <h3 className='subMessage'>
+                                  {strings.results.coming_soon}
+                                </h3>
+                            }
                           </div> : <div>
                             <h3 className='subMessage'>
                               {strings.update.update_postcode}
@@ -668,13 +685,26 @@ export default class PageResults extends Component {
       { view !== "delete_request" && view !== "data_deleted" && <Row style={{backgroundColor: 'white', minHeight: '120px', color: 'black'}}>
         <Col sm="1">
           <div className="statbox" style={{height: '140px'}}>
-          <div style={{padding: '5px 15px', height: '120px', margin: 'auto', textAlign: 'center'}}>
-            <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '25px'}}>{sprintf(strings.register.share3, userCount, userCountryNative)}</span>
-            <br/>
-            <span style={{fontSize: '1.05rem', lineHeight: '25px'}}>{sprintf(strings.register.share4, nextUserCount)}</span>
-          </div>
-            <Button style={{position: 'absolute', bottom: 5, left: 220}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties] : [null, null, null])}>{strings.register.shareOnFacebook}</Button>
-            <Button style={{position: 'absolute', bottom: 5, left: 380}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties] : [null, null, null])} >{strings.register.shareOnTwitter}</Button>
+            {userCountry !== 'GB' ?
+              <div style={{padding: '5px 15px', height: '120px', margin: 'auto', textAlign: 'center'}}>
+                <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '25px'}}>{sprintf(strings.register.share3, userCount, userCountryNative)}</span>
+                <br/>
+                <span style={{fontSize: '1.05rem', lineHeight: '25px'}}>{sprintf(strings.register.share4, nextUserCount)}</span>
+              </div> : <div style={{padding: '5px 15px', height: '120px', margin: 'auto', textAlign: 'center'}}>
+                <span style={{fontSize: '1.05rem', lineHeight: '25px'}}>
+                  {this.state.userData.constituency && this.state.userData.constituency.name ?
+                    `Fewer than ${userCountGB} people in ${this.state.userData.constituency.name} are taking part in Who Targets Me` :
+                    sprintf(strings.register.share3, userCount, userCountryNative)
+                  }
+                </span>
+                <br/>
+                <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '25px'}}>
+                  Can you share the project and help us increase our sample size?
+                </span>
+              </div>
+            }
+            <Button style={{position: 'absolute', bottom: 5, left: 220}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties] : [null, userCountry, null])}>{strings.register.shareOnFacebook}</Button>
+            <Button style={{position: 'absolute', bottom: 5, left: 380}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties] : [null, userCountry, null])} >{strings.register.shareOnTwitter}</Button>
           </div>
         </Col>
       </Row>}
@@ -754,7 +784,7 @@ const shareLinkTwitter = ([party, userCountry, partyPercAmongParties]) => {
     if (userCountry === "BR") {
       title = partyPercAmongParties + strings.results.shareTwitter1 + party + strings.results.shareTwitter2BR;
     } else if (userCountry === "GB" && party.toLowerCase() === 'others') {
-      title = "I've installed @WhoTargetsMe to find out who is targeting my vote. Find out more at https://whotargets.me"
+      title = "I've installed @WhoTargetsMe to find out who is targeting my vote this General Election. Find out more at https://whotargets.me"
     } else {
       title = partyPercAmongParties + strings.results.shareTwitter1 + party + strings.results.shareTwitter2;
     }
