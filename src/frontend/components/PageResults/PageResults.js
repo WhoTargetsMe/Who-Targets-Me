@@ -526,7 +526,7 @@ export default class PageResults extends Component {
                           {this.state.filters[this.state.tabIndex] &&
                             Object.keys(this.state.filters[this.state.tabIndex]).includes(this.state.userData.constituency.name.replace(',', '')) ?
                             <div>
-                              <h4 style={{position: 'absolute', top: 30, left: '25%'}}>
+                              <h4 style={{position: 'absolute', top: 20, left: '25%'}}>
                                 {`Data for constituency of ${this.state.userData.constituency.name}`}
                               </h4>
                               <PartyChartFilters
@@ -618,11 +618,11 @@ export default class PageResults extends Component {
                   >
                   {this.state.tabIndex === 'geo' ?
                     <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '220px', width: 650, marginLeft: 0}}>
-                      {this.state.userData.postcode ?
+                      {this.state.userData.postcode && this.state.userData.country !== 'GB' ?
                         <h3 className='subMessage'>
                           {strings.results.coming_soon}
-                        </h3> :
-                        <div>
+                        </h3> : <div>
+                        {this.state.userData.country !== 'GB' ? <div>
                           <h3 className='subMessage'>
                             {strings.update.update_postcode}
                             <span className='link_underline'
@@ -632,7 +632,45 @@ export default class PageResults extends Component {
                               {strings.update.update_profile.toLowerCase()}
                           </span>
                           </h3>
-                        </div>
+                        </div> : <div></div>}
+                      </div>
+                      }
+                      {this.state.userData.postcode && this.state.userData.country === 'GB' &&
+                        this.state.userData.constituency && this.state.userData.constituency.name ?
+                          <div>
+                          {this.state.filters[this.state.tabIndex] &&
+                            Object.keys(this.state.filters[this.state.tabIndex]).includes(this.state.userData.constituency.name.replace(',', '')) ?
+                            <div>
+                              <h4 style={{position: 'absolute', top: 20, left: '25%'}}>
+                                {`Data for constituency of ${this.state.userData.constituency.name}`}
+                              </h4>
+                              <PartyChartFilters
+                                advertisers={this.state.filters[this.state.tabIndex][this.state.userData.constituency.name.replace(',', '')]}
+                                displayLabels={displayLabels}
+                                partyList={partyList}
+                                language={this.state.language}
+                                userCountry={userCountry}
+                                />
+                                <footer>
+                                  <span style={{marginLeft: 30}}>{`${strings.results.how_did_we_calc1} ${countries[userCountry]}  |  `}</span>
+                                  <a className='link' style={{marginLeft: 7}} target='_blank' href={userCountry === 'FI' ? 'http://okf.fi/vaalivahti-rationale' : 'https://whotargets.me/en/defining-political-ads/'}>{strings.results.how_did_we_calc2}</a>
+                                </footer>
+                              </div> :
+                                <h3 className='subMessage'>
+                                  {strings.results.coming_soon}
+                                </h3>
+                            }
+                          </div> : <div>
+                            <h3 className='subMessage'>
+                              {strings.update.update_postcode}
+                              <span className='link_underline'
+                                style={{cursor: 'pointer', fontStyle: 'italic', fontSize: '18px', marginLeft: 5}}
+                                onClick={() => this.props.updateProfile(true)}
+                              >
+                                {strings.update.update_profile.toLowerCase()}
+                            </span>
+                            </h3>
+                          </div>
                       }
                     </div> : <div>
                       <PartyChartFilters
@@ -764,13 +802,15 @@ const shareLinkFB = ([party, userCountry, partyPercAmongParties]) => {
     if (userCountry === "BR") {
       title = partyPercAmongParties + strings.results.shareFacebook1 + party + strings.results.shareFacebook2BR;
     } else if (userCountry === "GB" && party.toLowerCase() === 'others') {
-      title = "I've installed @WhoTargetsMe to find out who is targeting my vote. Find out more at https://whotargets.me"
+      title = "Our votes are being targeted by political parties on Facebook. Install Who Targets Me to see who’s targeting you this #GE2019"
+    } else if (userCountry === "GB" && party.toLowerCase() !== 'others') {
+      title = "I’m being targeted by " + party + " on Facebook. Install Who Targets Me to see who’s targeting you this #GE2019. https://whotargets.me/install"
     } else {
       title = partyPercAmongParties + strings.results.shareFacebook1 + party + strings.results.shareFacebook2;
     }
   } else {
     if (userCountry === "GB") {
-      title = "I've installed @WhoTargetsMe to find out who is targeting my vote this General Election. Find out more at https://whotargets.me"
+      title = "Our votes are being targeted by political parties on Facebook. Install Who Targets Me to see who’s targeting you this #GE2019"
     } else {
       title = strings.register.shareFacebook;
     }
@@ -784,13 +824,15 @@ const shareLinkTwitter = ([party, userCountry, partyPercAmongParties]) => {
     if (userCountry === "BR") {
       title = partyPercAmongParties + strings.results.shareTwitter1 + party + strings.results.shareTwitter2BR;
     } else if (userCountry === "GB" && party.toLowerCase() === 'others') {
-      title = "I've installed @WhoTargetsMe to find out who is targeting my vote this General Election. Find out more at https://whotargets.me"
+      title = "Our votes are being targeted by political parties on Facebook. Install Who Targets Me to see who’s targeting you this #GE2019"
+    } else if (userCountry === "GB" && party.toLowerCase() !== 'others') {
+      title = "I’m being targeted by " + party + " on Facebook. Install Who Targets Me to see who’s targeting you this #GE2019. https://whotargets.me/install"
     } else {
       title = partyPercAmongParties + strings.results.shareTwitter1 + party + strings.results.shareTwitter2;
     }
   } else {
     if (userCountry === "GB") {
-      title = "I've installed @WhoTargetsMe to find out who is targeting my vote this General Election. Find out more at https://whotargets.me"
+      title = "Our votes are being targeted by political parties on Facebook. Install Who Targets Me to see who’s targeting you this #GE2019"
     } else {
       title = strings.register.shareTwitter;
     }
