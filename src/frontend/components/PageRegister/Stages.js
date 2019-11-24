@@ -876,11 +876,19 @@ class OxfordSurvey extends Component {
   }
 }
 
-const shareLinkFB = (title = strings.register.shareFacebook) => {
+const shareLinkFB = (country) => {
+  let title = strings.register.shareFacebook;
+  if (country === 'GB') {
+    title = "Our votes are being targeted by political parties on Facebook. Install Who Targets Me to see who’s targeting you this #GE2019"
+  }
   return "http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwhotargets.me&title=" + encodeURIComponent(title) ;
 }
 
-const shareLinkTwitter = (title = strings.register.shareTwitter) => {
+const shareLinkTwitter = (country) => {
+  let title = strings.register.shareTwitter;
+  if (country === 'GB') {
+    title = "Our votes are being targeted by political parties on Facebook. Install Who Targets Me to see who’s targeting you this #GE2019"
+  }
   return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(title) ;
 }
 
@@ -945,9 +953,10 @@ class PostSignupShare extends Component {
               {signupState.language === 'il' ? <div>
                 <Button style={{position: 'absolute', bottom: 5, left: 360}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter()} >{strings.register.shareOnTwitter}</Button>
                 <Button style={{position: 'absolute', bottom: 5, left: 200}} type="hollow-primary" className='buttonFB' href={shareLinkFB()}>{strings.register.shareOnFacebook}</Button>
-              </div> : <div>
-                <Button style={{position: 'absolute', bottom: 5, left: 200}} type="hollow-primary" className='buttonFB' href={shareLinkFB()}>{strings.register.shareOnFacebook}</Button>
-                <Button style={{position: 'absolute', bottom: 5, left: 360}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter()} >{strings.register.shareOnTwitter}</Button>
+              </div> :
+              <div>
+                <Button style={{position: 'absolute', bottom: 5, left: 200}} type="hollow-primary" className='buttonFB' href={shareLinkFB(userCountry)}>{strings.register.shareOnFacebook}</Button>
+                <Button style={{position: 'absolute', bottom: 5, left: 360}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(userCountry)} >{strings.register.shareOnTwitter}</Button>
               </div>}
             </div>
           </Col>

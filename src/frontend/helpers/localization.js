@@ -112,7 +112,7 @@ const strings = new LocalizedStrings({
     filters: {
       general: 'Your ads',
       country: 'All ',
-      geo: 'Your area',
+      geo: 'Near you',
       sex_male: 'Men',
       sex_female: 'Women',
       age_lt45: '< 45s',

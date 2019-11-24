@@ -1,5 +1,5 @@
 {
-	"version": "1.2.37",
+	"version": "1.2.40",
 	"name": "__MSG_appName__",
 	"manifest_version": 2,
 	"description": "__MSG_appDesc__",
@@ -14,7 +14,6 @@
 		"*://www.facebook.com/*",
 		"*://*.whotargets.me/*",
 		"*://whotargets.me/*",
-		"*://whotargetsme.voxpoplabs.com/*",
 		"*://msih3yho6h.execute-api.eu-central-1.amazonaws.com/dev/*",
 		"tabs"
 	],
@@ -22,9 +21,6 @@
 		{
 			"matches": ["*://facebook.com/*","*://*.facebook.com/*"],
 			"js": ["daemon/index.js", "daemon/collect.js"]
-		},{
-			"matches": ["*://whotargetsme.voxpoplabs.com/*"],
-			"js": ["daemon/index.js", "daemon/voxpop.js"]
 		}
 	],
 	"background": {

@@ -22,3 +22,23 @@ export const getUserCount = (input) => {
   }
   return {userCount, nextUserCount}
 }
+
+// pulling userCount for this constituency
+export const getUserCountGB = (input) => {
+  const gaps = [10, 25, 50]
+  const gapslen = gaps.length;
+  let userCount = input;
+
+  if (!input || input < gaps[0]) { userCount = 11; } // if userCount is not available, fall back to 100
+  userCount = parseInt(userCount);
+
+  if (userCount < gaps[gapslen - 1]) {
+    for (let i = 0; i < gapslen ; i++) {
+      if (userCount < gaps[i]) {
+        userCount = gaps[i];
+        break;
+      }
+    }
+  }
+  return userCount;
+}
