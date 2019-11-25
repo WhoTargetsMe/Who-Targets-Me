@@ -899,7 +899,7 @@ class PostSignupShare extends Component {
     const userCountry = signupState.country ? signupState.country.countryCode : null;
     const userCountryNative = countries_in_native_lang[userCountry];
     const input = signupState.userCount || null; //chrome.storage.promise.local.get('userCount') || null;
-    const {userCount, nextUserCount} = getUserCount(input);
+    const {userCount, nextUserCount} = getUserCount(input, 'country');
 
     return (
       <Container country={signupState.country ? signupState.country.countryCode : ''}>
