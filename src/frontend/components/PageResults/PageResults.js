@@ -5,7 +5,7 @@ import axios from 'axios';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts'
 import strings, {changeLocale} from '../../helpers/localization.js';
 import {availableCountries, availableParties} from '../../helpers/parties.js'; //, availablePages
-import {getUserCount, getUserCountGB} from '../../helpers/functions.js';
+import {getUserCount} from '../../helpers/functions.js';
 
 import { PartyChart, PartyAds, RationalesView, PartyChartFilters } from './TargetingResults.js';
 import { DeleteRequestPage } from './DeleteRequestPage.js';
@@ -359,11 +359,22 @@ export default class PageResults extends Component {
     let partiesPercAmongAds = 0;
     let partyPercAmongParties = 0;
 
-    const { userCount, nextUserCount } = getUserCount(this.state.userData.userCount);
-    let userCountGB = null;
-    if (userCountry === 'GB' && this.state.userData.constituency) {
-      userCountGB = getUserCountGB(this.state.userData.constituency.users);
+    const { userCount, nextUserCount } = getUserCount(this.state.userData.userCount, 'country');
+    let constituencyName = null;
+    let users = 20;
+    let userCountGB = 50, nextUserCountGB = 100;
+    if (userCountry === 'GB' && this.state.userData.constituency && this.state.userData.constituency.users) {
+      users = this.state.userData.constituency.users;
+      constituencyName = this.state.userData.constituency.name;
+      const { userCount, nextUserCount } = getUserCount(users, 'constituency');
+      userCountGB = userCount;
+      nextUserCountGB = nextUserCount;
     }
+    let sharingMessageGB = `Over ${userCountGB} people in ${this.state.userData.constituency.name} are taking part in Who Targets Me. Can you help us reach ${nextUserCountGB}?`
+    if (users < 50) {
+      sharingMessageGB = `Can you help us find 50 people in ${this.state.userData.constituency.name} to take part in Who Targets Me?`
+    }
+
     // console.log('userCount ', userCount)
     // If this is a user with data
     if (view !== "delete_request" && view !== "data_deleted") {
@@ -728,21 +739,23 @@ export default class PageResults extends Component {
                 <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '25px'}}>{sprintf(strings.register.share3, userCount, userCountryNative)}</span>
                 <br/>
                 <span style={{fontSize: '1.05rem', lineHeight: '25px'}}>{sprintf(strings.register.share4, nextUserCount)}</span>
-              </div> : <div style={{padding: '5px 15px', height: '120px', margin: 'auto', textAlign: 'center'}}>
-                <span style={{fontSize: '1.05rem', lineHeight: '25px'}}>
-                  {this.state.userData.constituency && this.state.userData.constituency.name ?
-                    `Fewer than ${userCountGB} people in ${this.state.userData.constituency.name} are taking part in Who Targets Me` :
-                    sprintf(strings.register.share3, userCount, userCountryNative)
-                  }
+              </div> : <div style={{padding: '0px 15px', height: '130px', margin: 'auto', textAlign: 'center'}}>
+                <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '25px'}}>
+                  Share who’s targeting you!
                 </span>
                 <br/>
-                <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '25px'}}>
-                  Can you share the project and help us increase our sample size?
-                </span>
+                <div style={{fontSize: '1.05rem', lineHeight: '25px', padding: '0px 30px'}}>
+                  {this.state.userData.constituency && this.state.userData.constituency.name ?
+                    sharingMessageGB :
+                    sprintf(strings.register.share3, userCount, userCountryNative)
+
+                  }
+                </div>
+                <br/>
               </div>
             }
-            <Button style={{position: 'absolute', bottom: 5, left: 220}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties] : [null, userCountry, null])}>{strings.register.shareOnFacebook}</Button>
-            <Button style={{position: 'absolute', bottom: 5, left: 380}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties] : [null, userCountry, null])} >{strings.register.shareOnTwitter}</Button>
+            <Button style={{position: 'absolute', bottom: 5, left: 190}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties, constituencyName] : [null, userCountry, null, constituencyName])}>{strings.register.shareOnFacebook}</Button>
+            <Button style={{position: 'absolute', bottom: 5, left: 390}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties, constituencyName] : [null, userCountry, null, constituencyName])} >{strings.register.shareOnTwitter}</Button>
           </div>
         </Col>
       </Row>}
@@ -796,7 +809,7 @@ const Tab = (props) => {
           </div>)
 }
 
-const shareLinkFB = ([party, userCountry, partyPercAmongParties]) => {
+const shareLinkFB = ([party, userCountry, partyPercAmongParties, constituencyName]) => {
   let title = ''
   if (party) {
     if (userCountry === "BR") {
@@ -804,7 +817,11 @@ const shareLinkFB = ([party, userCountry, partyPercAmongParties]) => {
     } else if (userCountry === "GB" && party.toLowerCase() === 'others') {
       title = "Our votes are being targeted by political parties on Facebook. Install Who Targets Me to see who’s targeting you this #GE2019"
     } else if (userCountry === "GB" && party.toLowerCase() !== 'others') {
-      title = "I’m being targeted by " + party + " on Facebook. Install Who Targets Me to see who’s targeting you this #GE2019. https://whotargets.me/install"
+      let txt = party;
+      if (constituencyName) {
+        txt = party + " in " + constituencyName;
+      }
+      title = "I’m being targeted with Facebook ads by " + txt + ". Install Who Targets Me to see who’s targeting you this #GE2019. https://whotargets.me/install"
     } else {
       title = partyPercAmongParties + strings.results.shareFacebook1 + party + strings.results.shareFacebook2;
     }
@@ -815,10 +832,10 @@ const shareLinkFB = ([party, userCountry, partyPercAmongParties]) => {
       title = strings.register.shareFacebook;
     }
   }
-  return "http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwhotargets.me&title=" + encodeURIComponent(title) ;
+  return "https://www.facebook.com/sharer.php?u=https%3A%2F%2Fwhotargets.me&title=" + encodeURIComponent(title);
 }
 
-const shareLinkTwitter = ([party, userCountry, partyPercAmongParties]) => {
+const shareLinkTwitter = ([party, userCountry, partyPercAmongParties, constituencyName]) => {
   let title = ''
   if (party) {
     if (userCountry === "BR") {
@@ -826,7 +843,11 @@ const shareLinkTwitter = ([party, userCountry, partyPercAmongParties]) => {
     } else if (userCountry === "GB" && party.toLowerCase() === 'others') {
       title = "Our votes are being targeted by political parties on Facebook. Install Who Targets Me to see who’s targeting you this #GE2019"
     } else if (userCountry === "GB" && party.toLowerCase() !== 'others') {
-      title = "I’m being targeted by " + party + " on Facebook. Install Who Targets Me to see who’s targeting you this #GE2019. https://whotargets.me/install"
+      let txt = party;
+      if (constituencyName) {
+        txt = party + " in " + constituencyName;
+      }
+      title = "I’m being targeted with Facebook ads by " + txt + ". Install Who Targets Me to see who’s targeting you this #GE2019. https://whotargets.me/install"
     } else {
       title = partyPercAmongParties + strings.results.shareTwitter1 + party + strings.results.shareTwitter2;
     }
