@@ -915,12 +915,12 @@ class PostSignupShare extends Component {
                 type="hollow-primary"
                 className='buttonTW'
                 href={shareLinkTwitter()}
-                style={{float:'left'}}>
+                style={{float:'left', marginRight: 5}}>
                   {strings.register.shareOnTwitter}
                 </Button> : <Button type="hollow-primary"
                 className='buttonFB'
                 href={shareLinkFB()}
-                style={{float:'right'}}>
+                style={{float:'right', marginLeft: 5}}>
                   {strings.register.shareOnFacebook}
                 </Button>}
             </Col>
@@ -928,13 +928,13 @@ class PostSignupShare extends Component {
               {signupState.language === 'il' ? <Button type="hollow-primary"
               className='buttonFB'
               href={shareLinkFB()}
-              style={{float:'right'}}>
+              style={{float:'right', marginLeft: 5}}>
                 {strings.register.shareOnFacebook}
               </Button> : <Button
                 type="hollow-primary"
                 className='buttonTW'
                 href={shareLinkTwitter()}
-                style={{float:'left'}}>
+                style={{float:'left', marginRight: 5}}>
                   {strings.register.shareOnTwitter}
                 </Button>}
             </Col>
@@ -952,10 +952,10 @@ class PostSignupShare extends Component {
             </div>
               {signupState.language === 'il' ? <div>
                 <Button style={{position: 'absolute', bottom: 5, left: 360}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter()} >{strings.register.shareOnTwitter}</Button>
-                <Button style={{position: 'absolute', bottom: 5, left: 200}} type="hollow-primary" className='buttonFB' href={shareLinkFB()}>{strings.register.shareOnFacebook}</Button>
+                <Button style={{position: 'absolute', bottom: 5, left: 160}} type="hollow-primary" className='buttonFB' href={shareLinkFB()}>{strings.register.shareOnFacebook}</Button>
               </div> :
               <div>
-                <Button style={{position: 'absolute', bottom: 5, left: 200}} type="hollow-primary" className='buttonFB' href={shareLinkFB(userCountry)}>{strings.register.shareOnFacebook}</Button>
+                <Button style={{position: 'absolute', bottom: 5, left: 160}} type="hollow-primary" className='buttonFB' href={shareLinkFB(userCountry)}>{strings.register.shareOnFacebook}</Button>
                 <Button style={{position: 'absolute', bottom: 5, left: 360}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(userCountry)} >{strings.register.shareOnTwitter}</Button>
               </div>}
             </div>

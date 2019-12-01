@@ -390,7 +390,7 @@ export default class PageResults extends Component {
         const maxArr = Math.max(...arr);
         let partyIndex = arr.indexOf(maxArr);
         party = parties[partyIndex];
-        partyPerc = ((party.count/userSeenSum)*100).toFixed(0)
+        partyPerc = ((party.count/userSeenPartiesSum)*100).toFixed(0)
         partiesPercAmongAds = ((userSeenPartiesSum/userSeenSum)*100).toFixed(0)
         partyPercAmongParties = ((party.count/userSeenPartiesSum)*100).toFixed(0)
       }

@@ -8,7 +8,7 @@ const reduFunc = (a, b) => a + b;
 
 export const PartyChart = (props) => {
 
-  let maxHeight = 130;
+  let maxHeight = 115;
   let parties = [], partiesDisplay = [];
 
   for (let i=0; i<props.advertisers.length; i++){
@@ -226,7 +226,7 @@ export const RationalesView = (props) => {
 
 export const PartyChartFilters = (props) => {
 
-  let maxHeight = 130; //former = 180
+  let maxHeight = 115; //former = 180
   let partiesDisplay = []; //.sort((a,b) => parseInt(b.count)-parseInt(a.count))
 
   for (let i=0; i<props.displayLabels.length; i++){
