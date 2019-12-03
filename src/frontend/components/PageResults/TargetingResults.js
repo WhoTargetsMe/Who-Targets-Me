@@ -3,6 +3,7 @@ import { Col, Row, Spinner } from 'elemental';
 import {availableParties} from '../../helpers/parties.js'; //, availablePages
 import strings, {changeLocale} from '../../helpers/localization.js';
 import './PageResults.css';
+import EyeIcon from './eye-regular.svg';
 
 const reduFunc = (a, b) => a + b;
 
@@ -79,34 +80,63 @@ export const PartyAds = (props) => {
   }
 
   return(
-    <div>
-      {props.language === 'il' ? <div style={{marginBottom: 10}}>
-        <h3 style={{margin: '5px 0px 5px 20px', fontSize: '1em', display: 'inline-block'}}>
-          <span className='party'>{`${strings.results.ads_from} של ${partyName} `}</span>
-        </h3>
-        <span>{` ${count}`}</span>
-        <br/>
-        <span className='link link_underline' onClick={props.hideBarInfo}>{strings.results.back_to_stats}</span>
-        <span style={{color: '#0A4496'}} >&nbsp;|&nbsp;</span>
-        <span className={`link link_underline ${disabledPrev ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('prev', props.advertisers)}>{strings.results.prev_advertiser}</span>
-        <span style={{color: '#0A4496'}}>&nbsp;|&nbsp;</span>
-        <span className={`link link_underline ${disabledNext ? 'disabledLink' : ''}`} style={{marginLeft: 20}} onClick={() => props.showAdvr('next', props.advertisers)}>{strings.results.next_advertiser}</span>
-      </div> :
-      <div style={{marginBottom: 10}}>
-        <h3 style={{margin: '5px 0px 5px 20px', fontSize: '1em'}}>{count} {strings.results.ads_from} <span className='party'>{`${partyName}`}</span></h3>
-        <span className='link link_underline' style={{marginLeft: 20}} onClick={props.hideBarInfo}>{strings.results.back_to_stats}</span>
-        <span style={{color: '#0A4496'}} >&nbsp;|&nbsp;</span>
-        <span className={`link link_underline ${disabledPrev ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('prev', props.advertisers)}>{strings.results.prev_advertiser}</span>
-        <span style={{color: '#0A4496'}}>&nbsp;|&nbsp;</span>
-        <span className={`link link_underline ${disabledNext ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('next', props.advertisers)}>{strings.results.next_advertiser}</span>
+    <div style={{position: 'relative'}}>
+      {props.language === 'il' ? <div style={{marginBottom: 10, position: 'absolute', top: '-40'}}>
+        {/* Tab to return to the main stats view */}
+        <div className='tabLong tabAdView' style={{marginLeft: 15, wordBreak: 'break-all'}}>
+             <span className='link_no_underline link' onClick={props.hideBarInfo}>
+                   {strings.results.back_to_stats}
+             </span>
+        </div>
+        {/* Tab to show advertiser who targets the most */}
+        <div className='tabLong tabAdView tabAdViewMain tabActive'>
+             <span className='party'>{`${strings.results.ads_from} של ${partyName} `}</span>
+             <span>{` ${count}`}</span>
+        </div>
+        {/* Tab to navigate - Previous advertiser */}
+        <div className='tabLong tabAdView'>
+             <span className={`link link_underline ${disabledPrev ? 'disabledLink' : ''}`} onClick={() => props.showAdvr('prev', props.advertisers)}>{strings.results.prev_advertiser}</span>
+        </div>
+        {/* Tab to navigate - Next advertiser */}
+        <div className='tabLong tabAdView'>
+             <span className={`link link_underline ${disabledNext ? 'disabledLink' : ''}`} style={{marginLeft: 20}} onClick={() => props.showAdvr('next', props.advertisers)}>{strings.results.next_advertiser}</span>
+        </div>
+      </div>
+
+      :
+
+      <div style={{marginBottom: 10, position: 'absolute', top: '-40'}}>
+        {/* Tab to return to the main stats view */}
+        <div className='tabLong tabAdView' style={{marginLeft: 15, wordBreak: 'break-all'}}>
+             <span className='link_no_underline link' onClick={props.hideBarInfo}>
+                   {strings.results.back_to_stats}
+             </span>
+        </div>
+        {/* Tab to show advertiser who targets the most */}
+        <div className='tabLong tabAdView tabAdViewMain tabActive'>
+             {count} {strings.results.ads_from} <span className='party'>{`${partyName}`}</span>
+        </div>
+        {/* Tab to navigate - Previous advertiser */}
+        <div className='tabLong tabAdView'
+             onClick={() => props.showAdvr('prev', props.advertisers)}>
+             <span className={`link link_no_underline ${disabledPrev ? 'disabledLink' : ''}`}>{strings.results.prev_advertiser}</span>
+        </div>
+        {/* Tab to navigate - Next advertiser */}
+        <div className='tabLong tabAdView'
+             onClick={() => props.showAdvr('next', props.advertisers)}>
+             <span className={`link link_no_underline ${disabledNext ? 'disabledLink' : ''}`}>{strings.results.next_advertiser}</span>
+        </div>
       </div>}
 
       {!props.postId ?
         <div className='boxNoFlex'>
           <Row className='headerRow'>
-            <Col sm="4/20" className='colHeader'>{strings.results.page}</Col>
+            <Col sm="3/20" className='colHeader'>{strings.results.date}</Col>
+            <Col sm="3/20" className='colHeader'>{strings.results.page}</Col>
             <Col sm="8/20" className='colHeader'>{strings.results.text}</Col>
-            <Col sm="3/20" className='colHeader'>{strings.results.instances}</Col>
+            <Col sm="1/20" className='colHeader colHeaderIcon'>
+              <img src={EyeIcon} className='iconHeader'/>
+            </Col>
             <Col sm="3/20" className='colHeader'>{strings.results.targeting}</Col>
           </Row>
           {props.ads.map((ad, j) => {
@@ -117,14 +147,17 @@ export const PartyAds = (props) => {
             // console.log('ad log 1', ad)
             return (
               <Row key={`tablerow-${j}`} style={{borderBottom: '1px solid #ccc', marginBottom: '10px'}}>
-                <Col sm="4/20" className='adCol'>
+                <Col sm="3/20" className='adCol'>
+                  <span>{ad.createdAt.toString().slice(0,10)}</span>
+                </Col>
+                <Col sm="3/20" className='adCol'>
                   <a href={`https://facebook.com/${ad.postId}`} className='link'>{ad.advertiserName}</a>
                 </Col>
                 <Col sm="8/20" className="text adCol">
                   {ad.text.map((t,i) => <p key={`txt-${i}`}>{t.length > 120 ? t.slice(0,120)+'...' : t}</p>)}
                   <a href={ad.url} className='link'>{strings.results.view_ad}</a>
                 </Col>
-                <Col sm="3/20" className='adCol' style={{textAlign: 'center'}}>{ad.count}</Col>
+                <Col sm="1/20" className='adCol' style={{textAlign: 'center'}}>{ad.count}</Col>
                 <Col sm="3/20" className='adCol'>
                 {
                   (ad.noRationaleMessage && ad.noRationaleMessage === "Not available") ?
@@ -149,9 +182,12 @@ export const PartyAds = (props) => {
           /> :
           <div className='boxNoFlex'>
             <Row className='headerRow'>
-              <Col sm="4/20" className='colHeader'>{strings.results.page}</Col>
+              <Col sm="3/20" className='colHeader'>{strings.results.date}</Col>
+              <Col sm="3/20" className='colHeader'>{strings.results.page}</Col>
               <Col sm="8/20" className='colHeader'>{strings.results.text}</Col>
-              <Col sm="3/20" className='colHeader'>{strings.results.instances}</Col>
+              <Col sm="1/20" className='colHeader colHeaderIcon'>
+                <img src={EyeIcon} className='iconHeader'/>
+              </Col>
               <Col sm="3/20" className='colHeader'>{strings.results.targeting}</Col>
             </Row>
             {props.ads.map((ad, j) => {
@@ -162,14 +198,17 @@ export const PartyAds = (props) => {
               // console.log('ad log 2', ad)
               return (
                 <Row key={`tablerow-${j}`} style={{borderBottom: '1px solid #ccc', marginBottom: '10px'}}>
-                  <Col sm="4/20" className='adCol'>
+                  <Col sm="3/20" className='adCol'>
+                    <span>{ad.createdAt.toString().slice(0,10)}</span>
+                  </Col>
+                  <Col sm="3/20" className='adCol'>
                     <a href={`https://facebook.com/${ad.postId}`} className='link'>{ad.advertiserName}</a>
                   </Col>
                   <Col sm="8/20" className="text adCol">
                     {ad.text.map((t,i) => <p key={`txt-${i}`}>{t.length > 120 ? t.slice(0,120)+'...' : t}</p>)}
                     <a href={ad.url} className='link'>{strings.results.view_ad}</a>
                   </Col>
-                  <Col sm="3/20" className='adCol' style={{textAlign: 'center'}}>{ad.count}</Col>
+                  <Col sm="1/20" className='adCol' style={{textAlign: 'center'}}>{ad.count}</Col>
                   <Col sm="3/20" className='adCol'>
                   {
                     ad.noRationaleMessage && ad.noRationaleMessage === "Not available" ?
@@ -195,20 +234,26 @@ export const RationalesView = (props) => {
   return (
     <div className='boxNoFlex whiteBackground'>
       <Row className='headerRow'>
-        <Col sm="4/20" className='colHeader'>{strings.results.page}</Col>
+        <Col sm="3/20" className='colHeader'>{strings.results.date}</Col>
+        <Col sm="3/20" className='colHeader'>{strings.results.page}</Col>
         <Col sm="8/20" className='colHeader'>{strings.results.text}</Col>
-        <Col sm="3/20" className='colHeader'>{strings.results.instances}</Col>
+        <Col sm="1/20" className='colHeader colHeaderIcon'>
+          <img src={EyeIcon} className='iconHeader'/>
+        </Col>
         <Col sm="3/20" className='colHeader'>{strings.results.targeting}</Col>
       </Row>
 
       <Row>
-        <Col sm="4/20" className='adCol'>
+        <Col sm="3/20" className='adCol'>
+          <span>{ad.createdAt.toString().slice(0,10)}</span>
+        </Col>
+        <Col sm="3/20" className='adCol'>
           <a href={`https://facebook.com/${props.postId}`} className='link'>{ad.advertiserName}</a>
         </Col>
         <Col sm="8/20" className="text adCol">
           {ad.text.map((t,i) => <p key={`txt-${i}`}>{t}</p>)}
           <a href={ad.url} className='link'>{strings.results.view_ad}</a></Col>
-        <Col sm="3/20" className='adCol' style={{textAlign: 'center'}}>{ad.count}</Col>
+        <Col sm="1/20" className='adCol' style={{textAlign: 'center'}}>{ad.count}</Col>
         <Col sm="3/20" className='adCol'>
           <span className="link" onClick={props.hideTargeting}>Hide</span>
         </Col>

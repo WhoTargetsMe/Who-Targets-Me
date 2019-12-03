@@ -290,7 +290,7 @@ tr{
 /*Rationale*/
 .boxNoFlex {
   max-width: 100%;
-  max-height: 220px;
+  max-height: 250px;
   flex-flow: row nowrap;
   font-size: 0.8rem;
   overflow-y: scroll;
@@ -320,12 +320,14 @@ tr{
 }
 .headerRow {
   line-height: 0;
+  width: 800px;
   height: 27px;
   padding-top: 2px;
   margin-bottom: 10px;
-  background-color: white;
+  background-image: linear-gradient(45deg, #f2f2f2, lightgrey);
+  /* background-color: #e6e6e6; */
   text-align: left;
-  border-top: 1px solid lightgrey;
+  /* border-top: 1px solid lightgrey; */
   border-bottom: 1px solid lightgrey;
 }
 .colHeader {
@@ -378,4 +380,25 @@ tr{
 .tabActive{
   background-color: #f2f2f2;
   border-bottom: none;
+}
+/* Tabs for ads view */
+.tabAdView{
+  height: 40px;
+  width: 100px;
+  padding: 10px 5px 0px 5px;
+}
+.tabAdViewMain{
+  width: 260px;
+}
+.link_no_underline{
+  text-decoration: none;
+}
+.iconHeader{
+  height: 20px;
+  width: 20px;
+}
+.colHeaderIcon {
+  padding: 0;
+  text-align: center;
+  margin-top: 1px;
 }

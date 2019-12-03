@@ -106,8 +106,29 @@ export default class PageResults extends Component {
             let start = new Date();
             lastUpdated = start.getFullYear().toString() + '-' + (start.getMonth() + 1).toString() + '-' + start.getDate().toString();
             const filters = this.filtersExtract(response.jsonData.data, availableParties);
-            chrome.storage.promise.local.set({'userData': response.jsonData.data, lastUpdated});
-            this.setState({userData: response.jsonData.data, filters, language: result.language});
+            // if there are some ads from prefetch, fetch more ads
+            if (!this.state.ads) {
+              this.setState({loadingAds: true});
+              this.props.api.get('user/ads')
+                .then((resp) => {
+                  // console.log('response ads', resp)
+                  if (resp.status >= 200 && resp.status < 300) {
+                    let userData = response.jsonData.data;
+                    userData['advertisers'] = resp.jsonData.data.result;
+                    chrome.storage.promise.local.set({userData, lastUpdated});
+                    this.setState({userData: response.jsonData.data, filters, language: result.language,
+                      ads: resp.jsonData.data.result, loadingAds: false});
+                    // console.log('got ads', response.jsonData.data.result)
+                  } else {
+                    throw new Error('something went wrong!');
+                    this.setState({loadingAds: false});
+                  }
+                })
+                .catch((error) => {
+                  console.log(error)
+                  this.setState({loadingAds: false});
+                })
+              }
             // console.log('user data', response.jsonData, result.language, lastUpdated);
           })
           .catch((error) => {
@@ -255,10 +276,9 @@ export default class PageResults extends Component {
     let partyIndex = parties.indexOf(this.state.party);
 
     if (direction === 'prev') {
-      if (partyIndex === 0) { return; }
+      if (partyIndex === 0) { return; } // return if only main party is left
       partyIndex -= 1;
-    }
-    else if (direction === 'next') {
+    } else if (direction === 'next') {
       if (partyIndex === parties.length - 1) { return; }
       partyIndex += 1;
     }
@@ -302,8 +322,12 @@ export default class PageResults extends Component {
     }
     let parties = [];
     // if there is at least one advertiser and country labels are available
-    if (advertisers.length > 0 && availableCountries.map(c => c.id).includes(userCountry)){
-      advertisers.forEach(advr => {
+    if (advertisers && advertisers.length && availableCountries.map(c => c.id).includes(userCountry)){
+      let objects = advertisers;
+      if (this.state.ads && this.state.ads.length) {
+        objects = this.state.ads;
+      }
+      objects.forEach(advr => {
         const advr_object = Object.assign({},
           advr, {
           partyDetails: availableParties[userCountry].filter(p => advr.party.toLowerCase() === p.shortName.toLowerCase())[0],
@@ -477,7 +501,7 @@ export default class PageResults extends Component {
 
         <Row style={{minHeight: 257, backgroundColor: '#f2f2f2'}}>
         <Col sm="1">
-          <div className="statbox mainstatbox">
+          <div className="statbox mainstatbox" style={{paddingTop: 0}}>
             { view === "display_parties" && this.state.userData && this.state.userData.advertisers &&
               !this.state.showAds && !this.state.loadingAds &&
               <div>
@@ -754,7 +778,7 @@ export default class PageResults extends Component {
                 <br/>
               </div>
             }
-            <Button style={{position: 'absolute', bottom: 5, left: 190}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties, constituencyName] : [null, userCountry, null, constituencyName])}>{strings.register.shareOnFacebook}</Button>
+            <Button style={{position: 'absolute', bottom: 5, left: 190}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party ? [party.partyDetails.party.toUpperCase(), party.partyDetails.shortName.toUpperCase(), userCountry, partyPercAmongParties, constituencyName] : [null, null, userCountry, null, constituencyName])}>{strings.register.shareOnFacebook}</Button>
             <Button style={{position: 'absolute', bottom: 5, left: 390}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties, constituencyName] : [null, userCountry, null, constituencyName])} >{strings.register.shareOnTwitter}</Button>
           </div>
         </Col>
@@ -808,7 +832,8 @@ const Tab = (props) => {
             {props.filter}
           </div>)
 }
-
+/*
+// Regular way
 const shareLinkFB = ([party, userCountry, partyPercAmongParties, constituencyName]) => {
   let title = ''
   if (party) {
@@ -834,7 +859,20 @@ const shareLinkFB = ([party, userCountry, partyPercAmongParties, constituencyNam
   }
   return "https://www.facebook.com/sharer.php?u=https%3A%2F%2Fwhotargets.me&title=" + encodeURIComponent(title);
 }
+*/
+// GE 2019
+const shareLinkFB = ([party, shortName, userCountry, partyPercAmongParties, constituencyName]) => {
+  let url = "https://www.facebook.com/sharer.php?u=https%3A%2F%2Fwhotargets.me%2Finstall"
+  if (party) {
+    if (userCountry === "GB" && shortName.toLowerCase() !== 'others') {
+        url = url + encodeURIComponent("-" + shortName.toLowerCase())
+  }
+  // console.log(url)
+  return url;
+  }
+}
 
+// Regular way works for GE 2019 as well
 const shareLinkTwitter = ([party, userCountry, partyPercAmongParties, constituencyName]) => {
   let title = ''
   if (party) {
@@ -875,6 +913,7 @@ const Rationale = (props) => {
     )
 }
 
+/*
 const politicalParties = [{label: "Alliance - Alliance Party of Northern Ireland",value: "party:103"},{label: "Christian Peoples Alliance",value: "party:79"},{label: "Conservative and Unionist Party",value: "party:52"},{label: "Democratic Unionist Party - D.U.P.",value: "party:70"},{label: "Green Party",value: "party:63"},{label: "Labour and Co-operative Party",value: "joint-party:53-119"},{label: "Labour Party",value: "party:53"},{label: "Liberal Democrats",value: "party:90"},{label: "Plaid Cymru - The Party of Wales",value: "party:77"},{label: "Scottish National Party (SNP)",value: "party:102"},{label: "SDLP (Social Democratic & Labour Party)",value: "party:55"},{label: "Sinn Fein",value: "party:39"},{label: "The Yorkshire Party",value: "party:2055"},{label: "UK Independence Party (UKIP)",value: "party:85"},{label: "-------- Other Parties --------",value: "NA",disabled: true},{label: "Independent / Other",value: "independent"},{label: "Alliance For Green Socialism",value: "party:67"},{label: "Animal Welfare Party",value: "party:616"},{label: "Apolitical Democrats",value: "party:845"},{label: "Ashfield Independents",value: "party:3902"},{label: "Better for Bradford",value: "party:4230"},{label: "Blue Revolution",value: "party:6342"},{label: "British National Party",value: "party:3960"},{label: "Christian Party",value: "party:2893"},{label: "Church of the Militant Elvis",value: "party:843"},{label: "Citizens Independent Social Thought Alliance",value: "party:6335"},{label: "Common Good",value: "party:375"},{label: "Communist League Election Campaign",value: "party:823"},{label: "Compass Party",value: "party:4089"},{label: "Concordia",value: "party:3983"},{label: "Demos Direct Initiative Party",value: "party:6318"},{label: "English Democrats",value: "party:17"},{label: "Friends Party",value: "party:6372"},{label: "Greater Manchester Homeless Voice",value: "party:6409"},{label: "Green Party",value: "party:305"},{label: "Humanity",value: "party:834"},{label: "Independent Save Withybush Save Lives",value: "party:2648"},{label: "Independent Sovereign Democratic Britain",value: "party:2575"},{label: "Libertarian Party",value: "party:684"},{label: "Money Free Party",value: "party:6387"},{label: "Movement for Active Democracy (M.A.D.)",value: "party:481"},{label: "National Health Action Party",value: "party:1931"},{label: "North of England Community Alliance",value: "party:5297"},{label: "Official Monster Raving Loony Party",value: "party:66"},{label: "Open Borders Party",value: "party:2803"},{label: "Patria",value: "party:1969"},{label: "People Before Profit Alliance",value: "party:773"},{label: "Pirate Party UK",value: "party:770"},{label: "Populist Party",value: "party:3914"},{label: "Rebooting Democracy",value: "party:2674"},{label: "Scotland's Independence Referendum Party",value: "party:6356"},{label: "Scottish Green Party",value: "party:130"},{label: "Social Democratic Party",value: "party:243"},{label: "Socialist Labour Party",value: "party:73"},{label: "Something New",value: "party:2486"},{label: "Southampton Independents",value: "party:6364"},{label: "Southend Independent Association",value: "party:6317"},{label: "Space Navies Party",value: "party:549"},{label: "Speaker seeking re-election",value: "ynmp-party:12522"},{label: "The Just Political Party",value: "party:2520"},{label: "The Justice & Anti-Corruption Party",value: "party:865"},{label: "The Liberal Party",value: "party:54"},{label: "The New Society of Worth",value: "party:2714"},{label: "The North East Party",value: "party:2303"},{label: "The Peace Party - Non-violence, Justice, Environment",value: "party:133"},{label: "The Radical Party",value: "party:2652"},{label: "The Realists' Party",value: "party:1871"},{label: "The Socialist Party of Great Britain",value: "party:110"},{label: "The Workers Party",value: "party:127"},{label: "Traditional Unionist Voice - TUV",value: "party:680"},{label: "Ulster Unionist Party",value: "party:83"},{label: "War Veteran's Pro-Traditional Family Party",value: "party:488"},{label: "Wessex Regionalists",value: "party:95"},{label: "Women's Equality Party",value: "party:2755"},{label: "Workers Revolutionary Party",value: "party:184"},{label: "Young People's Party YPP",value: "party:1912"}
 ]
 
@@ -992,7 +1031,7 @@ class AdvertiserBarChart extends Component {
       <ResponsiveContainer width="100%" height={200}>
         <BarChart width={300} height={200} margin={{top: 50, right: 0, bottom: 0, left: 0}} data={this.props.data}>
          <Bar dataKey='count' fill='#02e0c9' shape={<PartyBar/>}/>
-         {/*}<Tooltip label={"percentage"} />*/}
+         {<Tooltip label={"percentage"} />}
        </BarChart>
      </ResponsiveContainer>
     )
@@ -1037,7 +1076,7 @@ const roundUp = (x) => {
     return x;
 }
 
-{/* <Row style={{paddingTop: '20px', paddingBottom: '20px', margin: 'auto 10px'}}>
+<Row style={{paddingTop: '20px', paddingBottom: '20px', margin: 'auto 10px'}}>
   <Col sm="1">
     <div className="statbox">
       <img src={Logo} style={{height: '150px'}} />
@@ -1046,8 +1085,8 @@ const roundUp = (x) => {
       </div>
     </div>
   </Col>
-</Row> */}
-{/* <Col sm="1/2" style={{overflow: 'scroll'}}>
+</Row>
+<Col sm="1/2" style={{overflow: 'scroll'}}>
     <div className="statbox">
       {this.state.userData.constituency &&
       <div>
@@ -1062,4 +1101,4 @@ const roundUp = (x) => {
       }
 
     </div>
-</Col> */}
+</Col> */
