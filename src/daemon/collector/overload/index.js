@@ -9,7 +9,7 @@ const re_qid = /qid.[0-9]+/;
 const re_ajaxify = /ajaxify":"\\\/waist_content\\\/dialog\S+?"/;
 const re_adId = /id=[0-9]+/;
 const re_number = /[0-9]+/;
-const rationaleUrl = 'https://www.facebook.com/ads/preferences/dialog/?';
+
 let EXPLANATION_REQUESTS = {};
 let R_PROBLEMATIC = [];
 let RQ = {};
@@ -169,6 +169,8 @@ function storeRQ(adData, WAIT_UNTIL) {
   // console.log('+++++ local variables', RQ, WAIT_UNTIL);
 }
 
+/*
+// OLD GET endpoint
 function getExplanationsManually(adData) {
   // console.log('getExplanationsManually called', adData.fb_id, new Date())
   const { WAIT_UNTIL_LS } = getRQ();
@@ -209,6 +211,50 @@ function getExplanationsManually(adData) {
     }
   }
   xmlhttp.send(null);
+}
+*/
+
+function getExplanationsManually(adData) {
+  // console.log('getExplanationsManually called', adData.fb_id, new Date())
+  const { WAIT_UNTIL_LS } = getRQ();
+  if (WAIT_UNTIL_LS > WAIT_UNTIL) { WAIT_UNTIL = WAIT_UNTIL_LS }
+  if (new Date() < WAIT_UNTIL) {
+    // console.log('Not the time yet: WAIT_UNTIL', WAIT_UNTIL)
+    storeRQ(adData, WAIT_UNTIL);
+    return;
+  }
+
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("POST", adData.rationaleUrl, true);
+  //Send the proper header information
+  xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xmlhttp.onload = function (e) {
+    if (xmlhttp.readyState === 4 && xmlhttp.status === 200){
+      const response = xmlhttp.responseText;
+      // console.log('response=', response);
+      const error = getIndexFromList(response, ['error']) > -1;
+      // console.log('error=', error);
+
+      if (error) {
+        WAIT_UNTIL = new Date();
+        WAIT_UNTIL.setMinutes(WAIT_UNTIL.getMinutes() + WU_INTERVAL);
+        // console.log('ERROR, RATE LIMITED')
+        // console.log('WAIT_UNTIL is set to =', WAIT_UNTIL);
+        storeRQ(adData, WAIT_UNTIL);
+        return;
+      }
+
+      // const expStart = getIndexFromList(parsed, ['facebook']);
+      // if (expStart === -1) {
+      //   // console.log('Havent found FB text. Check the method.')
+      //   R_PROBLEMATIC.push(response);
+      // }
+      window.postMessage({
+        postRationale: {adId: adData.fb_id, adData, explanation: response}
+      }, "*");
+    }
+  }
+  xmlhttp.send(adData.explanationUrl);
 }
 
 function retryStoredRQ() {
