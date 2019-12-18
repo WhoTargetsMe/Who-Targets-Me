@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { sprintf } from 'sprintf-js';
-import { Form, FormField, FormInput, FormSelect, Col, Row, Button, InputGroup, Spinner } from 'elemental';
-import axios from 'axios';
-import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts'
-import strings, {changeLocale} from '../../helpers/localization.js';
-import {availableCountries, availableParties} from '../../helpers/parties.js'; //, availablePages
-import {getUserCount} from '../../helpers/functions.js';
+import { Col, Row, Button, Spinner } from 'elemental';
+import strings, { changeLocale } from '../../helpers/localization.js';
+import { availableCountries, availableParties } from '../../helpers/parties.js'; //, availablePages
+import { getUserCount } from '../../helpers/functions.js';
 
 import { PartyChart, PartyAds, RationalesView, PartyChartFilters } from './TargetingResults.js';
 import { DeleteRequestPage } from './DeleteRequestPage.js';
+import { GroupedBarChart } from '../GroupedBarChart/GroupedBarChart.js';
 import { countries, countries_in_native_lang } from '../PageRegister/countries.js';
 import IMGLogo from '../Shell/logo.svg';
 import Logo from '../Shell/wtm_logo_border.png';
@@ -30,6 +29,7 @@ export default class PageResults extends Component {
       currentView: "",
       ads: null,
       showAds: false,
+      showShareButtons: false,
       party: null,
       loadingAds: false,
       showingTargeting: false,
@@ -107,7 +107,7 @@ export default class PageResults extends Component {
             lastUpdated = start.getFullYear().toString() + '-' + (start.getMonth() + 1).toString() + '-' + start.getDate().toString();
             const filters = this.filtersExtract(response.jsonData.data, availableParties);
             chrome.storage.promise.local.set({'userData': response.jsonData.data, lastUpdated});
-            this.setState({userData: response.jsonData.data, filters, language: result.language});
+            this.setState({userData: response.jsonData.data, filters, language: 'en'});
             // console.log('user data', response.jsonData, result.language, lastUpdated);
           })
           .catch((error) => {
@@ -116,7 +116,7 @@ export default class PageResults extends Component {
         })
       }
     }).catch((error) => {
-      console.log(error);
+      console.log('wtf',error);
       this.setState({view: 'no_country'})
     })
   }
@@ -406,6 +406,11 @@ export default class PageResults extends Component {
       polit_left: strings.filters.polit_left,
       polit_right: strings.filters.polit_right,
     }
+    const tabs = {
+      general: strings.filters.general,
+      country: strings.filters.country + userCountry,
+      geo: strings.filters.geo,
+    }
     let headerTextLength = 80;
     if (party) {
       headerTextLength = (2 + party.partyDetails.party.length + strings.results.results_screen1_before.length + strings.results.results_screen1_after.length);
@@ -424,22 +429,22 @@ export default class PageResults extends Component {
       <div className="PageResults">
         <Row>
           <Col sm="1">
-            <div className="statbox">
+            <div className="statbox" style={{ padding: '0 10px', minHeight: 80 }}>
               <div style={{flex: 1, maxWidth: '100px'}}>
-                <img src={userCountry === 'BR' ? LogoBR : userCountry === 'FI' ? LogoFI : Logo}/>
+                <img src={userCountry === 'BR' ? LogoBR : userCountry === 'FI' ? LogoFI : Logo} style={{ width: 80 }} />
               </div>
               <div style={{flex: 1, minWidth: '500px'}}>
               {
                 view === "no_country" || view === "no_party" &&
-                <h3 style={{flex: 1, marginTop: '40px', fontWeight: 'bold'}}>{strings.results.gathering_data}</h3>
+                <h3 style={{flex: 1, marginTop: '35px', fontWeight: 'bold'}}>{strings.results.gathering_data}</h3>
               }
               {
                 view === "delete_request" &&
-                <h3 style={{flex: 1, marginTop: '40px', fontWeight: 'bold'}}>Important information</h3>
+                <h3 style={{flex: 1, marginTop: '35px', fontWeight: 'bold'}}>Important information</h3>
               }
               {
                 view === "data_deleted" &&
-                <h3 style={{flex: 1, marginTop: '40px', fontWeight: 'bold'}}>Thank you for using Who Targets Me</h3>
+                <h3 style={{flex: 1, marginTop: '35px', fontWeight: 'bold'}}>Thank you for using Who Targets Me</h3>
               }
               {
                 view === "display_parties" &&
@@ -475,7 +480,7 @@ export default class PageResults extends Component {
           </Col>
         </Row>
 
-        <Row style={{minHeight: 257, backgroundColor: '#f2f2f2'}}>
+        <Row style={{ minHeight: 415, backgroundColor: '#f2f2f2' }}>
         <Col sm="1">
           <div className="statbox mainstatbox">
             { view === "display_parties" && this.state.userData && this.state.userData.advertisers &&
@@ -606,8 +611,8 @@ export default class PageResults extends Component {
             }
             { view === "no_party" &&
               <div>
-                <div className='tabs'>
-                {Object.keys(filterLabels).map(f =>
+                <div style={{ position: 'absolute', top: -35, right: 0, }}>
+                {Object.keys(tabs).map(f =>
                   <Tab filter={filterLabels[f]}
                     active={this.state.tabIndex === f}
                     handleTabClick={() => this.handleTabClick(f)}
@@ -684,16 +689,17 @@ export default class PageResults extends Component {
                           </div>
                       }
                     </div> : <div>
-                      <PartyChartFilters
-                        advertisers={this.state.filters[this.state.tabIndex]}
+                      <GroupedBarChart
+                        advertisers={this.state.filters}
                         displayLabels={displayLabels}
+                        filterLabels={filterLabels}
                         partyList={partyList}
                         language={this.state.language}
                         userCountry={userCountry}
                         />
-                      <footer>
-                      <span style={{marginLeft: 30}}>{`${strings.results.how_did_we_calc1} ${countries[userCountry]}  |  `}</span>
-                      <a className='link' style={{marginLeft: 7}} target='_blank' href={userCountry === 'FI' ? 'http://okf.fi/vaalivahti-rationale' : 'https://whotargets.me/en/defining-political-ads/'}>{strings.results.how_did_we_calc2}</a>
+                      <footer style={{ marginTop: 10 }}>
+                        <span style={{ marginTop: 5, marginLeft: 30 }}>{`${strings.results.how_did_we_calc1} ${countries[userCountry]}  |  `}</span>
+                        <a className='link' style={{marginLeft: 7}} target='_blank' href={userCountry === 'FI' ? 'http://okf.fi/vaalivahti-rationale' : 'https://whotargets.me/en/defining-political-ads/'}>{strings.results.how_did_we_calc2}</a>
                       </footer>
                     </div>}
                 </div>
@@ -731,31 +737,34 @@ export default class PageResults extends Component {
           </div>
         </Col>
       </Row>
-      { view !== "delete_request" && view !== "data_deleted" && <Row style={{backgroundColor: 'white', minHeight: '120px', color: 'black'}}>
+      { view !== "delete_request" && view !== "data_deleted" && <Row style={{backgroundColor: 'white', minHeight: '70px', color: 'black'}}>
         <Col sm="1">
-          <div className="statbox" style={{height: '140px'}}>
+          <div className="statbox" style={{ alignItems: 'center', height: 'auto', minHeight: 'auto' }}>
             {userCountry !== 'GB' ?
               <div style={{padding: '5px 15px', height: '120px', margin: 'auto', textAlign: 'center'}}>
                 <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '25px'}}>{sprintf(strings.register.share3, userCount, userCountryNative)}</span>
                 <br/>
                 <span style={{fontSize: '1.05rem', lineHeight: '25px'}}>{sprintf(strings.register.share4, nextUserCount)}</span>
-              </div> : <div style={{padding: '0px 15px', height: '130px', margin: 'auto', textAlign: 'center'}}>
+              </div> : <div onClick={() => this.setState({ showShareButtons:true })} style={{ margin: '0 auto', padding: '0px 15px', textAlign: 'center', cursor: 'pointer' }}>
                 <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '25px'}}>
                   Share who’s targeting you!
                 </span>
-                <br/>
                 <div style={{fontSize: '1.05rem', lineHeight: '25px', padding: '0px 30px'}}>
-                  {this.state.userData.constituency && this.state.userData.constituency.name ?
-                    sharingMessageGB :
-                    sprintf(strings.register.share3, userCount, userCountryNative)
-
+                  {
+                    this.state.userData.constituency && this.state.userData.constituency.name ?
+                      sharingMessageGB : sprintf(strings.register.share3, userCount, userCountryNative)
                   }
                 </div>
-                <br/>
               </div>
             }
-            <Button style={{position: 'absolute', bottom: 5, left: 190}} type="hollow-primary" className='buttonFB' href={shareLinkFB(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties, constituencyName] : [null, userCountry, null, constituencyName])}>{strings.register.shareOnFacebook}</Button>
-            <Button style={{position: 'absolute', bottom: 5, left: 390}} type="hollow-primary" className='buttonTW' href={shareLinkTwitter(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties, constituencyName] : [null, userCountry, null, constituencyName])} >{strings.register.shareOnTwitter}</Button>
+            {
+              this.state.showShareButtons ?
+              <div>
+                <Button type="hollow-primary" className='buttonFB' style={{margin: 5, height: 40, lineHeight: '40px'}} href={shareLinkFB(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties, constituencyName] : [null, userCountry, null, constituencyName])}>{strings.register.shareOnFacebook}</Button>
+                <Button type="hollow-primary" className='buttonTW' style={{margin: 5, height: 40, lineHeight: '40px'}} href={shareLinkTwitter(party ? [party.partyDetails.party.toUpperCase(), userCountry, partyPercAmongParties, constituencyName] : [null, userCountry, null, constituencyName])} >{strings.register.shareOnTwitter}</Button>
+              </div>
+              : null
+            }
           </div>
         </Col>
       </Row>}
@@ -861,12 +870,6 @@ const shareLinkTwitter = ([party, userCountry, partyPercAmongParties, constituen
   return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(title) ;
 }
 
-
-function validateEmail(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
-}
-
 const Rationale = (props) => {
     return (
       <div style={{position: 'relative'}}>
@@ -877,189 +880,3 @@ const Rationale = (props) => {
 
 const politicalParties = [{label: "Alliance - Alliance Party of Northern Ireland",value: "party:103"},{label: "Christian Peoples Alliance",value: "party:79"},{label: "Conservative and Unionist Party",value: "party:52"},{label: "Democratic Unionist Party - D.U.P.",value: "party:70"},{label: "Green Party",value: "party:63"},{label: "Labour and Co-operative Party",value: "joint-party:53-119"},{label: "Labour Party",value: "party:53"},{label: "Liberal Democrats",value: "party:90"},{label: "Plaid Cymru - The Party of Wales",value: "party:77"},{label: "Scottish National Party (SNP)",value: "party:102"},{label: "SDLP (Social Democratic & Labour Party)",value: "party:55"},{label: "Sinn Fein",value: "party:39"},{label: "The Yorkshire Party",value: "party:2055"},{label: "UK Independence Party (UKIP)",value: "party:85"},{label: "-------- Other Parties --------",value: "NA",disabled: true},{label: "Independent / Other",value: "independent"},{label: "Alliance For Green Socialism",value: "party:67"},{label: "Animal Welfare Party",value: "party:616"},{label: "Apolitical Democrats",value: "party:845"},{label: "Ashfield Independents",value: "party:3902"},{label: "Better for Bradford",value: "party:4230"},{label: "Blue Revolution",value: "party:6342"},{label: "British National Party",value: "party:3960"},{label: "Christian Party",value: "party:2893"},{label: "Church of the Militant Elvis",value: "party:843"},{label: "Citizens Independent Social Thought Alliance",value: "party:6335"},{label: "Common Good",value: "party:375"},{label: "Communist League Election Campaign",value: "party:823"},{label: "Compass Party",value: "party:4089"},{label: "Concordia",value: "party:3983"},{label: "Demos Direct Initiative Party",value: "party:6318"},{label: "English Democrats",value: "party:17"},{label: "Friends Party",value: "party:6372"},{label: "Greater Manchester Homeless Voice",value: "party:6409"},{label: "Green Party",value: "party:305"},{label: "Humanity",value: "party:834"},{label: "Independent Save Withybush Save Lives",value: "party:2648"},{label: "Independent Sovereign Democratic Britain",value: "party:2575"},{label: "Libertarian Party",value: "party:684"},{label: "Money Free Party",value: "party:6387"},{label: "Movement for Active Democracy (M.A.D.)",value: "party:481"},{label: "National Health Action Party",value: "party:1931"},{label: "North of England Community Alliance",value: "party:5297"},{label: "Official Monster Raving Loony Party",value: "party:66"},{label: "Open Borders Party",value: "party:2803"},{label: "Patria",value: "party:1969"},{label: "People Before Profit Alliance",value: "party:773"},{label: "Pirate Party UK",value: "party:770"},{label: "Populist Party",value: "party:3914"},{label: "Rebooting Democracy",value: "party:2674"},{label: "Scotland's Independence Referendum Party",value: "party:6356"},{label: "Scottish Green Party",value: "party:130"},{label: "Social Democratic Party",value: "party:243"},{label: "Socialist Labour Party",value: "party:73"},{label: "Something New",value: "party:2486"},{label: "Southampton Independents",value: "party:6364"},{label: "Southend Independent Association",value: "party:6317"},{label: "Space Navies Party",value: "party:549"},{label: "Speaker seeking re-election",value: "ynmp-party:12522"},{label: "The Just Political Party",value: "party:2520"},{label: "The Justice & Anti-Corruption Party",value: "party:865"},{label: "The Liberal Party",value: "party:54"},{label: "The New Society of Worth",value: "party:2714"},{label: "The North East Party",value: "party:2303"},{label: "The Peace Party - Non-violence, Justice, Environment",value: "party:133"},{label: "The Radical Party",value: "party:2652"},{label: "The Realists' Party",value: "party:1871"},{label: "The Socialist Party of Great Britain",value: "party:110"},{label: "The Workers Party",value: "party:127"},{label: "Traditional Unionist Voice - TUV",value: "party:680"},{label: "Ulster Unionist Party",value: "party:83"},{label: "War Veteran's Pro-Traditional Family Party",value: "party:488"},{label: "Wessex Regionalists",value: "party:95"},{label: "Women's Equality Party",value: "party:2755"},{label: "Workers Revolutionary Party",value: "party:184"},{label: "Young People's Party YPP",value: "party:1912"}
 ]
-
-class ChooseParty extends Component {
-
-  constructor() {
-    super()
-    this.state = {
-      inputParty: '',
-      loading: false
-    }
-    this.updateUser = this.updateUser.bind(this)
-  }
-
-  render() {
-    return (
-      <div>
-        <Form>
-          <InputGroup contiguous>
-          	<InputGroup.Section grow>
-              <FormSelect disabled={this.props.done} options={politicalParties} onChange={(inputParty) => this.setState({inputParty})} firstOption="Please choose..." value={this.props.value} />
-          	</InputGroup.Section>
-          	<InputGroup.Section>
-          		<Button disabled={this.props.done} type="hollow-primary" onClick={this.updateUser}>{this.props.done ? "Done" : (this.state.loading ? "Loading..." : "Submit")}</Button>
-          	</InputGroup.Section>
-          </InputGroup>
-        </Form>
-      </div>
-    )
-  }
-
-  updateUser() {
-    if(this.state.inputParty != "" && this.state.inputParty != "NA") {
-      this.setState({loading: true})
-      this.props.updateUser({party: this.state.inputParty})
-    }
-  }
-
-}
-
-class ChooseEmail extends Component {
-
-  constructor() {
-    super()
-    this.state = {
-      inputEmail: '',
-      loading: false
-    }
-    this.handleFormChange = this.handleFormChange.bind(this)
-    this.updateUser = this.updateUser.bind(this)
-  }
-
-  componentWillMount() {
-    this.setState({inputEmail: this.props.value})
-  }
-
-  render() {
-    return (
-      <div>
-        <Form>
-          <InputGroup contiguous>
-          	<InputGroup.Section grow>
-              <FormInput type="email" placeholder="Please enter your email" onChange={(e) => this.handleFormChange('inputEmail', e.target.value)} value={this.state.inputEmail} />
-          	</InputGroup.Section>
-          	<InputGroup.Section>
-          		<Button type="hollow-primary" onClick={this.updateUser}>{this.state.loading ? "Loading..." : (this.props.done ? "Done" : "Submit")}</Button>
-          	</InputGroup.Section>
-          </InputGroup>
-        </Form>
-      </div>
-    )
-  }
-
-  handleFormChange(field, value) {
-    let newState = {}
-    newState[field] = value
-    this.setState(newState)
-  }
-
-  updateUser() {
-    if(this.state.inputEmail != "" && validateEmail(this.state.inputEmail)) {
-      this.setState({loading: true})
-      this.props.updateUser({email: this.state.inputEmail})
-        .then(() => {
-          this.setState({loading: false})
-        })
-    }
-  }
-
-}
-
-class TopAdvertisers extends Component {
-
-  render() {
-
-    return (
-      <div className="TopAdvertiser">
-        {this.props.data.map((item, index) => {
-          return (
-            <span key={index}>
-              {index !== 0 && <hr/>}
-              <p>{item.advertiser} <i>{item.count}</i></p>
-            </span>
-          )
-        })}
-      </div>
-    )
-  }
-}
-
-class AdvertiserBarChart extends Component {
-  render() {
-
-    return (
-      <ResponsiveContainer width="100%" height={200}>
-        <BarChart width={300} height={200} margin={{top: 50, right: 0, bottom: 0, left: 0}} data={this.props.data}>
-         <Bar dataKey='count' fill='#02e0c9' shape={<PartyBar/>}/>
-         {/*}<Tooltip label={"percentage"} />*/}
-       </BarChart>
-     </ResponsiveContainer>
-    )
-
-  }
-}
-
-const getPath = (x, y, width, height) => {
-  const sign = height >= 0 ? 1 : -1;
-  const newRadius = 1;
-  const clockWise = height >= 0 ? 1 : 0;
-  return `M ${x},${y + sign * newRadius}
-        A ${newRadius},${newRadius},0,0,${clockWise},${x + newRadius},${y}
-        L ${x + width - newRadius},${y}
-        A ${newRadius},${newRadius},0,0,${clockWise},${x + width},${y + sign * newRadius}
-        L ${x + width},${y + height - sign * newRadius}
-        A ${newRadius},${newRadius},0,0,${clockWise},${x + width - newRadius},${y + height}
-        L ${x + newRadius},${y + height}
-        A ${newRadius},${newRadius},0,0,${clockWise},${x},${y + height - sign * newRadius} Z`;
-}
-
-const PartyBar = (props) => {
-  let { fill, x, y, width, height } = props;
-  width = width > 50 ? 50 : width
-  return (
-    <g>
-      <path d={getPath(x, y, width, height)} stroke="none" fill={fill}/>
-      <image href={props.profile_photo} x={x} y={y - width} height={width} width={width}/>
-    </g>
-  )
-}
-
-const roundUp = (x) => {
-    x = parseInt(x);
-    if(x < 10) {
-      return 10;
-    }
-    var y = Math.pow(10, x.toString().length-1);
-    x = ((x+1)/y);
-    x = Math.ceil(x);
-    x = x*y;
-    return x;
-}
-
-{/* <Row style={{paddingTop: '20px', paddingBottom: '20px', margin: 'auto 10px'}}>
-  <Col sm="1">
-    <div className="statbox">
-      <img src={Logo} style={{height: '150px'}} />
-      <div style={{width: '100%'}}>
-        <p>{strings.results.no_results_explanation}</p>
-      </div>
-    </div>
-  </Col>
-</Row> */}
-{/* <Col sm="1/2" style={{overflow: 'scroll'}}>
-    <div className="statbox">
-      {this.state.userData.constituency &&
-      <div>
-        <h2>{this.state.userData.constituency.name}</h2>
-        <h4>{strings.results.my_constituency}</h4>
-        <hr/>
-        <p>{this.state.userData.constituency.users === 1 ?
-          sprintf(strings.results.constituency_size_one, this.state.userData.constituency.name)
-          : sprintf(strings.results.constituency_size, this.state.userData.constituency.users, this.state.userData.constituency.name, roundUp(this.state.userData.constituency.users))
-        }</p>
-      </div>
-      }
-
-    </div>
-</Col> */}
