@@ -81,7 +81,7 @@ export const GroupedBarChart = props => {
 
   return (
     <div>
-      <BarChart data={data} width={790} height={370} margin={{ left: 20 }}>
+      <BarChart data={data} width={790} height={310} margin={{ left: 20 }}>
         <CartesianGrid strokeDasharray="1 3" />
         <Tooltip content={<CustomTooltip userCountry={props.userCountry} />} />
         <Legend verticalAlign="top" height={36} />
@@ -97,7 +97,7 @@ export const GroupedBarChart = props => {
                 party => party.shortName === d
               ).color
             }
-            barSize={25}
+            barSize={50}
           />
         ))}
       </BarChart>

@@ -480,7 +480,7 @@ export default class PageResults extends Component {
           </Col>
         </Row>
 
-        <Row style={{ minHeight: 415, backgroundColor: '#f2f2f2' }}>
+        <Row style={{ minHeight: 370, backgroundColor: '#f2f2f2' }}>
         <Col sm="1">
           <div className="statbox mainstatbox">
             { view === "display_parties" && this.state.userData && this.state.userData.advertisers &&
@@ -697,7 +697,7 @@ export default class PageResults extends Component {
                         language={this.state.language}
                         userCountry={userCountry}
                         />
-                      <footer style={{ marginTop: 10 }}>
+                      <footer style={{ marginTop: 15 }}>
                         <span style={{ marginTop: 5, marginLeft: 30 }}>{`${strings.results.how_did_we_calc1} ${countries[userCountry]}  |  `}</span>
                         <a className='link' style={{marginLeft: 7}} target='_blank' href={userCountry === 'FI' ? 'http://okf.fi/vaalivahti-rationale' : 'https://whotargets.me/en/defining-political-ads/'}>{strings.results.how_did_we_calc2}</a>
                       </footer>
@@ -769,7 +769,7 @@ export default class PageResults extends Component {
         </Col>
       </Row>}
 
-      <Row style={{textAlign: 'center', fontSize: '10px', paddingLeft: '20px'}}>
+      <Row style={{textAlign: 'center', fontSize: '10px', paddingLeft: '20px', alignItems: 'center', minHeight: 50}}>
         <div style={{padding: '5px 15px 0px 15px',
         lineHeight: `${strings.links.privacy.title.length+strings.links.terms.title.length+strings.results.uninstall.length
           +strings.results.delete_data.length+strings.update.update_profile.length < 110 ? '30px' : '15px'}`, textAlign: 'left'}}>
