@@ -7,7 +7,8 @@ const re_qid = /qid.[0-9]+/;
 const re_ajaxify = /ajaxify":"\\\/ads\\\/preferences\\\/dialog\S+?"/;
 const re_adId = /id=[0-9]+/;
 const re_number = /[0-9]+/;
-const rationaleUrl = 'https://www.facebook.com/ads/preferences/dialog/?';
+// const rationaleUrl = 'https://www.facebook.com/ads/preferences/dialog/?'; OLD
+const rationaleUrl = 'https://www.facebook.com/api/graphql/';
 const sponsoredText = ['Sponsorjat','Sponzorované','Спонзорирано', 'Χορηγούμενη','Sponsitud','Sponzorováno','Спонсорирано', 'ממומן', 'Sponsoroitu','Sponsrad', 'Apmaksāta reklāma', 'Sponsorlu','Sponsrad','Спонзорисано','Sponzorované','Sponsa','Gesponsord','Sponset','Hirdetés', 'Sponsoreret', 'Sponzorováno', 'Sponsored', 'Sponsorisé', 'Commandité', 'Publicidad', 'Gesponsert', 'Χορηγούμενη', 'Patrocinado', 'Plaćeni oglas', 'Sponsorizzata ', 'Sponsorizzato', 'Sponsorizat', '赞助内容', 'مُموَّل', 'प्रायोजित', 'Спонзорисано', 'Реклама', '広告', 'ได้รับการสนับสนุน', 'Sponsorowane'];
 const politAdSubtitle = "entry_type=political_ad_subtitle";
 const non_ad = 'adsCategoryTitleLink';
@@ -430,10 +431,26 @@ window.addEventListener("message", function(event) {
     const buttonId = event.data.buttonId
     let adData = getAdFromButton(qId, buttonId);
     if (adData){
-      adData.fb_id = event.data.adId;
-      adData.explanationUrl = rationaleUrl + event.data.requestParams + '&' + $.param(event.data.asyncParams);
-      // console.log('if event.data.adButton adData ==== ', adData);
+      // parse client_token from requestParams
+      const start = event.data.requestParams.indexOf('client_token=');
+      const chunk = event.data.requestParams.slice(start, event.data.requestParams.length - 1);
+      const end = chunk.indexOf('&');
+      let clientToken = chunk.slice(0,end);
+      clientToken = clientToken.replace('\\u002540', '@')
+      let newParams = Object.assign({}, event.data.asyncParams);
+      newParams['av'] = event.data.asyncParams['__user']
+      newParams['fb_api_caller_class'] = "RelayModern"
+      newParams['fb_api_req_friendly_name'] = "AdsPrefWAISTDialogQuery"
+      newParams['variables'] = `{"adId": "${event.data.adId}", "clientToken": "${clientToken}"}`
+      newParams['doc_id'] = '2597540430315658'
 
+      adData.fb_id = event.data.adId;
+      adData.explanationUrl = $.param(newParams);
+      adData.rationaleUrl = rationaleUrl;
+      // console.log('event.data.asyncParams ==== ', event.data.asyncParams);
+      // console.log('event.data.asyncParams ==== ', event.data.requestParams.client_token);
+      // console.log('rationaleUrl ==== ', rationaleUrl);
+      // console.log('adData.explanationUrl', adData.explanationUrl)
       // send to db and call for rationales
       const container = $(adData.raw_ad); //$(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
       let fbStoryId = container.attr('id');
