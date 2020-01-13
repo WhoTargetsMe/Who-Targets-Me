@@ -9,7 +9,7 @@ const reduFunc = (a, b) => a + b;
 
 export const PartyChart = (props) => {
 
-  let maxHeight = 115;
+  let maxHeight = 180;
   let parties = [], partiesDisplay = [];
 
   for (let i=0; i<props.advertisers.length; i++){
@@ -269,9 +269,10 @@ export const RationalesView = (props) => {
   )
 }
 
+// Component to display old non-clickable tabs
 export const PartyChartFilters = (props) => {
 
-  let maxHeight = 115; //former = 180
+  let maxHeight = 180; //former = 180
   let partiesDisplay = []; //.sort((a,b) => parseInt(b.count)-parseInt(a.count))
 
   for (let i=0; i<props.displayLabels.length; i++){

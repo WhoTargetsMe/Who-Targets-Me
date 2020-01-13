@@ -49,7 +49,7 @@ export const availableParties = {
       {entityId: 12, party:'The Brexit Party', shortName: 'BRE', color: '#12b6cf'},
       {entityId: 4, party:'Scottish National Party', shortName: 'SNP', color: '#ffff00'},
       {entityId: 5, party:'Northern Irish Parties', shortName: 'NI', color: 'lightgrey'},
-      {entityId: 6, party:'Plaid Cymru', shortName: 'PC', color: 'blue'},
+      {entityId: 6, party:'Plaid Cymru', shortName: 'PC', color: 'darkgreen'},
       // {entityId: 7, party:'UKIP', shortName: 'UKIP', color: 'purple'},
       {entityId: 8, party:'The Green Party', shortName: 'Gre', color: 'green'},
       {entityId: 14, party:'Independent candidates', shortName: 'Ind', color: 'lightgrey'},

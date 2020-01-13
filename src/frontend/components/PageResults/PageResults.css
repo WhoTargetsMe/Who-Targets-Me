@@ -1,5 +1,5 @@
 .PageResults {
-  background-color: #2d2d2d;
+  /* background-color: #2d2d2d; */
   min-height: 100%;
   color: white;
   overflow: hidden;
@@ -22,7 +22,7 @@
 
 .statbox {
   width: 100%;
-  background-color: #fff;
+  background-color: transparent;
   padding: 10px;
   margin-bottom: 20px;
   animation-name: statbox-animation;
@@ -122,8 +122,8 @@
   display: flex;
   width: 600px;
   flex-flow: column nowrap;
-  height: 210px;
-  min-height: 210px;
+  height: 270px;
+  min-height: 270px;
   padding: 20px;
   font-size: 0.8rem;
   margin-left: 50px;
@@ -133,7 +133,7 @@
   flex:1;
   border-bottom: 2px solid #f2f2f2;
   justify-content: space-around;
-  min-height: 130px;
+  min-height: 180px;
   width: 600px;
 }
 .labels{
@@ -205,6 +205,13 @@ img{
 .buttonTW{
   background-color: #00aced;
   border-color: #00aced;
+}
+.mainLayout {
+  width: 165px;
+  height: 35px;
+  line-height: 35px;
+  font-size: 14px;
+  margin: 3px;
 }
 .resultsSubHeader{
   margin-top: -10px;
@@ -317,6 +324,7 @@ tr{
   text-align: left;
   font-family: Helvetica, Arial, Sans-Serif;
   font-size: 13px;
+  max-width: 700px;
 }
 .headerRow {
   line-height: 0;
@@ -348,7 +356,7 @@ tr{
 /* Tabs */
 .tabs{
   position: absolute;
-  left: 30px;
+  right: 30px;
   top: -35px;
 }
 .tab{
@@ -401,4 +409,13 @@ tr{
   padding: 0;
   text-align: center;
   margin-top: 1px;
+}
+
+/*Recharts styles*/
+.recharts-legend-item-text {
+  font-size: 12px;
+}
+.recharts-legend-wrapper {
+  padding-top: 10px;
+  padding-left: 50px;
 }
