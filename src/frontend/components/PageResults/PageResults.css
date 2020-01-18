@@ -120,27 +120,27 @@
 }
 .container{
   display: flex;
-  width: 600px;
+  width: 700px;
   flex-flow: column nowrap;
   height: 270px;
   min-height: 270px;
   padding: 20px;
   font-size: 0.8rem;
-  margin-left: 50px;
+  margin-left: 30px;
 }
 .chart{
   display: flex;
   flex:1;
   border-bottom: 2px solid #f2f2f2;
   justify-content: space-around;
-  min-height: 180px;
-  width: 600px;
+  min-height: 200px;
+  width: 700px;
 }
 .labels{
   display: flex;
   flex-shrink: 2;
   flex:1;
-  width: 600px;
+  width: 700px;
 }
 .bar{
   max-width: 50px;
@@ -356,7 +356,7 @@ tr{
 /* Tabs */
 .tabs{
   position: absolute;
-  right: 30px;
+  right: 50px;
   top: -35px;
 }
 .tab{
@@ -416,6 +416,5 @@ tr{
   font-size: 12px;
 }
 .recharts-legend-wrapper {
-  padding-top: 10px;
   padding-left: 50px;
 }

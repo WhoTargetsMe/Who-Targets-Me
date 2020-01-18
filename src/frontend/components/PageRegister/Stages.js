@@ -878,17 +878,21 @@ class OxfordSurvey extends Component {
 
 const shareLinkFB = (country) => {
   let title = strings.register.shareFacebook;
-  if (country === 'GB') {
-    title = "Our votes are being targeted by political parties on Facebook. Install Who Targets Me to see who’s targeting you this #GE2019"
-  }
+  // GE2019 -- block started
+  // if (country === 'GB') {
+  //   title = "Our votes are being targeted by political parties on Facebook. Install Who Targets Me to see who’s targeting you this #GE2019"
+  // }
+  // GE2019 -- block finished
   return "http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwhotargets.me&title=" + encodeURIComponent(title) ;
 }
 
 const shareLinkTwitter = (country) => {
   let title = strings.register.shareTwitter;
-  if (country === 'GB') {
-    title = "Our votes are being targeted by political parties on Facebook. Install Who Targets Me to see who’s targeting you this #GE2019"
-  }
+  // GE2019 -- block started
+  // if (country === 'GB') {
+  //   title = "Our votes are being targeted by political parties on Facebook. Install Who Targets Me to see who’s targeting you this #GE2019"
+  // }
+  // GE2019 -- block finished
   return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(title) ;
 }
 

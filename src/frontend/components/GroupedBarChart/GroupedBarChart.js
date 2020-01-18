@@ -47,7 +47,7 @@ function CustomTooltip(props) {
 
     return (
       <div
-        style={{ padding: "10px", borderRadius: 3, backgroundColor: "#000" }}
+        style={{ padding: "10px", borderRadius: 5, backgroundColor: "#222", border: '2px solid white' }}
       >
       <p style={{ color: "#fff", textAlign: 'center', textDecoration: 'underline' }}>{props.label}</p>
         {data.map(d => (
@@ -68,9 +68,7 @@ const toPercent = (decimal, fixed = 0) => {
 };
 
 export const GroupedBarChart = props => {
-  console.log('GroupedBarChart', props)
   const orderedKeysNewLayout = ['country', 'sex_male', 'sex_female', 'polit_left', 'polit_right', 'age_gt45', 'age_lt45'];
-  // const data = Object.keys(props.advertisers)
   const data = orderedKeysNewLayout.filter(d => Array.isArray(props.advertisers[d]))
     .map(d => {
       return {
@@ -84,16 +82,16 @@ export const GroupedBarChart = props => {
         )
       }
     })
-  console.log('DATA', data)
+  // console.log('DATA', data)
 
   return (
     <div>
-      <BarChart data={data} width={770} height={310} margin={{ left: 30 }}>
-        <CartesianGrid strokeDasharray="1 3" />
+      <BarChart data={data} width={770} height={290} margin={{ left: 30, top: 30, bottom: 20 }}>
+        <CartesianGrid strokeDasharray="1 3"/>
         <Tooltip content={<CustomTooltip userCountry={props.userCountry} />} />
-        <Legend verticalAlign="top" height={36} iconType="square" align="center"/>
+        <Legend verticalAlign="top" height={42} iconType="square" align="center" margin={{ bottom: 20 }}/>
         <XAxis dataKey="name" tick={<AxisTick />}/>
-        <YAxis tickFormatter={toPercent} tick={{fontSize: 12}}/>
+        <YAxis tickFormatter={toPercent} tick={{fontSize: 12}} domain={[0, 100]} ticks={[0,25,50,75,100]}/>
         {props.displayLabels.map(d => (
           <Bar
             key={d}
