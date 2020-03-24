@@ -820,7 +820,6 @@ export default class PageResults extends Component {
             {!["GB", "US"].includes(userCountry) ?
               <div style={{padding: '0px 15px', height: '70px', margin: 'auto', textAlign: 'left', display: 'flex', alignItems: 'center', flexFlow: 'row wrap'}}>
                 <span style={{fontWeight: 'bold', fontSize: '1.05rem', lineHeight: '25px'}}>{sprintf(strings.register.share3, userCount, userCountryNative)}</span>
-                <br/>
                 <span style={{fontSize: '1.05rem', lineHeight: '25px'}}>{sprintf(strings.register.share4, nextUserCount)}</span>
               </div> : <div style={{padding: '0px 15px', height: '70px', margin: 'auto', textAlign: 'left'}}>
                 <span style={{fontWeight: 'bold', fontSize: '1.1rem', lineHeight: '25px'}}>
@@ -833,7 +832,6 @@ export default class PageResults extends Component {
                     sprintf(strings.register.share3, userCount, userCountryNative)
                   }
                 </div>
-                <br/>
               </div>
             }
           </div>

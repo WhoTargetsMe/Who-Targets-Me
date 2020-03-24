@@ -9,7 +9,7 @@ const re_adId = /id=[0-9]+/;
 const re_number = /[0-9]+/;
 // const rationaleUrl = 'https://www.facebook.com/ads/preferences/dialog/?'; OLD
 const rationaleUrl = 'https://www.facebook.com/api/graphql/';
-const sponsoredText = ['Sponsorjat','Sponzorované','Спонзорирано', 'Χορηγούμενη','Sponsitud','Sponzorováno','Спонсорирано', 'ממומן', 'Sponsoroitu','Sponsrad', 'Apmaksāta reklāma', 'Sponsorlu','Sponsrad','Спонзорисано','Sponzorované','Sponsa','Gesponsord','Sponset','Hirdetés', 'Sponsoreret', 'Sponzorováno', 'Sponsored', 'Sponsorisé', 'Commandité', 'Publicidad', 'Gesponsert', 'Χορηγούμενη', 'Patrocinado', 'Plaćeni oglas', 'Sponsorizzata ', 'Sponsorizzato', 'Sponsorizat', '赞助内容', 'مُموَّل', 'प्रायोजित', 'Спонзорисано', 'Реклама', '広告', 'ได้รับการสนับสนุน', 'Sponsorowane'];
+const sponsoredText = ['Sponsored', 'Sponsorjat','Sponzorované','Спонзорирано', 'Χορηγούμενη','Sponsitud','Sponzorováno','Спонсорирано', 'ממומן', 'Sponsoroitu','Sponsrad', 'Apmaksāta reklāma', 'Sponsorlu','Sponsrad','Спонзорисано','Sponzorované','Sponsa','Gesponsord','Sponset','Hirdetés', 'Sponsoreret', 'Sponzorováno', 'Sponsorisé', 'Commandité', 'Publicidad', 'Gesponsert', 'Χορηγούμενη', 'Patrocinado', 'Plaćeni oglas', 'Sponsorizzata ', 'Sponsorizzato', 'Sponsorizat', '赞助内容', 'مُموَّل', 'प्रायोजित', 'Спонзорисано', 'Реклама', '広告', 'ได้รับการสนับสนุน', 'Sponsorowane'];
 const politAdSubtitle = "entry_type=political_ad_subtitle";
 const non_ad = 'adsCategoryTitleLink';
 const INTERVAL = 5000;
@@ -19,6 +19,7 @@ let asyncParamsGet = {};
 let frontadqueue = {};
 let POSTEDQUEUE = [];
 let CHECK_INTERVAL = 27000; //ms
+let COLLECTED = [];
 
 function updateAsyncParams() {
   const data = { asyncParams: true }
@@ -103,6 +104,7 @@ function isScrolledIntoView(elem) {
 // THIS WORKS
 function filterFrontAds(lst) {
   let newLst = [];
+  let newStyle = false;
   for (let i=0; i<lst.length; i++) {
     let ajaxify = lst[i].getAttribute('ajaxify');
     if (ajaxify && ajaxify.indexOf(politAdSubtitle) > -1
@@ -110,6 +112,11 @@ function filterFrontAds(lst) {
       && (lst[i].getAttribute('class').indexOf(non_ad) < 0)) {
         newLst.push(lst[i]);
         continue;
+    }
+
+    // detecting new FB markup style
+    if (sponsoredText.indexOf(lst[i].text) > -1 && $(lst[i]).attr('href').indexOf('/ads/about/') > -1) {
+        newStyle = true;
     }
 
     if (sponsoredText.indexOf(lst[i].text) > -1
@@ -125,7 +132,8 @@ function filterFrontAds(lst) {
         // console.log('******filter Front Ads**HIDDEN********');
     }
   }
-  return newLst;
+  // console.log('newLst--newStyle----', newLst, newStyle)
+  return {links: newLst, newStyle};
 }
 
 function filteredClassedAds(lst) {
@@ -152,14 +160,29 @@ function getParentAdDiv(elem) {
   return getParentAdDiv(elem.parentElement);
 }
 
-function filterCollectedAds(ads) {
+function getParentAdDivNewStyle(elem) {
+  // console.log('getParentAdDivNewStyle', $(elem).closest('[role="article"]'))
+  return $(elem).closest('[role="article"]');
+}
+
+function filterCollectedAds(ads, newStyle) {
+
   let filteredAds = [];
   let ids = [];
   for (let i=0; i<ads.length; i++) {
     const ad = ads[i];
-    const id = ad.getAttribute('id');
-    if (ad.className.indexOf('ad_collected') > -1 || ids.includes(id)) {
-      continue;
+    let id;
+    // console.log('filterCollectedAds', newStyle, 'COLLECTING?---', COLLECTED, ad)
+    if (newStyle) {
+      id = ad.attr('aria-labelledby');
+      if (COLLECTED.includes(id) || ids.includes(id)) {
+        continue;
+      }
+    } else {
+      id = ad.getAttribute('id');
+      if (ad.className.indexOf('ad_collected') > -1 || ids.includes(id)) {
+        continue;
+      }
     }
     filteredAds.push(ad);
     ids.push(id);
@@ -304,8 +327,8 @@ function findFrontAdsWithHiddenLettersSiblings(){
 }
 
 function getFrontAdFrames() {
-  let links = document.getElementsByTagName('a');
-  links = filterFrontAds(links);
+  let a_links = document.querySelectorAll('a');
+  let {links, newStyle} = filterFrontAds(a_links);
 
   links = links.concat(getFrontAdsByClass())
   links = links.concat(findFrontAdsWithHiddenLetters())
@@ -314,24 +337,41 @@ function getFrontAdFrames() {
 
   let frontAds = [];
   for (let i = 0; i < links.length; i++) {
-    const frame = getParentAdDiv(links[i]);
+    let frame;
+    if (newStyle) {
+      frame = getParentAdDivNewStyle(links[i]);
+    } else {
+      frame = getParentAdDiv(links[i]);
+    }
     frontAds.push(frame);
   }
-  return filterCollectedAds(frontAds);
+  return {frontAds: filterCollectedAds(frontAds, newStyle), newStyle};
 }
 
-// This should be fit to our methods
-function processFrontAd(frontAd) {
+// collecting and logging ads
+function processFrontAd(frontAd, newStyle) {
+  // console.log('processFrontAd', frontAd, COLLECTED)
   frontAd.className += " " + "ad_collected";
   const raw_ad = $(frontAd).html();
-  const parent_id = $(frontAd).attr('id');
-  // console.log('!!!!!raw_ad ------ collected', frontAd)
-  // console.log('!!!!!raw_ad ------ parent_id', parent_id)
+  let parent_id;
+  if (newStyle) {
+    parent_id = $(frontAd).attr('aria-labelledby');
+    COLLECTED.push(parent_id);
+  } else {
+    parent_id = $(frontAd).attr('id');
+  }
+  // console.log('!!!!!raw_ad ------ collected', newStyle, frontAd)
+  // console.log('!!!!!raw_ad ------ parent_id', newStyle, parent_id)
 
   // ----- Temporarily collect ads even if rationales are not there ----- //
   const container = $(raw_ad);
-  let fbStoryId = container.attr('id');
-  if (parent_id.indexOf("hyperfeed") > -1) {
+  let fbStoryId;
+  if (newStyle) {
+    fbStoryId = parent_id;
+  } else {
+    fbStoryId = container.attr('id');
+  }
+  if (!newStyle && parent_id.indexOf("hyperfeed") > -1) {
     fbStoryId = parent_id;
   }
   let extVersion = chrome.runtime.getManifest().version;
@@ -344,6 +384,7 @@ function processFrontAd(frontAd) {
       html: container.html()
     }]
   };
+  // console.log('OBSERVER-From SEND AD Collect--> extVersion', finalPayload)
 
   chrome.storage.promise.local.get('general_token')
     .then((result) => {
@@ -376,13 +417,17 @@ function grabFrontAds() {
   if (window.location.href.indexOf('ads/preferences') === -1) {
     try {
       // console.log('Grabbing front ads...')
-      const frontAds = getFrontAdFrames();
-      // console.log(frontAds);
-      for (let i=0; i<frontAds.length; i++) {
-        let adData = processFrontAd(frontAds[i]);
-        adData['message_type'] = 'front_ad_info';
-        getExplanationUrlFrontAds(frontAds[i], adData);
+      const {frontAds, newStyle} = getFrontAdFrames();
+      // console.log('grabFrontAds', newStyle, frontAds);
+
+        for (let i=0; i<frontAds.length; i++) {
+          let adData = processFrontAd(frontAds[i], newStyle);
+          adData['message_type'] = 'front_ad_info';
+          if (!newStyle){
+            getExplanationUrlFrontAds(frontAds[i], adData);
+          }
         }
+
       } catch (err) {
       console.log(err);
     }

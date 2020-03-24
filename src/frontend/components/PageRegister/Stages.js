@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import strings from '../../helpers/localization.js';
 import {getUserCount} from '../../helpers/functions.js';
-import {Button, InputGroup, FormInput, FormField, FormSelect, FormRow, Spinner, Row, Card, Col} from 'elemental';
+import {Button, InputGroup, FormInput, FormField, FormSelect, FormRow, Spinner, Row, Card, Col, Checkbox} from 'elemental';
 import api from '../../helpers/api.js';
 import { countries, countries_in_native_lang } from './countries.js';
 import languages from './languages.js';
@@ -102,30 +102,77 @@ class LanguageSelector extends Component {
 }
 
 class TermsPrivacy extends Component {
+  constructor(){
+    super()
+    this.state={
+      consent1: false,
+      consent2: false,
+      consent3: false,
+      consentText: '',
+      consentElements: null
+    }
+    this.onCheck = this.onCheck.bind(this);
+    this.prepareConsentText = this.prepareConsentText.bind(this);
+  }
+  componentDidMount(){
+    this.prepareConsentText();
+  }
+  prepareConsentText(){
+    let consentText = '';
+    let obj = {};
+    for (let i=1; i<4; i++) {
+      const key = `terms_consent${i}`;
+      let arr = strings.register[key];
+      for (let j=0; j < arr.length; j++) {
+        consentText += arr[j];
+      }
+      if (i === 1){
+        obj[key] = (<span><span>{arr[0]}</span><a href="https://whotargets.me/en/terms/">{arr[1].replace('TERMS!', '')}</a></span>)
+      } else if (i === 2) {
+        obj[key] = (<span><span>{arr[0]}</span><a href="https://whotargets.me/en/privacy-policy/">{arr[1].replace('PP!', '')}</a><span>{arr[2]}</span></span>)
+      } else {
+        obj[key] = (<span><span>{arr[0]}</span><a href="https://whotargets.me/en/privacy-policy/">{arr[1].replace('PP!', '')}</a></span>)
+      }
+    }
+    consentText = consentText.replace(/TERMS!/g, '').replace(/PP!/g, '');
+    this.setState({
+      consentText,
+      consentElements: obj
+    });
+  }
+  onCheck(consent){
+    const value = !this.state[consent];
+    this.setState({[consent]:value});
+  }
   render() {
     const {back, next, signupState, updating_profile} = this.props;
 
     return (
       <span>
         <Container updating_profile={updating_profile}>
-          <div className="fullwidth" style={{margin: 'auto', marginBottom: '20px', width: 650, textAlign: 'left'}}>
+          <div className="fullwidth" style={{margin: 'auto', marginBottom: '20px', width: 650, textAlign: 'left', paddingTop: 40}}>
             <p><b>{strings.register.terms5}</b></p>
             <ul>
               <li style={{listStyle: 'disc'}}>{strings.register.terms6}</li>
               <li style={{listStyle: 'disc'}}>{strings.register.terms7}</li>
             </ul>
+            <div className='inline-controls' style={{margin: '20px 50px', marginLeft: 0, textAlign: 'left'}}>
+              <Checkbox onChange={() => this.onCheck('consent1')}/><span>{this.state.consentElements && this.state.consentElements.terms_consent1}</span><br/>
+              <Checkbox onChange={() => this.onCheck('consent2')}/><span>{this.state.consentElements && this.state.consentElements.terms_consent2}</span><br/>
+              <Checkbox onChange={() => this.onCheck('consent3')}/><span>{this.state.consentElements && this.state.consentElements.terms_consent3}</span><br/>
+            </div>
             <p>{strings.register.terms8}</p>
             <p>
               <span>{`${strings.register.terms1} `}<a href="https://whotargets.me/en/terms/">{strings.register.terms2}</a>{` ${strings.register.terms3} `}<a href="https://whotargets.me/en/privacy-policy/">{strings.register.terms4}.</a></span>
             </p>
           </div>
           {signupState.language === 'il' ? <div className="fullwidth">
-            <Button type="hollow-success" style={{marginRight: '20px'}} onClick={next}>{String.fromCharCode("171")} {strings.register.agree}</Button>
+            <Button type="hollow-success" style={{marginRight: '20px'}} onClick={() => next({consent: this.state.consentText})} disabled={!this.state.consent1 || !this.state.consent2 || !this.state.consent3}>{String.fromCharCode("171")} {strings.register.agree}</Button>
             <Button type="hollow-primary" className='buttonBack' onClick={back}>{strings.register.back + " " + String.fromCharCode("187")}</Button>
           </div> :
           <div className="fullwidth">
             <Button type="hollow-primary" className='buttonBack' onClick={back}>{String.fromCharCode("171") + " " + strings.register.back}</Button>
-            <Button type="hollow-success" onClick={next}>{strings.register.agree} {String.fromCharCode("187")}</Button>
+            <Button type="hollow-success" onClick={() => next({consent: this.state.consentText})} disabled={!this.state.consent1 || !this.state.consent2 || !this.state.consent3}>{strings.register.agree} {String.fromCharCode("187")}</Button>
           </div>}
         </Container>
       </span>
@@ -603,13 +650,13 @@ class AttemptSignup extends Component {
   }
 
   register() {
-    const {age, gender, postcode, country, political_affiliation} = this.props.signupState;
+    const {age, gender, postcode, country, political_affiliation, consent} = this.props.signupState;
     const {next, signupState, updating_profile, access_token} = this.props;
     let {survey} = this.props.signupState;
     if (!survey) { survey = null; }
     const email = null;
     this.setState({awaitingResponse: true, error: null});
-    // console.log('api.post', age, gender, postcode, country, political_affiliation, survey)
+    console.log('api.post', age, gender, postcode, country, political_affiliation, survey, consent)
     api.post('user/create', {
       json: {age,
         gender,
@@ -618,7 +665,8 @@ class AttemptSignup extends Component {
         political_affiliation,
         survey,
         email,
-        update: updating_profile
+        update: updating_profile,
+        consent
       }
     })
       .then((response) => { // The rest of the validation is down to the server

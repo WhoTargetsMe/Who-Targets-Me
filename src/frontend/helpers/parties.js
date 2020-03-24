@@ -82,15 +82,10 @@ export const availableParties = {
   'US': [
     {entityId: 1, party:'Donald Trump', shortName: 'Trump', color: '#8b0000'},
     {entityId: 2, party:'Joe Biden', shortName: 'Biden', color: '#12204A'},
-    {entityId: 3, party:'Pete Buttigieg', shortName: 'Pete', color: '#f2ba42'},
-    {entityId: 4, party:'Elizabeth Warren', shortName: 'Warr', color: '#b7e4cf'},
-    {entityId: 5, party:'Bernie Sanders', shortName: 'Bern', color: '#2B9CD9'},
-    {entityId: 9, party:'Michael Bloomberg', shortName: 'Blbg', color: '#99ccff'},
-    {entityId: 11, party:'Tom Steyer', shortName: 'Stey', color: '#1322a8'},
-    // {entityId: 10, party:'Other Democratic Presidential Candidates', shortName: 'Other Dems', color: 'blue'},
+    {entityId: 5, party:'Bernie Sanders', shortName: 'Sanders', color: '#2B9CD9'},
     {entityId: 6, party:'Republicans', shortName: 'GOP', color: 'red'},
     {entityId: 7, party:'Democrats', shortName: 'Dems', color: 'blue'},
-    {entityId: 8, party:'Others', shortName: 'Oth', color: 'grey'},
+    {entityId: 8, party:'Non-party', shortName: 'Oth', color: 'grey'},
   ],
   'HU': [
     {entityId: 1, party:'Fidesz - Magyar Polgári Szövetség', shortName: 'FID', color: '#fe6b12'},

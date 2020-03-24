@@ -20,6 +20,7 @@ const languages = [
     {value: "si", label: "Slovenščina"},
     {value: "sk", label: "Slovenčina"},
     {value: "se", label: "Svenska"},
+    {value: "sr", label: "Srpski"},
     {value: "fi", label: "Suomi"},
     {value: "bg", label: "Български"},
     {value: "gr", label: "ελληνικά"},
