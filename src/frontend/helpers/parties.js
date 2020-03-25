@@ -36,6 +36,7 @@ export const availableCountries = [
   {id: 'SK', country: "Slovakia"},
   {id: 'SI', country: "Slovenia"},
   {id: 'LI', country: "Liechtenstein"},
+  {id: 'RS', country: "Serbia"},
   // {id: 'MK', country: "North Macedonia"},
   // {id: 'NO', country: "Norway"},
   // {id: 'IS', country: "Iceland"},
@@ -82,9 +83,9 @@ export const availableParties = {
   'US': [
     {entityId: 1, party:'Donald Trump', shortName: 'Trump', color: '#8b0000'},
     {entityId: 2, party:'Joe Biden', shortName: 'Biden', color: '#12204A'},
-    {entityId: 5, party:'Bernie Sanders', shortName: 'Sanders', color: '#2B9CD9'},
+    {entityId: 5, party:'Bernie Sanders', shortName: 'Sanders', color: '#005f92'},
     {entityId: 6, party:'Republicans', shortName: 'GOP', color: 'red'},
-    {entityId: 7, party:'Democrats', shortName: 'Dems', color: 'blue'},
+    {entityId: 7, party:'Democrats', shortName: 'Dems', color: '#00AEF3'},
     {entityId: 8, party:'Non-party', shortName: 'Oth', color: 'grey'},
   ],
   'HU': [
@@ -485,6 +486,13 @@ export const availableParties = {
     {entityId: 6, party:'Bezpartyjni i Samorządowcy', shortName: 'BEZ', color: '#B6332B'},
     {entityId: 7, party:'Skuteczni Piotra Liroya Marca', shortName: 'SKU', color: '#ED1D25'},
     {entityId: 8, party:'Inne', shortName: 'IN', color: '#d69d55'},
+  ],
+  'RS': [
+    {entityId: 1, party:'Izrazito za EU (DST, PSG, LDP, NBG, SDS, NOV, SMS, LSV, 1O5, S21)', shortName: 'Izrazito za EU', color: 'darkblue'},
+    {entityId: 2, party:'Umereno za EU (SNS, SSP, SVM, ZZS)', shortName: 'Umereno za EU', color: '#72bcd4'},
+    {entityId: 3, party:'Neutralni (SPS, SZS, NST, SPA, DJB, NSR, JSR, SDA)', shortName: 'Neutralni', color: 'grey'},
+    {entityId: 4, party:'Protiv EU (DVE, SRS, SDE, DSS, MET, POS)', shortName: 'Protiv EU', color: 'darkred'},
+    {entityId: 5, party:'Drugi', shortName: 'Drugi', color: '#ccc'},
   ],
   // 'MK': [
   //   {entityId: 1, party:'European People`s Party', shortName: 'VMRO', color: '#e10514'},

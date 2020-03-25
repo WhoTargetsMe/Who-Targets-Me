@@ -66,10 +66,23 @@ function getAdFromButton(qId,buttonId) {
 function getMoreButtonFrontAd(adFrame) {
   return adFrame.querySelector('a[data-testid="post_chevron_button"]');
 }
+// New style
+function getMoreButtonFrontAdNew(adFrame) {
+  console.log('getMoreButtonFrontAdNew(adFrame)', adFrame)
+  console.log('Vanilla', adFrame.querySelector('div[aria-haspopup="menu"]'))
+  console.log('JQ', adFrame.find('div[aria-haspopup="menu"]'))
+  return adFrame.querySelector('div[aria-haspopup="menu"]');
+}
 
 function getButtonIdAdFrame(adFrame) {
   const moreButton = getMoreButtonFrontAd(adFrame);
   return moreButton.parentElement.id;
+}
+// New style
+function getButtonIdAdFrameNew(adFrame) {
+  console.log('getButtonIdAdFrameNew(adFrame)', adFrame)
+  const moreButton = getMoreButtonFrontAdNew(adFrame);
+  return moreButton;
 }
 
 function hoverOverButton(adFrame) {
@@ -80,9 +93,19 @@ function hoverOverButton(adFrame) {
   $(moreButton).trigger('mouseover');
 }
 
-function getExplanationUrlFrontAds(frontAd,adData) {
+function getExplanationUrlFrontAds(frontAd, adData) {
   // console.log('Processing - getExplanationUrlFrontAds' );
   const buttonId = getButtonIdAdFrame(frontAd);
+  adData.buttonId = buttonId;
+  addToFrontAdQueue(adData);
+  hoverOverButton(frontAd);
+  return;
+}
+
+// New style
+function getExplanationUrlFrontAdsNew(frontAd, adData) {
+  console.log('Processing - getExplanationUrlFrontAdsNew' );
+  const buttonIdNew = getButtonIdAdFrameNew(frontAd);
   adData.buttonId = buttonId;
   addToFrontAdQueue(adData);
   hoverOverButton(frontAd);
@@ -423,7 +446,9 @@ function grabFrontAds() {
         for (let i=0; i<frontAds.length; i++) {
           let adData = processFrontAd(frontAds[i], newStyle);
           adData['message_type'] = 'front_ad_info';
-          if (!newStyle){
+          if (newStyle){
+            //getExplanationUrlFrontAdsNew(frontAds[i], adData);
+          } else {
             getExplanationUrlFrontAds(frontAds[i], adData);
           }
         }
