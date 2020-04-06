@@ -20,6 +20,7 @@ let frontadqueue = {};
 let POSTEDQUEUE = [];
 let CHECK_INTERVAL = 27000; //ms
 let COLLECTED = [];
+let COLLECTED_ADS_NEW = [];
 
 function updateAsyncParams() {
   const data = { asyncParams: true }
@@ -68,10 +69,10 @@ function getMoreButtonFrontAd(adFrame) {
 }
 // New style
 function getMoreButtonFrontAdNew(adFrame) {
-  console.log('getMoreButtonFrontAdNew(adFrame)', adFrame)
-  console.log('Vanilla', adFrame.querySelector('div[aria-haspopup="menu"]'))
-  console.log('JQ', adFrame.find('div[aria-haspopup="menu"]'))
-  return adFrame.querySelector('div[aria-haspopup="menu"]');
+  // console.log('getMoreButtonFrontAdNew(adFrame)', adFrame)
+  // console.log('Vanilla', adFrame.html().querySelector('div[aria-haspopup="menu"]'))
+  // console.log('JQ', adFrame.find('div[aria-haspopup="menu"]'))
+  return adFrame.find('div[aria-haspopup="menu"]');
 }
 
 function getButtonIdAdFrame(adFrame) {
@@ -79,11 +80,11 @@ function getButtonIdAdFrame(adFrame) {
   return moreButton.parentElement.id;
 }
 // New style
-function getButtonIdAdFrameNew(adFrame) {
-  console.log('getButtonIdAdFrameNew(adFrame)', adFrame)
-  const moreButton = getMoreButtonFrontAdNew(adFrame);
-  return moreButton;
-}
+// function getButtonIdAdFrameNew(adFrame) {
+//   console.log('getButtonIdAdFrameNew(adFrame)', adFrame)
+//   const moreButton = getMoreButtonFrontAdNew(adFrame);
+//   return moreButton;
+// }
 
 function hoverOverButton(adFrame) {
   // console.log('HOVERING - hoverOverButton' );
@@ -91,6 +92,84 @@ function hoverOverButton(adFrame) {
   // console.log('HOVERING - moreButton', moreButton)
   moreButton.dispatchEvent(new MouseEvent('mouseover'));
   $(moreButton).trigger('mouseover');
+}
+
+function clickButtonNew(adFrame) {
+  console.log('Clicking - clickButtonNew 1', adFrame);
+  const moreButton = getMoreButtonFrontAdNew(adFrame);
+  // moreButton.dispatchEvent(new MouseEvent('click'));
+  const hideMenu = () => {
+    for (let i=0; i<5; i++){
+      setTimeout(function () {
+        document.querySelector('div[data-pagelet="page"] + span').setAttribute('style', 'display: none;')
+        const menu = document.querySelector('div[data-pagelet="page"] + span span div div div');
+        if (menu){
+          menu.setAttribute('style','display:none;')
+        }
+      }, 10*i*i);
+    }
+  }
+  $(moreButton).trigger('click');
+  console.log('@@@@@@@@ 1', new Date())
+  hideMenu();
+
+  return new Promise((resolve) => setTimeout(function(){resolve()}, 1000))
+    .then(res => {
+      console.log('////Second click PRE////', new Date())
+      const menu_item = document.querySelectorAll('div[data-pagelet="page"] + span[class="ttbfdpzt"] [role="menuitem"]')[2]
+      console.log('////Second click////', menu_item)
+      $(menu_item).trigger('click');
+
+      const hideModal = () => {
+        const modals = document.querySelectorAll('[data-pagelet="root"]');
+        for (let i=0; i<modals.length; i++) {
+          if (modals[i].clientHeight > 0){
+            modals[i].setAttribute('style', 'display: none;')
+            console.log('hiding modal', new Date(), modals[i])
+          }
+        }
+      }
+
+      setTimeout(function(){
+        try {
+          hideModal()
+        } catch(e) {
+          setTimeout(function(){
+            console.log('Keycommand_wrapper_ModalLayer @2', new Date())
+            hideModal()
+          }, 100);
+        }
+      }, 100)
+
+      return new Promise((resolve) => setTimeout(function(){resolve()}, 2000))
+        .then(res => {
+          try {
+            const waist_info = document.querySelectorAll('[data-testid="Keycommand_wrapper_ModalLayer"] [role="dialog"]')[1].innerText
+            console.log('////Third click New////', new Date(), waist_info, document.querySelectorAll('[data-testid="Keycommand_wrapper_ModalLayer"] [role="dialog"]')[1])
+            // document.querySelectorAll('[data-testid="Keycommand_wrapper_ModalLayer"] [role="dialog"]')[1].setAttribute('style', 'display: none;')
+            if (waist_info.length && waist_info.indexOf('Notfifications') === -1) {
+              const close_button = document.querySelectorAll('[data-testid="Keycommand_wrapper_ModalLayer"] [role="dialog"]')[1].childNodes[0].querySelector('[role="button"]')
+              $(close_button).trigger('click');
+            }
+          } catch (e) {
+            console.log('New style didnt work')
+            try {
+              const waist_info = document.querySelector('[role="dialog"]').innerText
+              console.log('////Third click Old////', new Date(), waist_info)
+              if (waist_info.length && waist_info.indexOf('Notfifications') === -1) {
+                const close_button = document.querySelector('[role="dialog"] [role="button"]')
+                $(close_button).trigger('click');
+              }
+            } catch (e) {
+              console.log('OLd style didnt work')
+            }
+          }
+        })
+    })
+
+  // const mouseoverEvent = new Event('click');
+  // console.log('Clicking - clickButtonNew 2', moreButton, mouseoverEvent);
+  // moreButton.dispatchEvent(mouseoverEvent);
 }
 
 function getExplanationUrlFrontAds(frontAd, adData) {
@@ -104,24 +183,37 @@ function getExplanationUrlFrontAds(frontAd, adData) {
 
 // New style
 function getExplanationUrlFrontAdsNew(frontAd, adData) {
-  console.log('Processing - getExplanationUrlFrontAdsNew' );
-  const buttonIdNew = getButtonIdAdFrameNew(frontAd);
-  adData.buttonId = buttonId;
+  // console.log('Processing - getExplanationUrlFrontAdsNew frontAd --', frontAd);
+  // console.log('Processing - getExplanationUrlFrontAdsNew adData --', adData);
+  adData.buttonId = adData.parent_id;
   addToFrontAdQueue(adData);
-  hoverOverButton(frontAd);
+  clickButtonNew(frontAd);
   return;
 }
 
-function isScrolledIntoView(elem) {
+function isScrolledIntoView(elem, newStyle) {
   if (!elem.offsetParent) { return; }
   //    return true
-  const docViewTop = $(window).scrollTop();
-  const docViewBottom = docViewTop + $(window).height();
 
-  const elemTop = $(elem).offset().top;
-  const elemBottom = elemTop + $(elem).height();
+  const docViewTop = window.scrollY;
+  const docViewBottom = docViewTop + window.innerHeight;
 
-  return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+  const elemTop = elem.offsetTop;
+  const elemBottom = elemTop + elem.clientHeight;
+  if (newStyle) {
+    elem = $(elem).closest('[role="article"]')
+    const docViewTop = window.scrollY;
+    const docViewBottom = docViewTop + window.innerHeight;
+
+    const elemTop = elem.offset().top;
+    const elemBottom = elemTop + elem.height();
+    // console.log('docViewTop', docViewTop, 'docViewBottom', docViewBottom, 'elemTop', elemTop, 'elemBottom', elemBottom)
+    // console.log('COND --- (elemBottom <= docViewTop)', elemBottom, docViewTop, (elemBottom <= docViewTop))
+    // return (elemBottom <= docViewTop);
+    return (elemTop < docViewTop);
+  } else {
+    return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+  }
 }
 
 // THIS WORKS
@@ -129,28 +221,28 @@ function filterFrontAds(lst) {
   let newLst = [];
   let newStyle = false;
   for (let i=0; i<lst.length; i++) {
+    // detecting new FB markup style
+    if (sponsoredText.indexOf(lst[i].text) > -1 && $(lst[i]).attr('href').indexOf('/ads/about/') > -1) {
+      newStyle = true;
+    }
     let ajaxify = lst[i].getAttribute('ajaxify');
     if (ajaxify && ajaxify.indexOf(politAdSubtitle) > -1
-      && (isScrolledIntoView(lst[i]))
+      && (isScrolledIntoView(lst[i], newStyle))
       && (lst[i].getAttribute('class').indexOf(non_ad) < 0)) {
         newLst.push(lst[i]);
         continue;
     }
 
-    // detecting new FB markup style
-    if (sponsoredText.indexOf(lst[i].text) > -1 && $(lst[i]).attr('href').indexOf('/ads/about/') > -1) {
-        newStyle = true;
-    }
 
     if (sponsoredText.indexOf(lst[i].text) > -1
       && (lst[i].getAttribute('class') && lst[i].getAttribute('class').indexOf(non_ad) < 0)
-      && isScrolledIntoView(lst[i])) {
+      && isScrolledIntoView(lst[i], newStyle)) {
         newLst.push(lst[i]);
     }
 
     if (sponsoredText.indexOf(lst[i].text) > -1
       && (lst[i].getAttribute('class') && lst[i].getAttribute('class').indexOf(non_ad) < 0)
-      && !isScrolledIntoView(lst[i]) ){
+      && !isScrolledIntoView(lst[i], newStyle) ){
         // console.log(lst[i])
         // console.log('******filter Front Ads**HIDDEN********');
     }
@@ -162,13 +254,13 @@ function filterFrontAds(lst) {
 function filteredClassedAds(lst) {
   let newLst = [];
   for (let i=0; i<lst.length; i++) {
-    if (isScrolledIntoView(lst[i])) {
+    if (isScrolledIntoView(lst[i], newStyle)) {
       newLst.push(lst[i])
     }
 
     if (sponsoredText.indexOf(lst[i].text) > -1
       && (lst[i].getAttribute('class') && lst[i].getAttribute('class').indexOf(non_ad) < 0)
-      && !isScrolledIntoView(lst[i])) {
+      && !isScrolledIntoView(lst[i], newStyle)) {
       // console.log(lst[i])
       // console.log('******filtered Classed Ads****HIDDEN******');
     }
@@ -371,7 +463,7 @@ function getFrontAdFrames() {
   return {frontAds: filterCollectedAds(frontAds, newStyle), newStyle};
 }
 
-// collecting and logging ads
+// works - collecting and logging ads (old, new)
 function processFrontAd(frontAd, newStyle) {
   // console.log('processFrontAd', frontAd, COLLECTED)
   frontAd.className += " " + "ad_collected";
@@ -398,6 +490,7 @@ function processFrontAd(frontAd, newStyle) {
     fbStoryId = parent_id;
   }
   let extVersion = chrome.runtime.getManifest().version;
+
   const finalPayload = { // Queue advert for server
     typeId: 'FBADVERT',
     extVersion,
@@ -409,6 +502,12 @@ function processFrontAd(frontAd, newStyle) {
   };
   // console.log('OBSERVER-From SEND AD Collect--> extVersion', finalPayload)
 
+  const adNew = {};
+  adNew.parent_id = parent_id;
+  adNew.extVersion = extVersion;
+  adNew.fbStoryId = fbStoryId;
+  adNew.html = container.html();
+
   chrome.storage.promise.local.get('general_token')
     .then((result) => {
       if (result) {
@@ -417,7 +516,11 @@ function processFrontAd(frontAd, newStyle) {
           .then((response) => {
             // response completed, no log
           });
-          container.addClass('fetched');
+          // container.addClass('fetched');
+
+          // store new ads for linking with rationales
+          adNew.token = result.general_token;
+          COLLECTED_ADS_NEW.push(adNew);
         }
     }).catch((error) => {
       console.log(error);
@@ -441,13 +544,16 @@ function grabFrontAds() {
     try {
       // console.log('Grabbing front ads...')
       const {frontAds, newStyle} = getFrontAdFrames();
+      if (newStyle) {
+        document.querySelector('div[data-pagelet="page"] + span').setAttribute('style', '')
+      }
       // console.log('grabFrontAds', newStyle, frontAds);
 
         for (let i=0; i<frontAds.length; i++) {
           let adData = processFrontAd(frontAds[i], newStyle);
           adData['message_type'] = 'front_ad_info';
           if (newStyle){
-            //getExplanationUrlFrontAdsNew(frontAds[i], adData);
+            getExplanationUrlFrontAdsNew(frontAds[i], adData);
           } else {
             getExplanationUrlFrontAds(frontAds[i], adData);
           }
@@ -460,35 +566,56 @@ function grabFrontAds() {
   setTimeout(grabFrontAds, INTERVAL);
 }
 
-function sendRationale(adId, adData, explanation) {
-  if (POSTEDQUEUE.includes(adId)) { return; }
-  POSTEDQUEUE.push(adId);
-  // console.log('Update QUEUE++++++RESULT', POSTEDQUEUE)
-  // console.log('sendExplanationDB  BG called', adId)
+function sendRationale(postData) {
+  const {adId, adData, explanation, advertiserId, advertiserName} = postData;
+  let fbStoryId;
+  let extVersion;
+  let token;
+
+  if (advertiserName) {
+    // New
+    if (POSTEDQUEUE.includes(advertiserId)) { return; }
+    POSTEDQUEUE.push(advertiserId);
+
+    const adNew = COLLECTED_ADS_NEW.find(ad => ad.html.indexOf(advertiserName) > -1)
+    if (adNew && adNew.fbStoryId) {
+      fbStoryId = adNew.fbStoryId;
+      extVersion  = adNew.extVersion;
+      token = adNew.token;
+    }
+    COLLECTED_ADS_NEW = COLLECTED_ADS_NEW.filter(ad => ad.fbStoryId !== fbStoryId);
+  } else {
+    // Old
+    if (POSTEDQUEUE.includes(adId)) { return; }
+    POSTEDQUEUE.push(adId);
+    const container = $(adData.raw_ad); //$(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
+    let fbStoryId = container.attr('id');
+    if (adData.parent_id && adData.parent_id.indexOf("hyperfeed") > -1) {
+      fbStoryId = adData.parent_id;
+    }
+    extVersion = adData.extVersion;
+    token = adData.token;
+  }
+  console.log('Update QUEUE++++++RESULT', POSTEDQUEUE)
+  console.log('sendExplanationDB  BG called', adId, advertiserId)
 
   // send to db
-  const container = $(adData.raw_ad); //$(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
-  let fbStoryId = container.attr('id');
-  if (adData.parent_id && adData.parent_id.indexOf("hyperfeed") > -1) {
-    fbStoryId = adData.parent_id;
-  }
-
   let finalPayload = { // Queue advert for server
     typeId: 'FBADVERT',
-    extVersion: adData.extVersion,
+    extVersion,
     payload: [{
       type: 'FBADVERTRATIONALE',
       related: fbStoryId,
       html: explanation
     }]
   };
-  // console.log('OBSERVER-From Rationale --> finalPayload', finalPayload)
-  api.addMiddleware(request => {request.options.headers['Authorization'] = adData.token});
+  console.log('OBSERVER-From Rationale --> finalPayload', finalPayload)
+  api.addMiddleware(request => {request.options.headers['Authorization'] = token});
   api.post('log/raw', {json: finalPayload})
     .then((response) => {
       // response completed, no log
     });
-  container.addClass('fetched_r');
+  // container.addClass('fetched_r');
 }
 
 window.addEventListener("message", function(event) {
@@ -561,8 +688,7 @@ window.addEventListener("message", function(event) {
   }
 
   if (event.data.postRationale) {
-    const {adId, adData, explanation} = event.data.postRationale;
-    sendRationale(adId, adData, explanation);
+    sendRationale(event.data.postRationale);
     return;
   }
 
