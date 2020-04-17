@@ -83,7 +83,7 @@ export const availableParties = {
   'US': [
     {entityId: 1, party:'Donald Trump', shortName: 'Trump', color: '#8b0000'},
     {entityId: 2, party:'Joe Biden', shortName: 'Biden', color: '#12204A'},
-    {entityId: 5, party:'Bernie Sanders', shortName: 'Sanders', color: '#005f92'},
+    // {entityId: 5, party:'Bernie Sanders', shortName: 'Sanders', color: '#005f92'},
     {entityId: 6, party:'Republicans', shortName: 'GOP', color: 'red'},
     {entityId: 7, party:'Democrats', shortName: 'Dems', color: '#00AEF3'},
     {entityId: 8, party:'Non-party', shortName: 'Oth', color: 'grey'},
