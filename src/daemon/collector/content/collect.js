@@ -38,7 +38,7 @@ function isNumeric(value) {
 
 function addToFrontAdQueue(ad) {
   // console.log('addToFrontAdQueue', ad)
-  if (Object.keys(frontadqueue).length === 0) {
+  if (Object.keys(frontadqueue).length) {
     frontadqueue[0] = ad;
     return;
   }
@@ -79,12 +79,6 @@ function getButtonIdAdFrame(adFrame) {
   const moreButton = getMoreButtonFrontAd(adFrame);
   return moreButton.parentElement.id;
 }
-// New style
-// function getButtonIdAdFrameNew(adFrame) {
-//   console.log('getButtonIdAdFrameNew(adFrame)', adFrame)
-//   const moreButton = getMoreButtonFrontAdNew(adFrame);
-//   return moreButton;
-// }
 
 function hoverOverButton(adFrame) {
   // console.log('HOVERING - hoverOverButton' );
@@ -94,48 +88,77 @@ function hoverOverButton(adFrame) {
   $(moreButton).trigger('mouseover');
 }
 
-function clickButtonNew(adFrame) {
-  console.log('Clicking - clickButtonNew 1', adFrame);
-  const moreButton = getMoreButtonFrontAdNew(adFrame);
-  // moreButton.dispatchEvent(new MouseEvent('click'));
-  const hideMenu = () => {
-    for (let i=0; i<5; i++){
-      setTimeout(function () {
-        document.querySelector('div[data-pagelet="page"] + span').setAttribute('style', 'display: none;')
-        const menu = document.querySelector('div[data-pagelet="page"] + span span div div div');
-        if (menu){
-          menu.setAttribute('style','display:none;')
-        }
-      }, 10*i*i);
+// New style
+const findMenu = () => {
+  const roots = document.querySelectorAll('div[data-pagelet="root"]');
+  let m = null;
+  for (let i=0; i<roots.length; i++){
+    const hasMenu = roots[i].firstElementChild
+      && roots[i].firstElementChild.getAttribute('data-testid') === 'Keycommand_wrapper'
+      && roots[i].innerText.indexOf('Notfification') === -1;
+    if (hasMenu) {
+      m = roots[i];
+      break;
     }
   }
+  return m;
+}
+
+// New style
+const hideMenu = () => {
+  for (let i=0; i<5; i++){
+    setTimeout(function () {
+      const span = document.querySelector('div[data-pagelet="page"] + span')
+      if (span) {
+        span.setAttribute('style', 'display: none;')
+      }
+      const menu = findMenu();
+      if (menu) {
+        menu.setAttribute('style','display:none;')
+      }
+    }, 10*i*i);
+  }
+}
+
+// New style
+const hideModal = () => {
+  const modals = document.querySelectorAll('[data-pagelet="root"]');
+  for (let i=0; i<modals.length; i++) {
+    if (modals[i].clientHeight > 0){
+      modals[i].setAttribute('style', 'display: none;')
+      // console.log('hiding modal', new Date(), modals[i])
+    }
+  }
+}
+
+// New style
+function clickButtonNew(adFrame) {
+  // console.log('Clicking - clickButtonNew 1', adFrame);
+  const moreButton = getMoreButtonFrontAdNew(adFrame);
+  // moreButton.dispatchEvent(new MouseEvent('click'));
   $(moreButton).trigger('click');
-  console.log('@@@@@@@@ 1', new Date())
+  // console.log('@@@@@@@@ 1', new Date())
   hideMenu();
 
   return new Promise((resolve) => setTimeout(function(){resolve()}, 1000))
     .then(res => {
-      console.log('////Second click PRE////', new Date())
-      const menu_item = document.querySelectorAll('div[data-pagelet="page"] + span[class="ttbfdpzt"] [role="menuitem"]')[2]
-      console.log('////Second click////', menu_item)
-      $(menu_item).trigger('click');
-
-      const hideModal = () => {
-        const modals = document.querySelectorAll('[data-pagelet="root"]');
-        for (let i=0; i<modals.length; i++) {
-          if (modals[i].clientHeight > 0){
-            modals[i].setAttribute('style', 'display: none;')
-            console.log('hiding modal', new Date(), modals[i])
-          }
-        }
+      // console.log('////Second click PRE////', new Date())
+      const menu = findMenu();
+      if (!menu) {
+        // console.log('Second click - havent found menu');
+        return;
       }
+
+      const menu_item = menu.querySelectorAll('[role="menuitem"]')[2]
+      // console.log('////Second click////', menu_item)
+      $(menu_item).trigger('click');
 
       setTimeout(function(){
         try {
           hideModal()
         } catch(e) {
           setTimeout(function(){
-            console.log('Keycommand_wrapper_ModalLayer @2', new Date())
+            // console.log('Keycommand_wrapper_ModalLayer @2', new Date())
             hideModal()
           }, 100);
         }
@@ -145,31 +168,27 @@ function clickButtonNew(adFrame) {
         .then(res => {
           try {
             const waist_info = document.querySelectorAll('[data-testid="Keycommand_wrapper_ModalLayer"] [role="dialog"]')[1].innerText
-            console.log('////Third click New////', new Date(), waist_info, document.querySelectorAll('[data-testid="Keycommand_wrapper_ModalLayer"] [role="dialog"]')[1])
+            // console.log('////Third click New////', new Date(), waist_info, document.querySelectorAll('[data-testid="Keycommand_wrapper_ModalLayer"] [role="dialog"]')[1])
             // document.querySelectorAll('[data-testid="Keycommand_wrapper_ModalLayer"] [role="dialog"]')[1].setAttribute('style', 'display: none;')
-            if (waist_info.length && waist_info.indexOf('Notfifications') === -1) {
+            if (waist_info.length && waist_info.indexOf('Notfification') === -1) {
               const close_button = document.querySelectorAll('[data-testid="Keycommand_wrapper_ModalLayer"] [role="dialog"]')[1].childNodes[0].querySelector('[role="button"]')
               $(close_button).trigger('click');
             }
           } catch (e) {
-            console.log('New style didnt work')
-            try {
-              const waist_info = document.querySelector('[role="dialog"]').innerText
-              console.log('////Third click Old////', new Date(), waist_info)
-              if (waist_info.length && waist_info.indexOf('Notfifications') === -1) {
-                const close_button = document.querySelector('[role="dialog"] [role="button"]')
-                $(close_button).trigger('click');
-              }
-            } catch (e) {
-              console.log('OLd style didnt work')
-            }
+            console.log('New style failed')
+            // try {
+            //   const waist_info = document.querySelector('[role="dialog"]').innerText
+            //   console.log('////Third click Old////', new Date(), waist_info)
+            //   if (waist_info.length && waist_info.indexOf('Notfifications') === -1) {
+            //     const close_button = document.querySelector('[role="dialog"] [role="button"]')
+            //     $(close_button).trigger('click');
+            //   }
+            // } catch (e) {
+            //   console.log('OLd style didnt work')
+            // }
           }
         })
     })
-
-  // const mouseoverEvent = new Event('click');
-  // console.log('Clicking - clickButtonNew 2', moreButton, mouseoverEvent);
-  // moreButton.dispatchEvent(mouseoverEvent);
 }
 
 function getExplanationUrlFrontAds(frontAd, adData) {
@@ -192,27 +211,32 @@ function getExplanationUrlFrontAdsNew(frontAd, adData) {
 }
 
 function isScrolledIntoView(elem, newStyle) {
-  if (!elem.offsetParent) { return; }
+  if (!elem || !elem.offsetParent) { return; }
   //    return true
+  let docViewTop, docViewBottom, elemTop, elemBottom;
 
-  const docViewTop = window.scrollY;
-  const docViewBottom = docViewTop + window.innerHeight;
-
-  const elemTop = elem.offsetTop;
-  const elemBottom = elemTop + elem.clientHeight;
   if (newStyle) {
     elem = $(elem).closest('[role="article"]')
-    const docViewTop = window.scrollY;
-    const docViewBottom = docViewTop + window.innerHeight;
+    docViewTop = window.scrollY;
+    docViewBottom = docViewTop + window.innerHeight;
 
-    const elemTop = elem.offset().top;
-    const elemBottom = elemTop + elem.height();
-    // console.log('docViewTop', docViewTop, 'docViewBottom', docViewBottom, 'elemTop', elemTop, 'elemBottom', elemBottom)
+    elemTop = elem.offset().top;
+    elemBottom = elemTop + elem.height();
     // console.log('COND --- (elemBottom <= docViewTop)', elemBottom, docViewTop, (elemBottom <= docViewTop))
-    // return (elemBottom <= docViewTop);
     return (elemTop < docViewTop);
   } else {
-    return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+    docViewTop = window.scrollY;
+    docViewBottom = docViewTop + window.innerHeight;
+    const _elem = elem.closest('[data-testid="fbfeed_story"]')
+    if (_elem) {
+      elemTop = _elem.offsetTop;
+      elemBottom = elemTop + 100;
+      // console.log('AD TO OPEN', _elem, elemTop, elemBottom)
+      // console.log('docViewTop', docViewTop, 'docViewBottom', docViewBottom, 'elemTop', elemTop, 'elemBottom', elemBottom)
+      // console.log('OPENING AD?', ((elemBottom <= docViewBottom) && (elemTop >= docViewTop)))
+      return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+    }
+    return;
   }
 }
 
@@ -281,7 +305,6 @@ function getParentAdDivNewStyle(elem) {
 }
 
 function filterCollectedAds(ads, newStyle) {
-
   let filteredAds = [];
   let ids = [];
   for (let i=0; i<ads.length; i++) {
@@ -442,7 +465,7 @@ function findFrontAdsWithHiddenLettersSiblings(){
 }
 
 function getFrontAdFrames() {
-  let a_links = document.querySelectorAll('a');
+  let a_links = document.getElementsByTagName('a');
   let {links, newStyle} = filterFrontAds(a_links);
 
   links = links.concat(getFrontAdsByClass())
@@ -464,6 +487,7 @@ function getFrontAdFrames() {
 }
 
 // works - collecting and logging ads (old, new)
+// diff - SF, main app
 function processFrontAd(frontAd, newStyle) {
   // console.log('processFrontAd', frontAd, COLLECTED)
   frontAd.className += " " + "ad_collected";
@@ -545,22 +569,23 @@ function grabFrontAds() {
       // console.log('Grabbing front ads...')
       const {frontAds, newStyle} = getFrontAdFrames();
       if (newStyle) {
-        document.querySelector('div[data-pagelet="page"] + span').setAttribute('style', '')
+        const popupFrame = document.querySelector('div[data-pagelet="page"] + span')
+        if (popupFrame) {
+          popupFrame.setAttribute('style', '');
+        }
       }
       // console.log('grabFrontAds', newStyle, frontAds);
-
-        for (let i=0; i<frontAds.length; i++) {
-          let adData = processFrontAd(frontAds[i], newStyle);
-          adData['message_type'] = 'front_ad_info';
-          if (newStyle){
-            getExplanationUrlFrontAdsNew(frontAds[i], adData);
-          } else {
-            getExplanationUrlFrontAds(frontAds[i], adData);
-          }
+      for (let i=0; i<frontAds.length; i++) {
+        let adData = processFrontAd(frontAds[i], newStyle);
+        adData['message_type'] = 'front_ad_info';
+        if (newStyle){
+          getExplanationUrlFrontAdsNew(frontAds[i], adData);
+        } else {
+          getExplanationUrlFrontAds(frontAds[i], adData);
         }
-
-      } catch (err) {
-      console.log(err);
+      }
+    } catch (err) {
+    console.log(err);
     }
   }
   setTimeout(grabFrontAds, INTERVAL);
@@ -589,15 +614,15 @@ function sendRationale(postData) {
     if (POSTEDQUEUE.includes(adId)) { return; }
     POSTEDQUEUE.push(adId);
     const container = $(adData.raw_ad); //$(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
-    let fbStoryId = container.attr('id');
+    fbStoryId = container.attr('id');
     if (adData.parent_id && adData.parent_id.indexOf("hyperfeed") > -1) {
       fbStoryId = adData.parent_id;
     }
     extVersion = adData.extVersion;
     token = adData.token;
   }
-  console.log('Update QUEUE++++++RESULT', POSTEDQUEUE)
-  console.log('sendExplanationDB  BG called', adId, advertiserId)
+  // console.log('Update QUEUE++++++RESULT', POSTEDQUEUE)
+  // console.log('sendExplanationDB  BG called', adId, advertiserId)
 
   // send to db
   let finalPayload = { // Queue advert for server
@@ -609,7 +634,7 @@ function sendRationale(postData) {
       html: explanation
     }]
   };
-  console.log('OBSERVER-From Rationale --> finalPayload', finalPayload)
+  // console.log('OBSERVER-From Rationale --> finalPayload', finalPayload)
   api.addMiddleware(request => {request.options.headers['Authorization'] = token});
   api.post('log/raw', {json: finalPayload})
     .then((response) => {

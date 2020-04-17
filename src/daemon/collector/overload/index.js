@@ -8,8 +8,8 @@ const re_qid = /qid.[0-9]+/;
 
 const re_ajaxify = /ajaxify":"\\\/waist_content\\\/dialog\S+?"/;
 const re_adId = /id=[0-9]+/;
-const re_advertiserId = /"advertiser_id": "[0-9]+/;
-const re_advertiserName = /"name": "(.*?)"/;
+const re_advertiserId = /"advertiser_id":"[0-9]+/;
+const re_advertiserName = /"name":"(.*?)"/;
 const re_number = /[0-9]+/;
 
 let EXPLANATION_REQUESTS = {};
@@ -64,6 +64,7 @@ function initXHR() {
 
     // Implement "ajaxSuccess" functionality
     XHR.send = function(postData) {
+      // console.log(postData)
       this.addEventListener('load', function() {
         if (this._url.indexOf && this._url.indexOf('options_menu/?button_id=') > -1) {
             const qId = getQid(this._url);
@@ -77,7 +78,7 @@ function initXHR() {
               requestParams = this.responseText.match(re_ajaxify)[0];
               requestParams = requestParams.slice(requestParams.indexOf('id='),requestParams.length-1);
             } catch (e) {
-              // console.log('XHR.send error', e)
+              console.log('XHR.send error', e)
               return;
             }
 
@@ -105,9 +106,9 @@ function initXHR() {
           const waist_index = this.responseText.indexOf('waist_targeting_data');
           if (waist_index > -1) {
             // console.log('this.responseText', this.responseText)
-            const advertiserId = this.responseText.match(re_advertiserId)[0].match(/[0-9]+/)[0];
-            const adv_index = this.responseText.indexOf('waist_advertiser_info');
             try {
+              const advertiserId = this.responseText.match(re_advertiserId)[0].match(/[0-9]+/)[0];
+              const adv_index = this.responseText.indexOf('waist_advertiser_info');
               // console.log('this.advertiserName ===', this.responseText.slice(adv_index, this.responseText.length -1).match(re_advertiserName))
               const advertiserName = this.responseText.slice(adv_index, this.responseText.length -1).match(re_advertiserName)[1];//.match(re_advertiserName)[0];
 
