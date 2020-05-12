@@ -20,10 +20,8 @@
 	},
 	"permissions": [
 		"<all_urls>",
-		"contextMenus",
 		"tabs",
-		"storage",
-		"notifications"
+		"storage"
 	],
 	"icons": {
 		"128": "logo-128.png"
