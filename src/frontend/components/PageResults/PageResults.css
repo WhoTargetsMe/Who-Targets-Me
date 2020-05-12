@@ -242,7 +242,8 @@ img{
   text-align: center;
   max-width: 25%;
 }
-.buttonRed, .buttonGrey, .buttonCancel{
+
+.buttonCancel, .buttonGreen, .buttonGrey, .buttonRed{
   color: white;
   background-color: #999999;
   border-color: #999999;
@@ -257,6 +258,11 @@ img{
 .buttonRed{
   background-color: red;
   border-color: red;
+  cursor: pointer;
+}
+.buttonGreen {
+  background-color: #42c257;
+  border-color: #42c257;
   cursor: pointer;
 }
 .buttonGrey:hover, .buttonGrey:active, .buttonGrey:focus{

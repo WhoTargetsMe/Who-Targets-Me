@@ -157,16 +157,13 @@ export default class PageResults extends Component {
 
   confirmDeleteData(e) {
     e.preventDefault();
-    console.log('Delete data request confirmed')
+    
     this.props.api.delete('user/delete')
       .then((response) => {
         if (response.status >= 200 && response.status < 300) {
           this.setState({view: "data_deleted"})
-          console.log('USER DATA IS DELETED')
         } else {
           throw new Error('something went wrong!');
-          const currentView = this.state.currentView;
-          this.setState({view: currentView})
         }
       })
       .catch((error) => {
