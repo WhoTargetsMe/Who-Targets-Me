@@ -1,6 +1,6 @@
 {
   "name": "who-targets-me",
-  "version": "1.2.0",
+  "version": "1.2.46",
   "description": "Track the extent of digital political advertising, discover which parties are targeting you",
   "main": "index.js",
   "apiUrl": "https://msih3yho6h.execute-api.eu-central-1.amazonaws.com/dev/",
