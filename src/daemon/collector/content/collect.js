@@ -240,6 +240,25 @@ function isScrolledIntoView(elem, newStyle) {
   }
 }
 
+function sillyStringScanner(needle, haystack) {
+  // Find "Sponsored" in strings like: hSptSoulopnsiocrdtioneosorded
+  const re = new RegExp('.*' + needle.split('').join('.*') + '.*', 'i')
+  return haystack.search(re) > -1;
+}
+
+function hasSillySponsored(haystackText) {
+  // doesn't have a number in padding... today 
+  if (/\d/.test(haystackText)) {
+    return false;
+  }
+  for (const sponsoredTerm of sponsoredText) {
+    if (sillyStringScanner(sponsoredTerm, haystackText)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 // THIS WORKS
 function filterFrontAds(lst) {
   let newLst = [];
@@ -270,6 +289,11 @@ function filterFrontAds(lst) {
         // console.log(lst[i])
         // console.log('******filter Front Ads**HIDDEN********');
     }
+
+    if (hasSillySponsored(lst[i].text) && isScrolledIntoView(lst[i], newStyle)) {
+      newLst.push(lst[i]);
+    }
+
   }
   // console.log('newLst--newStyle----', newLst, newStyle)
   return {links: newLst, newStyle};
@@ -539,7 +563,7 @@ function processFrontAd(frontAd, newStyle) {
         api.post('log/raw', {json: finalPayload})
           .then((response) => {
             // response completed, no log
-          });
+          }).catch(err => console.log('log/raw err', err));
           // container.addClass('fetched');
 
           // store new ads for linking with rationales
@@ -547,7 +571,7 @@ function processFrontAd(frontAd, newStyle) {
           COLLECTED_ADS_NEW.push(adNew);
         }
     }).catch((error) => {
-      console.log(error);
+      console.log('general_token err', error);
     });
     // console.log('OBSERVER-From SEND AD Collect--> extVersion', extVersion, fbStoryId)
 

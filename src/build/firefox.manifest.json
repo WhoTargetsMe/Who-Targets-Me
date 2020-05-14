@@ -10,6 +10,7 @@
 	},
 	"permissions": [
 		"storage",
+		"*://localhost/*",
 		"*://facebook.com/*",
 		"*://www.facebook.com/*",
 		"*://*.whotargets.me/*",
