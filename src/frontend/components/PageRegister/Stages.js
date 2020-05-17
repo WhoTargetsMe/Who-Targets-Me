@@ -656,7 +656,7 @@ class AttemptSignup extends Component {
     if (!survey) { survey = null; }
     const email = null;
     this.setState({awaitingResponse: true, error: null});
-    console.log('api.post', age, gender, postcode, country, political_affiliation, survey, consent)
+    // console.log('api.post', age, gender, postcode, country, political_affiliation, survey, consent)
     api.post('user/create', {
       json: {age,
         gender,

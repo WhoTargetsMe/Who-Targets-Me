@@ -1,5 +1,5 @@
 {
-	"version": "1.2.45_Firefox",
+	"version": "1.2.46",
 	"name": "__MSG_appName__",
 	"manifest_version": 2,
 	"description": "__MSG_appDesc__",
@@ -10,7 +10,6 @@
 	},
 	"permissions": [
 		"storage",
-		"*://localhost/*",
 		"*://facebook.com/*",
 		"*://www.facebook.com/*",
 		"*://*.whotargets.me/*",
