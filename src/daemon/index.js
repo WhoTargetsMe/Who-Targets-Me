@@ -7,7 +7,7 @@ import { initPopupGB } from './popup/NotificationGB.js';
 import api from './api.js';
 
 const initPage = () => {
-  FacebookAdvertObserver.run();
+  // FacebookAdvertObserver.run();
   initCollector();
 };
 
