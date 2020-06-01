@@ -1,5 +1,6 @@
 /* eslint-disable */
 import $ from "jquery";
+import { v4 as uuidv4 } from 'uuid';
 import api from '../../api.js';
 const re_buttonId = /button_id=\S+?&/;
 const re_userId = /"USER_ID":"[0-9]+"/;
@@ -282,10 +283,11 @@ function filterFrontAds(lst) {
       && isScrolledIntoView(lst[i], layoutStyle)) {
         newLst.push(lst[i]);
     }
+    // disabling for the moment
     // empty strings should not trigger false positives
-    if (lst[i].text && hasSillySponsored(lst[i].text) && isScrolledIntoView(lst[i], layoutStyle)) {
-      newLst.push(lst[i]);
-    }
+    // if (lst[i].text && hasSillySponsored(lst[i].text) && isScrolledIntoView(lst[i], layoutStyle)) {
+    //   newLst.push(lst[i]);
+    // }
 
   }
   //console.log('newLst--layoutStyle----', newLst, layoutStyle)
@@ -497,12 +499,7 @@ function getFrontAdFrames() {
 }
 
 function generateRelatedField(id) {
-  const alfanum = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  let randomString = '';
-  for (let i = 0; i < 20; i++) {
-      randomString += alfanum.charAt(Math.floor(Math.random() * alfanum.length));
-  }
-  return id + "_" + randomString;
+  return id + "_" + uuidv4();
 }
 
 // works - collecting and logging ads (old, new)
