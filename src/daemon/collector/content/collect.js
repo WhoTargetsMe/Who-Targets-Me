@@ -67,7 +67,7 @@ function getAdFromButton(qId,buttonId) {
 function getMoreButtonFrontAd(adFrame) {
   return adFrame.querySelector('a[data-testid="post_chevron_button"]');
 }
-// New style
+// FB5
 function getMoreButtonFrontAdNew(adFrame) {
   // console.log('getMoreButtonFrontAdNew(adFrame)', adFrame)
   // console.log('Vanilla', adFrame.html().querySelector('div[aria-haspopup="menu"]'))
@@ -132,7 +132,7 @@ const hideModal = () => {
   }
 }
 
-// New style
+// FB5
 function clickButtonNew(adFrame) {
   // console.log('Clicking - clickButtonNew 1', adFrame);
   const moreButton = getMoreButtonFrontAdNew(adFrame);
@@ -176,7 +176,7 @@ function clickButtonNew(adFrame) {
               $(close_button).trigger('click');
             }
           } catch (e) {
-            // console.log('New style failed')
+            // console.log('FB5 failed')
           }
         })
     })
@@ -246,8 +246,7 @@ function hasSillySponsored(haystackText) {
     return false;
   }
   for (const sponsoredTerm of sponsoredText) {
-    // empty strings should not trigger false positives
-    if (haystackText && sillyStringScanner(sponsoredTerm, haystackText)) {
+    if (sillyStringScanner(sponsoredTerm, haystackText)) {
       return true;
     }
   }
@@ -283,8 +282,8 @@ function filterFrontAds(lst) {
       && isScrolledIntoView(lst[i], layoutStyle)) {
         newLst.push(lst[i]);
     }
-
-    if (hasSillySponsored(lst[i].text) && isScrolledIntoView(lst[i], layoutStyle)) {
+    // empty strings should not trigger false positives
+    if (lst[i].text && hasSillySponsored(lst[i].text) && isScrolledIntoView(lst[i], layoutStyle)) {
       newLst.push(lst[i]);
     }
 
