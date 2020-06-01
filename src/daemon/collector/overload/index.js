@@ -160,16 +160,22 @@ WAIT_UNTIL = WAIT_UNTIL_LS;
 
 function storeRQ(adData, WAIT_UNTIL) {
   const { RQ_LS } = getRQ();
-  let keys = Object.keys(RQ).sort();
-  const keys_ls = Object.keys(RQ_LS).sort();
-  if (keys_ls.length > 0) {
+  let keys = Object.keys(RQ);
+  if (keys) {
+    keys.sort();
+  }
+  const keys_ls = Object.keys(RQ_LS);
+  if (keys) {
+    keys.sort();
+  }
+  if (keys_ls && keys_ls.length > 0) {
     keys = keys_ls;
     RQ = RQ_LS;
   }
 
   let nextNum = 0;
   let adIds = [];
-  if (keys.length) {
+  if (keys && keys.length) {
     nextNum = parseInt(keys.slice(keys.length-1)) + 1;
     adIds = keys.map(k => k.adId);
   }
@@ -280,7 +286,11 @@ function getExplanationsManually(adData) {
 function retryStoredRQ() {
   const { RQ_LS, WAIT_UNTIL_LS } = getRQ();
   if (WAIT_UNTIL_LS > WAIT_UNTIL) { WAIT_UNTIL = WAIT_UNTIL_LS }
-  let keys = Object.keys(RQ).sort();
+  let keys = Object.keys(RQ)
+  if (keys) {
+    keys.sort();
+  }
+
   const keys_ls = Object.keys(RQ_LS).sort();
   if (keys_ls.length > 0) {
     keys = keys_ls;

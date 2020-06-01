@@ -88,13 +88,14 @@ function hoverOverButton(adFrame) {
   $(moreButton).trigger('mouseover');
 }
 
-// New style
+// FB5
 const findMenu = () => {
   const roots = document.querySelectorAll('div[data-pagelet="root"]');
   let m = null;
   for (let i=0; i<roots.length; i++){
     const hasMenu = roots[i].firstElementChild
       && roots[i].firstElementChild.getAttribute('data-testid') === 'Keycommand_wrapper'
+      && roots[i].innerText
       && roots[i].innerText.indexOf('Notfification') === -1;
     if (hasMenu) {
       m = roots[i];
@@ -104,29 +105,29 @@ const findMenu = () => {
   return m;
 }
 
-// New style
+// FB5
 const hideMenu = () => {
   for (let i=0; i<5; i++){
     setTimeout(function () {
-      const span = document.querySelector('div[data-pagelet="page"] + span')
-      if (span) {
-        span.setAttribute('style', 'display: none;')
-      }
-      const menu = findMenu();
-      if (menu) {
-        menu.setAttribute('style','display:none;')
+      const menus = document.querySelectorAll('[data-testid="Keycommand_wrapper_ModalLayer"]')
+      if (menus) {
+        for (let j=0; j<menus.length; j++) {
+          if (menus[j].clientHeight > 0 && menus[i] && menus[i].innerText.indexOf('Notfification') === -1) {
+            //console.log('hideMenu', menus[j])
+            menus[j].setAttribute('style', 'display: none;')
+          }
+        }
       }
     }, 10*i*i);
   }
 }
 
-// New style
+// FB5
 const hideModal = () => {
   const modals = document.querySelectorAll('[data-pagelet="root"]');
   for (let i=0; i<modals.length; i++) {
-    if (modals[i].clientHeight > 0){
-      modals[i].setAttribute('style', 'display: none;')
-      // console.log('hiding modal', new Date(), modals[i])
+    if (modals[i].clientHeight > 0 && modals[i].offsetParent && modals[i].offsetParent.tagName.toLowerCase() !== "body"){
+      modals[i].setAttribute('style', 'display: none;');
     }
   }
 }
@@ -175,17 +176,7 @@ function clickButtonNew(adFrame) {
               $(close_button).trigger('click');
             }
           } catch (e) {
-            console.log('New style failed')
-            // try {
-            //   const waist_info = document.querySelector('[role="dialog"]').innerText
-            //   console.log('////Third click Old////', new Date(), waist_info)
-            //   if (waist_info.length && waist_info.indexOf('Notfifications') === -1) {
-            //     const close_button = document.querySelector('[role="dialog"] [role="button"]')
-            //     $(close_button).trigger('click');
-            //   }
-            // } catch (e) {
-            //   console.log('OLd style didnt work')
-            // }
+            // console.log('New style failed')
           }
         })
     })
@@ -200,9 +191,9 @@ function getExplanationUrlFrontAds(frontAd, adData) {
   return;
 }
 
-// New style
+// FB5
 function getExplanationUrlFrontAdsNew(frontAd, adData) {
-  // console.log('Processing - getExplanationUrlFrontAdsNew frontAd --', frontAd);
+  //console.log('Processing - getExplanationUrlFrontAdsNew frontAd --', frontAd);
   // console.log('Processing - getExplanationUrlFrontAdsNew adData --', adData);
   adData.buttonId = adData.parent_id;
   addToFrontAdQueue(adData);
@@ -210,13 +201,16 @@ function getExplanationUrlFrontAdsNew(frontAd, adData) {
   return;
 }
 
-function isScrolledIntoView(elem, newStyle) {
+function isScrolledIntoView(elem, layoutStyle) {
   if (!elem || !elem.offsetParent) { return; }
-  //    return true
+
   let docViewTop, docViewBottom, elemTop, elemBottom;
 
-  if (newStyle) {
+  if (layoutStyle === 'FB5') {
     elem = $(elem).closest('[role="article"]')
+
+    if (!elem || !elem.offset()) { return; }
+
     docViewTop = window.scrollY;
     docViewBottom = docViewTop + window.innerHeight;
 
@@ -247,12 +241,13 @@ function sillyStringScanner(needle, haystack) {
 }
 
 function hasSillySponsored(haystackText) {
-  // doesn't have a number in padding... today 
+  // doesn't have a number in padding... today
   if (/\d/.test(haystackText)) {
     return false;
   }
   for (const sponsoredTerm of sponsoredText) {
-    if (sillyStringScanner(sponsoredTerm, haystackText)) {
+    // empty strings should not trigger false positives
+    if (haystackText && sillyStringScanner(sponsoredTerm, haystackText)) {
       return true;
     }
   }
@@ -262,53 +257,52 @@ function hasSillySponsored(haystackText) {
 // THIS WORKS
 function filterFrontAds(lst) {
   let newLst = [];
-  let newStyle = false;
+  let layoutStyle;
   for (let i=0; i<lst.length; i++) {
     // detecting new FB markup style
     if (sponsoredText.indexOf(lst[i].text) > -1 && $(lst[i]).attr('href').indexOf('/ads/about/') > -1) {
-      newStyle = true;
+      layoutStyle = "FB5";
     }
+    // this is a clickable link, not "Sponsored" link
+    const rel = lst[i].getAttribute('rel')
+    const target = lst[i].getAttribute('target')
+    if (rel || target) {
+      continue;
+    }
+
     let ajaxify = lst[i].getAttribute('ajaxify');
     if (ajaxify && ajaxify.indexOf(politAdSubtitle) > -1
-      && (isScrolledIntoView(lst[i], newStyle))
+      && (isScrolledIntoView(lst[i], layoutStyle))
       && (lst[i].getAttribute('class').indexOf(non_ad) < 0)) {
         newLst.push(lst[i]);
         continue;
     }
 
-
     if (sponsoredText.indexOf(lst[i].text) > -1
       && (lst[i].getAttribute('class') && lst[i].getAttribute('class').indexOf(non_ad) < 0)
-      && isScrolledIntoView(lst[i], newStyle)) {
+      && isScrolledIntoView(lst[i], layoutStyle)) {
         newLst.push(lst[i]);
     }
 
-    if (sponsoredText.indexOf(lst[i].text) > -1
-      && (lst[i].getAttribute('class') && lst[i].getAttribute('class').indexOf(non_ad) < 0)
-      && !isScrolledIntoView(lst[i], newStyle) ){
-        // console.log(lst[i])
-        // console.log('******filter Front Ads**HIDDEN********');
-    }
-
-    if (hasSillySponsored(lst[i].text) && isScrolledIntoView(lst[i], newStyle)) {
+    if (hasSillySponsored(lst[i].text) && isScrolledIntoView(lst[i], layoutStyle)) {
       newLst.push(lst[i]);
     }
 
   }
-  // console.log('newLst--newStyle----', newLst, newStyle)
-  return {links: newLst, newStyle};
+  //console.log('newLst--layoutStyle----', newLst, layoutStyle)
+  return {links: newLst, layoutStyle};
 }
 
-function filteredClassedAds(lst) {
+function filteredClassedAds(lst, layoutStyle) {
   let newLst = [];
   for (let i=0; i<lst.length; i++) {
-    if (isScrolledIntoView(lst[i], newStyle)) {
+    if (isScrolledIntoView(lst[i], layoutStyle)) {
       newLst.push(lst[i])
     }
 
     if (sponsoredText.indexOf(lst[i].text) > -1
       && (lst[i].getAttribute('class') && lst[i].getAttribute('class').indexOf(non_ad) < 0)
-      && !isScrolledIntoView(lst[i], newStyle)) {
+      && !isScrolledIntoView(lst[i], layoutStyle)) {
       // console.log(lst[i])
       // console.log('******filtered Classed Ads****HIDDEN******');
     }
@@ -328,14 +322,14 @@ function getParentAdDivNewStyle(elem) {
   return $(elem).closest('[role="article"]');
 }
 
-function filterCollectedAds(ads, newStyle) {
+function filterCollectedAds(ads, layoutStyle) {
   let filteredAds = [];
   let ids = [];
   for (let i=0; i<ads.length; i++) {
     const ad = ads[i];
     let id;
     // console.log('filterCollectedAds', newStyle, 'COLLECTING?---', COLLECTED, ad)
-    if (newStyle) {
+    if (layoutStyle === "FB5") {
       id = ad.attr('aria-labelledby');
       if (COLLECTED.includes(id) || ids.includes(id)) {
         continue;
@@ -402,14 +396,16 @@ function getSponsoredFromClasses(filteredSheets) {
   return;
 }
 
-function getFrontAdsByClass() {
+function getFrontAdsByClass(layoutStyle) {
+  // In FB5 to use to check classes this way
+  if (layoutStyle === "FB5") { return; }
   const sheets = document.styleSheets;
   const filteredSheets = filterSheets(sheets);
   const sponsoredClass = getSponsoredFromClasses(filteredSheets);
   if (!sponsoredClass) {
     return [];
   }
-  return filteredClassedAds(document.getElementsByClassName(sponsoredClass));
+  return filteredClassedAds(document.getElementsByClassName(sponsoredClass), layoutStyle);
 }
 
 function getNonHiddenTextByChildren(children){
@@ -490,51 +486,51 @@ function findFrontAdsWithHiddenLettersSiblings(){
 
 function getFrontAdFrames() {
   let a_links = document.getElementsByTagName('a');
-  let {links, newStyle} = filterFrontAds(a_links);
+  let {links, layoutStyle} = filterFrontAds(a_links);
 
-  links = links.concat(getFrontAdsByClass())
+  links = links.concat(getFrontAdsByClass(layoutStyle))
   links = links.concat(findFrontAdsWithHiddenLetters())
   links = links.concat(findFrontAdsWithHiddenLettersSiblings())
   links = [...new Set(links)]
 
-  let frontAds = [];
-  for (let i = 0; i < links.length; i++) {
-    let frame;
-    if (newStyle) {
-      frame = getParentAdDivNewStyle(links[i]);
-    } else {
-      frame = getParentAdDiv(links[i]);
-    }
-    frontAds.push(frame);
+  const frontAds = links.map(link => layoutStyle === "FB5" ? getParentAdDivNewStyle(link) : getParentAdDiv(link));
+  return {frontAds: filterCollectedAds(frontAds, layoutStyle), layoutStyle};
+}
+
+function generateRelatedField(id) {
+  const alfanum = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let randomString = '';
+  for (let i = 0; i < 20; i++) {
+      randomString += alfanum.charAt(Math.floor(Math.random() * alfanum.length));
   }
-  return {frontAds: filterCollectedAds(frontAds, newStyle), newStyle};
+  return id + "_" + randomString;
 }
 
 // works - collecting and logging ads (old, new)
 // diff - SF, main app
-function processFrontAd(frontAd, newStyle) {
+function processFrontAd(frontAd, layoutStyle) {
   // console.log('processFrontAd', frontAd, COLLECTED)
   frontAd.className += " " + "ad_collected";
   const raw_ad = $(frontAd).html();
   let parent_id;
-  if (newStyle) {
+  if (layoutStyle === "FB5") {
     parent_id = $(frontAd).attr('aria-labelledby');
     COLLECTED.push(parent_id);
   } else {
     parent_id = $(frontAd).attr('id');
   }
-  // console.log('!!!!!raw_ad ------ collected', newStyle, frontAd)
-  // console.log('!!!!!raw_ad ------ parent_id', newStyle, parent_id)
+  // console.log('!!!!!raw_ad ------ collected', layoutStyle, frontAd)
+  // console.log('!!!!!raw_ad ------ parent_id', layoutStyle, parent_id)
 
   // ----- Temporarily collect ads even if rationales are not there ----- //
   const container = $(raw_ad);
   let fbStoryId;
-  if (newStyle) {
-    fbStoryId = parent_id;
+  if (layoutStyle === "FB5") {
+    fbStoryId = generateRelatedField(parent_id);
   } else {
     fbStoryId = container.attr('id');
   }
-  if (!newStyle && parent_id.indexOf("hyperfeed") > -1) {
+  if (!layoutStyle && parent_id.indexOf("hyperfeed") > -1) {
     fbStoryId = parent_id;
   }
   let extVersion = chrome.runtime.getManifest().version;
@@ -591,18 +587,18 @@ function grabFrontAds() {
   if (window.location.href.indexOf('ads/preferences') === -1) {
     try {
       // console.log('Grabbing front ads...')
-      const {frontAds, newStyle} = getFrontAdFrames();
-      if (newStyle) {
+      const {frontAds, layoutStyle} = getFrontAdFrames();
+      if (layoutStyle === "FB5") {
         const popupFrame = document.querySelector('div[data-pagelet="page"] + span')
         if (popupFrame) {
           popupFrame.setAttribute('style', '');
         }
       }
-      // console.log('grabFrontAds', newStyle, frontAds);
+      // console.log('grabFrontAds', layoutStyle, frontAds);
       for (let i=0; i<frontAds.length; i++) {
-        let adData = processFrontAd(frontAds[i], newStyle);
+        let adData = processFrontAd(frontAds[i], layoutStyle);
         adData['message_type'] = 'front_ad_info';
-        if (newStyle){
+        if (layoutStyle === "FB5"){
           getExplanationUrlFrontAdsNew(frontAds[i], adData);
         } else {
           getExplanationUrlFrontAds(frontAds[i], adData);
@@ -622,19 +618,21 @@ function sendRationale(postData) {
   let token;
 
   if (advertiserName) {
-    // New
+    // FB5
     if (POSTEDQUEUE.includes(advertiserId)) { return; }
     POSTEDQUEUE.push(advertiserId);
 
-    const adNew = COLLECTED_ADS_NEW.find(ad => ad.html.indexOf(advertiserName) > -1)
+    const adNew = COLLECTED_ADS_NEW.find(ad => ad.html && ad.html.indexOf(advertiserName) > -1)
+    if (!adNew) { return; }
     if (adNew && adNew.fbStoryId) {
       fbStoryId = adNew.fbStoryId;
       extVersion  = adNew.extVersion;
       token = adNew.token;
     }
     COLLECTED_ADS_NEW = COLLECTED_ADS_NEW.filter(ad => ad.fbStoryId !== fbStoryId);
+    //console.log('COLLECTED_ADS_NEW', fbStoryId, adNew)
   } else {
-    // Old
+    // FB4
     if (POSTEDQUEUE.includes(adId)) { return; }
     POSTEDQUEUE.push(adId);
     const container = $(adData.raw_ad); //$(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
@@ -750,20 +748,25 @@ window.addEventListener("message", function(event) {
 
 function checkLS() {
   let rq = JSON.parse(window.localStorage.getItem('rq'));
-  let keys = Object.keys(rq).sort();
-  let visited = [];
-  let res = {};
-  if (keys.length) {
-    const adIds = keys.map(k => rq[k].adId);
-    for (let i=0; i<keys.length; i++) {
-      if (!visited.includes(adIds[i])) {
-        res[keys[i]] = rq[keys[i]];
-        visited.push(adIds[i]);
+  if (rq) {
+    let keys = Object.keys(rq);
+    if (keys) {
+        keys.sort();
+    }
+    let visited = [];
+    let res = {};
+    if (keys.length) {
+      const adIds = keys.map(k => rq[k].adId);
+      for (let i=0; i<keys.length; i++) {
+        if (!visited.includes(adIds[i])) {
+          res[keys[i]] = rq[keys[i]];
+          visited.push(adIds[i]);
+        }
       }
     }
+    window.localStorage.setItem('rq', JSON.stringify(res));
+    // console.log('checkLS....', Math.random());
   }
-  window.localStorage.setItem('rq', JSON.stringify(res));
-  // console.log('checkLS....', Math.random());
 }
 
 window.setInterval(function(){ checkLS() }, CHECK_INTERVAL);
