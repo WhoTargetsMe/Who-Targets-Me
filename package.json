@@ -13,7 +13,7 @@
     "build-firefox": "BROWSER=firefox webpack --config src/build/webpack.daemon.config.js & BROWSER=firefox webpack --config src/build/webpack.frontend.config.js"
   },
   "author": "",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "dependencies": {
     "axios": "^0.19.0",
     "bluebird": "^3.5.1",
