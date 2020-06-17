@@ -80,9 +80,9 @@ const strings = new LocalizedStrings({
       shareFacebook2: ". Install Who Targets Me in your browser to find out who's trying to win your vote with targeted social media ads. https://whotargets.me",
       shareTwitter1: "% of the political ads I see on Facebook are from ",
       shareTwitter2: ". Install Who Targets Me in your browser to find out who's trying to win your vote with targeted social media ads. https://whotargets.me",
-      results_screen1_before: "You are being targeted by ", // You are being targeted by {party name}.
+      results_screen1_before: "You're being targeted by ", // You are being targeted by {party name}.
       results_screen1_after: 'X',
-      results_screen2: "In total you've seen ", // In total you've seen {quantity} political ads,
+      results_screen2: "You've seen ", // In total you've seen {quantity} political ads,
       results_screen3: " political ads, of which ", //of which.
       results_screen4: " were from ", //{quantity} were from {party name}
       gathering_data: 'Gathering data...',

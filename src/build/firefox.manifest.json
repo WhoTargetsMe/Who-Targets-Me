@@ -1,12 +1,12 @@
 {
-	"version": "1.2.46",
+	"version": "1.2.48",
 	"name": "__MSG_appName__",
 	"manifest_version": 2,
 	"description": "__MSG_appDesc__",
 	"default_locale": "en",
 	"browser_action": {
 		"default_popup": "frontend/index.html",
-		"default_icon": "logo-128.png"
+		"default_icon": "wtm_logo_128.png"
 	},
 	"permissions": [
 		"storage",
@@ -27,7 +27,7 @@
 		"scripts": ["daemon/index.js"]
 	},
 	"icons": {
-		"128": "logo-128.png"
+		"128": "wtm_logo_128.png"
 	},
 	"web_accessible_resources": [ "daemon/overload.js" ]
 }

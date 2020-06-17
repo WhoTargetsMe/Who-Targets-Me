@@ -511,6 +511,7 @@ function processFrontAd(frontAd, layoutStyle) {
   let parent_id;
   if (layoutStyle === "FB5") {
     parent_id = $(frontAd).attr('aria-labelledby');
+    if (!parent_id) { return; }
     COLLECTED.push(parent_id);
   } else {
     parent_id = $(frontAd).attr('id');
@@ -584,20 +585,16 @@ function grabFrontAds() {
     try {
       // console.log('Grabbing front ads...')
       const {frontAds, layoutStyle} = getFrontAdFrames();
-      if (layoutStyle === "FB5") {
-        const popupFrame = document.querySelector('div[data-pagelet="page"] + span')
-        if (popupFrame) {
-          popupFrame.setAttribute('style', '');
-        }
-      }
       // console.log('grabFrontAds', layoutStyle, frontAds);
       for (let i=0; i<frontAds.length; i++) {
         let adData = processFrontAd(frontAds[i], layoutStyle);
-        adData['message_type'] = 'front_ad_info';
-        if (layoutStyle === "FB5"){
-          getExplanationUrlFrontAdsNew(frontAds[i], adData);
-        } else {
-          getExplanationUrlFrontAds(frontAds[i], adData);
+        if (adData) {
+          adData['message_type'] = 'front_ad_info';
+          if (layoutStyle === "FB5"){
+            //getExplanationUrlFrontAdsNew(frontAds[i], adData);
+          } else {
+            getExplanationUrlFrontAds(frontAds[i], adData);
+          }
         }
       }
     } catch (err) {
