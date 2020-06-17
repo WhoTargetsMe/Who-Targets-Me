@@ -17,7 +17,7 @@ import languages from './languages.js';
 // import {schema} from '../OxfordSurvey/SurveyFields.js';
 import FacebookIcon from './icon_facebook.svg';
 import TwitterIcon from './icon_twitter.svg';
-import Logo from '../Shell/wtm_logo_border.png';
+import Logo from '../Shell/wtm_logo_2020.png';
 import LogoBR from '../Shell/wtm_logo_br.png';
 import LogoFI from '../Shell/wtm_logo_fi.png';
 

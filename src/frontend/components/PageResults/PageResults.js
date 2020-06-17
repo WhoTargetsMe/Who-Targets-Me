@@ -13,7 +13,7 @@ import { DeleteRequestPage } from './DeleteRequestPage.js';
 import { countries, countries_in_native_lang, country_others } from '../PageRegister/countries.js';
 import IMGLogo from '../Shell/logo.svg';
 
-import Logo from '../Shell/wtm_logo_bright.png';
+import Logo from '../Shell/wtm_logo_2020.png';
 import LogoBR from '../Shell/wtm_logo_br.png';
 import LogoFI from '../Shell/wtm_logo_fi.png';
 import IMGFirstPlace from './firstplace.png';
@@ -157,7 +157,7 @@ export default class PageResults extends Component {
 
   confirmDeleteData(e) {
     e.preventDefault();
-    
+
     this.props.api.delete('user/delete')
       .then((response) => {
         if (response.status >= 200 && response.status < 300) {
@@ -284,7 +284,7 @@ export default class PageResults extends Component {
       partyIndex += 1;
     }
 
-    this.setState({party: parties[partyIndex], showingTargeting: false});
+    this.setState({party: parties[partyIndex], showingTargeting: false, postId: null});
   }
 
   handleTabClick(tabIndex){
@@ -543,7 +543,7 @@ export default class PageResults extends Component {
                     {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', maxHeight: '200px',width: 700} :
                     {display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', width: 700}}>
                     <h4 style={{position: 'absolute', top: 20, left: 330}}>
-                      Your data
+                      Who's been targeting you?
                     </h4>
                     <PartyChart
                       advertisers={parties}
