@@ -13,6 +13,8 @@ const re_clientToken = /"client_token":"(.*?)"/;
 const re_advertiserId = /"advertiser_id":"[0-9]+/;
 const re_advertiserName = /"name":"(.*?)"/;
 const re_number = /[0-9]+/;
+const re_Ego = /data-ego-fbid=\\"(.*?)\\"/;
+const re_EgoClientToken = /eid=(.*?)&amp;/;
 
 let EXPLANATION_REQUESTS = {};
 let R_PROBLEMATIC = [];
@@ -20,6 +22,7 @@ let RQ = {};
 let WAIT_UNTIL = new Date();
 let RQ_INTERVAL = 65500; //ms
 let WU_INTERVAL = 30; //minutes
+const CURRENTDOCID = '3134194616602210';
 
 function updateAsyncParams() {
   data = { asyncParams: true }
@@ -96,7 +99,7 @@ function initXHR() {
               asyncParams,
               adButton:true
             };
-            // console.log('DATA', data);
+            console.log('DATA adButton:true FB4');
             window.postMessage(data, '*');
             return;
         }
@@ -115,7 +118,7 @@ function initXHR() {
               const adv_index = this.responseText.indexOf('waist_advertiser_info');
               // console.log('this.advertiserName ===', this.responseText.slice(adv_index, this.responseText.length -1).match(re_advertiserName))
               const advertiserName = this.responseText.slice(adv_index, this.responseText.length -1).match(re_advertiserName)[1];
-
+              console.log('DATA Sent prepared rationale to collect');
               window.postMessage({
                 postRationale: {advertiserId, advertiserName, explanation: this.responseText}
               }, "*");
@@ -134,14 +137,14 @@ function initXHR() {
             asyncParams["fb_api_caller_class"] = 'RelayModern';
             asyncParams["fb_api_req_friendly_name"] = 'AdsPrefWAISTDialogQuery';
             asyncParams["variables"] = `{"adId": "${adId}", "clientToken": "${clientToken}"}`;
-            asyncParams["doc_id"] = '3134194616602210';
+            asyncParams["doc_id"] = CURRENTDOCID;
 
             const data = {
               fb_id: adId,
               asyncParams,
               addParams: true
             };
-            console.log('DATA FB5', data);
+            console.log('DATA FB5 send addParams to get rationale');
             window.postMessage(data, '*');
           }
           // (3) refresh - get side ads
@@ -153,7 +156,7 @@ function initXHR() {
             asyncParams['av'] = asyncParamsPost['__user'];
             asyncParams["fb_api_caller_class"] = 'RelayModern';
             asyncParams["fb_api_req_friendly_name"] = 'AdsPrefWAISTDialogQuery';
-            asyncParams["doc_id"] = '3134194616602210';
+            asyncParams["doc_id"] = CURRENTDOCID;
             asyncParams["__pc"] = 'PHASED:DEFAULT';
 
             const responseJSON = this.responseText.replace(/\n/g,'').replace(/\t/g,'').replace(/\r\n/g,'').replace(/\r/g,'').replace(/\n\r/g,'')
@@ -170,9 +173,52 @@ function initXHR() {
                 asyncParams: asyncParamsAd,
                 sideAds: true
               };
-              console.log('DATA FB5 (side ads)', data);
-              window.postMessage(data, '*');
+              console.log('DATA FB5 (side ads)');
+              setTimeout(function () {
+                window.postMessage(data, '*');
+              }, Math.round(Math.random()*10000, 1000));
             })
+          }
+          return;
+        } else if (this._url.indexOf && this._url.indexOf('WebEgoPane') > -1) {
+          // (4) refresh - get side ads fb4
+          // post params to collect.js to get rationale
+          const sponsoredIndex = this.responseText.indexOf('data-ego-fbid=');
+          if (sponsoredIndex > -1) {
+            const asyncParamsPost = window.require('getAsyncParams')('POST');
+            const asyncParams = Object.assign({}, asyncParamsPost);
+            asyncParams['av'] = asyncParamsPost['__user'];
+            asyncParams["fb_api_caller_class"] = 'RelayModern';
+            asyncParams["fb_api_req_friendly_name"] = 'AdsPrefWAISTDialogQuery';
+            asyncParams["doc_id"] = CURRENTDOCID;
+            asyncParams["__pc"] = 'PHASED:DEFAULT';
+
+            const preStart = 'ego_unit_container';
+            const start = 'ego_unit';
+            let txt = this.responseText.slice(this.responseText.indexOf(preStart)+20, this.responseText.indexOf('jsmods')-2);
+            console.log('EGO-----',this.responseText.indexOf(preStart)+20, this.responseText.indexOf('jsmods'), txt.length)
+            for (let i=0; i < 3; i++) {
+              if (txt.length > 50) {
+                let chunk = txt.slice(50)
+                chunk = txt.slice(0,50) + chunk.slice(0,chunk.indexOf(start)-12);
+                const adId = chunk.match(re_Ego) ? chunk.match(re_Ego)[1] : null;
+                if (!adId) { break; }
+                let clientToken = chunk.match(re_EgoClientToken) ? chunk.match(re_EgoClientToken)[1] : null;
+                const asyncParamsAd = JSON.parse(JSON.stringify(asyncParams));
+                asyncParamsAd["variables"] = `{"adId": "${adId}", "clientToken": "${clientToken}"}`;
+                const data = {
+                  fb_id: adId,
+                  ad: chunk,
+                  asyncParams: asyncParamsAd,
+                  sideAds: true
+                };
+                txt = txt.slice(chunk.length);
+                console.log('DATA FB4 OLD (side ads)');
+                setTimeout(function () {
+                  window.postMessage(data, '*');
+                }, Math.round(Math.random()*10000, 1000));
+              }
+            }
           }
           return;
         }
@@ -292,7 +338,7 @@ function getExplanationsManually(adData) {
       } catch(e) {
         console.log('error finding adv name or it is fb4')
       }
-      
+
       window.postMessage({
         postRationale: {adId: adData.fb_id, adData, explanation: response, advertiserId, advertiserName}
       }, "*");

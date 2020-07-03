@@ -22,7 +22,7 @@ let POSTEDQUEUE = [];
 let CHECK_INTERVAL = 27000; //ms
 let COLLECTED = [];
 let COLLECTED_ADS_NEW = [];
-let COLLECTED_SIDE_ADS = [];
+const CURRENTDOCID = '3134194616602210';
 
 function updateAsyncParams() {
   const data = { asyncParams: true }
@@ -136,7 +136,7 @@ const hideModal = () => {
 
 // FB5
 function clickButtonNew(adFrame) {
-  console.log('Clicking - clickButtonNew 1', adFrame);
+  //console.log('Clicking - clickButtonNew 1', adFrame);
   const moreButton = getMoreButtonFrontAdNew(adFrame);
   $(moreButton).trigger('click');
   console.log('@@@@@@@@ 1', new Date())
@@ -459,10 +459,8 @@ function getFrontAdFrames() {
 }
 
 function generateRelatedField(id) {
-  if (COLLECTED_SIDE_ADS.includes(id)) {
+  if (POSTEDQUEUE.includes(id)) {
     return null;
-  } else if (parseInt(id)) {
-    COLLECTED_SIDE_ADS.push(id);
   }
   return id + "_" + uuidv4();
 }
@@ -571,38 +569,29 @@ function grabFrontAds() {
 
 function sendRationale(postData) {
   const {adId, adData, explanation, advertiserId, advertiserName} = postData;
-  console.log('sendRationale-', postData)
+
   let fbStoryId;
   let extVersion;
   let token;
 
+  if (adId && POSTEDQUEUE.includes(adId)) {
+    console.log('POSTEDQUEUE already posted', POSTEDQUEUE)
+    return;
+  }
+
   const sideAd = advertiserName && adData && adData.fbStoryId && adData.fbStoryId.indexOf(adId) > -1;
   if (sideAd) {
-    // FB5 side ad
+    // FB4 or FB5 side ad
     fbStoryId = adData.fbStoryId;
     extVersion  = adData.extVersion;
     token = adData.token;
-    console.log('sendRationale - sideAd', fbStoryId, extVersion, token)
-
+    console.log('sendRationale - sideAd', fbStoryId, postData)
   } else if (advertiserName) {
-    // FB5 regular ad
-    if (POSTEDQUEUE.includes(advertiserId)) {
-      console.log('POSTEDQUEUE already posted', POSTEDQUEUE)
-      return;
-    }
-    POSTEDQUEUE.push(advertiserId);
-
+    // FB5 regular ad or side ad
     // test if this is a regular fb5 ad
+    // it needs to have a companion in COLLECTED_ADS_NEW to be able to use one fbStoryId
     let adNew = COLLECTED_ADS_NEW.find(ad => ad.html && ad.html.indexOf(advertiserName) > -1);
-    // test if this is a side ad
-    // if (!adNew) {
-    //   try {
-    //     adNew = COLLECTED_ADS_NEW.find(ad => ad.rhc_ad && ad.rhc_ad.actor.name === advertiserName);
-    //   } catch(e) {
-    //     console.log('cannot find ad in COLLECTED_ADS_NEW')
-    //   }
-    // }
-    console.log('sendRationale - adNew', adNew, COLLECTED_ADS_NEW)
+    console.log('sendRationale - adNew', adNew, COLLECTED_ADS_NEW, postData)
     if (!adNew) { return; }
     if (adNew && adNew.fbStoryId) {
       fbStoryId = adNew.fbStoryId;
@@ -610,11 +599,10 @@ function sendRationale(postData) {
       token = adNew.token;
     }
     COLLECTED_ADS_NEW = COLLECTED_ADS_NEW.filter(ad => ad.fbStoryId !== fbStoryId);
-    //console.log('COLLECTED_ADS_NEW', fbStoryId, adNew)
+    console.log('COLLECTED_ADS_NEW', fbStoryId, adNew)
   } else {
     // FB4
-    if (POSTEDQUEUE.includes(adId)) { return; }
-    POSTEDQUEUE.push(adId);
+    console.log('FB4 is visited? POSTEDQUEUE', POSTEDQUEUE)
     const container = $(adData.raw_ad); //$(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
     fbStoryId = container.attr('id');
     if (adData.parent_id && adData.parent_id.indexOf("hyperfeed") > -1) {
@@ -637,12 +625,15 @@ function sendRationale(postData) {
     }]
   };
   // console.log('OBSERVER-From Rationale --> finalPayload', finalPayload)
+  // mark that rationale was posted
+  if (adId) {
+    POSTEDQUEUE.push(adId);
+  }
   api.addMiddleware(request => {request.options.headers['Authorization'] = token});
   api.post('log/raw', {json: finalPayload})
     .then((response) => {
       // response completed, no log
     });
-  // container.addClass('fetched_r');
 }
 
 window.addEventListener("message", function(event) {
@@ -666,7 +657,7 @@ window.addEventListener("message", function(event) {
       newParams['fb_api_caller_class'] = "RelayModern"
       newParams['fb_api_req_friendly_name'] = "AdsPrefWAISTDialogQuery"
       newParams['variables'] = `{"adId": "${event.data.adId}", "clientToken": "${clientToken}"}`
-      newParams['doc_id'] = '3134194616602210'
+      newParams['doc_id'] = CURRENTDOCID;
 
       adData.fb_id = event.data.adId;
       adData.explanationUrl = $.param(newParams);
@@ -691,7 +682,9 @@ window.addEventListener("message", function(event) {
               adData.extVersion = extVersion;
               adData.token = result.general_token;
               // console.log('Query rationale - 2', adData)
-              setTimeout(function() {window.postMessage(adData, '*')}, 10000);
+              setTimeout(function() {
+                window.postMessage(adData, '*')
+              }, 10000);
             }
         }).catch((error) => {
           console.log(error);
@@ -701,7 +694,7 @@ window.addEventListener("message", function(event) {
   }
 
   // FB5 rationale request
-  if (event.data.addParams) {
+  if (event.data.addParams && !event.data.rationaleUrl) {
     const adData = {}
     adData.explanationUrl = $.param(event.data.asyncParams);
     adData.rationaleUrl = rationaleUrl;
@@ -712,8 +705,12 @@ window.addEventListener("message", function(event) {
           api.addMiddleware(request => {request.options.headers['Authorization'] = result.general_token});
             adData.extVersion = extVersion;
             adData.token = result.general_token;
-            console.log('Query rationale - FB5', adData)
-            setTimeout(function() {window.postMessage(adData, '*')}, 5000);
+            console.log('Query rationale - FB5', adData, event.data.fb_id, POSTEDQUEUE)
+            if (!POSTEDQUEUE.includes(event.data.fb_id)) {
+              setTimeout(function() {
+                window.postMessage(adData, '*')
+              }, Math.round(Math.random()*10000, 1000));
+            }
           }
       }).catch((error) => {
         console.log(error);
@@ -733,17 +730,17 @@ window.addEventListener("message", function(event) {
 
     adData.fbStoryId = fbStoryId;
     adData.fb_id = event.data.fb_id;
-
+    const html = typeof(event.data.ad) === 'object' ? JSON.stringify(event.data.ad) : event.data.ad;
     const finalPayload = { // Queue advert for server
       typeId: 'FBADVERT',
       extVersion,
       payload: [{
         type: 'FBADVERT',
         related: fbStoryId,
-        html: JSON.stringify(event.data.ad)
+        html,
       }]
     };
-    console.log('OBSERVER-From Collect SIDE AD--> finalPayload, event.data.ad', finalPayload, event.data.ad)
+    console.log('OBSERVER-From Collect SIDE AD--> finalPayload, event.data.ad', finalPayload)
 
     chrome.storage.promise.local.get('general_token')
       .then((result) => {
@@ -765,7 +762,9 @@ window.addEventListener("message", function(event) {
             adData.extVersion = extVersion;
             adData.token = result.general_token;
             console.log('Query rationale - FB5 SIDE AD', adData)
-            setTimeout(function() {window.postMessage(adData, '*')}, 5000);
+            setTimeout(function() {
+              window.postMessage(adData, '*')
+            }, Math.round(Math.random()*10000, 1000));
           }
       }).catch((error) => {
         console.log(error);
