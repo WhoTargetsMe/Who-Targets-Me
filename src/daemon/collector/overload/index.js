@@ -8,9 +8,13 @@ const re_qid = /qid.[0-9]+/;
 
 const re_ajaxify = /ajaxify":"\\\/waist_content\\\/dialog\S+?"/;
 const re_adId = /id=[0-9]+/;
+const re_adIdFB5 = /"ad_id":"[0-9]+/;
+const re_clientToken = /"client_token":"(.*?)"/;
 const re_advertiserId = /"advertiser_id":"[0-9]+/;
 const re_advertiserName = /"name":"(.*?)"/;
 const re_number = /[0-9]+/;
+const re_Ego = /data-ego-fbid=\\"(.*?)\\"/;
+const re_EgoClientToken = /eid=(.*?)&amp;/;
 
 let EXPLANATION_REQUESTS = {};
 let R_PROBLEMATIC = [];
@@ -18,6 +22,7 @@ let RQ = {};
 let WAIT_UNTIL = new Date();
 let RQ_INTERVAL = 65500; //ms
 let WU_INTERVAL = 30; //minutes
+const CURRENTDOCID = '3134194616602210';
 
 function updateAsyncParams() {
   data = { asyncParams: true }
@@ -94,8 +99,8 @@ function initXHR() {
               asyncParams,
               adButton:true
             };
-            // console.log('DATA', data);
-            window.postMessage(data,'*');
+            // console.log('DATA adButton:true FB4');
+            window.postMessage(data, '*');
             return;
         }
         //            /* Method        */ this._method
@@ -103,19 +108,117 @@ function initXHR() {
         //            /* Response body */ this.responseText
         //            /* Request body  */ postData
         else if (this._url.indexOf && this._url.indexOf('api/graphql') > -1) {
-          const waist_index = this.responseText.indexOf('waist_targeting_data');
-          if (waist_index > -1) {
+
+          // (1) rationale object is caught
+          const waistIndex = this.responseText.indexOf('waist_targeting_data');
+          if (waistIndex > -1) {
             // console.log('this.responseText', this.responseText)
             try {
               const advertiserId = this.responseText.match(re_advertiserId)[0].match(/[0-9]+/)[0];
               const adv_index = this.responseText.indexOf('waist_advertiser_info');
               // console.log('this.advertiserName ===', this.responseText.slice(adv_index, this.responseText.length -1).match(re_advertiserName))
-              const advertiserName = this.responseText.slice(adv_index, this.responseText.length -1).match(re_advertiserName)[1];//.match(re_advertiserName)[0];
-
+              const advertiserName = this.responseText.slice(adv_index, this.responseText.length -1).match(re_advertiserName)[1];
+              // console.log('DATA Sent prepared rationale to collect');
               window.postMessage({
                 postRationale: {advertiserId, advertiserName, explanation: this.responseText}
               }, "*");
             } catch (e){ console.log('advertiser name parsing error', e) }
+          }
+          // (2) waist button in menu clicked
+          // post params to collect.js to get rationale
+          const waistButtonIndex = this.responseText.indexOf('StoryWhyAmISeeingThisAdMenuItem');
+          if (waistButtonIndex > -1) {
+            const asyncParamsPost = window.require('getAsyncParams')('POST');
+            const adId = this.responseText.match(re_adIdFB5)[0].match(/[0-9]+/)[0];
+            let clientToken = this.responseText.match(re_clientToken)[1];
+            clientToken = clientToken.replace('\\u0040', '@');
+            const asyncParams = Object.assign({}, asyncParamsPost);
+            asyncParams['av'] = asyncParamsPost['__user'];
+            asyncParams["fb_api_caller_class"] = 'RelayModern';
+            asyncParams["fb_api_req_friendly_name"] = 'AdsPrefWAISTDialogQuery';
+            asyncParams["variables"] = `{"adId": "${adId}", "clientToken": "${clientToken}"}`;
+            asyncParams["doc_id"] = CURRENTDOCID;
+
+            const data = {
+              fb_id: adId,
+              asyncParams,
+              addParams: true
+            };
+            // console.log('DATA FB5 send addParams to get rationale');
+            window.postMessage(data, '*');
+          }
+          // (3) refresh - get side ads
+          // post params to collect.js to get rationale
+          const sponsoredIndex = this.responseText.indexOf('AdsSideFeedUnit');
+          if (sponsoredIndex > -1) {
+            const asyncParamsPost = window.require('getAsyncParams')('POST');
+            const asyncParams = Object.assign({}, asyncParamsPost);
+            asyncParams['av'] = asyncParamsPost['__user'];
+            asyncParams["fb_api_caller_class"] = 'RelayModern';
+            asyncParams["fb_api_req_friendly_name"] = 'AdsPrefWAISTDialogQuery';
+            asyncParams["doc_id"] = CURRENTDOCID;
+            asyncParams["__pc"] = 'PHASED:DEFAULT';
+
+            const responseJSON = this.responseText.replace(/\n/g,'').replace(/\t/g,'').replace(/\r\n/g,'').replace(/\r/g,'').replace(/\n\r/g,'')
+            const ads = JSON.parse(responseJSON).data.viewer.sideFeed.nodes[0].ads.nodes;
+            // console.log('ads', ads)
+            ads.forEach(ad => {
+              const adId = ad.sponsored_data.ad_id;
+              const clientToken = ad.sponsored_data.client_token;
+              const asyncParamsAd = JSON.parse(JSON.stringify(asyncParams))
+              asyncParamsAd["variables"] = `{"adId": "${adId}", "clientToken": "${clientToken}"}`;
+              const data = {
+                fb_id: adId,
+                ad,
+                asyncParams: asyncParamsAd,
+                sideAds: true
+              };
+              // console.log('DATA FB5 (side ads)');
+              setTimeout(function () {
+                window.postMessage(data, '*');
+              }, Math.round(Math.random()*10000, 1000));
+            })
+          }
+          return;
+        } else if (this._url.indexOf && this._url.indexOf('WebEgoPane') > -1) {
+          // (4) refresh - get side ads fb4
+          // post params to collect.js to get rationale
+          const sponsoredIndex = this.responseText.indexOf('data-ego-fbid=');
+          if (sponsoredIndex > -1) {
+            const asyncParamsPost = window.require('getAsyncParams')('POST');
+            const asyncParams = Object.assign({}, asyncParamsPost);
+            asyncParams['av'] = asyncParamsPost['__user'];
+            asyncParams["fb_api_caller_class"] = 'RelayModern';
+            asyncParams["fb_api_req_friendly_name"] = 'AdsPrefWAISTDialogQuery';
+            asyncParams["doc_id"] = CURRENTDOCID;
+            asyncParams["__pc"] = 'PHASED:DEFAULT';
+
+            const preStart = 'ego_unit_container';
+            const start = 'ego_unit';
+            let txt = this.responseText.slice(this.responseText.indexOf(preStart)+20, this.responseText.indexOf('jsmods')-2);
+            // console.log('EGO-----',this.responseText.indexOf(preStart)+20, this.responseText.indexOf('jsmods'), txt.length)
+            for (let i=0; i < 3; i++) {
+              if (txt.length > 50) {
+                let chunk = txt.slice(50)
+                chunk = txt.slice(0,50) + chunk.slice(0,chunk.indexOf(start)-12);
+                const adId = chunk.match(re_Ego) ? chunk.match(re_Ego)[1] : null;
+                if (!adId) { break; }
+                let clientToken = chunk.match(re_EgoClientToken) ? chunk.match(re_EgoClientToken)[1] : null;
+                const asyncParamsAd = JSON.parse(JSON.stringify(asyncParams));
+                asyncParamsAd["variables"] = `{"adId": "${adId}", "clientToken": "${clientToken}"}`;
+                const data = {
+                  fb_id: adId,
+                  ad: chunk,
+                  asyncParams: asyncParamsAd,
+                  sideAds: true
+                };
+                txt = txt.slice(chunk.length);
+                // console.log('DATA FB4 OLD (side ads)');
+                setTimeout(function () {
+                  window.postMessage(data, '*');
+                }, Math.round(Math.random()*10000, 1000));
+              }
+            }
           }
           return;
         }
@@ -195,50 +298,6 @@ function storeRQ(adData, WAIT_UNTIL) {
   // console.log('+++++ local variables', RQ, WAIT_UNTIL);
 }
 
-/*
-// OLD GET endpoint
-function getExplanationsManually(adData) {
-  // console.log('getExplanationsManually called', adData.fb_id, new Date())
-  const { WAIT_UNTIL_LS } = getRQ();
-  if (WAIT_UNTIL_LS > WAIT_UNTIL) { WAIT_UNTIL = WAIT_UNTIL_LS }
-  if (new Date() < WAIT_UNTIL) {
-    // console.log('Not the time yet: WAIT_UNTIL', WAIT_UNTIL)
-    storeRQ(adData, WAIT_UNTIL);
-    return;
-  }
-
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("GET", adData.explanationUrl, true);
-  xmlhttp.onload = function (e) {
-    if (xmlhttp.readyState === 4 && xmlhttp.status === 200){
-      const response = xmlhttp.responseText;
-      const html = JSON.parse(response.slice(9));
-      const parsed = html.jsmods ? html.jsmods.markup[0][1].__html : '';
-      const error = getIndexFromList(response.slice(0,50), ['error']) > -1;
-      // console.log('response=', error, response.slice(0,50));
-
-      if (error) {
-        WAIT_UNTIL = new Date();
-        WAIT_UNTIL.setMinutes(WAIT_UNTIL.getMinutes() + WU_INTERVAL);
-        // console.log('ERROR, RATE LIMITED')
-        // console.log('WAIT_UNTIL is set to =', WAIT_UNTIL);
-        storeRQ(adData, WAIT_UNTIL);
-        return;
-      }
-
-      const expStart = getIndexFromList(parsed, ['facebook']);
-      if (expStart === -1) {
-        // console.log('Havent found FB text. Check the method.')
-        R_PROBLEMATIC.push(response);
-      }
-      window.postMessage({
-        postRationale: {adId: adData.fb_id, adData, explanation: response}
-      }, "*");
-    }
-  }
-  xmlhttp.send(null);
-}
-*/
 
 function getExplanationsManually(adData) {
   // console.log('getExplanationsManually called', adData.fb_id, new Date())
@@ -257,7 +316,7 @@ function getExplanationsManually(adData) {
   xmlhttp.onload = function (e) {
     if (xmlhttp.readyState === 4 && xmlhttp.status === 200){
       const response = xmlhttp.responseText;
-      // console.log('response=', response);
+      //console.log('response=', response);
       const error = getIndexFromList(response, ['error']) > -1;
       // console.log('error=', error);
 
@@ -269,14 +328,19 @@ function getExplanationsManually(adData) {
         storeRQ(adData, WAIT_UNTIL);
         return;
       }
+      // in case this is FB5
+      let advertiserId, advertiserName;
+      try {
+        advertiserId = response.match(re_advertiserId)[0].match(/[0-9]+/)[0];
+        const adv_index = response.indexOf('waist_advertiser_info');
+        advertiserName = response.slice(adv_index, response.length -1).match(re_advertiserName)[1];
+        // console.log('this.advertiserName ===', advertiserName)
+      } catch(e) {
+        console.log('error finding adv name or it is fb4')
+      }
 
-      // const expStart = getIndexFromList(parsed, ['facebook']);
-      // if (expStart === -1) {
-      //   // console.log('Havent found FB text. Check the method.')
-      //   R_PROBLEMATIC.push(response);
-      // }
       window.postMessage({
-        postRationale: {adId: adData.fb_id, adData, explanation: response}
+        postRationale: {adId: adData.fb_id, adData, explanation: response, advertiserId, advertiserName}
       }, "*");
     }
   }

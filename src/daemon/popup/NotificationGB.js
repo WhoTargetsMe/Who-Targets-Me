@@ -9,13 +9,11 @@ export const initPopupGB = function() {
         <h6 style="padding-left:10px;">Who Targets Me</h6>
       </div>
       <p>
-        It's General Election time!<br>
-        You are now using the latest version of Who Targets Me? with new features, including constituency-level targeting data.<br>
+        You’ve been updated to the latest version of Who Targets Me.<br>
       </p>
       <p>Please update your details by clicking <b>'Update your details'</b> link in the bottom right of the extension window that pops up when you click the WTM logo to make sure you are getting up to date information on who is targeting your vote!</p>
       <p>
-        Thanks,<br>
-        The Who Targets Me? Team
+        Thanks!
       </p>
     </div>
     <div id="popup_close" style="flex:1;min-width:10px;max-width:10px;font-weight:bold;cursor:pointer;margin-top:3px;">X</div>
