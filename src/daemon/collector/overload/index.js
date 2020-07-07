@@ -99,7 +99,7 @@ function initXHR() {
               asyncParams,
               adButton:true
             };
-            console.log('DATA adButton:true FB4');
+            // console.log('DATA adButton:true FB4');
             window.postMessage(data, '*');
             return;
         }
@@ -118,7 +118,7 @@ function initXHR() {
               const adv_index = this.responseText.indexOf('waist_advertiser_info');
               // console.log('this.advertiserName ===', this.responseText.slice(adv_index, this.responseText.length -1).match(re_advertiserName))
               const advertiserName = this.responseText.slice(adv_index, this.responseText.length -1).match(re_advertiserName)[1];
-              console.log('DATA Sent prepared rationale to collect');
+              // console.log('DATA Sent prepared rationale to collect');
               window.postMessage({
                 postRationale: {advertiserId, advertiserName, explanation: this.responseText}
               }, "*");
@@ -144,7 +144,7 @@ function initXHR() {
               asyncParams,
               addParams: true
             };
-            console.log('DATA FB5 send addParams to get rationale');
+            // console.log('DATA FB5 send addParams to get rationale');
             window.postMessage(data, '*');
           }
           // (3) refresh - get side ads
@@ -161,7 +161,7 @@ function initXHR() {
 
             const responseJSON = this.responseText.replace(/\n/g,'').replace(/\t/g,'').replace(/\r\n/g,'').replace(/\r/g,'').replace(/\n\r/g,'')
             const ads = JSON.parse(responseJSON).data.viewer.sideFeed.nodes[0].ads.nodes;
-            console.log('ads', ads)
+            // console.log('ads', ads)
             ads.forEach(ad => {
               const adId = ad.sponsored_data.ad_id;
               const clientToken = ad.sponsored_data.client_token;
@@ -173,7 +173,7 @@ function initXHR() {
                 asyncParams: asyncParamsAd,
                 sideAds: true
               };
-              console.log('DATA FB5 (side ads)');
+              // console.log('DATA FB5 (side ads)');
               setTimeout(function () {
                 window.postMessage(data, '*');
               }, Math.round(Math.random()*10000, 1000));
@@ -196,7 +196,7 @@ function initXHR() {
             const preStart = 'ego_unit_container';
             const start = 'ego_unit';
             let txt = this.responseText.slice(this.responseText.indexOf(preStart)+20, this.responseText.indexOf('jsmods')-2);
-            console.log('EGO-----',this.responseText.indexOf(preStart)+20, this.responseText.indexOf('jsmods'), txt.length)
+            // console.log('EGO-----',this.responseText.indexOf(preStart)+20, this.responseText.indexOf('jsmods'), txt.length)
             for (let i=0; i < 3; i++) {
               if (txt.length > 50) {
                 let chunk = txt.slice(50)
@@ -213,7 +213,7 @@ function initXHR() {
                   sideAds: true
                 };
                 txt = txt.slice(chunk.length);
-                console.log('DATA FB4 OLD (side ads)');
+                // console.log('DATA FB4 OLD (side ads)');
                 setTimeout(function () {
                   window.postMessage(data, '*');
                 }, Math.round(Math.random()*10000, 1000));
@@ -300,7 +300,7 @@ function storeRQ(adData, WAIT_UNTIL) {
 
 
 function getExplanationsManually(adData) {
-  console.log('getExplanationsManually called', adData.fb_id, new Date())
+  // console.log('getExplanationsManually called', adData.fb_id, new Date())
   const { WAIT_UNTIL_LS } = getRQ();
   if (WAIT_UNTIL_LS > WAIT_UNTIL) { WAIT_UNTIL = WAIT_UNTIL_LS }
   if (new Date() < WAIT_UNTIL) {
@@ -334,7 +334,7 @@ function getExplanationsManually(adData) {
         advertiserId = response.match(re_advertiserId)[0].match(/[0-9]+/)[0];
         const adv_index = response.indexOf('waist_advertiser_info');
         advertiserName = response.slice(adv_index, response.length -1).match(re_advertiserName)[1];
-        console.log('this.advertiserName ===', advertiserName)
+        // console.log('this.advertiserName ===', advertiserName)
       } catch(e) {
         console.log('error finding adv name or it is fb4')
       }

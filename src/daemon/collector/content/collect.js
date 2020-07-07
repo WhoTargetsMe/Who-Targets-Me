@@ -115,7 +115,7 @@ const hideMenu = () => {
       if (menus) {
         for (let j=0; j<menus.length; j++) {
           if (menus[j].clientHeight > 0 && menus[j] && menus[j].innerText.indexOf('Notfification') === -1) {
-            console.log('hideMenu', j, menus[j], new Date())
+            // console.log('hideMenu', j, menus[j], new Date())
             menus[j].setAttribute('style', 'display: none;')
           }
         }
@@ -139,7 +139,7 @@ function clickButtonNew(adFrame) {
   //console.log('Clicking - clickButtonNew 1', adFrame);
   const moreButton = getMoreButtonFrontAdNew(adFrame);
   $(moreButton).trigger('click');
-  console.log('@@@@@@@@ 1', new Date())
+  // console.log('@@@@@@@@ 1', new Date())
   hideMenu();
 }
 
@@ -154,7 +154,7 @@ function getExplanationUrlFrontAds(frontAd, adData) {
 
 // FB5
 function getExplanationUrlFrontAdsNew(frontAd, adData) {
-  console.log('Processing - getExplanationUrlFrontAdsNew frontAd --', frontAd);
+  // console.log('Processing - getExplanationUrlFrontAdsNew frontAd --', frontAd);
   // console.log('Processing - getExplanationUrlFrontAdsNew adData --', adData);
   adData.buttonId = adData.parent_id;
   addToFrontAdQueue(adData);
@@ -575,7 +575,7 @@ function sendRationale(postData) {
   let token;
 
   if (adId && POSTEDQUEUE.includes(adId)) {
-    console.log('POSTEDQUEUE already posted', POSTEDQUEUE)
+    // console.log('POSTEDQUEUE already posted', POSTEDQUEUE)
     return;
   }
 
@@ -585,13 +585,13 @@ function sendRationale(postData) {
     fbStoryId = adData.fbStoryId;
     extVersion  = adData.extVersion;
     token = adData.token;
-    console.log('sendRationale - sideAd', fbStoryId, postData)
+    // console.log('sendRationale - sideAd', fbStoryId, postData)
   } else if (advertiserName) {
     // FB5 regular ad or side ad
     // test if this is a regular fb5 ad
     // it needs to have a companion in COLLECTED_ADS_NEW to be able to use one fbStoryId
     let adNew = COLLECTED_ADS_NEW.find(ad => ad.html && ad.html.indexOf(advertiserName) > -1);
-    console.log('sendRationale - adNew', adNew, COLLECTED_ADS_NEW, postData)
+    // console.log('sendRationale - adNew', adNew, COLLECTED_ADS_NEW, postData)
     if (!adNew) { return; }
     if (adNew && adNew.fbStoryId) {
       fbStoryId = adNew.fbStoryId;
@@ -599,10 +599,9 @@ function sendRationale(postData) {
       token = adNew.token;
     }
     COLLECTED_ADS_NEW = COLLECTED_ADS_NEW.filter(ad => ad.fbStoryId !== fbStoryId);
-    console.log('COLLECTED_ADS_NEW', fbStoryId, adNew)
   } else {
     // FB4
-    console.log('FB4 is visited? POSTEDQUEUE', POSTEDQUEUE)
+    // console.log('FB4 is visited? POSTEDQUEUE', POSTEDQUEUE)
     const container = $(adData.raw_ad); //$(advert).closest('[data-testid="fbfeed_story"]'); // Go up a few elements to the advert container
     fbStoryId = container.attr('id');
     if (adData.parent_id && adData.parent_id.indexOf("hyperfeed") > -1) {
@@ -612,7 +611,7 @@ function sendRationale(postData) {
     token = adData.token;
   }
   // console.log('Update QUEUE++++++RESULT', POSTEDQUEUE)
-  console.log('sendExplanationDB  BG called', adId, advertiserId, fbStoryId)
+  // console.log('sendExplanationDB  BG called', adId, advertiserId, fbStoryId)
 
   // send to db
   let finalPayload = { // Queue advert for server
@@ -705,7 +704,7 @@ window.addEventListener("message", function(event) {
           api.addMiddleware(request => {request.options.headers['Authorization'] = result.general_token});
             adData.extVersion = extVersion;
             adData.token = result.general_token;
-            console.log('Query rationale - FB5', adData, event.data.fb_id, POSTEDQUEUE)
+            // console.log('Query rationale - FB5', adData, event.data.fb_id, POSTEDQUEUE)
             if (!POSTEDQUEUE.includes(event.data.fb_id)) {
               setTimeout(function() {
                 window.postMessage(adData, '*')
@@ -724,7 +723,6 @@ window.addEventListener("message", function(event) {
     adData.rationaleUrl = rationaleUrl;
     const extVersion = chrome.runtime.getManifest().version;
     const fbStoryId = generateRelatedField(event.data.fb_id);
-    console.log('POSTED??', event.data.fb_id, fbStoryId)
     // if this ad was already posted
     if (!fbStoryId) { return; }
 
@@ -740,7 +738,7 @@ window.addEventListener("message", function(event) {
         html,
       }]
     };
-    console.log('OBSERVER-From Collect SIDE AD--> finalPayload, event.data.ad', finalPayload)
+    // console.log('OBSERVER-From Collect SIDE AD--> finalPayload, event.data.ad', finalPayload)
 
     chrome.storage.promise.local.get('general_token')
       .then((result) => {
@@ -761,7 +759,7 @@ window.addEventListener("message", function(event) {
 
             adData.extVersion = extVersion;
             adData.token = result.general_token;
-            console.log('Query rationale - FB5 SIDE AD', adData)
+            // console.log('Query rationale - FB5 SIDE AD', adData)
             setTimeout(function() {
               window.postMessage(adData, '*')
             }, Math.round(Math.random()*10000, 1000));

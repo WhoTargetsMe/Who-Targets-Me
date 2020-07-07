@@ -9,12 +9,11 @@ export const initPopup = function() {
         <h6 style="padding-left:10px;">Who Targets Me</h6>
       </div>
       <p>
-        You're now updated to the latest version of Who Targets Me?
+        You’ve been updated to the latest version of Who Targets Me.
       </p>
-      <p>Please click on the icon to complete installation.</p>
+      <p>Click the extension icon in your toolbar above (next to the address bar) to complete set up.</p>
       <p>
-        Thanks,<br>
-        The Who Targets Me? Team
+        Thanks!
       </p>
     </div>
     <div id="popup_close" style="flex:1;min-width:10px;max-width:10px;font-weight:bold;cursor:pointer;margin-top:3px;">X</div>
