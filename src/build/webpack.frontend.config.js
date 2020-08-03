@@ -57,7 +57,8 @@ var config = {
     new ExtractTextPlugin("styles.css"),
     new CopyWebpackPlugin(CopyWebpackConfig),
     new webpack.DefinePlugin({
-      'process.env.API_URL': process.env.OFFLINE ? JSON.stringify(package.apiUrlLocal) : JSON.stringify(package.apiUrl)
+      'process.env.API_URL': process.env.OFFLINE ? JSON.stringify(package.apiUrlLocal) : JSON.stringify(package.apiUrl),
+      'process.env.RESULTS_URL': process.env.OFFLINE ? JSON.stringify(package.resultsUrlLocal) : JSON.stringify(package.resultsUrl)
     }),
   ],
   devServer: {

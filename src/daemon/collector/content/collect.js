@@ -2,12 +2,7 @@
 import $ from "jquery";
 import { v4 as uuidv4 } from 'uuid';
 import api from '../../api.js';
-const re_buttonId = /button_id=\S+?&/;
 const re_userId = /"USER_ID":"[0-9]+"/;
-const re_qid = /qid.[0-9]+/;
-const re_ajaxify = /ajaxify":"\\\/ads\\\/preferences\\\/dialog\S+?"/;
-const re_adId = /id=[0-9]+/;
-const re_number = /[0-9]+/;
 // const rationaleUrl = 'https://www.facebook.com/ads/preferences/dialog/?'; OLD
 const rationaleUrl = 'https://www.facebook.com/api/graphql/';
 const sponsoredText = ['Sponsored', 'Sponsorjat','Sponzorované','Спонзорирано', 'Χορηγούμενη','Sponsitud','Sponzorováno','Спонсорирано', 'ממומן', 'Sponsoroitu','Sponsrad', 'Apmaksāta reklāma', 'Sponsorlu','Sponsrad','Спонзорисано','Sponzorované','Sponsa','Gesponsord','Sponset','Hirdetés', 'Sponsoreret', 'Sponzorováno', 'Sponsorisé', 'Commandité', 'Publicidad', 'Gesponsert', 'Χορηγούμενη', 'Patrocinado', 'Plaćeni oglas', 'Sponsorizzata ', 'Sponsorizzato', 'Sponsorizat', '赞助内容', 'مُموَّل', 'प्रायोजित', 'Спонзорисано', 'Реклама', '広告', 'ได้รับการสนับสนุน', 'Sponsorowane'];
@@ -459,9 +454,9 @@ function getFrontAdFrames() {
 }
 
 function generateRelatedField(id) {
-  if (POSTEDQUEUE.includes(id)) {
-    return null;
-  }
+  // if (POSTEDQUEUE.includes(id)) {
+  //   return null;
+  // }
   return id + "_" + uuidv4();
 }
 
@@ -515,24 +510,28 @@ function processFrontAd(frontAd, layoutStyle) {
   chrome.storage.promise.local.get('general_token')
     .then((result) => {
       if (result) {
-        api.addMiddleware(request => {request.options.headers['Authorization'] = result.general_token});
-        api.post('log/raw', {json: finalPayload})
-          .then((response) => {
-            // response completed, no log
-          }).catch(err => console.log('log/raw err', err));
-          // container.addClass('fetched');
 
-          // store new ads for linking with rationales
-          adNew.token = result.general_token;
-          COLLECTED_ADS_NEW.push(adNew);
+        // Don't send FB5 from here. Store in queue and then send with rationale
+        // Send FB4 from here because it has params we need
+        if (!layoutStyle) {
+          api.addMiddleware(request => {request.options.headers['Authorization'] = result.general_token});
+          api.post('log/raw', {json: finalPayload})
+            .then((response) => {
+              // response completed, no log
+            }).catch(err => console.log('log/raw err', err));
         }
+
+        // store new ads for linking with rationales
+        adNew.token = result.general_token;
+        //console.log('COLLECTED_ADS_NEW => new ad pushed', adNew)
+        COLLECTED_ADS_NEW.push(adNew);
+      }
     }).catch((error) => {
       console.log('general_token err', error);
     });
-    // console.log('OBSERVER-From SEND AD Collect--> extVersion', extVersion, fbStoryId)
+    //console.log('OBSERVER-From SEND AD Collect--> extVersion', extVersion, fbStoryId)
 
-  // ----- Temporarily collect ads even if rationales are not there ----- //
-
+  // return object of processFrontAd function
   var timestamp = (new Date).getTime();
   return {
     raw_ad,
@@ -549,14 +548,14 @@ function grabFrontAds() {
       // console.log('Grabbing front ads...')
       const {frontAds, layoutStyle} = getFrontAdFrames();
       // console.log('grabFrontAds', layoutStyle, frontAds);
-      for (let i=0; i<frontAds.length; i++) {
-        let adData = processFrontAd(frontAds[i], layoutStyle);
+      for (const frontAd of frontAds) {
+        let adData = processFrontAd(frontAd, layoutStyle);
         if (adData) {
           adData['message_type'] = 'front_ad_info';
           if (layoutStyle === "FB5"){
-            getExplanationUrlFrontAdsNew(frontAds[i], adData);
+            getExplanationUrlFrontAdsNew(frontAd, adData);
           } else {
-            getExplanationUrlFrontAds(frontAds[i], adData);
+            getExplanationUrlFrontAds(frontAd, adData);
           }
         }
       }
@@ -568,14 +567,16 @@ function grabFrontAds() {
 }
 
 function sendRationale(postData) {
-  const {adId, adData, explanation, advertiserId, advertiserName} = postData;
+  const {adId, adData, advertiserId} = postData;
+  let {advertiserName, explanation} = postData;
+  let fbStoryId, extVersion, token, postId, vanity, adNew;
+  if (adData) {
+    postId = adData.postId;
+    vanity = adData.vanity;
+  }
 
-  let fbStoryId;
-  let extVersion;
-  let token;
-
-  if (adId && POSTEDQUEUE.includes(adId)) {
-    // console.log('POSTEDQUEUE already posted', POSTEDQUEUE)
+  if (postId && POSTEDQUEUE.includes(postId)) {
+    // console.log('post is in POSTEDQUEUE - stop')
     return;
   }
 
@@ -585,13 +586,25 @@ function sendRationale(postData) {
     fbStoryId = adData.fbStoryId;
     extVersion  = adData.extVersion;
     token = adData.token;
-    // console.log('sendRationale - sideAd', fbStoryId, postData)
+    vanity = advertiserId;
+    // console.log('sendRationale - sideAd', fbStoryId, vanity, postData)
   } else if (advertiserName) {
     // FB5 regular ad or side ad
     // test if this is a regular fb5 ad
     // it needs to have a companion in COLLECTED_ADS_NEW to be able to use one fbStoryId
-    let adNew = COLLECTED_ADS_NEW.find(ad => ad.html && ad.html.indexOf(advertiserName) > -1);
+
+    COLLECTED_ADS_NEW.forEach(ad => {
+      const fburl = 'href="https://www.facebook.com/';
+      const start = ad.html.indexOf(fburl) + fburl.length
+      const chunk = ad.html.slice(start)
+      const adVanity = chunk.slice(0,chunk.indexOf('/'))
+      if (adVanity.indexOf(vanity) > -1 || advertiserId === vanity) {
+        adNew = ad;
+      }
+      // console.log('VANITY FROM AD / BG / ADV NAME =', adVanity, vanity, advertiserName)
+    })
     // console.log('sendRationale - adNew', adNew, COLLECTED_ADS_NEW, postData)
+
     if (!adNew) { return; }
     if (adNew && adNew.fbStoryId) {
       fbStoryId = adNew.fbStoryId;
@@ -611,25 +624,49 @@ function sendRationale(postData) {
     token = adData.token;
   }
   // console.log('Update QUEUE++++++RESULT', POSTEDQUEUE)
-  // console.log('sendExplanationDB  BG called', adId, advertiserId, fbStoryId)
+  // console.log('sendExplanationDB  BG called', advertiserId, fbStoryId)
+  explanation = decodeURIComponent(explanation);
 
-  // send to db
-  let finalPayload = { // Queue advert for server
+  // Send ad (FB5 main feed)
+  if (adNew) {
+    const finalPayload = {
+      typeId: 'FBADVERT',
+      extVersion,
+      payload: [{
+        type: 'FBADVERT',
+        related: fbStoryId,
+        html: adNew.html,
+        postId,
+        vanity
+      }]
+    };
+    api.addMiddleware(request => {request.options.headers['Authorization'] = token});
+    api.post('log/raw', {json: finalPayload})
+      .then((response) => {
+        // response completed, no log
+      });
+      // console.log('OBSERVER --> finalPayload AD', finalPayload)
+  }
+
+  // Send rationale
+  const finalPayloadRationale = {
     typeId: 'FBADVERT',
     extVersion,
     payload: [{
       type: 'FBADVERTRATIONALE',
       related: fbStoryId,
-      html: explanation
+      html: explanation,
+      postId,
+      vanity
     }]
   };
-  // console.log('OBSERVER-From Rationale --> finalPayload', finalPayload)
+  // console.log('OBSERVER --> finalPayload Rationale', finalPayloadRationale)
   // mark that rationale was posted
-  if (adId) {
-    POSTEDQUEUE.push(adId);
+  if (postId) {
+    POSTEDQUEUE.push(postId);
   }
   api.addMiddleware(request => {request.options.headers['Authorization'] = token});
-  api.post('log/raw', {json: finalPayload})
+  api.post('log/raw', {json: finalPayloadRationale})
     .then((response) => {
       // response completed, no log
     });
@@ -657,6 +694,7 @@ window.addEventListener("message", function(event) {
       newParams['fb_api_req_friendly_name'] = "AdsPrefWAISTDialogQuery"
       newParams['variables'] = `{"adId": "${event.data.adId}", "clientToken": "${clientToken}"}`
       newParams['doc_id'] = CURRENTDOCID;
+      // newParams['server_timestamps'] = true;
 
       adData.fb_id = event.data.adId;
       adData.explanationUrl = $.param(newParams);
@@ -683,7 +721,7 @@ window.addEventListener("message", function(event) {
               // console.log('Query rationale - 2', adData)
               setTimeout(function() {
                 window.postMessage(adData, '*')
-              }, 10000);
+              }, 1000);
             }
         }).catch((error) => {
           console.log(error);
@@ -695,6 +733,8 @@ window.addEventListener("message", function(event) {
   // FB5 rationale request
   if (event.data.addParams && !event.data.rationaleUrl) {
     const adData = {}
+    adData.postId = event.data.postId;
+    adData.vanity = event.data.vanity;
     adData.explanationUrl = $.param(event.data.asyncParams);
     adData.rationaleUrl = rationaleUrl;
     const extVersion = chrome.runtime.getManifest().version;
@@ -704,12 +744,13 @@ window.addEventListener("message", function(event) {
           api.addMiddleware(request => {request.options.headers['Authorization'] = result.general_token});
             adData.extVersion = extVersion;
             adData.token = result.general_token;
-            // console.log('Query rationale - FB5', adData, event.data.fb_id, POSTEDQUEUE)
-            if (!POSTEDQUEUE.includes(event.data.fb_id)) {
+            // console.log('(1) Query rationale - FB5 main feed', adData, event.data.fb_id, adData.postId, POSTEDQUEUE)
+            // if (!POSTEDQUEUE.includes(event.data.postId) && !POSTEDQUEUE.includes(event.data.fb_id)) {
+              // console.log('(2) Query rationale - FB5 main feed - sent')
               setTimeout(function() {
                 window.postMessage(adData, '*')
-              }, Math.round(Math.random()*10000, 1000));
-            }
+              }, Math.round(Math.random()*1000, 100));
+            // }
           }
       }).catch((error) => {
         console.log(error);
@@ -762,7 +803,7 @@ window.addEventListener("message", function(event) {
             // console.log('Query rationale - FB5 SIDE AD', adData)
             setTimeout(function() {
               window.postMessage(adData, '*')
-            }, Math.round(Math.random()*10000, 1000));
+            }, Math.round(Math.random()*1000, 100));
           }
       }).catch((error) => {
         console.log(error);

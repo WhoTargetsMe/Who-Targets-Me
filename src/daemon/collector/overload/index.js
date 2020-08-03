@@ -3,7 +3,6 @@ import api from '../../api.js';
 import PromisePool from 'es6-promise-pool';
 
 const re_buttonId = /button_id=\S+?&/;
-const re_userId = /"USER_ID":"[0-9]+"/;
 const re_qid = /qid.[0-9]+/;
 
 const re_ajaxify = /ajaxify":"\\\/waist_content\\\/dialog\S+?"/;
@@ -15,6 +14,10 @@ const re_advertiserName = /"name":"(.*?)"/;
 const re_number = /[0-9]+/;
 const re_Ego = /data-ego-fbid=\\"(.*?)\\"/;
 const re_EgoClientToken = /eid=(.*?)&amp;/;
+// const re_postId = /https:\/\/www.facebook.com\/(.*?)\/posts\/(.*?)#/;
+const re_postId_1 = /httpswww.facebook.com(.*?)posts(.*?)#/;
+const re_postId_2 = /story_fbid(.*?)id(.*?)#/;
+const re_postId_3 = /feedback.*"id":"(.*?)"/;
 
 let EXPLANATION_REQUESTS = {};
 let R_PROBLEMATIC = [];
@@ -118,7 +121,7 @@ function initXHR() {
               const adv_index = this.responseText.indexOf('waist_advertiser_info');
               // console.log('this.advertiserName ===', this.responseText.slice(adv_index, this.responseText.length -1).match(re_advertiserName))
               const advertiserName = this.responseText.slice(adv_index, this.responseText.length -1).match(re_advertiserName)[1];
-              // console.log('DATA Sent prepared rationale to collect');
+              // console.log('DATA Sent prepared rationale to collect', advertiserId, advertiserName);
               window.postMessage({
                 postRationale: {advertiserId, advertiserName, explanation: this.responseText}
               }, "*");
@@ -138,13 +141,68 @@ function initXHR() {
             asyncParams["fb_api_req_friendly_name"] = 'AdsPrefWAISTDialogQuery';
             asyncParams["variables"] = `{"adId": "${adId}", "clientToken": "${clientToken}"}`;
             asyncParams["doc_id"] = CURRENTDOCID;
+            // asyncParams['server_timestamps'] = true;
 
+            // get vanity (replacement for advertiserId) and postId
+            let chunk = this.responseText.slice(this.responseText.indexOf('StoryEmbedPostMenuItem'), this.responseText.indexOf('StoryEmbedPostMenuItem') + 800)
+            chunk = chunk.replace(/\\u00252F/g, '').replace(/\\u00253A/g, '').replace(/\\u0026/g, '').replace(/\\u002526/g, '').replace(/\\u00253D/g, '').replace(/\\u00253F/g, '')
+            
+            let postId, vanity;
+            let matched = chunk.match(re_postId_1);
+            if (matched) {
+              vanity = matched[1];
+              postId = matched[2];
+            } else {
+              matched = chunk.match(re_postId_2);
+              if (matched) {
+                vanity = matched[2];
+                postId = matched[1];
+              }
+            }
+
+            // if no embed button
+            if (!chunk || !vanity || !postId) {
+              chunk = this.responseText.slice(this.responseText.indexOf('StoryWhyAmISeeingThisAdMenuItem'), w.indexOf('StoryWhyAmISeeingThisAdMenuItem') + 1000)
+              chunk = chunk.replace(/\\u002522/g,'').replace(/\\u00252C/g,'').replace(/\\u00253A/g,'').replace(/\\u002540/g,'');
+              if (!postId) {
+                try {
+                  postId = chunk.match(/top_level_post_id([0-9]+)/)[1];
+                } catch(e) {
+                  console.log('err parsing top_level_post_id', e);
+                }
+              }
+              if (!vanity) {
+                try {
+                    vanity = chunk.match(/page_id([0-9]+)/)[1];
+                } catch(e) {
+                  console.log('err parsing page_id', e);
+                }
+              }
+            }
+
+            // last resort if url in other format
+            if (!postId) {
+              chunk = this.responseText.slice(this.responseText.indexOf('feedback:'));
+              let id = '';
+              try {
+                id = atob(chunk.match(re_postId_3))[1];
+              } catch(e) {
+                console.log('err decoding id', e);
+              }
+              if (id.indexOf('feedback') > -1) {
+                postId = id.replace('feedback:', '')
+              }
+            }
+
+            //console.log('OVERLOAD----', matched, postId, vanity)
             const data = {
               fb_id: adId,
               asyncParams,
+              postId,
+              vanity,
               addParams: true
             };
-            // console.log('DATA FB5 send addParams to get rationale');
+            //console.log('DATA FB5 send addParams to get rationale', adId, data);
             window.postMessage(data, '*');
           }
           // (3) refresh - get side ads
@@ -158,6 +216,7 @@ function initXHR() {
             asyncParams["fb_api_req_friendly_name"] = 'AdsPrefWAISTDialogQuery';
             asyncParams["doc_id"] = CURRENTDOCID;
             asyncParams["__pc"] = 'PHASED:DEFAULT';
+            // asyncParams['server_timestamps'] = true;
 
             const responseJSON = this.responseText.replace(/\n/g,'').replace(/\t/g,'').replace(/\r\n/g,'').replace(/\r/g,'').replace(/\n\r/g,'')
             const ads = JSON.parse(responseJSON).data.viewer.sideFeed.nodes[0].ads.nodes;
@@ -176,7 +235,7 @@ function initXHR() {
               // console.log('DATA FB5 (side ads)');
               setTimeout(function () {
                 window.postMessage(data, '*');
-              }, Math.round(Math.random()*10000, 1000));
+              }, Math.round(Math.random()*1000, 100));
             })
           }
           return;
@@ -192,6 +251,7 @@ function initXHR() {
             asyncParams["fb_api_req_friendly_name"] = 'AdsPrefWAISTDialogQuery';
             asyncParams["doc_id"] = CURRENTDOCID;
             asyncParams["__pc"] = 'PHASED:DEFAULT';
+            // asyncParams['server_timestamps'] = true;
 
             const preStart = 'ego_unit_container';
             const start = 'ego_unit';
@@ -262,6 +322,8 @@ RQ = RQ_LS;
 WAIT_UNTIL = WAIT_UNTIL_LS;
 
 function storeRQ(adData, WAIT_UNTIL) {
+  console.log('storeRQ called...')
+
   const { RQ_LS } = getRQ();
   let keys = Object.keys(RQ);
   if (keys) {
@@ -386,12 +448,12 @@ window.setInterval(function(){ retryStoredRQ() }, RQ_INTERVAL);
 
 
 function addListeners() {
+
   window.postMessage({asyncParams:true}, "*"); //update params
   window.addEventListener("message", function(event) {
     // console.log('messageListener', event.data);
-    if (event.source !== window) {
-      return;
-    }
+    if (event.source !== window) { return; }
+
     if (event.data.postRationale) {
       // console.log('postRationale in listener - returning')
       return;
@@ -400,21 +462,33 @@ function addListeners() {
       // console.log('!!!! caught explanationUrl', new Date())
       let { WAIT_UNTIL_LS } = getRQ();
       if (WAIT_UNTIL_LS > WAIT_UNTIL) { WAIT_UNTIL = WAIT_UNTIL_LS }
-      storeRQ(event.data, WAIT_UNTIL);
-      // getExplanationsManually(event.data);
+      // push to queue, then pull from there,
+      // for now don't call manually
+      //storeRQ(event.data, WAIT_UNTIL);
+      getExplanationsManually(event.data);
     }
     if (event.data.asyncParams && !event.data.explanationUrl) {
-      const data = {
-        asyncParamsReady:true,
-        paramsPost: window.require('getAsyncParams')('POST'),
-        paramsGet: window.require('getAsyncParams')('GET')
-      };
-      // console.log('Asynch Params required - ', data);
-      window.postMessage(data,'*');
+      let data = {
+        asyncParams:true
+      }
+      try {
+        const _data = {}
+        data.paramsPost = window.require('getAsyncParams')('POST')
+        data.paramsGet = window.require('getAsyncParams')('GET')
+        data.asyncParamsReady = true;
+        data = _data;
+      } catch(e) {
+        console.log('err getting asyncParams')
+      }
+
+      if (data.asyncParamsReady) {
+        // console.log('Asynch Params required - ', data);
+        window.postMessage(data,'*');
+      }
       return;
     }
   });
-  window.setTimeout(initXHR(), 5000);
+  window.setTimeout(initXHR(), 1000);
 };
 
-window.setTimeout(addListeners(), 15000);
+window.setTimeout(addListeners(), 1000);

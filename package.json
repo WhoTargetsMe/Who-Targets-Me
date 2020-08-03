@@ -3,8 +3,10 @@
   "version": "1.2.46",
   "description": "Track the extent of digital political advertising, discover which parties are targeting you",
   "main": "index.js",
-  "apiUrl": "https://msih3yho6h.execute-api.eu-central-1.amazonaws.com/dev/",
+  "apiUrl": "https://wtm-api.whotargets.me/v1/",
   "apiUrlLocal": "http://localhost:3000/",
+  "resultsUrl": "https://results.whotargets.me/",
+  "resultsUrlLocal": "http://localhost:3000/",
   "scripts": {
     "dev-frontend-online": "BROWSER=chrome webpack --config src/build/webpack.frontend.config.js & BROWSER=chrome webpack-dev-server --config src/build/webpack.frontend.config.js",
     "dev-frontend": "BROWSER=chrome OFFLINE=true webpack --config src/build/webpack.frontend.config.js & BROWSER=chrome OFFLINE=true webpack-dev-server --config src/build/webpack.frontend.config.js",
