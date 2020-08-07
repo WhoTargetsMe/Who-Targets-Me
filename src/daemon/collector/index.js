@@ -17,7 +17,7 @@ const checkScripts = (src, targets) => {
     return scriptExists;
 }
 export function initCollector() {
-    var s2 = window.document.createElement("script");
+    const s2 = window.document.createElement("script");
     s2.src = chrome.extension.getURL("daemon/overload.js");
     const targets = [document.head, document.documentElement];
     const scriptExists = checkScripts(s2.src, targets);

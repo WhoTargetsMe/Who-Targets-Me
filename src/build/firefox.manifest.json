@@ -13,11 +13,7 @@
 		"*://www.facebook.com/*",
 		"*://*.whotargets.me/*",
 		"*://whotargets.me/*",
-		"*://results.whotargets.me/*",
-		"*://results-dev.whotargets.me/*",
-		"*://msih3yho6h.execute-api.eu-central-1.amazonaws.com/dev/*",
 		"*://localhost:3000/*",
-		"*://wtm-api.whotargets.me/*",
 		"tabs"
 	],
 	"content_scripts": [

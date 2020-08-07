@@ -107,7 +107,7 @@ window.addEventListener("message", function(event) {
       })
   } else if (event.data.deleteWTMUser) {
     chrome.storage.promise.local.remove('general_token');
-    chrome.storage.promise.local.remove('user_data');
+    chrome.storage.promise.local.remove('userData');
   }
 })
 
@@ -135,10 +135,10 @@ chrome.browserAction && chrome.browserAction.onClicked.addListener(function(tab)
                 }
                 chrome.tabs.executeScript(currTab.id, {
                   code: `window.open("${url}", "_blank")`
-                  }, _=> {
+                }, r => {
                     let e = chrome.runtime.lastError;
                     if (e !== undefined){
-                      console.log(currTab, _, e);
+                      console.log(currTab, r, e);
                     };
                 })
                 break;

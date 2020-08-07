@@ -11,12 +11,10 @@
 	"content_scripts": [
 		{
 			"matches": [
-				"https://msih3yho6h.execute-api.eu-central-1.amazonaws.com/dev/*",
 				"https://www.facebook.com/*",
 				"http://localhost:3000/*",
-				"https://results.whotargets.me/*",
-				"https://results-dev.whotargets.me/*",
-				"https://wtm-api.whotargets.me/*"
+				"*://*.whotargets.me/*",
+				"*://whotargets.me/*"
 			],
 			"js": ["daemon/index.js", "daemon/collect.js"]
 		}

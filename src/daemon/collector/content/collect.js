@@ -218,6 +218,9 @@ function filterFrontAds(lst) {
     if (sponsoredText.indexOf(lst[i].text) > -1 && $(lst[i]).attr('href').indexOf('/ads/about/') > -1) {
       layoutStyle = "FB5";
     }
+    if (document.querySelector('[data-pagelet="Stories"]')) {
+     layoutStyle = "FB5";
+    }
     // this is a clickable link, not "Sponsored" link
     const rel = lst[i].getAttribute('rel')
     const target = lst[i].getAttribute('target')
@@ -595,9 +598,9 @@ function sendRationale(postData) {
 
     COLLECTED_ADS_NEW.forEach(ad => {
       const fburl = 'href="https://www.facebook.com/';
-      const start = ad.html.indexOf(fburl) + fburl.length
-      const chunk = ad.html.slice(start)
-      const adVanity = chunk.slice(0,chunk.indexOf('/'))
+      const start = ad.html.indexOf(fburl) + fburl.length;
+      const chunk = ad.html.slice(start);
+      const adVanity = chunk.slice(0,chunk.indexOf('/'));
       if (adVanity.indexOf(vanity) > -1 || advertiserId === vanity) {
         adNew = ad;
       }

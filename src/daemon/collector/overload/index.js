@@ -146,7 +146,7 @@ function initXHR() {
             // get vanity (replacement for advertiserId) and postId
             let chunk = this.responseText.slice(this.responseText.indexOf('StoryEmbedPostMenuItem'), this.responseText.indexOf('StoryEmbedPostMenuItem') + 800)
             chunk = chunk.replace(/\\u00252F/g, '').replace(/\\u00253A/g, '').replace(/\\u0026/g, '').replace(/\\u002526/g, '').replace(/\\u00253D/g, '').replace(/\\u00253F/g, '')
-            
+
             let postId, vanity;
             let matched = chunk.match(re_postId_1);
             if (matched) {
@@ -276,7 +276,7 @@ function initXHR() {
                 // console.log('DATA FB4 OLD (side ads)');
                 setTimeout(function () {
                   window.postMessage(data, '*');
-                }, Math.round(Math.random()*10000, 1000));
+                }, Math.round(Math.random()*1000, 100));
               }
             }
           }
@@ -473,9 +473,9 @@ function addListeners() {
       }
       try {
         const _data = {}
-        data.paramsPost = window.require('getAsyncParams')('POST')
-        data.paramsGet = window.require('getAsyncParams')('GET')
-        data.asyncParamsReady = true;
+        _data.paramsPost = window.require('getAsyncParams')('POST')
+        _data.paramsGet = window.require('getAsyncParams')('GET')
+        _data.asyncParamsReady = true;
         data = _data;
       } catch(e) {
         console.log('err getting asyncParams')
