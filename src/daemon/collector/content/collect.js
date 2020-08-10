@@ -109,8 +109,8 @@ const hideMenu = () => {
       const menus = document.querySelectorAll('[data-testid="Keycommand_wrapper_ModalLayer"]')
       if (menus) {
         for (let j=0; j<menus.length; j++) {
-          if (menus[j].clientHeight > 0 && menus[j] && menus[j].innerText.indexOf('Notfification') === -1) {
-            // console.log('hideMenu', j, menus[j], new Date())
+          if (menus[j].clientHeight > 0 && !menus[j].closest('[data-pagelet="ChatTab"]') && menus[j].innerText.indexOf('Notfification') === -1) {
+            //console.log('hideMenu', j, menus[j], new Date())
             menus[j].setAttribute('style', 'display: none;')
           }
         }
@@ -120,14 +120,14 @@ const hideMenu = () => {
 }
 
 // FB5
-const hideModal = () => {
-  const modals = document.querySelectorAll('[data-pagelet="root"]');
-  for (let i=0; i<modals.length; i++) {
-    if (modals[i].clientHeight > 0 && modals[i].offsetParent && modals[i].offsetParent.tagName.toLowerCase() !== "body"){
-      modals[i].setAttribute('style', 'display: none;');
-    }
-  }
-}
+// const hideModal = () => {
+//   const modals = document.querySelectorAll('[data-pagelet="root"]');
+//   for (let i=0; i<modals.length; i++) {
+//     if (modals[i].clientHeight > 0 && modals[i].offsetParent && modals[i].offsetParent.tagName.toLowerCase() !== "body"){
+//       modals[i].setAttribute('style', 'display: none;');
+//     }
+//   }
+// }
 
 // FB5
 function clickButtonNew(adFrame) {
