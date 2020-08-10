@@ -9,22 +9,21 @@
 	},
 	"permissions": [
 		"storage",
+		"tabs",
 		"*://facebook.com/*",
-		"*://www.facebook.com/*",
-		"*://*.whotargets.me/*",
+		"*://*.facebook.com/*",
 		"*://whotargets.me/*",
-		"*://localhost:3000/*",
-		"tabs"
+		"*://*.whotargets.me/*",
+		"*://localhost:*/*"
 	],
 	"content_scripts": [
 		{
 			"matches": [
 				"*://facebook.com/*",
 				"*://*.facebook.com/*",
-				"*://localhost:3000/*",
-				"*://results.whotargets.me/*",
-				"*://results-dev.whotargets.me/*",
-				"*://wtm-api.whotargets.me/*"
+				"*://whotargets.me/*",
+				"*://*.whotargets.me/*",
+				"*://localhost:*/*"
 			],
 			"js": ["daemon/index.js", "daemon/collect.js"]
 		}

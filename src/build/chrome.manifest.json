@@ -11,10 +11,11 @@
 	"content_scripts": [
 		{
 			"matches": [
-				"https://www.facebook.com/*",
-				"http://localhost:3000/*",
+				"*://facebook.com/*",
+				"*://*.facebook.com/*",
+				"*://whotargets.me/*",
 				"*://*.whotargets.me/*",
-				"*://whotargets.me/*"
+				"*://localhost:*/*"
 			],
 			"js": ["daemon/index.js", "daemon/collect.js"]
 		}
