@@ -26,7 +26,8 @@ module.exports = {
         { from: __dirname + '/wtm_logo_128.png', to: build_dir + '/wtm_logo_128.png' },
       ]),
       new webpack.DefinePlugin({
-        'process.env.API_URL': process.env.OFFLINE ? JSON.stringify(package.apiUrlLocal) : JSON.stringify(package.apiUrl)
+        'process.env.API_URL': process.env.OFFLINE ? JSON.stringify(package.apiUrlLocal) : JSON.stringify(package.apiUrl),
+        'process.env.RESULTS_URL': process.env.OFFLINE ? JSON.stringify(package.resultsUrlLocal) : JSON.stringify(package.resultsUrl)
       }),
     ],
     module: {

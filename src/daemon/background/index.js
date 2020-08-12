@@ -4,6 +4,7 @@ import '../../common/chromeStorage.js';
 // Matches the URLs of participants in YouGov group, US Midterms 2018
 const YOUGOV_REGEX = /https:\/\/g4-us\.yougov\.com\/([a-zA-Z0-9]*)$/
 const YOUGOV_MATCH_PATTERN = 'https://g4-us.yougov.com/*'
+const RESULTS_URL = process.env.RESULTS_URL;
 
 const createBlankUser = () => { // Create user record and get auth token without user details
   return new Promise((resolve, reject) => {
@@ -60,6 +61,100 @@ const listener = (tabId, {status}, {url}) => {
     }
   }
 };
+
+// ----- registerUser ----- //
+window.addEventListener("message", function(event) {
+  // We only accept messages from ourselves
+  if (event.source != window) { return; }
+  // console.log('event in extension', event)
+
+  if (event.data.registerWTMUser) {
+    // console.log('got reg details', event.data)
+    const {age, gender, postcode, country, political_affiliation, survey, consent} = event.data;
+    api.post('user/create', {
+      json: {age,
+        gender,
+        postcode,
+        country,
+        political_affiliation,
+        survey,
+        email: null,
+        update: null,
+        consent
+      }
+    })
+      .then((response) => { // The rest of the validation is down to the server
+        if(response.jsonData.errorMessage !== undefined) {
+          throw new Error(response.jsonData.errorMessage);
+        }
+        let general_token = response.jsonData.data.token;
+        return chrome.storage.promise.local.set({general_token})
+          .then((res) => {
+            window.localStorage.setItem('general_token', JSON.stringify(general_token));
+            window.postMessage({registrationFeedback: response.jsonData}, '*');
+            return chrome.storage.promise.local.set({userData: {'isNotifiedRegister': 'yes', country}})
+              .then((res) => {})
+              .catch((e) => {
+                console.log(e);
+              });
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  } else if (event.data.deleteWTMUser) {
+    chrome.storage.promise.local.remove('general_token');
+    chrome.storage.promise.local.remove('userData');
+  }
+})
+
+// ----- toolbar button clicked ----- //
+chrome.browserAction && chrome.browserAction.onClicked.addListener(function(tab) {
+  // console.log('extension toolbar button clicked');
+  chrome.storage.promise.local.get('general_token')
+    .then((res) => {
+      const url = RESULTS_URL + (res.general_token ? 'settoken/' + res.general_token : '');
+      // toolbar button clicked Chrome
+      try {
+        chrome.tabs.query({active: false, currentWindow: true}, function(tabs) {
+          if (tabs.length > 1) {
+            for (let i=tabs.length-1; i > -1; i--) {
+              if (tabs[i].url !== "chrome://extensions/") {
+                const currTab = tabs[i];
+                // console.log('currTab', currTab, tabs)
+                try {
+                  chrome.tabs.update(currTab.id, {selected: true});
+                } catch (e) {
+                  browser.tabs.create({
+                    url
+                  });
+                  break;
+                }
+                chrome.tabs.executeScript(currTab.id, {
+                  code: `window.open("${url}", "_blank")`
+                }, r => {
+                    let e = chrome.runtime.lastError;
+                    if (e !== undefined){
+                      console.log(currTab, r, e);
+                    };
+                })
+                break;
+              }
+            }
+          }
+        });
+    } catch(e) {
+      // toolbar button clicked FF:
+      // chrome.tabs.update.selected is not supported in FF
+      browser.tabs.create({
+        url
+      });
+    }
+  })
+})
 
 const initYouGovListener = () => {
   // Check currently open tabs before starting event listener

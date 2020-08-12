@@ -1,25 +1,30 @@
 {
-	"version": "1.2.49",
+	"version": "1.2.50",
 	"name": "__MSG_appName__",
 	"manifest_version": 2,
 	"description": "__MSG_appDesc__",
 	"default_locale": "en",
 	"browser_action": {
-		"default_popup": "frontend/index.html",
 		"default_icon": "wtm_logo_128.png"
 	},
 	"permissions": [
 		"storage",
+		"tabs",
 		"*://facebook.com/*",
-		"*://www.facebook.com/*",
-		"*://*.whotargets.me/*",
+		"*://*.facebook.com/*",
 		"*://whotargets.me/*",
-		"*://msih3yho6h.execute-api.eu-central-1.amazonaws.com/dev/*",
-		"tabs"
+		"*://*.whotargets.me/*",
+		"*://localhost:*/*"
 	],
 	"content_scripts": [
 		{
-			"matches": ["*://facebook.com/*","*://*.facebook.com/*"],
+			"matches": [
+				"*://facebook.com/*",
+				"*://*.facebook.com/*",
+				"*://whotargets.me/*",
+				"*://*.whotargets.me/*",
+				"*://localhost:*/*"
+			],
 			"js": ["daemon/index.js", "daemon/collect.js"]
 		}
 	],

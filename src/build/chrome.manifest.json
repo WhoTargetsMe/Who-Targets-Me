@@ -1,17 +1,22 @@
 {
-	"version": "1.2.49",
+	"version": "1.2.50",
 	"name": "__MSG_appName__",
 	"manifest_version": 2,
 	"description": "__MSG_appDesc__",
 	"default_locale": "en",
 	"browser_action": {
 		"default_title": "__MSG_appName__",
-		"default_popup": "frontend/index.html",
 		"default_icon": "wtm_logo_128.png"
 	},
 	"content_scripts": [
 		{
-			"matches": ["https://msih3yho6h.execute-api.eu-central-1.amazonaws.com/dev/*", "https://www.facebook.com/*"],
+			"matches": [
+				"*://facebook.com/*",
+				"*://*.facebook.com/*",
+				"*://whotargets.me/*",
+				"*://*.whotargets.me/*",
+				"*://localhost:*/*"
+			],
 			"js": ["daemon/index.js", "daemon/collect.js"]
 		}
 	],
@@ -26,5 +31,5 @@
 	"icons": {
 		"128": "wtm_logo_128.png"
 	},
-	"web_accessible_resources": [ "daemon/overload.js" ]
+	"web_accessible_resources": [ "daemon/overload.js", "daemon/overload.js.map" ]
 }
