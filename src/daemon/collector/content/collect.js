@@ -241,6 +241,10 @@ function filterFrontAds(lst) {
       && isScrolledIntoView(lst[i], layoutStyle)) {
         newLst.push(lst[i]);
     }
+    if (sponsoredText.includes(lst[i].getAttribute('aria-label'))
+      && isScrolledIntoView(lst[i], layoutStyle)) {
+       newLst.push(lst[i]);
+    }
     // disabling for the moment
     // empty strings should not trigger false positives
     // if (lst[i].text && hasSillySponsored(lst[i].text) && isScrolledIntoView(lst[i], layoutStyle)) {
