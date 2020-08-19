@@ -120,16 +120,6 @@ const hideMenu = () => {
 }
 
 // FB5
-// const hideModal = () => {
-//   const modals = document.querySelectorAll('[data-pagelet="root"]');
-//   for (let i=0; i<modals.length; i++) {
-//     if (modals[i].clientHeight > 0 && modals[i].offsetParent && modals[i].offsetParent.tagName.toLowerCase() !== "body"){
-//       modals[i].setAttribute('style', 'display: none;');
-//     }
-//   }
-// }
-
-// FB5
 function clickButtonNew(adFrame) {
   //console.log('Clicking - clickButtonNew 1', adFrame);
   const moreButton = getMoreButtonFrontAdNew(adFrame);
@@ -241,7 +231,7 @@ function filterFrontAds(lst) {
       && isScrolledIntoView(lst[i], layoutStyle)) {
         newLst.push(lst[i]);
     }
-    if (sponsoredText.includes(lst[i].getAttribute('aria-label'))
+    if (sponsoredText.indexOf(lst[i].getAttribute('aria-label')) > -1
       && isScrolledIntoView(lst[i], layoutStyle)) {
        newLst.push(lst[i]);
     }
@@ -291,7 +281,7 @@ function filterCollectedAds(ads, layoutStyle) {
   for (let i=0; i<ads.length; i++) {
     const ad = ads[i];
     let id;
-    // console.log('filterCollectedAds', newStyle, 'COLLECTING?---', COLLECTED, ad)
+    // console.log('filterCollectedAds', layoutStyle, 'COLLECTING?---', COLLECTED, ad)
     if (layoutStyle === "FB5") {
       id = ad.attr('aria-labelledby');
       if (COLLECTED.includes(id) || ids.includes(id)) {

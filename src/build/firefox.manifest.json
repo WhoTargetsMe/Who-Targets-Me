@@ -14,7 +14,7 @@
 		"*://*.facebook.com/*",
 		"*://whotargets.me/*",
 		"*://*.whotargets.me/*",
-		"*://localhost:3000/"
+		"*://localhost/*"
 	],
 	"content_scripts": [
 		{
@@ -23,7 +23,7 @@
 				"*://*.facebook.com/*",
 				"*://whotargets.me/*",
 				"*://*.whotargets.me/*",
-				"*://localhost:3000/"
+				"*://localhost/*"
 			],
 			"js": ["daemon/index.js", "daemon/collect.js"]
 		}
