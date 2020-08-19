@@ -162,7 +162,7 @@ function initXHR() {
 
             // if no embed button
             if (!chunk || !vanity || !postId) {
-              chunk = this.responseText.slice(this.responseText.indexOf('StoryWhyAmISeeingThisAdMenuItem'), w.indexOf('StoryWhyAmISeeingThisAdMenuItem') + 1000)
+              chunk = this.responseText.slice(this.responseText.indexOf('StoryWhyAmISeeingThisAdMenuItem'), this.responseText.indexOf('StoryWhyAmISeeingThisAdMenuItem') + 1000)
               chunk = chunk.replace(/\\u002522/g,'').replace(/\\u00252C/g,'').replace(/\\u00253A/g,'').replace(/\\u002540/g,'');
               if (!postId) {
                 try {
