@@ -200,63 +200,71 @@ function hasSillySponsored(haystackText) {
 }
 
 // THIS WORKS
-function filterFrontAds(lst) {
+function filterFrontAds(lst, politLst) {
   let newLst = [];
   let layoutStyle;
-  for (let i=0; i<lst.length; i++) {
+  for (const elt of lst) {
     // detecting new FB markup style
-    if (sponsoredText.indexOf(lst[i].text) > -1 && $(lst[i]).attr('href').indexOf('/ads/about/') > -1) {
+    if (sponsoredText.indexOf(elt.text) > -1 && $(elt).attr('href').indexOf('/ads/about/') > -1) {
       layoutStyle = "FB5";
     }
     if (document.querySelector('[data-pagelet="Stories"]')) {
      layoutStyle = "FB5";
     }
     // this is a clickable link, not "Sponsored" link
-    const rel = lst[i].getAttribute('rel')
-    const target = lst[i].getAttribute('target')
+    const rel = elt.getAttribute('rel')
+    const target = elt.getAttribute('target')
     if (rel || target) {
       continue;
     }
 
-    let ajaxify = lst[i].getAttribute('ajaxify');
+    let ajaxify = elt.getAttribute('ajaxify');
     if (ajaxify && ajaxify.indexOf(politAdSubtitle) > -1
-      && (isScrolledIntoView(lst[i], layoutStyle))
-      && (lst[i].getAttribute('class').indexOf(non_ad) < 0)) {
-        newLst.push(lst[i]);
+      && (isScrolledIntoView(elt, layoutStyle))
+      && (elt.getAttribute('class').indexOf(non_ad) < 0)) {
+        newLst.push(elt);
         continue;
     }
 
-    if (sponsoredText.indexOf(lst[i].text) > -1
-      && (lst[i].getAttribute('class') && lst[i].getAttribute('class').indexOf(non_ad) < 0)
-      && isScrolledIntoView(lst[i], layoutStyle)) {
-        newLst.push(lst[i]);
+    if (sponsoredText.indexOf(elt.text) > -1
+      && (elt.getAttribute('class') && elt.getAttribute('class').indexOf(non_ad) < 0)
+      && isScrolledIntoView(elt, layoutStyle)) {
+        newLst.push(elt);
     }
-    if (sponsoredText.indexOf(lst[i].getAttribute('aria-label')) > -1
-      && isScrolledIntoView(lst[i], layoutStyle)) {
-       newLst.push(lst[i]);
+    if (sponsoredText.indexOf(elt.getAttribute('aria-label')) > -1
+      && isScrolledIntoView(elt, layoutStyle)) {
+       newLst.push(elt);
     }
     // disabling for the moment
     // empty strings should not trigger false positives
-    // if (lst[i].text && hasSillySponsored(lst[i].text) && isScrolledIntoView(lst[i], layoutStyle)) {
-    //   newLst.push(lst[i]);
+    // if (elt.text && hasSillySponsored(elt.text) && isScrolledIntoView(elt, layoutStyle)) {
+    //   newLst.push(elt);
     // }
-
   }
-  //console.log('newLst--layoutStyle----', newLst, layoutStyle)
+
+  for (const elt of politLst) {
+    for (const txt of sponsoredText) {
+      if (elt.innerText.indexOf(txt) > -1 && isScrolledIntoView(elt, layoutStyle)) {
+        newLst.push(elt);
+        break;
+      }
+    }
+  }
+  // console.log('newLst--layoutStyle----', newLst, layoutStyle)
   return {links: newLst, layoutStyle};
 }
 
 function filteredClassedAds(lst, layoutStyle) {
   let newLst = [];
-  for (let i=0; i<lst.length; i++) {
-    if (isScrolledIntoView(lst[i], layoutStyle)) {
-      newLst.push(lst[i])
+  for (const elt of lst) {
+    if (isScrolledIntoView(elt, layoutStyle)) {
+      newLst.push(elt)
     }
 
-    if (sponsoredText.indexOf(lst[i].text) > -1
-      && (lst[i].getAttribute('class') && lst[i].getAttribute('class').indexOf(non_ad) < 0)
-      && !isScrolledIntoView(lst[i], layoutStyle)) {
-      // console.log(lst[i])
+    if (sponsoredText.indexOf(elt.text) > -1
+      && (elt.getAttribute('class') && elt.getAttribute('class').indexOf(non_ad) < 0)
+      && !isScrolledIntoView(elt, layoutStyle)) {
+      // console.log(elt)
       // console.log('******filtered Classed Ads****HIDDEN******');
     }
   }
@@ -438,8 +446,9 @@ function findFrontAdsWithHiddenLettersSiblings(){
 }
 
 function getFrontAdFrames() {
-  let a_links = document.getElementsByTagName('a');
-  let {links, layoutStyle} = filterFrontAds(a_links);
+  const a_links = document.getElementsByTagName('a');
+  const p_links = document.querySelectorAll('[role="button"]');
+  let {links, layoutStyle} = filterFrontAds(a_links, p_links);
 
   links = links.concat(getFrontAdsByClass(layoutStyle))
   links = links.concat(findFrontAdsWithHiddenLetters())
