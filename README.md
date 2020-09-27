@@ -2,7 +2,8 @@
 
 
 * A web browser extension that detects advertising, transmits the adverts to a central database and informs the user of the extent they are being targeted by different political entites
-* Available for Safari, Chrome, Firefox and Edge. [Download here](https://wotargets.me/en/install/installing-the-browser-extension)
+* Available for Safari, Chrome, Firefox and Edge. 
+* [How to download and install the Who Targets Me browser extension](https://wotargets.me/en/install/installing-the-browser-extension)
 * Since 2017 the project has covered elections around the world, including in the US, UK, Spain, Rep. of Ireland, Poland and Germany.
 * We've collected more than 16 million ads, as seen by users in 108 countries.
 * There is a good chance we will be involved in an election near you, [get in touch](https://whotargets.me/get-in-touch/) to see how we can work together
