@@ -478,7 +478,7 @@ function addListeners() {
         _data.asyncParamsReady = true;
         data = _data;
       } catch(e) {
-        console.log('err getting asyncParams')
+        // console.log('err getting asyncParams')
       }
 
       if (data.asyncParamsReady) {

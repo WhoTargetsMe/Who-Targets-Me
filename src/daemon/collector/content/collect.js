@@ -121,7 +121,7 @@ const hideMenu = () => {
 
 // FB5
 function clickButtonNew(adFrame) {
-  //console.log('Clicking - clickButtonNew 1', adFrame);
+  // console.log('Clicking - clickButtonNew 1', adFrame);
   const moreButton = getMoreButtonFrontAdNew(adFrame);
   $(moreButton).trigger('click');
   // console.log('@@@@@@@@ 1', new Date())
@@ -205,12 +205,13 @@ function filterFrontAds(lst, politLst) {
   let layoutStyle;
   for (const elt of lst) {
     // detecting new FB markup style
-    if (sponsoredText.indexOf(elt.text) > -1 && $(elt).attr('href').indexOf('/ads/about/') > -1) {
+    if (elt.getAttribute('href') && elt.getAttribute('href').indexOf('/ads/about/') > -1) {
       layoutStyle = "FB5";
     }
     if (document.querySelector('[data-pagelet="Stories"]')) {
      layoutStyle = "FB5";
     }
+
     // this is a clickable link, not "Sponsored" link
     const rel = elt.getAttribute('rel')
     const target = elt.getAttribute('target')
@@ -231,10 +232,12 @@ function filterFrontAds(lst, politLst) {
       && isScrolledIntoView(elt, layoutStyle)) {
         newLst.push(elt);
     }
+
     if (sponsoredText.indexOf(elt.getAttribute('aria-label')) > -1
       && isScrolledIntoView(elt, layoutStyle)) {
        newLst.push(elt);
     }
+
     // disabling for the moment
     // empty strings should not trigger false positives
     // if (elt.text && hasSillySponsored(elt.text) && isScrolledIntoView(elt, layoutStyle)) {
@@ -445,9 +448,18 @@ function findFrontAdsWithHiddenLettersSiblings(){
   return links;
 }
 
+function generateSearchTerms() {
+  let terms = 'a';
+  for (const term of sponsoredText) {
+    terms += `,[aria-label="${term}"]`
+  }
+  return terms;
+}
+
 function getFrontAdFrames() {
-  const a_links = document.getElementsByTagName('a');
+  const a_links = document.querySelectorAll(generateSearchTerms());
   const p_links = document.querySelectorAll('[role="button"]');
+
   let {links, layoutStyle} = filterFrontAds(a_links, p_links);
 
   links = links.concat(getFrontAdsByClass(layoutStyle))
@@ -549,24 +561,26 @@ function processFrontAd(frontAd, layoutStyle) {
 
 // THIS WORKS
 function grabFrontAds() {
-  if (window.location.href.indexOf('ads/preferences') === -1) {
-    try {
-      // console.log('Grabbing front ads...')
-      const {frontAds, layoutStyle} = getFrontAdFrames();
-      // console.log('grabFrontAds', layoutStyle, frontAds);
-      for (const frontAd of frontAds) {
-        let adData = processFrontAd(frontAd, layoutStyle);
-        if (adData) {
-          adData['message_type'] = 'front_ad_info';
-          if (layoutStyle === "FB5"){
-            getExplanationUrlFrontAdsNew(frontAd, adData);
-          } else {
-            getExplanationUrlFrontAds(frontAd, adData);
+  if (window.location.href.indexOf('facebook') > -1) {
+    if (window.location.href.indexOf('ads/preferences') === -1) {
+      try {
+        // console.log('Grabbing front ads...')
+        const {frontAds, layoutStyle} = getFrontAdFrames();
+        // console.log('grabFrontAds', layoutStyle, frontAds);
+        for (const frontAd of frontAds) {
+          let adData = processFrontAd(frontAd, layoutStyle);
+          if (adData) {
+            adData['message_type'] = 'front_ad_info';
+            if (layoutStyle === "FB5"){
+              getExplanationUrlFrontAdsNew(frontAd, adData);
+            } else {
+              getExplanationUrlFrontAds(frontAd, adData);
+            }
           }
         }
+      } catch (err) {
+      console.log(err);
       }
-    } catch (err) {
-    console.log(err);
     }
   }
   setTimeout(grabFrontAds, INTERVAL);
