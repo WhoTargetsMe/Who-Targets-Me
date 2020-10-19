@@ -48,13 +48,13 @@ function addToFrontAdQueue(ad) {
 }
 
 function getAdFromButton(qId,buttonId) {
-  console.log('getAdFromButton(qId,buttonId)', qId,buttonId);
+  // console.log('getAdFromButton(qId,buttonId)', qId,buttonId);
   // console.log(frontadqueue);
   for (let i in frontadqueue) {
     if (frontadqueue[i].buttonId === buttonId) {
         let ad = frontadqueue[i];
         frontadqueue[i] = { raw_ad: "" };
-        console.log('getAdFromButton(qId,buttonId) AD?', ad);
+        // console.log('getAdFromButton(qId,buttonId) AD?', ad);
         return ad;
     }
   }
