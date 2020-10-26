@@ -106,7 +106,7 @@ const findMenu = () => {
 const hideMenu = () => {
   for (let i=0; i<10; i++){
     setTimeout(function () {
-      const menus = document.querySelectorAll('[data-testid="Keycommand_wrapper_ModalLayer"]')
+      const menus = document.querySelectorAll('[role="menu"]')
       if (menus) {
         for (let j=0; j<menus.length; j++) {
           if (menus[j].clientHeight > 0 && !menus[j].closest('[data-pagelet="ChatTab"]') && menus[j].innerText.indexOf('Notfification') === -1) {
@@ -153,7 +153,7 @@ function isScrolledIntoView(elem, layoutStyle) {
   let docViewTop, docViewBottom, elemTop, elemBottom;
 
   if (layoutStyle === 'FB5') {
-    elem = $(elem).closest('[role="article"]')
+    elem = $(elem).closest('[data-pagelet^="FeedUnit"]')
 
     if (!elem || !elem.offset()) { return; }
 
@@ -163,6 +163,8 @@ function isScrolledIntoView(elem, layoutStyle) {
     elemTop = elem.offset().top;
     elemBottom = elemTop + elem.height();
     // console.log('COND --- (elemBottom <= docViewTop)', elemBottom, docViewTop, (elemBottom <= docViewTop))
+    // console.log('docViewTop', docViewTop, 'docViewBottom', docViewBottom, 'elemTop', elemTop, 'elemBottom', elemBottom)
+
     return (elemTop < docViewTop);
   } else {
     docViewTop = window.scrollY;
@@ -199,6 +201,19 @@ function hasSillySponsored(haystackText) {
   return false;
 }
 
+function checkLinkAndText(elt) {
+  let isSponsored = true;
+  if (!elt) {
+    isSponsored = false;
+  } else if (elt &&
+    (elt.hasAttribute('href') && elt.getAttribute('href') === "#") ||
+    (elt.innerText.length > 0 && /\d/.test(elt.innerText))
+  ) {
+    isSponsored = false;
+  }
+  return isSponsored;
+}
+
 // THIS WORKS
 function filterFrontAds(lst, politLst) {
   let newLst = [];
@@ -216,6 +231,11 @@ function filterFrontAds(lst, politLst) {
     const rel = elt.getAttribute('rel')
     const target = elt.getAttribute('target')
     if (rel || target) {
+      continue;
+    }
+
+    const closestLink = elt.closest('a');
+    if (checkLinkAndText(elt) || checkLinkAndText(closestLink)) {
       continue;
     }
 
@@ -449,11 +469,11 @@ function findFrontAdsWithHiddenLettersSiblings(){
 }
 
 function generateSearchTerms() {
-  let terms = 'a';
+  let terms = '';
   for (const term of sponsoredText) {
     terms += `,[aria-label="${term}"]`
   }
-  return terms;
+  return terms.slice(1);
 }
 
 function getFrontAdFrames() {
