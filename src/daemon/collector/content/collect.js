@@ -2,7 +2,7 @@
 import $ from "jquery";
 import { v4 as uuidv4 } from 'uuid';
 import api from '../../api.js';
-const re_userId = /"USER_ID":"[0-9]+"/;
+const re_bdate = /,"birthday":"(.*?)"/;
 // const rationaleUrl = 'https://www.facebook.com/ads/preferences/dialog/?'; OLD
 const rationaleUrl = 'https://www.facebook.com/api/graphql/';
 const sponsoredText = ['Sponsored', 'Sponsorjat','Sponzorované','Спонзорирано', 'Χορηγούμενη','Sponsitud','Sponzorováno','Спонсорирано', 'ממומן', 'Sponsoroitu','Sponsrad', 'Apmaksāta reklāma', 'Sponsorlu','Sponsrad','Спонзорисано','Sponzorované','Sponsa','Gesponsord','Sponset','Hirdetés', 'Sponsoreret', 'Sponzorováno', 'Sponsorisé', 'Commandité', 'Publicidad', 'Gesponsert', 'Χορηγούμενη', 'Patrocinado', 'Plaćeni oglas', 'Sponsorizzata ', 'Sponsorizzato', 'Sponsorizat', '赞助内容', 'مُموَّل', 'प्रायोजित', 'Спонзорисано', 'Реклама', '広告', 'ได้รับการสนับสนุน', 'Sponsorowane'];
@@ -24,10 +24,6 @@ function updateAsyncParams() {
   window.postMessage(data,"*")
 }
 updateAsyncParams();
-
-function getUserId() {
-  return document.getElementsByTagName('head')[0].innerText.match(re_userId)[0].match(/[0-9]+/)[0];
-}
 
 function isNumeric(value) {
     return /^\d+$/.test(value);
@@ -110,7 +106,7 @@ const hideMenu = () => {
       if (menus) {
         for (let j=0; j<menus.length; j++) {
           if (menus[j].clientHeight > 0 && !menus[j].closest('[data-pagelet="ChatTab"]') && menus[j].innerText.indexOf('Notfification') === -1) {
-            //console.log('hideMenu', j, menus[j], new Date())
+            // console.log('hideMenu', j, menus[j], new Date())
             menus[j].setAttribute('style', 'display: none;')
           }
         }
@@ -162,10 +158,10 @@ function isScrolledIntoView(elem, layoutStyle) {
 
     elemTop = elem.offset().top;
     elemBottom = elemTop + elem.height();
-    // console.log('COND --- (elemBottom <= docViewTop)', elemBottom, docViewTop, (elemBottom <= docViewTop))
+    // console.log('COND --- (elemBottom <= docViewTop)', Math.round(elemBottom), Math.round(docViewTop), (elemBottom < docViewTop), elem)
     // console.log('docViewTop', docViewTop, 'docViewBottom', docViewBottom, 'elemTop', elemTop, 'elemBottom', elemBottom)
 
-    return (elemTop < docViewTop);
+    return (elemBottom < docViewTop);
   } else {
     docViewTop = window.scrollY;
     docViewBottom = docViewTop + window.innerHeight;
@@ -422,11 +418,11 @@ function isSponsoredLinkHidden(el) {
   return style.display === 'none';
 }
 
-function findFrontAdsWithHiddenLetters() {
+function findFrontAdsWithHiddenLetters(layoutStyle) {
   const elems = document.getElementsByTagName('a');
   let links = [];
   for (let i=0; i<elems.length; i++) {
-    if (isLinkSponsoredHiddenLetters(elems[i]) && !isSponsoredLinkHidden(elems[i])) {
+    if (isLinkSponsoredHiddenLetters(elems[i]) && !isSponsoredLinkHidden(elems[i]) && isScrolledIntoView(elems[i], layoutStyle)) {
       links.push(elems[i]);
     }
   }
@@ -477,13 +473,14 @@ function generateSearchTerms() {
 }
 
 function getFrontAdFrames() {
+  hideMenu();
   const a_links = document.querySelectorAll(generateSearchTerms());
   const p_links = document.querySelectorAll('[role="button"]');
 
   let {links, layoutStyle} = filterFrontAds(a_links, p_links);
 
-  links = links.concat(getFrontAdsByClass(layoutStyle))
-  links = links.concat(findFrontAdsWithHiddenLetters())
+  // links = links.concat(getFrontAdsByClass(layoutStyle))
+  links = links.concat(findFrontAdsWithHiddenLetters(layoutStyle))
   links = links.concat(findFrontAdsWithHiddenLettersSiblings())
   links = [...new Set(links)]
 
@@ -666,6 +663,13 @@ function sendRationale(postData) {
   // console.log('Update QUEUE++++++RESULT', POSTEDQUEUE)
   // console.log('sendExplanationDB  BG called', advertiserId, fbStoryId)
   explanation = decodeURIComponent(explanation);
+  try {
+    const stripTxt = explanation.match(re_bdate)[0];
+    explanation = explanation.replace(stripTxt, '')
+  } catch(e) {
+    console.log('err strip date', e)
+  }
+
 
   // Send ad (FB5 main feed)
   if (adNew) {

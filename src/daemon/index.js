@@ -1,4 +1,3 @@
-import FacebookAdvertObserver from './page/FacebookAdvertObserver.js';
 import '../common/chromeStorage.js';
 import initBackground from './background';
 import { initCollector } from './collector';
@@ -6,11 +5,11 @@ import { initPopup } from './popup/Notification.js';
 import api from './api.js';
 
 const initPage = () => {
-  // FacebookAdvertObserver.run();
   initCollector();
 };
 
-chrome.storage.promise.local.get()
+(() => {
+  return chrome.storage.promise.local.get()
   .then((result) => {
     if (result.general_token) { // Client is authenticated
       // set variables for old users
@@ -41,3 +40,4 @@ chrome.storage.promise.local.get()
       initPage();
     }
   });
+})()
