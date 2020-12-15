@@ -10,5 +10,7 @@
 * Read more about how it works at [whotargets.me](https://whotargets.me) and our [other services & tools](https://whotargets.me/en/projects)
 * (*This project is not endorsed by any social media platform, or political party. Who Targets Me is an action research project tracking highly targeted political advertising on social media.*)
 
-
 Copyright Understanding Targeting Limited 2020 All Rights Reserved
+
+
+[![Awesome Humane Tech](https://raw.githubusercontent.com/humanetech-community/awesome-humane-tech/main/humane-tech-badge.svg?sanitize=true)](https://github.com/humanetech-community/awesome-humane-tech)
