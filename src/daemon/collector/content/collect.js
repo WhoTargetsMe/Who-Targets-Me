@@ -109,7 +109,7 @@ const hideMenu = () => {
 
       if (menus) {
         for (let j = 0; j < menus.length; j++) {
-          const menuNotExpanded = userHasNotExpandedMenu(
+          const isMenuExpanded = hasUserExpandedMenu(
             buttonsWithExpandableMenus[j]
           );
 
@@ -117,7 +117,7 @@ const hideMenu = () => {
             doesMenuHaveHeight(menus[j]) &&
             isMenuCloseToChatTab(menus[j]) &&
             isNotificationMenu(menus[j]) &&
-            menuNotExpanded
+            isMenuExpanded
           ) {
             // console.log('hideMenu', j, menus[j], new Date())
             menus[j].setAttribute("style", "display: none;");
@@ -128,7 +128,7 @@ const hideMenu = () => {
   }
 };
 
-const userHasNotExpandedMenu = (element) => {
+const hasUserExpandedMenu = (element) => {
   return !element && !element.innerHTML;
 };
 
