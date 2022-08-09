@@ -100,20 +100,49 @@ const findMenu = () => {
 
 // FB5
 const hideMenu = () => {
-  for (let i=0; i<10; i++){
+  for (let i = 0; i < 10; i++) {
     setTimeout(function () {
-      const menus = document.querySelectorAll('[role="menu"]')
+      const menus = document.querySelectorAll('[role="menu"]');
+      const buttonsWithExpandableMenus = document.querySelectorAll(
+        '[aria-expanded="false"][aria-haspopup="menu"]'
+      );
+
       if (menus) {
-        for (let j=0; j<menus.length; j++) {
-          if (menus[j].clientHeight > 0 && !menus[j].closest('[data-pagelet="ChatTab"]') && menus[j].innerText.indexOf('Notfification') === -1) {
+        for (let j = 0; j < menus.length; j++) {
+          const isMenuExpanded = hasUserExpandedMenu(
+            buttonsWithExpandableMenus[j]
+          );
+
+          if (
+            doesMenuHaveHeight(menus[j]) &&
+            isMenuCloseToChatTab(menus[j]) &&
+            isNotificationMenu(menus[j]) &&
+            isMenuExpanded
+          ) {
             // console.log('hideMenu', j, menus[j], new Date())
-            menus[j].setAttribute('style', 'display: none;')
+            menus[j].setAttribute("style", "display: none;");
           }
         }
       }
-    }, 10*i*i);
+    }, 10 * i * i);
   }
-}
+};
+
+const hasUserExpandedMenu = (element) => {
+  return !element && !element.innerHTML;
+};
+
+const doesMenuHaveHeight = (element) => {
+  return element.clientHeight > 0;
+};
+
+const isNotificationMenu = (element) => {
+  return element.innerText.indexOf("Notfification") === -1;
+};
+
+const isMenuCloseToChatTab = (element) => {
+  return !element.closest('[data-pagelet="ChatTab"]');
+};
 
 // FB5
 function clickButtonNew(adFrame) {
