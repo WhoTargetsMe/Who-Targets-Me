@@ -70,41 +70,9 @@ window.addEventListener("message", function(event) {
 
   if (event.data.registerWTMUser) {
     // console.log('got reg details', event.data)
-    const {age, gender, postcode, country, political_affiliation, survey, consent} = event.data;
-    api.post('user/create', {
-      json: {age,
-        gender,
-        postcode,
-        country,
-        political_affiliation,
-        survey,
-        email: null,
-        update: null,
-        consent
-      }
-    })
-      .then((response) => { // The rest of the validation is down to the server
-        if(response.jsonData.errorMessage !== undefined) {
-          throw new Error(response.jsonData.errorMessage);
-        }
-        let general_token = response.jsonData.data.token;
-        return chrome.storage.promise.local.set({general_token})
-          .then((res) => {
-            window.localStorage.setItem('general_token', JSON.stringify(general_token));
-            window.postMessage({registrationFeedback: response.jsonData}, '*');
-            return chrome.storage.promise.local.set({userData: {'isNotifiedRegister': 'yes', country}})
-              .then((res) => {})
-              .catch((e) => {
-                console.log(e);
-              });
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+    const { country, general_token } = event.data;
+    chrome.storage.promise.local.set({general_token});
+    chrome.storage.promise.local.set({userData: {'isNotifiedRegister': 'yes', country}});
   } else if (event.data.deleteWTMUser) {
     chrome.storage.promise.local.remove('general_token');
     chrome.storage.promise.local.remove('userData');
