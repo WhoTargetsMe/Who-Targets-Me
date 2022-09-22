@@ -120,16 +120,12 @@ chrome.browserAction && chrome.browserAction.onClicked.addListener(function(tab)
       // toolbar button clicked Chrome
       try {
         chrome.tabs.query({active: false, currentWindow: true}, function(tabs) {
-          for (let i=tabs.length; i > -1; i--) {
-            try {
-              chrome.tabs.create({ url: url });
-              break;
-            } catch (e) {
-              browser.tabs.create({
-                url
-              });
-              break;
-            }
+          try {
+            chrome.tabs.create({ url: url });
+          } catch (e) {
+            browser.tabs.create({
+              url
+            });
           }
         });
     } catch(e) {
