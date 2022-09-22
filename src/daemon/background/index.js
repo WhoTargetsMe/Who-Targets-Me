@@ -120,30 +120,12 @@ chrome.browserAction && chrome.browserAction.onClicked.addListener(function(tab)
       // toolbar button clicked Chrome
       try {
         chrome.tabs.query({active: false, currentWindow: true}, function(tabs) {
-          if (tabs.length > 1) {
-            for (let i=tabs.length-1; i > -1; i--) {
-              if (tabs[i].url !== "chrome://extensions/") {
-                const currTab = tabs[i];
-                // console.log('currTab', currTab, tabs)
-                try {
-                  chrome.tabs.update(currTab.id, {selected: true});
-                } catch (e) {
-                  browser.tabs.create({
-                    url
-                  });
-                  break;
-                }
-                chrome.tabs.executeScript(currTab.id, {
-                  code: `window.open("${url}", "_blank")`
-                }, r => {
-                    let e = chrome.runtime.lastError;
-                    if (e !== undefined){
-                      console.log(currTab, r, e);
-                    };
-                })
-                break;
-              }
-            }
+          try {
+            chrome.tabs.create({ url: url });
+          } catch (e) {
+            browser.tabs.create({
+              url
+            });
           }
         });
     } catch(e) {
