@@ -1,6 +1,6 @@
 {
   "name": "who-targets-me",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "Track the extent of digital political advertising, discover which parties are targeting you",
   "main": "index.js",
   "apiUrl": "https://wtm-api.whotargets.me/v1/",
