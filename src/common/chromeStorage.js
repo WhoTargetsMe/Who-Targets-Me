@@ -1,7 +1,7 @@
 const Promise = require("bluebird"); // Promise standard
 
 try {
-  if (typeof chrome !== 'undefined' && typeof chrome.storage !== 'undefined') {
+  if (typeof chrome !== "undefined" && typeof chrome.storage !== "undefined") {
     chrome.storage.promise = {
       sync: {
         get: (keys) => {
@@ -226,13 +226,14 @@ try {
         },
       },
     };
-  } else { // Simulate chrome.storage environment
+  } else {
+    // Simulate chrome.storage environment
     console.log("Dev Storage");
     chrome = {
       storage: {
         promise: {
           local: {
-            get: key => (
+            get: (key) =>
               new Promise((resolve, reject) => {
                 console.log("[STORAGE] getting", key); // eslint-disable-line
                 const result = localStorage.getItem(key);
@@ -243,22 +244,21 @@ try {
                 } else {
                   reject();
                 }
-              })
-            ),
-            set: keys => (
+              }),
+            set: (keys) =>
               new Promise((resolve) => {
-                for (const index in keys) {  // eslint-disable-line
+                for (const index in keys) {
+                  // eslint-disable-line
                   console.log("[STORAGE] setting", index, keys[index]); // eslint-disable-line
                   localStorage.setItem(index, keys[index]);
                 }
                 resolve();
-              })
-            ),
+              }),
           },
         },
       },
     };
   }
-} catch(e) {
+} catch (e) {
   console.error(e);
 }
