@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { parseSponsoredPost } from "./sponsored";
+import { getWaistRequest } from "./sponsored";
 
 (() => {
   var XHR = XMLHttpRequest.prototype;
@@ -33,7 +33,7 @@ import { parseSponsoredPost } from "./sponsored";
 
 // Packets here refer to network packets, i.e. request/response packets
 const handlePackets = (requestPacket, responsePacket) => {
-  const { url, method } = requestPacket;
+  const { url } = requestPacket;
   const { response } = responsePacket;
   const interestedURLsRegEx = /api\/graphql/g;
 
@@ -49,6 +49,22 @@ const handlePackets = (requestPacket, responsePacket) => {
   if (responsesForParsing.length === 0) return;
 
   responsesForParsing.forEach((response) => {
-    parseSponsoredPost(response);
+    let waistRequest = getWaistRequest(response);
+    let search = new URLSearchParams(waistRequest);
+
+    window
+      .fetch(`/api/graphql/`, {
+        body: search.toString(),
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        method: "post",
+      })
+      .then((data) => {
+        const waistData = data.json();
+
+        // TODO send this to the server
+        console.log({ waistData });
+      });
   });
 };
