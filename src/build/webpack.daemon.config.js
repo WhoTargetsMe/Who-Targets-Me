@@ -10,7 +10,7 @@ var build_dir = __dirname + "/../../build/" + browser;
 module.exports = {
   entry: {
     index: __dirname + "/../daemon/index.js",
-    overload: __dirname + "/../daemon/collector/overload/index.js",
+    overload: __dirname + "/../daemon/collector/overload/overload.js",
     collect: __dirname + "/../daemon/collector/content/collect.js",
   },
   output: {
