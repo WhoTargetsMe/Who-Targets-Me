@@ -126,6 +126,47 @@ window.addEventListener("message", function (event) {
   }
 });
 
+window.addEventListener(
+  "message",
+  /**
+   * sendRawlogListener
+   * @param {{data: { action: String, payload: Object }}} event
+   */
+  function sendRawlogListener(event) {
+    if (event.data.action === "sendRawlog") {
+      const { payload: rawlog } = event.data;
+
+      const extVersion = chrome.runtime.getManifest().version;
+
+      chrome.storage.promise.local.get("general_token").then((result) => {
+        const { general_token } = result;
+
+        api.addMiddleware((request) => {
+          request.options.headers["Authorization"] = general_token;
+        });
+
+        const apiPayload = {
+          typeId: rawlog.type,
+          extVersion,
+          payload: [rawlog],
+        };
+
+        // FIXME remove this
+        console.log({ payload: apiPayload });
+
+        api
+          .post("log/raw", { json: apiPayload })
+          .then((response) => {
+            console.log({ response });
+          })
+          .catch((error) => {
+            console.log({ error });
+          });
+      });
+    }
+  }
+);
+
 // ----- toolbar button clicked ----- //
 chrome.browserAction &&
   chrome.browserAction.onClicked.addListener(function (tab) {

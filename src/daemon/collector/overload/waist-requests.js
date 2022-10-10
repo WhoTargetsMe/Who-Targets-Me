@@ -3,8 +3,8 @@
  * @param {String} post
  * @returns {{ adId: String, fields: { ad_id: String, client_token: String, request_id: String } }}
  */
-export const getWaistRequestVariablesFromSponsoredPost = (post) => {
-  const { data } = JSON.parse(post);
+export function getWaistRequestVariablesFromSponsoredPost(post) {
+  const { data } = post;
   const variables = {};
 
   Object.entries(data.node).forEach(([key, value]) => {
@@ -19,18 +19,38 @@ export const getWaistRequestVariablesFromSponsoredPost = (post) => {
   });
 
   return variables;
-};
+}
 
 /**
- * Takes a FB5 Comet post
+ * Builds FB graphql WAIST request data
  * @param {String} post
  * @return {{ fb_dtsg: String, variables: String, doc_id: String }}
  */
-export function getWaistRequest(post) {
+export function getWaistRequestData(post) {
   // doc_id is currently fixed to this value.
   const doc_id = 5574710692594916;
   const variables = getWaistRequestVariablesFromSponsoredPost(post);
   const { fb_dtsg } = window.require("getAsyncParams")("POST");
 
   return { fb_dtsg, doc_id, variables: JSON.stringify(variables) };
+}
+
+/**
+ *
+ * @param {Object} advertData Facebook formatted advert data
+ * @returns {Promise} Promise containing WAIST data
+ */
+export function fetchWaistForSponsoredItem(advertData) {
+  let waistRequest = getWaistRequestData(advertData);
+  let search = new URLSearchParams(waistRequest);
+
+  return window
+    .fetch(`/api/graphql/`, {
+      body: search.toString(),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      method: "post",
+    })
+    .then((data) => data.json());
 }

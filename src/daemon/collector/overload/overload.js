@@ -1,5 +1,7 @@
 import _ from "lodash";
-import { getWaistRequest } from "./sponsored";
+import { fetchWaistForSponsoredItem } from "./waist-requests";
+import { sendRawlog } from "./send-rawlog";
+import { v4 as uuidv4 } from "uuid";
 
 (() => {
   var XHR = XMLHttpRequest.prototype;
@@ -48,23 +50,17 @@ const handlePackets = (requestPacket, responsePacket) => {
 
   if (responsesForParsing.length === 0) return;
 
-  responsesForParsing.forEach((response) => {
-    let waistRequest = getWaistRequest(response);
-    let search = new URLSearchParams(waistRequest);
+  responsesForParsing.forEach((advertDataString) => {
+    // TODO would be good to use a validator here
+    const advertData = JSON.parse(advertDataString);
 
-    window
-      .fetch(`/api/graphql/`, {
-        body: search.toString(),
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        method: "post",
-      })
-      .then((data) => {
-        const waistData = data.json();
+    // We're only interested in the posts with WAIST data
+    // Get WAIST data before sending advert and WAIST rawlog
+    fetchWaistForSponsoredItem(advertData).then((waistData) => {
+      const related = uuidv4();
 
-        // TODO send this to the server
-        console.log({ waistData });
-      });
+      sendRawlog({ type: "FBADVERT", html: JSON.stringify(advertData), related });
+      sendRawlog({ type: "FBADVERTRATIONALE", html: JSON.stringify(waistData), related });
+    });
   });
 };
