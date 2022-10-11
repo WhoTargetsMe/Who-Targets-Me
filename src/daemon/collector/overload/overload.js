@@ -95,37 +95,17 @@ const handleAdsInDocument = () => {
   });
 };
 
-const handleFeedAds = (content) => {
-  const payload = content.require[0];
-
-  const [[sponsoredData]] = payload.filter((data) => {
-    if (!Array.isArray(data)) {
-      return;
-    }
-    return data.filter((d) => {
-      if (!d.__bbox || !d.__bbox.define) return;
-      const bbox = d.__bbox.define;
-      return bbox.filter((bb) => {
-        if (bb[0] === "RelayPrefetchedStreamCache") {
-          return bb[0];
-        }
-      });
-    });
-  });
-
-  const [cleanSponsoredData] = sponsoredData.__bbox.require.filter(
-    (d) => d[0] === "RelayPrefetchedStreamCache"
+// check we're on the right array item
+function isDataItem(data) {
+  return (
+    Array.isArray(data) && data.length !== 0 && typeof data[0] === "string" && data[1].__bbox.result
   );
+}
 
-  // check we're on the right array item
-  function isDataItem(data) {
-    return (
-      Array.isArray(data) &&
-      data.length !== 0 &&
-      typeof data[0] === "string" &&
-      data[1].__bbox.result
-    );
-  }
+const handleFeedAds = (content) => {
+  const [cleanSponsoredData] = content.require[0][3][0].__bbox.require.filter(
+    (data) => data[0] === "RelayPrefetchedStreamCache"
+  );
 
   cleanSponsoredData.forEach((data) => {
     if (isDataItem(data)) {
@@ -147,7 +127,7 @@ const handleSideAds = (content) => {
   );
 
   sideAdData.forEach((data) => {
-    if (Array.isArray(data) && data.length !== 0) {
+    if (isDataItem(data)) {
       const pointer = data[1].__bbox.result;
 
       // iterable side unit adverts
