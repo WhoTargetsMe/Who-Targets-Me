@@ -1,9 +1,11 @@
+import $ from "jquery";
 import _ from "lodash";
-import { fetchWaistForSponsoredItem } from "./waist-requests";
-import { sendRawlog } from "./send-rawlog";
 import { v4 as uuidv4 } from "uuid";
+import { sendRawlog } from "./send-rawlog";
+import { fetchWaistForSponsoredItem, getWaistRequestData } from "./waist-requests";
 
 (() => {
+  let counter = 0;
   var XHR = XMLHttpRequest.prototype;
   var open = XHR.open;
   var send = XHR.send;
@@ -16,6 +18,10 @@ import { v4 as uuidv4 } from "uuid";
 
   XHR.send = function (postData) {
     this.addEventListener("load", function () {
+      if (counter === 0) {
+        counter++;
+        handleAdsInDocument();
+      }
       handlePackets(
         {
           requestBody: postData,
@@ -69,5 +75,87 @@ const handlePackets = (requestPacket, responsePacket) => {
       sendRawlog({ type: "FBADVERT", html: JSON.stringify(advertData), related });
       sendRawlog({ type: "FBADVERTRATIONALE", html: JSON.stringify(waistData), related });
     });
+  });
+};
+
+const handleAdsInDocument = () => {
+  const scriptContents = [];
+  const sideAdRegex = /AdsSideFeedUnit/g;
+  const postAdRegex = /"category":"SPONSORED"/g;
+
+  $('script[type="application/json"]').each((i, el) => {
+    const content = $(el).text();
+
+    if (sideAdRegex.test(content)) {
+      console.log("AdsSideFeedUnit content:", content);
+      scriptContents.push({ type: "SIDE_AD", content });
+    }
+
+    if (postAdRegex.test(content)) {
+      scriptContents.push({ type: "FEED_AD", content });
+    }
+  });
+
+  scriptContents.forEach((content) => {
+    if (content.type === "FEED_AD") handleFeedAds(content.content);
+    handleSideAds(content.content);
+  });
+};
+
+const handleFeedAds = (content) => {
+  const payload = JSON.parse(content).require[0];
+
+  const [[sponsoredData]] = payload.filter((data) => {
+    if (!Array.isArray(data)) {
+      return;
+    }
+    return data.filter((d) => {
+      if (!d.__bbox || !d.__bbox.define) return;
+      const bbox = d.__bbox.define;
+      return bbox.filter((bb) => {
+        if (bb[0] === "RelayPrefetchedStreamCache") {
+          return bb[0];
+        }
+      });
+    });
+  });
+
+  const [cleanSponsoredData] = sponsoredData.__bbox.require.filter(
+    (d) => d[0] === "RelayPrefetchedStreamCache"
+  );
+
+  cleanSponsoredData.forEach((data) => {
+    if (Array.isArray(data) && data.length !== 0 && data[0] === "RelayPrefetchedStreamCache") {
+      const pointer = data[1].__bbox.result;
+      fetchWaistForSponsoredItem(data[1].__bbox.result).then((waistData) => {
+        const related = uuidv4();
+
+        console.log("sponsored data waist response:", waistData);
+
+        sendRawlog({ type: "FBADVERT", html: JSON.stringify(pointer), related });
+        sendRawlog({ type: "FBADVERTRATIONALE", html: JSON.stringify(waistData), related });
+      });
+    }
+  });
+};
+
+const handleSideAds = (content) => {
+  const [sideAdData] = content.require[0][3][0].__bbox.require.filter(
+    (data) => data[0] === "RelayPrefetchedStreamCache"
+  );
+
+  console.log("side ad data:", sideAdData);
+  sideAdData.forEach((data) => {
+    if (Array.isArray(data) && data.length !== 0) {
+      console.log("side ad data pointer:", data[1].__bbox.result);
+      fetchWaistForSponsoredItem(data[1].__bbox.result).then((waistData) => {
+        const related = uuidv4();
+
+        console.log("side ad waist response:", waistData);
+
+        sendRawlog({ type: "FBADVERT", html: JSON.stringify(data[1].__bbox.result), related });
+        sendRawlog({ type: "FBADVERTRATIONALE", html: JSON.stringify(waistData), related });
+      });
+    }
   });
 };
