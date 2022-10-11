@@ -45,7 +45,14 @@ const handlePackets = (requestPacket, responsePacket) => {
 
   const responsesForParsing = response.split("\n").filter((response) => {
     const { data } = JSON.parse(response);
-    return data && data.category === "SPONSORED";
+    const regex = /AdsSideFeedUnit/g;
+
+    if (regex.test(response)) {
+      console.log("sidead data:", data);
+      console.log("sidead _.get:", _.get(data, "viewer.sideFeed[0].__typename", ""));
+    }
+
+    return data && (data.category === "SPONSORED" || regex.test(response));
   });
 
   if (responsesForParsing.length === 0) return;
