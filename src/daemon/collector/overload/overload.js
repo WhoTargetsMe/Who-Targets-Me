@@ -2,7 +2,7 @@ import $ from "jquery";
 import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
 import { sendRawlog } from "./send-rawlog";
-import { fetchWaistForSponsoredItem, getWaistRequestData } from "./waist-requests";
+import { fetchWaistForSponsoredItem } from "./waist-requests";
 
 (() => {
   let counter = 0;
@@ -69,7 +69,7 @@ const handlePackets = (requestPacket, responsePacket) => {
 
     // We're only interested in the posts with WAIST data
     // Get WAIST data before sending advert and WAIST rawlog
-    fetchWaistForSponsoredItem(advertData).then((waistData) => {
+    fetchWaistForSponsoredItem(advertData.data.node).then((waistData) => {
       const related = uuidv4();
 
       sendRawlog({ type: "FBADVERT", html: JSON.stringify(advertData), related });
@@ -79,7 +79,6 @@ const handlePackets = (requestPacket, responsePacket) => {
 };
 
 const handleAdsInDocument = () => {
-  const scriptContents = [];
   const sideAdRegex = /AdsSideFeedUnit/g;
   const postAdRegex = /"category":"SPONSORED"/g;
 
@@ -87,23 +86,17 @@ const handleAdsInDocument = () => {
     const content = $(el).text();
 
     if (sideAdRegex.test(content)) {
-      console.log("AdsSideFeedUnit content:", content);
-      scriptContents.push({ type: "SIDE_AD", content });
+      handleSideAds(JSON.parse(content));
     }
 
     if (postAdRegex.test(content)) {
-      scriptContents.push({ type: "FEED_AD", content });
+      handleFeedAds(JSON.parse(content));
     }
-  });
-
-  scriptContents.forEach((content) => {
-    if (content.type === "FEED_AD") handleFeedAds(content.content);
-    handleSideAds(content.content);
   });
 };
 
 const handleFeedAds = (content) => {
-  const payload = JSON.parse(content).require[0];
+  const payload = content.require[0];
 
   const [[sponsoredData]] = payload.filter((data) => {
     if (!Array.isArray(data)) {
@@ -124,13 +117,22 @@ const handleFeedAds = (content) => {
     (d) => d[0] === "RelayPrefetchedStreamCache"
   );
 
-  cleanSponsoredData.forEach((data) => {
-    if (Array.isArray(data) && data.length !== 0 && data[0] === "RelayPrefetchedStreamCache") {
-      const pointer = data[1].__bbox.result;
-      fetchWaistForSponsoredItem(data[1].__bbox.result).then((waistData) => {
-        const related = uuidv4();
+  // check we're on the right array item
+  function isDataItem(data) {
+    return (
+      Array.isArray(data) &&
+      data.length !== 0 &&
+      typeof data[0] === "string" &&
+      data[1].__bbox.result
+    );
+  }
 
-        console.log("sponsored data waist response:", waistData);
+  cleanSponsoredData.forEach((data) => {
+    if (isDataItem(data)) {
+      const pointer = data[1].__bbox.result;
+
+      fetchWaistForSponsoredItem(pointer.data.node).then((waistData) => {
+        const related = uuidv4();
 
         sendRawlog({ type: "FBADVERT", html: JSON.stringify(pointer), related });
         sendRawlog({ type: "FBADVERTRATIONALE", html: JSON.stringify(waistData), related });
@@ -144,17 +146,20 @@ const handleSideAds = (content) => {
     (data) => data[0] === "RelayPrefetchedStreamCache"
   );
 
-  console.log("side ad data:", sideAdData);
   sideAdData.forEach((data) => {
     if (Array.isArray(data) && data.length !== 0) {
-      console.log("side ad data pointer:", data[1].__bbox.result);
-      fetchWaistForSponsoredItem(data[1].__bbox.result).then((waistData) => {
-        const related = uuidv4();
+      const pointer = data[1].__bbox.result;
 
-        console.log("side ad waist response:", waistData);
+      // iterable side unit adverts
+      const sideAdverts = pointer.data.viewer.sideFeed.nodes[0].ads.nodes;
 
-        sendRawlog({ type: "FBADVERT", html: JSON.stringify(data[1].__bbox.result), related });
-        sendRawlog({ type: "FBADVERTRATIONALE", html: JSON.stringify(waistData), related });
+      sideAdverts.forEach((node) => {
+        fetchWaistForSponsoredItem(node).then((waistData) => {
+          const related = uuidv4();
+
+          sendRawlog({ type: "FBADVERT", html: JSON.stringify(node), related });
+          sendRawlog({ type: "FBADVERTRATIONALE", html: JSON.stringify(waistData), related });
+        });
       });
     }
   });
