@@ -1,10 +1,18 @@
 /**
- * Takes a SPONSORED post JSON string, decodes it and returns restructured for WAIST request
+ * Takes a SPONSORED post and extracts the necessary variables to make a WAIST request
  * @param {{}} post
- * @returns {{ adId: String, fields: { ad_id: String, client_token: String, request_id: String } }}
+ * @returns {{
+ * fb_dtsg: String,
+ * variables: String,
+ * doc_id: String,
+ * adId: String,
+ * fields: String{ ad_id: String, client_token: String, request_id: String }
+ * }}
  */
-export function getWaistRequestVariablesFromSponsoredPost(node) {
+function getWaistRequestVariablesFromSponsoredPost(node) {
   const variables = {};
+  const doc_id = 5574710692594916;
+  const { fb_dtsg } = window.require("getAsyncParams")("POST");
 
   Object.entries(node).forEach(([key, value]) => {
     if (key === "sponsored_data") {
@@ -17,20 +25,6 @@ export function getWaistRequestVariablesFromSponsoredPost(node) {
     }
   });
 
-  return variables;
-}
-
-/**
- * Builds FB graphql WAIST request data
- * @param {{}} post
- * @return {{ fb_dtsg: String, variables: String, doc_id: String }}
- */
-export function getWaistRequestData(node) {
-  // doc_id is currently fixed to this value.
-  const doc_id = 5574710692594916;
-  const variables = getWaistRequestVariablesFromSponsoredPost(node);
-  const { fb_dtsg } = window.require("getAsyncParams")("POST");
-
   return { fb_dtsg, doc_id, variables: JSON.stringify(variables) };
 }
 
@@ -40,8 +34,8 @@ export function getWaistRequestData(node) {
  * @returns {Promise} Promise containing WAIST data
  */
 export function fetchWaistForSponsoredItem(node) {
-  let waistRequest = getWaistRequestData(node);
-  let search = new URLSearchParams(waistRequest);
+  const waistRequest = getWaistRequestVariablesFromSponsoredPost(node);
+  const search = new URLSearchParams(waistRequest);
 
   return window
     .fetch(`/api/graphql/`, {
