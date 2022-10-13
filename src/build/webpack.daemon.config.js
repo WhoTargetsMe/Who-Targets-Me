@@ -43,6 +43,7 @@ module.exports = {
           loader: "babel-loader",
           options: {
             presets: ["env"],
+            plugins: ["babel-plugin-transform-object-rest-spread"],
           },
         },
       },
