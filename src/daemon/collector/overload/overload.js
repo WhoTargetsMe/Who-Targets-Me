@@ -1,8 +1,6 @@
 import _ from "lodash";
-import { v4 as uuidv4 } from "uuid";
+import { postSponsoredData } from "./post-sponsored-data";
 import { handleAdsInDocument } from "../content/collect";
-import { sendRawlog } from "./send-rawlog";
-import { fetchWaistForSponsoredItem } from "./waist-requests";
 
 (() => {
   let counter = 0;
@@ -63,12 +61,7 @@ const handlePackets = (requestPacket, responsePacket) => {
 
     // We're only interested in the posts with WAIST data
     // Get WAIST data before sending advert and WAIST rawlog
-    fetchWaistForSponsoredItem(advertData.data.node).then((waistData) => {
-      const related = uuidv4();
-
-      sendRawlog({ type: "FBADVERT", html: JSON.stringify(advertData), related });
-      sendRawlog({ type: "FBADVERTRATIONALE", html: JSON.stringify(waistData), related });
-    });
+    postSponsoredData(advertData.data.node, advertData);
   });
 };
 

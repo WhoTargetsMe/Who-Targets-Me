@@ -1,7 +1,5 @@
 import $ from "jquery";
-import { v4 as uuidv4 } from "uuid";
-import { sendRawlog } from "../overload/send-rawlog";
-import { fetchWaistForSponsoredItem } from "../overload/waist-requests";
+import { postSponsoredData } from "../overload/post-sponsored-data";
 
 export const handleAdsInDocument = () => {
   const sideAdRegex = /AdsSideFeedUnit/g;
@@ -35,13 +33,7 @@ const handleFeedAds = (content) => {
   cleanSponsoredData.forEach((data) => {
     if (isDataItem(data)) {
       const pointer = data[1].__bbox.result;
-
-      fetchWaistForSponsoredItem(pointer.data.node).then((waistData) => {
-        const related = uuidv4();
-
-        sendRawlog({ type: "FBADVERT", html: JSON.stringify(pointer), related });
-        sendRawlog({ type: "FBADVERTRATIONALE", html: JSON.stringify(waistData), related });
-      });
+      postSponsoredData(pointer.data.node, pointer);
     }
   });
 };
@@ -59,12 +51,7 @@ const handleSideAds = (content) => {
       const sideAdverts = pointer.data.viewer.sideFeed.nodes[0].ads.nodes;
 
       sideAdverts.forEach((node) => {
-        fetchWaistForSponsoredItem(node).then((waistData) => {
-          const related = uuidv4();
-
-          sendRawlog({ type: "FBADVERT", html: JSON.stringify(node), related });
-          sendRawlog({ type: "FBADVERTRATIONALE", html: JSON.stringify(waistData), related });
-        });
+        postSponsoredData(node, node);
       });
     }
   });
