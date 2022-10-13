@@ -1,6 +1,6 @@
-import $ from "jquery";
 import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
+import { handleAdsInDocument } from "../content/collect";
 import { sendRawlog } from "./send-rawlog";
 import { fetchWaistForSponsoredItem } from "./waist-requests";
 
@@ -51,14 +51,8 @@ const handlePackets = (requestPacket, responsePacket) => {
 
   const responsesForParsing = response.split("\n").filter((response) => {
     const { data } = JSON.parse(response);
-    const regex = /AdsSideFeedUnit/g;
 
-    if (regex.test(response)) {
-      console.log("sidead data:", data);
-      console.log("sidead _.get:", _.get(data, "viewer.sideFeed[0].__typename", ""));
-    }
-
-    return data && (data.category === "SPONSORED" || regex.test(response));
+    return data && containsSponsoredResponse(data);
   });
 
   if (responsesForParsing.length === 0) return;
@@ -78,69 +72,9 @@ const handlePackets = (requestPacket, responsePacket) => {
   });
 };
 
-const handleAdsInDocument = () => {
-  const sideAdRegex = /AdsSideFeedUnit/g;
-  const postAdRegex = /"category":"SPONSORED"/g;
-
-  $('script[type="application/json"]').each((i, el) => {
-    const content = $(el).text();
-
-    if (sideAdRegex.test(content)) {
-      handleSideAds(JSON.parse(content));
-    }
-
-    if (postAdRegex.test(content)) {
-      handleFeedAds(JSON.parse(content));
-    }
-  });
-};
-
-// check we're on the right array item
-function isDataItem(data) {
+const containsSponsoredResponse = (response) => {
   return (
-    Array.isArray(data) && data.length !== 0 && typeof data[0] === "string" && data[1].__bbox.result
+    (response.category === "SPONSORED" ||
+      _.get(response, "viewer.sideFeed.nodes[0].__typename", "")) === "AdsSideFeedUnit"
   );
-}
-
-const handleFeedAds = (content) => {
-  const [cleanSponsoredData] = content.require[0][3][0].__bbox.require.filter(
-    (data) => data[0] === "RelayPrefetchedStreamCache"
-  );
-
-  cleanSponsoredData.forEach((data) => {
-    if (isDataItem(data)) {
-      const pointer = data[1].__bbox.result;
-
-      fetchWaistForSponsoredItem(pointer.data.node).then((waistData) => {
-        const related = uuidv4();
-
-        sendRawlog({ type: "FBADVERT", html: JSON.stringify(pointer), related });
-        sendRawlog({ type: "FBADVERTRATIONALE", html: JSON.stringify(waistData), related });
-      });
-    }
-  });
-};
-
-const handleSideAds = (content) => {
-  const [sideAdData] = content.require[0][3][0].__bbox.require.filter(
-    (data) => data[0] === "RelayPrefetchedStreamCache"
-  );
-
-  sideAdData.forEach((data) => {
-    if (isDataItem(data)) {
-      const pointer = data[1].__bbox.result;
-
-      // iterable side unit adverts
-      const sideAdverts = pointer.data.viewer.sideFeed.nodes[0].ads.nodes;
-
-      sideAdverts.forEach((node) => {
-        fetchWaistForSponsoredItem(node).then((waistData) => {
-          const related = uuidv4();
-
-          sendRawlog({ type: "FBADVERT", html: JSON.stringify(node), related });
-          sendRawlog({ type: "FBADVERTRATIONALE", html: JSON.stringify(waistData), related });
-        });
-      });
-    }
-  });
 };
