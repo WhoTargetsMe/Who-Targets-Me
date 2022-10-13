@@ -10,7 +10,7 @@
  * }}
  */
 function getWaistRequestVariablesFromSponsoredPost(node) {
-  const variables = {};
+  let variables = {};
   const doc_id = 5574710692594916;
   const { fb_dtsg } = window.require("getAsyncParams")("POST");
 
@@ -18,10 +18,11 @@ function getWaistRequestVariablesFromSponsoredPost(node) {
     if (key === "sponsored_data") {
       const { ad_id, client_token } = value;
 
-      _.assign(variables, {
+      variables = {
         adId: ad_id,
-        fields: { ad_id, client_token, request_id: "1" },
-      });
+        fields: { ad_id, client_token, request_id: getRandomInteger(1, 900000).toString() },
+      };
+      return;
     }
   });
 
@@ -46,4 +47,8 @@ export function fetchWaistForSponsoredItem(node) {
       method: "post",
     })
     .then((data) => data.json());
+}
+
+function getRandomInteger(min, max) {
+  return Math.random() * (max - min) + min;
 }

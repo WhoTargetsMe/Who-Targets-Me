@@ -74,7 +74,7 @@ const handlePackets = (requestPacket, responsePacket) => {
 
 const containsSponsoredResponse = (response) => {
   return (
-    (response.category === "SPONSORED" ||
-      _.get(response, "viewer.sideFeed.nodes[0].__typename", "")) === "AdsSideFeedUnit"
+    response.category === "SPONSORED" ||
+    _.get(response, "viewer.sideFeed.nodes[0].__typename", "") === "AdsSideFeedUnit"
   );
 };
