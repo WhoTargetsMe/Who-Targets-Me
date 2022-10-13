@@ -1,13 +1,14 @@
-var webpack = require("webpack");
-var CopyWebpackPlugin = require("copy-webpack-plugin");
-var CleanWebpackPlugin = require("clean-webpack-plugin");
-var package = require("../../package.json");
+const webpack = require("webpack");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const package = require("../../package.json");
 
 var browser = process.env.BROWSER || "chrome";
 
 var build_dir = __dirname + "/../../build/" + browser;
 
 module.exports = {
+  mode: "development",
   entry: {
     index: __dirname + "/../daemon/index.js",
     overload: __dirname + "/../daemon/collector/overload/overload.js",
@@ -19,12 +20,14 @@ module.exports = {
   },
   devtool: "source-map",
   plugins: [
-    new CleanWebpackPlugin([build_dir + "/*"], { root: build_dir }),
-    new CopyWebpackPlugin([
-      { from: __dirname + "/" + browser + ".manifest.json", to: build_dir + "/manifest.json" },
-      { from: __dirname + "/_locales", to: build_dir + "/_locales" },
-      { from: __dirname + "/wtm_logo_128.png", to: build_dir + "/wtm_logo_128.png" },
-    ]),
+    new CleanWebpackPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: __dirname + "/" + browser + ".manifest.json", to: build_dir + "/manifest.json" },
+        { from: __dirname + "/_locales", to: build_dir + "/_locales" },
+        { from: __dirname + "/wtm_logo_128.png", to: build_dir + "/wtm_logo_128.png" },
+      ],
+    }),
     new webpack.DefinePlugin({
       "process.env.API_URL": process.env.OFFLINE
         ? JSON.stringify(package.apiUrlLocal)
@@ -42,8 +45,7 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["env"],
-            plugins: ["babel-plugin-transform-object-rest-spread"],
+            presets: ["@babel/preset-env"],
           },
         },
       },
