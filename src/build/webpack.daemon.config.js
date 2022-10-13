@@ -1,14 +1,16 @@
+require("dotenv").config();
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const package = require("../../package.json");
 
-var browser = process.env.BROWSER || "chrome";
+const browser = process.env.BROWSER || "chrome";
+const node_env = process.env.NODE_ENV || "production";
 
-var build_dir = __dirname + "/../../build/" + browser;
+const build_dir = __dirname + "/../../build/" + browser;
 
 module.exports = {
-  mode: "development",
+  mode: node_env,
   entry: {
     index: __dirname + "/../daemon/index.js",
     overload: __dirname + "/../daemon/collector/overload/overload.js",
