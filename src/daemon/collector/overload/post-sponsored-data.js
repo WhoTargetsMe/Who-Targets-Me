@@ -26,13 +26,15 @@ import { fetchWaistForSponsoredItem } from "./waist-requests";
  * @param {Object} advertData
  */
 export const postSponsoredData = (waistVariablesForSponsoredItem, advertData) => {
-  fetchWaistForSponsoredItem(waistVariablesForSponsoredItem).then((waistData) => {
-    const related = uuidv4();
+  fetchWaistForSponsoredItem(waistVariablesForSponsoredItem)
+    .then((waistData) => {
+      const related = uuidv4();
 
-    const fbAdvert = { type: "FBADVERT", html: JSON.stringify(advertData), related };
-    const fbWaist = { type: "FBADVERTRATIONALE", html: JSON.stringify(waistData), related };
+      const fbAdvert = { type: "FBADVERT", html: JSON.stringify(advertData), related };
+      const fbWaist = { type: "FBADVERTRATIONALE", html: JSON.stringify(waistData), related };
 
-    window.postMessage({ action: "sendRawlog", payload: fbAdvert }, "*");
-    window.postMessage({ action: "sendRawlog", payload: fbWaist }, "*");
-  });
+      window.postMessage({ action: "sendRawlog", payload: fbAdvert }, "*");
+      window.postMessage({ action: "sendRawlog", payload: fbWaist }, "*");
+    })
+    .catch((err) => console.error(err));
 };
