@@ -40,5 +40,9 @@
   },
   "babel": {
     "presets": []
-  }
+  },
+  "browserslist": [
+    "last 2 versions",
+    "> 1% and not dead"
+  ]
 }
