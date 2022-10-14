@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import { fetchWaistForSponsoredItem } from "./waist-requests";
 
 /**
- * @typedef {Object} waistVariablesForSponsoredItem
+ * @typedef {Object} WaistVariablesForSponsoredItem
  * @property {String} fb_dtsg
  * @property {String} variables
  * @property {String} doc_id
@@ -22,8 +22,8 @@ import { fetchWaistForSponsoredItem } from "./waist-requests";
  * Sends request to generate waist data for the sponsored post
  * and then uses waist response to send both sponsored data and waist data
  * to our DB
- * @param {Object} waistVariablesForSponsoredItem variables required to get waist data
- * @param {Object} advertData full advertised data
+ * @param {WaistVariablesForSponsoredItem} waistVariablesForSponsoredItem
+ * @param {Object} advertData
  */
 export const postSponsoredData = (waistVariablesForSponsoredItem, advertData) => {
   fetchWaistForSponsoredItem(waistVariablesForSponsoredItem).then((waistData) => {
