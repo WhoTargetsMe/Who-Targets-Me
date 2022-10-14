@@ -26,9 +26,7 @@ function isDataItem(data) {
 }
 
 const handleFeedAds = (content) => {
-  const [cleanSponsoredData] = content.require[0][3][0].__bbox.require.filter(
-    (data) => data[0] === "RelayPrefetchedStreamCache"
-  );
+  const [cleanSponsoredData] = filterSponsoredData(content);
 
   cleanSponsoredData.forEach((data) => {
     if (isDataItem(data)) {
@@ -39,9 +37,7 @@ const handleFeedAds = (content) => {
 };
 
 const handleSideAds = (content) => {
-  const [sideAdData] = content.require[0][3][0].__bbox.require.filter(
-    (data) => data[0] === "RelayPrefetchedStreamCache"
-  );
+  const [sideAdData] = filterSponsoredData(content);
 
   sideAdData.forEach((data) => {
     if (isDataItem(data)) {
@@ -55,4 +51,10 @@ const handleSideAds = (content) => {
       });
     }
   });
+};
+
+const filterSponsoredData = (data) => {
+  return data.require[0][3][0].__bbox.require.filter(
+    (data) => data[0] === "RelayPrefetchedStreamCache"
+  );
 };
