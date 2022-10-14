@@ -10,7 +10,7 @@
  * }}
  */
 function getWaistRequestVariablesFromSponsoredPost(node) {
-  let variables = {};
+  const variables = {};
   const doc_id = 5574710692594916;
   const { fb_dtsg } = window.require("getAsyncParams")("POST");
 
@@ -18,9 +18,11 @@ function getWaistRequestVariablesFromSponsoredPost(node) {
     if (key === "sponsored_data") {
       const { ad_id, client_token } = value;
 
-      variables = {
-        adId: ad_id,
-        fields: { ad_id, client_token, request_id: getRandomInteger(1, 900000).toString() },
+      variables.adId = ad_id;
+      variables.fields = {
+        ad_id,
+        client_token,
+        request_id: getRandomInteger(1, 900000).toString(),
       };
       return;
     }
