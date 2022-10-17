@@ -69,29 +69,19 @@ window.addEventListener(
   function sendRawlogListener(event) {
     if (event.data.action === "sendRawlog") {
       const { payload: rawlog } = event.data;
-
       const extVersion = chrome.runtime.getManifest().version;
+      const apiPayload = {
+        extVersion,
+        ...rawlog,
+      };
 
-      chrome.storage.promise.local.get("general_token").then((result) => {
-        const { general_token } = result;
+      // FIXME remove this
+      // console.log({ payload: apiPayload });
 
-        api.addMiddleware((request) => {
-          request.options.headers["Authorization"] = general_token;
-        });
-
-        const apiPayload = {
-          extVersion,
-          ...rawlog,
-        };
-
-        // FIXME remove this
-        // console.log({ payload: apiPayload });
-
-        app
-          .service("submit-rawlogs")
-          .create(apiPayload)
-          .catch((err) => console.error(err));
-      });
+      app
+        .service("submit-rawlogs")
+        .create(apiPayload)
+        .catch((err) => console.error(err));
     }
   }
 );
