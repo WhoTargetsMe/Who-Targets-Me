@@ -12,7 +12,8 @@
     "build-chrome": "BROWSER=chrome webpack --config src/build/webpack.daemon.config.js",
     "build-firefox": "BROWSER=firefox webpack --config src/build/webpack.daemon.config.js",
     "start:firefox": "web-ext run --source-dir ./build/firefox/",
-    "start:chrome": "web-ext run --target chromium --source-dir ./build/chrome/"
+    "start:chrome": "web-ext run --target chromium --source-dir ./build/chrome/",
+    "build-full-release": "./package-extension.sh"
   },
   "author": "",
   "license": "MIT",
