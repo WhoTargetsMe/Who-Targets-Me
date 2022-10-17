@@ -37,6 +37,9 @@ module.exports = {
       "process.env.RESULTS_URL": process.env.OFFLINE
         ? JSON.stringify(package.resultsUrlLocal)
         : JSON.stringify(package.resultsUrl),
+      "process.env.DATA_API_URL": process.env.OFFLINE
+        ? JSON.stringify(package.dataApiLocal)
+        : JSON.stringify(package.dataApi),
     }),
   ],
 };

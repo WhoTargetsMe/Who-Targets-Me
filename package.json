@@ -5,6 +5,8 @@
   "main": "index.js",
   "apiUrl": "https://wtm-api.whotargets.me/v1/",
   "apiUrlLocal": "http://localhost:3000/",
+  "dataApi": "https://wtm-api.whotargets.me/v1/",
+  "dataApiLocal": "http://localhost:3003/development",
   "resultsUrl": "https://results.whotargets.me/",
   "resultsUrlLocal": "http://localhost:3000/",
   "scripts": {
@@ -17,6 +19,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@feathersjs/client": "^4.5.15",
     "bluebird": "^3.5.1",
     "es6-promise-pool": "^2.5.0",
     "fetch-http-client": "^1.0.1",

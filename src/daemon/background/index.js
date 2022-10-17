@@ -1,5 +1,6 @@
 import api from "../api";
 import "../../common/chromeStorage.js";
+import { app } from "../feathers";
 
 const RESULTS_URL = process.env.RESULTS_URL;
 
@@ -79,22 +80,17 @@ window.addEventListener(
         });
 
         const apiPayload = {
-          typeId: rawlog.type,
           extVersion,
-          payload: [rawlog],
+          ...rawlog,
         };
 
         // FIXME remove this
         console.log({ payload: apiPayload });
 
-        api
-          .post("log/raw", { json: apiPayload })
-          .then((response) => {
-            console.log({ response });
-          })
-          .catch((error) => {
-            console.log({ error });
-          });
+        app
+          .service("submit-rawlogs")
+          .create(apiPayload)
+          .catch((err) => console.error(err));
       });
     }
   }
