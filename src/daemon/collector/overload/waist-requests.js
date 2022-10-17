@@ -18,10 +18,13 @@ function getWaistRequestVariablesFromSponsoredPost(node) {
     if (key === "sponsored_data") {
       const { ad_id, client_token } = value;
 
-      _.assign(variables, {
-        adId: ad_id,
-        fields: { ad_id, client_token, request_id: "1" },
-      });
+      variables.adId = ad_id;
+      variables.fields = {
+        ad_id,
+        client_token,
+        request_id: getRandomInteger(1, 900000).toString(),
+      };
+      return;
     }
   });
 
@@ -46,4 +49,8 @@ export function fetchWaistForSponsoredItem(node) {
       method: "post",
     })
     .then((data) => data.json());
+}
+
+function getRandomInteger(min, max) {
+  return Math.random() * (max - min) + min;
 }
