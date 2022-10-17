@@ -85,7 +85,7 @@ window.addEventListener(
         };
 
         // FIXME remove this
-        console.log({ payload: apiPayload });
+        // console.log({ payload: apiPayload });
 
         app
           .service("submit-rawlogs")
