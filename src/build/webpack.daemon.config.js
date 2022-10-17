@@ -42,4 +42,7 @@ module.exports = {
         : JSON.stringify(package.dataApi),
     }),
   ],
+  optimization: {
+    minimize: false,
+  },
 };
