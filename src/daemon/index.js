@@ -21,12 +21,7 @@ const initPage = () => {
         api.addMiddleware((request) => {
           request.options.headers.Authorization = result.general_token;
         });
-        if (window.location.protocol === "chrome-extension:") {
-          // Determine whether daemon is running in context of webpage, or in the background
-          initBackground();
-        } else {
-          initPage();
-        }
+        initPage();
       } else {
         // one time Notification to register (user can skip)
         if (
@@ -41,12 +36,5 @@ const initPage = () => {
     .catch((error) => {
       console.log(error);
     })
-    .finally(() => {
-      if (window.location.protocol === "chrome-extension:") {
-        // Determine whether daemon is running in context of webpage, or in the background
-        initBackground();
-      } else {
-        initPage();
-      }
-    });
+    .finally(() => initPage());
 })();
