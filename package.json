@@ -15,8 +15,8 @@
     "build-firefox": "BROWSER=firefox webpack --config src/build/webpack.daemon.config.js",
     "start:firefox": "web-ext run --source-dir ./build/firefox/",
     "start:chrome": "web-ext run --target chromium --source-dir ./build/chrome/",
-    "package-chrome": "npm run build-chrome && web-ext build --source-dir ./build/chrome --filename 'chrome-{version}.zip' --artifacts-dir ./build",
-    "package-firefox": "npm run build-firefox && web-ext build --source-dir ./build/firefox --filename 'firefox-{version}.zip' --artifacts-dir ./build",
+    "package-chrome": "npm run build-chrome && web-ext build --source-dir ./build/chrome --filename 'chrome-{version}.zip' --artifacts-dir ./build/chrome",
+    "package-firefox": "npm run build-firefox && web-ext build --source-dir ./build/firefox --filename 'firefox-{version}.zip' --artifacts-dir ./build/firefox",
     "build-full-release": "./package-extension.sh"
   },
   "author": "",
