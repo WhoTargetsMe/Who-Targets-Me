@@ -10,11 +10,14 @@
   "resultsUrl": "https://results.whotargets.me/",
   "resultsUrlLocal": "http://localhost:3000/",
   "scripts": {
+    "build:chrome": "BROWSER=chrome webpack --config src/build/webpack.daemon.config.js",
+    "build:firefox": "BROWSER=firefox webpack --config src/build/webpack.daemon.config.js",
     "dev-daemon": "OFFLINE=true BROWSER=chrome webpack --config src/build/webpack.daemon.config.js --watch",
-    "build-chrome": "BROWSER=chrome webpack --config src/build/webpack.daemon.config.js",
-    "build-firefox": "BROWSER=firefox webpack --config src/build/webpack.daemon.config.js",
-    "start:firefox": "web-ext run --source-dir ./build/firefox/",
-    "start:chrome": "web-ext run --target chromium --source-dir ./build/chrome/"
+    "package:all": "npm run package:chrome && npm run package:firefox",
+    "package:chrome": "npm run build:chrome && web-ext build --source-dir ./build/chrome --filename 'chrome-{version}.zip' --artifacts-dir ./build/chrome",
+    "package:firefox": "npm run build:firefox && web-ext build --source-dir ./build/firefox --filename 'firefox-{version}.zip' --artifacts-dir ./build/firefox",
+    "start:chrome": "web-ext run --target chromium --source-dir ./build/chrome/",
+    "start:firefox": "web-ext run --source-dir ./build/firefox/"
   },
   "author": "",
   "license": "MIT",
