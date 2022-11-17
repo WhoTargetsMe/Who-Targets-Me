@@ -57,6 +57,8 @@ window.addEventListener("message", function (event) {
   } else if (event.data.deleteWTMUser) {
     chrome.storage.promise.local.remove("general_token");
     chrome.storage.promise.local.remove("userData");
+  } else if (event.data.storeUserToken) {
+    chrome.storage.promise.local.set({ general_token: event.data.token })
   }
 });
 
