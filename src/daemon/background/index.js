@@ -1,64 +1,44 @@
-import api from "../api";
 import "../../common/chromeStorage.js";
-import { app } from "../feathers";
+const { app } = require("../feathers");
 
 const RESULTS_URL = process.env.RESULTS_URL;
 
-// ----- registerUser ----- //
-window.addEventListener("message", function (event) {
+window.addEventListener("message", async function (event) {
   // We only accept messages from ourselves
   if (event.source != window) {
     return;
   }
-  // console.log('event in extension', event)
 
   if (event.data.registerWTMUser) {
-    // console.log('got reg details', event.data)
-    const { age, gender, postcode, country, political_affiliation, survey, consent } = event.data;
-    api
-      .post("user/create", {
-        json: {
-          age,
-          gender,
-          postcode,
-          country,
-          political_affiliation,
-          survey,
-          email: null,
-          update: null,
-          consent,
-        },
-      })
-      .then((response) => {
-        // The rest of the validation is down to the server
-        if (response.jsonData.errorMessage !== undefined) {
-          throw new Error(response.jsonData.errorMessage);
-        }
-        let general_token = response.jsonData.data.token;
-        return chrome.storage.promise.local
-          .set({ general_token })
-          .then((res) => {
-            window.localStorage.setItem("general_token", JSON.stringify(general_token));
-            window.postMessage({ registrationFeedback: response.jsonData }, "*");
-            return chrome.storage.promise.local
-              .set({ userData: { isNotifiedRegister: "yes", country } })
-              .then((res) => {})
-              .catch((e) => {
-                console.log(e);
-              });
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const { political_affiliation, registerWTMUser, ...account } = event.data;
+
+    try {
+      const response = await app
+        .service("user-credentials")
+        .create({ ...account, politicalAffiliation: political_affiliation, email: null });
+
+      return chrome.storage.promise.local
+        .set({ general_token: response.token })
+        .then(() => {
+          window.localStorage.setItem("general_token", JSON.stringify(response.token));
+          window.postMessage({ registrationFeedback: response }, "*");
+          return chrome.storage.promise.local
+            .set({ userData: { isNotifiedRegister: "yes", country: response.country } })
+            .catch((e) => {
+              console.log(e);
+            });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } catch (error) {
+      console.error(error);
+    }
   } else if (event.data.deleteWTMUser) {
     chrome.storage.promise.local.remove("general_token");
     chrome.storage.promise.local.remove("userData");
   } else if (event.data.storeUserToken) {
-    chrome.storage.promise.local.set({ general_token: event.data.token })
+    chrome.storage.promise.local.set({ general_token: event.data.token });
   }
 });
 
@@ -76,9 +56,6 @@ window.addEventListener(
         extVersion,
         ...rawlog,
       };
-
-      // FIXME remove this
-      // console.log({ payload: apiPayload });
 
       app
         .service("submit-rawlogs")
