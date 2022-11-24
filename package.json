@@ -6,7 +6,7 @@
   "apiUrl": "https://wtm-api.whotargets.me/v1/",
   "apiUrlLocal": "http://localhost:3000/",
   "dataApi": "https://data-api.whotargets.me",
-  "dataApiLocal": "http://localhost:3003/development",
+  "dataApiLocal": "http://localhost:3003/",
   "resultsUrl": "https://results.whotargets.me/",
   "resultsUrlLocal": "http://localhost:3000/",
   "scripts": {
