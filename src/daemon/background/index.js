@@ -1,5 +1,5 @@
 import "../../common/chromeStorage.js";
-const { app } = require("../feathers");
+import { app } from "../feathers";
 
 const RESULTS_URL = process.env.RESULTS_URL;
 
