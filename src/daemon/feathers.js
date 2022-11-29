@@ -13,13 +13,21 @@ const readLocalStorage = (key) => {
 };
 
 (async () => {
-  const token = await readLocalStorage("general_token");
+  try {
+    const token = await readLocalStorage("general_token");
 
-  app.configure(
-    restClient.fetch(window.fetch, {
-      headers: { Authorization: token },
-    })
-  );
+    app.configure(
+      restClient.fetch(window.fetch, {
+        headers: { Authorization: token },
+      })
+    );
+  } catch (error) {
+    app.configure(
+      restClient.fetch(window.fetch, {
+        headers: { Authorization: "" },
+      })
+    );
+  }
 })();
 
 export { app };
