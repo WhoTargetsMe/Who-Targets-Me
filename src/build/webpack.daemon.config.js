@@ -40,6 +40,7 @@ module.exports = {
       "process.env.DATA_API_URL": process.env.OFFLINE
         ? JSON.stringify(package.dataApiLocal)
         : JSON.stringify(package.dataApi),
+      "process.env.BROWSER": JSON.stringify(process.env.BROWSER) || "",
     }),
   ],
   optimization: {

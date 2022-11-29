@@ -52,8 +52,11 @@ window.addEventListener(
     if (event.data.action === "sendRawlog") {
       const { payload: rawlog } = event.data;
       const extVersion = chrome.runtime.getManifest().version;
+      const browser = process.env.BROWSER;
+
       const apiPayload = {
         extVersion,
+        browser,
         ...rawlog,
       };
 
