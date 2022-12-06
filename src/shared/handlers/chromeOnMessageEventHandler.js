@@ -1,6 +1,6 @@
 import { sendRawLog, setToStorage, handleUserRegistration, handleUserDeletion } from "..";
 
-export const chromeOnMessageEventHandler = async (request, _sender, sendResponse) => {
+export const chromeOnMessageEventHandler = async (request) => {
   if (request.action === "sendRawLog") {
     const { action, ...payload } = request;
     sendRawLog(payload);
