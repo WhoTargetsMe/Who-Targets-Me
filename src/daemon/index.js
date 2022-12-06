@@ -1,11 +1,9 @@
 import "../common/chromeStorage.js";
-import initBackground from "./background";
-import { initCollector } from "./collector";
+import { injectOverload } from "./collector";
 import { initPopup } from "./popup/Notification.js";
-import api from "./api.js";
 
 const initPage = () => {
-  initCollector();
+  injectOverload();
 };
 
 (() => {
@@ -15,12 +13,9 @@ const initPage = () => {
       if (result.general_token) {
         // Client is authenticated
         // set variables for old users
-        if (!result.userData.isNotifiedRegister || result.userData.isNotifiedRegister !== "yes") {
-          chrome.storage.promise.local.set({ userData: { isNotifiedRegister: "yes" } });
+        if (!result.userData.isNotifiedRegister || result.userData.isNotifiedRegister) {
+          chrome.storage.promise.local.set({ userData: { isNotifiedRegister: true } });
         }
-        api.addMiddleware((request) => {
-          request.options.headers.Authorization = result.general_token;
-        });
         initPage();
       } else {
         // one time Notification to register (user can skip)

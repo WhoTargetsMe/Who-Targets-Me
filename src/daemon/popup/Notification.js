@@ -28,11 +28,11 @@ export const initPopup = function () {
     </div>`);
     $("#popup_container").on("click", function () {
       $(this).hide();
-      chrome.storage.promise.local.set({ userData: { isNotifiedRegister: "yes" } });
+      chrome.storage.promise.local.set({ userData: { isNotifiedRegister: true } });
     });
     $("#popup_close").on("click", function () {
       $("#popup_container").hide();
-      chrome.storage.promise.local.set({ userData: { isNotifiedRegister: "yes" } });
+      chrome.storage.promise.local.set({ userData: { isNotifiedRegister: true } });
     });
   });
 };

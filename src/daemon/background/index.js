@@ -23,7 +23,7 @@ window.addEventListener("message", async function (event) {
           window.localStorage.setItem("general_token", JSON.stringify(response.token));
           window.postMessage({ registrationFeedback: response }, "*");
           return chrome.storage.promise.local
-            .set({ userData: { isNotifiedRegister: "yes", country: response.country } })
+            .set({ userData: { isNotifiedRegister: true, country: response.country } })
             .catch((e) => {
               console.log(e);
             });
