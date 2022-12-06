@@ -16,12 +16,12 @@ const checkScripts = (src, targets) => {
   }
   return scriptExists;
 };
-export function initCollector() {
-  const s2 = window.document.createElement("script");
-  s2.src = chrome.extension.getURL("daemon/overload.js");
+export function injectOverload() {
+  const s2 = document.createElement("script");
+  s2.src =
+    chrome.runtime.getURL("daemon/overload.js") || chrome.extension.getURL("daemon/overload.js");
   const targets = [document.head, document.documentElement];
   const scriptExists = checkScripts(s2.src, targets);
-  //console.log('==================', 'adding overload script, scriptExists', scriptExists)
   if (!scriptExists) {
     (targets[0] || targets[1]).appendChild(s2);
   }
