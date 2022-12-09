@@ -23,6 +23,7 @@ function getWaistRequestVariablesFromSponsoredPost(node) {
         ad_id,
         client_token,
         request_id: getRandomInteger(1, 900000).toString(),
+        entrypoint: "DESKTOP_WAIST_DIALOG",
       };
       return;
     }
