@@ -15,6 +15,8 @@ module.exports = {
     index: __dirname + "/../daemon/index.js",
     overload: __dirname + "/../daemon/collector/overload/overload.js",
     collect: __dirname + "/../daemon/collector/content/collect.js",
+    worker: __dirname + "/../daemon/background/worker.js",
+    initOverload: __dirname + "/../daemon/collector/overload/initOverload.js",
   },
   output: {
     path: build_dir + "/daemon",
@@ -31,9 +33,6 @@ module.exports = {
       ],
     }),
     new webpack.DefinePlugin({
-      "process.env.API_URL": process.env.OFFLINE
-        ? JSON.stringify(package.apiUrlLocal)
-        : JSON.stringify(package.apiUrl),
       "process.env.RESULTS_URL": process.env.OFFLINE
         ? JSON.stringify(package.resultsUrlLocal)
         : JSON.stringify(package.resultsUrl),

@@ -33,8 +33,8 @@ export const postSponsoredData = (waistVariablesForSponsoredItem, advertData) =>
       const fbAdvert = { type: "FBADVERT", html: JSON.stringify(advertData), related };
       const fbWaist = { type: "FBADVERTRATIONALE", html: JSON.stringify(waistData), related };
 
-      window.postMessage({ action: "sendRawlog", payload: fbAdvert }, "*");
-      window.postMessage({ action: "sendRawlog", payload: fbWaist }, "*");
+      window.postMessage({ ...fbAdvert, action: "sendRawLog" });
+      window.postMessage({ ...fbWaist, action: "sendRawLog" });
     })
     .catch((err) => console.error(err));
 };
