@@ -11,3 +11,4 @@ export * from "./handlers/chromeOnMessageEventHandler";
 export * from "./handlers/onActionClickedEventHandler";
 export * from "./handlers/handleUserRegistration";
 export * from "./handlers/handleUserDeletion";
+export * from "./handlers/handleScriptInjection";

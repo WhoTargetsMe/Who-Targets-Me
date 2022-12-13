@@ -1,6 +1,6 @@
-import { createUserCredentials, setToStorage, postMessageToFirstActiveTab } from "../";
+import { createUserCredentials, setToStorage } from "../";
 
-export const handleUserRegistration = async (payload) => {
+export const handleUserRegistration = async (payload, responseCallback) => {
   const { political_affiliation, ...account } = payload;
   const response = await createUserCredentials({
     ...account,
@@ -10,5 +10,5 @@ export const handleUserRegistration = async (payload) => {
 
   await setToStorage("general_token", response.token);
   await setToStorage("userData", { isNotifiedRegister: true, country: response.country });
-  await postMessageToFirstActiveTab({ registrationFeedback: response });
+  await responseCallback(response);
 };
