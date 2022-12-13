@@ -6,7 +6,7 @@ import {
   postMessageToFirstActiveTab,
 } from "..";
 
-export const chromeOnMessageEventHandler = async (request) => {
+export const onMessageEventHandler = async (request) => {
   if (request.action === "sendRawLog") {
     const { action, ...payload } = request;
     sendRawLog(payload);

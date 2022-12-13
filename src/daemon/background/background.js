@@ -1,4 +1,4 @@
-import { chromeOnMessageEventHandler, onActionClickedEventHandler } from "../../shared";
+import { onMessageEventHandler, onActionClickedEventHandler } from "../../shared";
 
 chrome.browserAction && chrome.browserAction.onClicked.addListener(onActionClickedEventHandler);
 
@@ -7,5 +7,5 @@ window.addEventListener("message", async function (event) {
     return;
   }
 
-  await chromeOnMessageEventHandler(event.data);
+  await onMessageEventHandler(event.data);
 });

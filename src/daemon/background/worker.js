@@ -1,6 +1,6 @@
 import {
   readStorage,
-  chromeOnMessageEventHandler,
+  onMessageEventHandler,
   onActionClickedEventHandler,
   setToStorage,
   shouldOpenResultsPage,
@@ -25,5 +25,5 @@ chrome.runtime.onInstalled.addListener(async () => {
   }
 });
 
-chrome.runtime.onMessage.addListener(chromeOnMessageEventHandler);
+chrome.runtime.onMessage.addListener(onMessageEventHandler);
 chrome.action.onClicked.addListener(onActionClickedEventHandler);
