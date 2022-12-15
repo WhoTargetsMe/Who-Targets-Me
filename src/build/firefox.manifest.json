@@ -25,7 +25,7 @@
         "*://*.whotargets.me/*",
         "*://localhost/*"
       ],
-      "js": ["daemon/index.js", "daemon/collect.js"]
+      "js": ["daemon/index.js"]
     }
   ],
   "background": {
