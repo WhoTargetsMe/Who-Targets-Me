@@ -8,7 +8,7 @@ export * from "./utils/shouldOpenResultsPage";
 export * from "./utils/postMessageToFirstActiveTab";
 
 export * from "./handlers/onMessageEventHandler";
-export * from "./handlers/onActionClickedEventHandler";
+export * from "./handlers/openResultsPageInNewTab";
 export * from "./handlers/handleUserRegistration";
 export * from "./handlers/handleUserDeletion";
 export * from "./handlers/handleScriptInjection";
