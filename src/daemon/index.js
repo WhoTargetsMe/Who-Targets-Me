@@ -1,6 +1,6 @@
 import {
   handleScriptInjection,
-  openResultsPageInNewTab,
+  handleOpeningResultsPage,
   readStorage,
   shouldOpenResultsPage,
   setToStorage,
@@ -21,7 +21,7 @@ import "./background/background"; // This import registers the listeners
   }
 
   if (shouldOpenResultsPage(userData)) {
-    await openResultsPageInNewTab();
+    await handleOpeningResultsPage();
     await setToStorage("userData", { ...userData, isNotifiedRegister: true });
   }
 })();
