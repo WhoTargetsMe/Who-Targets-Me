@@ -6,6 +6,22 @@ import {
   postMessageToFirstActiveTab,
 } from "..";
 
+const callback = async (response) => {
+  switch (process.env.BROWSER) {
+    case "chrome":
+      await postMessageToFirstActiveTab({ registrationFeedback: response });
+      break;
+
+    case "firefox":
+      localStorage.setItem("general_token", JSON.stringify(response.token));
+      window.postMessage({ registrationFeedback: response }, "*");
+      break;
+
+    default:
+      throw "process.env.BROWSER must be defined";
+  }
+};
+
 export const onMessageEventHandler = async (request) => {
   if (request.action === "sendRawLog") {
     const { action, ...payload } = request;
@@ -13,12 +29,7 @@ export const onMessageEventHandler = async (request) => {
   } else if (request.registerWTMUser) {
     const { registerWTMUser, ...payload } = request;
     await handleUserRegistration(payload, async (response) => {
-      if (process.env.BROWSER === "firefox") {
-        localStorage.setItem("general_token", JSON.stringify(response.token));
-        window.postMessage({ registrationFeedback: response }, "*");
-      } else {
-        await postMessageToFirstActiveTab({ registrationFeedback: response });
-      }
+      await callback(response);
     });
 
     // This reload is necessary to get the extension up-to-speed, like the token used to post rawlogs
