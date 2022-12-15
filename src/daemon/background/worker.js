@@ -1,7 +1,7 @@
 import {
   readStorage,
-  chromeOnMessageEventHandler,
-  onActionClickedEventHandler,
+  onMessageEventHandler,
+  handleOpeningResultsPage,
   setToStorage,
   shouldOpenResultsPage,
 } from "../../shared";
@@ -25,5 +25,5 @@ chrome.runtime.onInstalled.addListener(async () => {
   }
 });
 
-chrome.runtime.onMessage.addListener(chromeOnMessageEventHandler);
-chrome.action.onClicked.addListener(onActionClickedEventHandler);
+chrome.runtime.onMessage.addListener(onMessageEventHandler);
+chrome.action.onClicked.addListener(handleOpeningResultsPage);

@@ -9,15 +9,30 @@ const node_env = process.env.NODE_ENV || "production";
 
 const build_dir = __dirname + "/../../build/" + browser;
 
+let entry;
+switch (process.env.BROWSER) {
+  case "chrome":
+    entry = {
+      worker: __dirname + "/../daemon/background/worker.js",
+      initOverload: __dirname + "/../daemon/collector/overload/initOverload.js",
+      overload: __dirname + "/../daemon/collector/overload/overload.js",
+    };
+    break;
+
+  case "firefox":
+    entry = {
+      index: __dirname + "/../daemon/index.js",
+      overload: __dirname + "/../daemon/collector/overload/overload.js",
+    };
+    break;
+
+  default:
+    throw "process.env.BROWSER must be defined";
+}
+
 module.exports = {
   mode: node_env,
-  entry: {
-    index: __dirname + "/../daemon/index.js",
-    overload: __dirname + "/../daemon/collector/overload/overload.js",
-    collect: __dirname + "/../daemon/collector/content/collect.js",
-    worker: __dirname + "/../daemon/background/worker.js",
-    initOverload: __dirname + "/../daemon/collector/overload/initOverload.js",
-  },
+  entry: entry,
   output: {
     path: build_dir + "/daemon",
     filename: "[name].js",

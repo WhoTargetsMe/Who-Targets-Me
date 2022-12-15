@@ -7,7 +7,8 @@ export * from "./utils/removeFromStorage";
 export * from "./utils/shouldOpenResultsPage";
 export * from "./utils/postMessageToFirstActiveTab";
 
-export * from "./handlers/chromeOnMessageEventHandler";
-export * from "./handlers/onActionClickedEventHandler";
+export * from "./handlers/onMessageEventHandler";
+export * from "./handlers/handleOpeningResultsPage";
 export * from "./handlers/handleUserRegistration";
 export * from "./handlers/handleUserDeletion";
+export * from "./handlers/handleScriptInjection";

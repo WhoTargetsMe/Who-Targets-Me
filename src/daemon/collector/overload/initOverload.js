@@ -1,5 +1,4 @@
-import { readStorage, setToStorage } from "../../../shared";
-import { injectOverload } from "..";
+import { handleScriptInjection } from "../../../shared";
 
 window.addEventListener("message", async function (event) {
   if (event.source != window) {
@@ -20,17 +19,5 @@ chrome.runtime.onMessage.addListener((request) => {
 });
 
 (async () => {
-  try {
-    const general_token = await readStorage("general_token");
-    const userData = await readStorage("userData");
-    if (general_token) {
-      if (!userData.isNotifiedRegister || userData.isNotifiedRegister) {
-        await setToStorage("userData", { isNotifiedRegister: true });
-      }
-    }
-
-    injectOverload();
-  } catch (error) {
-    injectOverload();
-  }
+  await handleScriptInjection();
 })();

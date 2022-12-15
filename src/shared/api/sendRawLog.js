@@ -1,4 +1,4 @@
-import { app } from "./";
+import { app } from "./app";
 
 export const sendRawLog = (rawlog) => {
   const browser = process.env.BROWSER;

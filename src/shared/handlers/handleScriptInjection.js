@@ -1,3 +1,5 @@
+import { readStorage, setToStorage } from "../";
+
 const checkScripts = (src, targets) => {
   let scriptExists = false;
   for (const target of targets) {
@@ -16,7 +18,8 @@ const checkScripts = (src, targets) => {
   }
   return scriptExists;
 };
-export function injectOverload() {
+
+const injectOverload = () => {
   const s2 = document.createElement("script");
   s2.src =
     chrome.runtime.getURL("daemon/overload.js") || chrome.extension.getURL("daemon/overload.js");
@@ -25,4 +28,20 @@ export function injectOverload() {
   if (!scriptExists) {
     (targets[0] || targets[1]).appendChild(s2);
   }
-}
+};
+
+export const handleScriptInjection = async () => {
+  try {
+    const general_token = await readStorage("general_token");
+    const userData = await readStorage("userData");
+    if (general_token) {
+      if (!userData.isNotifiedRegister || userData.isNotifiedRegister) {
+        await setToStorage("userData", { isNotifiedRegister: true });
+      }
+    }
+
+    injectOverload();
+  } catch (error) {
+    injectOverload();
+  }
+};
