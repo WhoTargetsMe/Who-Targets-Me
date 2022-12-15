@@ -9,13 +9,30 @@ const node_env = process.env.NODE_ENV || "production";
 
 const build_dir = __dirname + "/../../build/" + browser;
 
+let entry;
+switch (process.env.BROWSER) {
+  case "chrome":
+    entry = {
+      worker: __dirname + "/../daemon/background/worker.js",
+      initOverload: __dirname + "/../daemon/collector/overload/initOverload.js",
+      overload: __dirname + "/../daemon/collector/overload/overload.js",
+    };
+    break;
+
+  case "firefox":
+    entry = {
+      index: __dirname + "/../daemon/index.js",
+      overload: __dirname + "/../daemon/collector/overload/overload.js",
+    };
+    break;
+
+  default:
+    throw "process.env.BROWSER must be defined";
+}
+
 module.exports = {
   mode: node_env,
-  entry: {
-    index: __dirname + "/../daemon/index.js",
-    overload: __dirname + "/../daemon/collector/overload/overload.js",
-    collect: __dirname + "/../daemon/collector/content/collect.js",
-  },
+  entry: entry,
   output: {
     path: build_dir + "/daemon",
     filename: "[name].js",
@@ -31,9 +48,6 @@ module.exports = {
       ],
     }),
     new webpack.DefinePlugin({
-      "process.env.API_URL": process.env.OFFLINE
-        ? JSON.stringify(package.apiUrlLocal)
-        : JSON.stringify(package.apiUrl),
       "process.env.RESULTS_URL": process.env.OFFLINE
         ? JSON.stringify(package.resultsUrlLocal)
         : JSON.stringify(package.resultsUrl),

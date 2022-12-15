@@ -1,15 +1,12 @@
 import {
-  handleScriptInjection,
-  handleOpeningResultsPage,
   readStorage,
-  shouldOpenResultsPage,
+  onMessageEventHandler,
+  handleOpeningResultsPage,
   setToStorage,
-} from "../shared";
-import "./background/background"; // This import registers the listeners
+  shouldOpenResultsPage,
+} from "../../shared";
 
-(async () => {
-  await handleScriptInjection();
-
+chrome.runtime.onInstalled.addListener(async () => {
   const userData = await readStorage("userData");
 
   /*
@@ -21,7 +18,12 @@ import "./background/background"; // This import registers the listeners
   }
 
   if (shouldOpenResultsPage(userData)) {
-    await handleOpeningResultsPage();
+    chrome.tabs.create({
+      url: process.env.RESULTS_URL,
+    });
     await setToStorage("userData", { ...userData, isNotifiedRegister: true });
   }
-})();
+});
+
+chrome.runtime.onMessage.addListener(onMessageEventHandler);
+chrome.action.onClicked.addListener(handleOpeningResultsPage);

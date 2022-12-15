@@ -3,10 +3,8 @@
   "version": "1.6.2",
   "description": "Track the extent of digital political advertising, discover which parties are targeting you",
   "main": "index.js",
-  "apiUrl": "https://wtm-api.whotargets.me/v1/",
-  "apiUrlLocal": "http://localhost:3000/",
   "dataApi": "https://data-api.whotargets.me",
-  "dataApiLocal": "http://localhost:3003/",
+  "dataApiLocal": "http://localhost:3003",
   "resultsUrl": "https://results.whotargets.me/",
   "resultsUrlLocal": "http://localhost:3000/",
   "scripts": {
