@@ -11,6 +11,7 @@ const build_dir = __dirname + "/../../build/" + browser;
 
 let entry;
 switch (process.env.BROWSER) {
+  case "edge":
   case "chrome":
     entry = {
       worker: __dirname + "/../daemon/background/worker.js",
