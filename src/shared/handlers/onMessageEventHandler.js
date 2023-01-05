@@ -4,6 +4,7 @@ import {
   handleUserRegistration,
   handleUserDeletion,
   postMessageToFirstActiveTab,
+  readStorage,
 } from "..";
 
 const callback = async (response) => {
@@ -24,7 +25,9 @@ const callback = async (response) => {
 };
 
 export const onMessageEventHandler = async (request) => {
-  if (request.action === "sendRawLog") {
+  const token = await readStorage("general_token");
+
+  if (request.action === "sendRawLog" && token) {
     const { action, ...payload } = request;
     sendRawLog(payload);
   } else if (request.registerWTMUser) {
