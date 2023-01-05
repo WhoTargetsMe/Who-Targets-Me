@@ -8,6 +8,7 @@ import {
 
 const callback = async (response) => {
   switch (process.env.BROWSER) {
+    case "edge":
     case "chrome":
       await postMessageToFirstActiveTab({ registrationFeedback: response });
       break;

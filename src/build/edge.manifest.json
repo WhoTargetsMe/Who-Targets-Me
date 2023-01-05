@@ -1,0 +1,44 @@
+{
+  "version": "2.0.0",
+  "name": "__MSG_appName__",
+  "manifest_version": 3,
+  "description": "__MSG_appDesc__",
+  "default_locale": "en",
+  "action": {
+    "default_title": "__MSG_appName__",
+    "default_icon": "wtm_logo_128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://facebook.com/*",
+        "*://*.facebook.com/*",
+        "*://whotargets.me/*",
+        "*://*.whotargets.me/*",
+        "*://localhost/*"
+      ],
+      "js": ["daemon/initOverload.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "daemon/worker.js",
+    "type": "module"
+  },
+  "permissions": ["tabs", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "icons": {
+    "128": "wtm_logo_128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["daemon/overload.js", "daemon/overload.js.map"],
+      "matches": [
+        "*://facebook.com/*",
+        "*://*.facebook.com/*",
+        "*://whotargets.me/*",
+        "*://*.whotargets.me/*",
+        "*://localhost/*"
+      ]
+    }
+  ]
+}
