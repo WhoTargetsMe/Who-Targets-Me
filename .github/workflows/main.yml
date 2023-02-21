@@ -18,6 +18,10 @@ jobs:
       - run: |
           npm install
           npm run package:all
+          cp /build/chrome/*.zip ./
+          cp /build/edge/*.zip ./
+          cp /build/firefox/*.zip ./
+          
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - uses: JS-DevTools/npm-publish@v1
