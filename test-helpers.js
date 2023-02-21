@@ -1,17 +1,17 @@
-const { execSync } = require("child_process");
+const path = require("path");
 
-const buildExtensionForChrome = () => {
-  execSync("npm run build:chrome");
+const chromeBuildPath = () => {
+  return path.join(__dirname, "/extensions/chrome/chrome.zip");
 };
 
-const buildExtensionForFirefox = () => {
-  execSync("npm run build:firefox");
+const firefoxBuildPath = () => {
+  return path.join(__dirname, "/extensions/firefox/firefox.zip");
 };
 
-const buildExtensionForEdge = () => {
-  execSync("npm run build:edge");
+const edgeBuildPath = () => {
+  return path.join(__dirname, "/extensions/edge/edge.zip");
 };
 
-exports.buildExtensionForChrome = buildExtensionForChrome;
-exports.buildExtensionForFirefox = buildExtensionForFirefox;
-exports.buildExtensionForEdge = buildExtensionForEdge;
+exports.chromeBuildPath = chromeBuildPath;
+exports.firefoxBuildPath = firefoxBuildPath;
+exports.edgeBuildPath = edgeBuildPath;

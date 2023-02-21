@@ -1,6 +1,6 @@
 {
   "name": "@whotargetsme/who-targets-me",
-  "version": "1.7.3",
+  "version": "1.7.4",
   "description": "Track the extent of digital political advertising, discover which parties are targeting you",
   "main": "index.js",
   "dataApi": "https://data-api.whotargets.me",
