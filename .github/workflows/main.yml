@@ -18,9 +18,9 @@ jobs:
       - run: |
           npm install
           npm run package:all
-          cp /build/chrome/*.zip ./
-          cp /build/edge/*.zip ./
-          cp /build/firefox/*.zip ./
+          cp ./build/chrome/*.zip ./
+          cp ./build/edge/*.zip ./
+          cp ./build/firefox/*.zip ./
           
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
