@@ -18,10 +18,10 @@ jobs:
       - run: |
           npm install
           OFFLINE=true npm run package:all
-          mkdir extensions && mkdir extensions/chrome && mkdir extensions/firefox && mkdir extensions/edge
-          cp -r ./build/chrome ./extensions/chrome
-          cp -r ./build/edge ./extensions/edge
-          cp -r ./build/firefox ./extensions/firefox
+          mkdir extensions
+          cp -r ./build/chrome ./extensions
+          cp -r ./build/edge ./extensions
+          cp -r ./build/firefox ./extensions
           
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
