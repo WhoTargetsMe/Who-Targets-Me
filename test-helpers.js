@@ -1,15 +1,15 @@
 const path = require("path");
 
 const chromeBuildPath = () => {
-  return path.join(__dirname, "/extensions/chrome/chrome.zip");
+  return path.join(__dirname, "/extensions/chrome");
 };
 
 const firefoxBuildPath = () => {
-  return path.join(__dirname, "/extensions/firefox/firefox.zip");
+  return path.join(__dirname, "/extensions/firefox");
 };
 
 const edgeBuildPath = () => {
-  return path.join(__dirname, "/extensions/edge/edge.zip");
+  return path.join(__dirname, "/extensions/edge");
 };
 
 exports.chromeBuildPath = chromeBuildPath;
