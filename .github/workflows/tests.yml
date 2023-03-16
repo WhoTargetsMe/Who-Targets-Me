@@ -1,0 +1,17 @@
+name: Tests CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: dispatch testing event
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.WORKFLOW_SECRET }}
+          repository: WhoTargetsMe/wtm-testing
+          event-type: test-event
