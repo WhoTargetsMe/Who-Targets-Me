@@ -2,9 +2,9 @@ name: Tests CI
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 jobs:
   test:
@@ -15,7 +15,7 @@ jobs:
 
       - name: dispatch testing event
         uses: peter-evans/repository-dispatch@v2
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/master'
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: WhoTargetsMe/wtm-testing
