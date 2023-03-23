@@ -1,0 +1,22 @@
+name: Tests CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: dispatch testing event
+        uses: peter-evans/repository-dispatch@v2
+        if: github.ref == 'refs/heads/master'
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: WhoTargetsMe/wtm-testing
+          event-type: test-event
