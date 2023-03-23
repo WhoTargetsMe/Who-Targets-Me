@@ -11,6 +11,7 @@ jobs:
 
       - name: dispatch testing event
         uses: peter-evans/repository-dispatch@v2
+        if: github.event.pull_request.merged
         with:
           token: ${{ secrets.WORKFLOW_SECRET }}
           repository: WhoTargetsMe/wtm-testing
