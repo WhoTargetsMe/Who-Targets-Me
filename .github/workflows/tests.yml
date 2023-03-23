@@ -9,14 +9,16 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: dispatch testing event
-        uses: peter-evans/repository-dispatch@v2
-        if: github.ref == 'refs/heads/master'
+      - name: executing tests in wtm-testing
+        uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
-          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          repository: WhoTargetsMe/wtm-testing
-          event-type: test-event
+          owner: WhoTargetsMe
+          repo: wtm-testing
+          github_token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          workflow_file_name: test.yml
+          wait_interval: 90
