@@ -17,6 +17,6 @@ jobs:
         uses: peter-evans/repository-dispatch@v2
         if: github.ref == 'refs/heads/master'
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
           repository: WhoTargetsMe/wtm-testing
           event-type: test-event
