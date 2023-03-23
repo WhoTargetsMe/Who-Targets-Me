@@ -1,0 +1,34 @@
+name: deploy
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: |
+          npm install
+          OFFLINE=true npm run package:all
+          mkdir extensions
+          cp -r ./build/chrome ./extensions
+          cp -r ./build/edge ./extensions
+          cp -r ./build/firefox ./extensions
+          
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          access: restricted
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
