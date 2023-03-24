@@ -29,4 +29,8 @@ Then in another terminal, you can build after each change. Use the one appropria
 
 > npm run build-firefox
 
+## Semantic Versioning
+
+You can update the version of the repo with proper prefixes. For instance, prefix your commit message with `major:`, `minor:`, or `patch:` to update the version of the repository. Please be aware that updating this will cause the package to be updated in npm registry upon merging to `master`
+
 [![Awesome Humane Tech](https://raw.githubusercontent.com/humanetech-community/awesome-humane-tech/main/humane-tech-badge.svg?sanitize=true)](https://github.com/humanetech-community/awesome-humane-tech)
