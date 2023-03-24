@@ -31,6 +31,8 @@ Then in another terminal, you can build after each change. Use the one appropria
 
 ## Semantic Versioning
 
-You can update the version of the repo with proper prefixes. For instance, prefix your commit message with `major:`, `minor:`, or `patch:` to update the version of the repository. Please be aware that updating this will cause the package to be updated in npm registry upon merging to `master`
+You can update the version of the repository with proper prefixes. For instance, prefix your commit message with `feat:` for a minor version update or `BREAKING CHANGE` for a major version update. Please be aware that updating this will cause the package to be updated in npm registry upon merging to `master`.
+
+For a more comprehensive list regarding semantic versioning, check out [this list](https://github.com/phips28/gh-action-bump-version/blob/master/action.yml). 
 
 [![Awesome Humane Tech](https://raw.githubusercontent.com/humanetech-community/awesome-humane-tech/main/humane-tech-badge.svg?sanitize=true)](https://github.com/humanetech-community/awesome-humane-tech)
