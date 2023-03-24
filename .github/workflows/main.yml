@@ -13,9 +13,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+
       - run: |
           npm install
           OFFLINE=true npm run package:all
@@ -23,9 +25,14 @@ jobs:
           cp -r ./build/chrome ./extensions
           cp -r ./build/edge ./extensions
           cp -r ./build/firefox ./extensions
-          
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: bumping version
+        uses: "phips28/gh-action-bump-version@master"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
