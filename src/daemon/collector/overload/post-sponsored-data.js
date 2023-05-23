@@ -29,6 +29,7 @@ export const postSponsoredData = (waistVariablesForSponsoredItem, advert) => {
     .then((waist) => {
       window.postMessage({
         action: "sendRawLog",
+        type: 'FACEBOOK',
         body: { advert: JSON.stringify(advert), waist: JSON.stringify(waist) },
       });
     })
