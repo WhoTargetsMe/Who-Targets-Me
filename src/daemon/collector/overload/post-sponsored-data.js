@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import { fetchWaistForSponsoredItem } from "./waist-requests";
 
 /**
@@ -15,7 +14,7 @@ import { fetchWaistForSponsoredItem } from "./waist-requests";
  * fields: String{ ad_id: String, client_token: String, request_id: String }
  * }} fields
  *
- * @typedef {Object} advertData
+ * @typedef {Object} advert
  */
 
 /**
@@ -23,18 +22,16 @@ import { fetchWaistForSponsoredItem } from "./waist-requests";
  * and then uses waist response to send both sponsored data and waist data
  * to our DB
  * @param {WaistVariablesForSponsoredItem} waistVariablesForSponsoredItem
- * @param {Object} advertData
+ * @param {Object} advert
  */
-export const postSponsoredData = (waistVariablesForSponsoredItem, advertData) => {
+export const postSponsoredData = (waistVariablesForSponsoredItem, advert) => {
   fetchWaistForSponsoredItem(waistVariablesForSponsoredItem)
-    .then((waistData) => {
-      const related = uuidv4();
-
-      const fbAdvert = { type: "FBADVERT", html: JSON.stringify(advertData), related };
-      const fbWaist = { type: "FBADVERTRATIONALE", html: JSON.stringify(waistData), related };
-
-      window.postMessage({ ...fbAdvert, action: "sendRawLog" });
-      window.postMessage({ ...fbWaist, action: "sendRawLog" });
+    .then((waist) => {
+      window.postMessage({
+        action: "sendRawLog",
+        type: 'FACEBOOK',
+        body: { advert: JSON.stringify(advert), waist: JSON.stringify(waist) },
+      });
     })
     .catch((err) => console.error(err));
 };
