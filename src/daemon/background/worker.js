@@ -4,6 +4,8 @@ import {
   handleOpeningResultsPage,
   setToStorage,
   shouldOpenResultsPage,
+  handleYGToken,
+  removeFromStorage,
 } from "../../shared";
 
 chrome.runtime.onInstalled.addListener(async () => {
@@ -27,3 +29,10 @@ chrome.runtime.onInstalled.addListener(async () => {
 
 chrome.runtime.onMessage.addListener(onMessageEventHandler);
 chrome.action.onClicked.addListener(handleOpeningResultsPage);
+
+(async () => {
+  const visa = await handleYGToken();
+
+  await removeFromStorage("yougov");
+  await chrome.storage.local.set({ yougov: visa });
+})();
