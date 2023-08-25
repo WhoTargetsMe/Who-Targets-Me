@@ -12,3 +12,4 @@ export * from "./handlers/handleOpeningResultsPage";
 export * from "./handlers/handleUserRegistration";
 export * from "./handlers/handleUserDeletion";
 export * from "./handlers/handleScriptInjection";
+export * from "./handlers/handleYGToken";

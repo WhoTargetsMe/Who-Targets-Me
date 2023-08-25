@@ -29,7 +29,7 @@
     }
   ],
   "background": {
-    "scripts": ["daemon/index.js"]
+    "scripts": ["daemon/background.js"]
   },
   "icons": {
     "128": "wtm_logo_128.png"

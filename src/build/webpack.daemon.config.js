@@ -23,6 +23,7 @@ switch (process.env.BROWSER) {
   case "firefox":
     entry = {
       index: __dirname + "/../daemon/index.js",
+      background: __dirname + "/../daemon/background/background.js",
       overload: __dirname + "/../daemon/collector/overload/overload.js",
     };
     break;

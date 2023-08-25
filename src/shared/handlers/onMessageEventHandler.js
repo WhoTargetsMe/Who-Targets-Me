@@ -5,6 +5,7 @@ import {
   handleUserDeletion,
   postMessageToFirstActiveTab,
   readStorage,
+  removeFromStorage,
 } from "..";
 
 const callback = async (response) => {
@@ -32,7 +33,9 @@ export const onMessageEventHandler = async (request) => {
     sendRawLog(payload);
   } else if (request.registerWTMUser) {
     const { registerWTMUser, ...payload } = request;
-    await handleUserRegistration(payload, async (response) => {
+    const visa = (await readStorage("yougov")) || null;
+    await removeFromStorage("yougov");
+    await handleUserRegistration({ ...payload, yougov: visa }, async (response) => {
       await callback(response);
     });
 
