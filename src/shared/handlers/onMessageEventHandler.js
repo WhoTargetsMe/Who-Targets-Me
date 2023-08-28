@@ -34,13 +34,22 @@ export const onMessageEventHandler = async (request) => {
   } else if (request.registerWTMUser) {
     const { registerWTMUser, ...payload } = request;
     const visa = (await readStorage("yougov")) || null;
-    await removeFromStorage("yougov");
     await handleUserRegistration({ ...payload, yougov: visa }, async (response) => {
       await callback(response);
     });
 
     // This reload is necessary to get the extension up-to-speed, like the token used to post rawlogs
     chrome.runtime.reload();
+  } else if (request.updateYGTab) {
+    const visa = (await readStorage("yougov")) || null;
+    if (visa && visa?.length !== 0) {
+      chrome.tabs.query({ currentWindow: true, active: false }, function (tabs) {
+        const tab = tabs.find(({ url }) => url.includes("yougov.com"));
+        const your_new_url = `https://survey2-api.yougov.com/ereturn/${visa}`;
+        chrome.tabs.update(tab.id, { selected: true, url: your_new_url });
+      });
+      await removeFromStorage("yougov");
+    }
   } else if (request.deleteWTMUser) {
     await handleUserDeletion();
   } else if (request.storeUserToken) {
