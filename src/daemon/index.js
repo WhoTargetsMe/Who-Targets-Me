@@ -1,27 +1,25 @@
-import {
-  handleScriptInjection,
-  handleOpeningResultsPage,
-  readStorage,
-  shouldOpenResultsPage,
-  setToStorage,
-} from "../shared";
-import "./background/background"; // This import registers the listeners
+import { getActiveBrowser, handleScriptInjection } from "../shared";
+
+const currentBrowser = getActiveBrowser();
+
+window.addEventListener("message", async function (event) {
+  if (event.source != window) {
+    return;
+  }
+
+  currentBrowser.runtime.sendMessage(event.data);
+});
+
+currentBrowser.runtime.onMessage.addListener((request) => {
+  if (request.registrationFeedback) {
+    localStorage.setItem("general_token", JSON.stringify(request.registrationFeedback.token));
+    window.postMessage(request, "*");
+    return;
+  }
+
+  return true;
+});
 
 (async () => {
   await handleScriptInjection();
-
-  const userData = await readStorage("userData");
-
-  /*
-    Changing userData.isNotifiedRegister from "yes" to true will cause issues
-    We handle this change for all extension users to ensure compatibility
-  */
-  if (userData?.isNotifiedRegister === "yes") {
-    await setToStorage("userData", { ...userData, isNotifiedRegister: true });
-  }
-
-  if (shouldOpenResultsPage(userData)) {
-    await handleOpeningResultsPage();
-    await setToStorage("userData", { ...userData, isNotifiedRegister: true });
-  }
 })();

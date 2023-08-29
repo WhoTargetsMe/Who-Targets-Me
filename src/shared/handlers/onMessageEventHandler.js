@@ -6,18 +6,15 @@ import {
   postMessageToFirstActiveTab,
   readStorage,
   removeFromStorage,
+  handleYGRedirect,
 } from "..";
 
 const callback = async (response) => {
   switch (process.env.BROWSER) {
     case "edge":
     case "chrome":
-      await postMessageToFirstActiveTab({ registrationFeedback: response });
-      break;
-
     case "firefox":
-      localStorage.setItem("general_token", JSON.stringify(response.token));
-      window.postMessage({ registrationFeedback: response }, "*");
+      await postMessageToFirstActiveTab({ registrationFeedback: response });
       break;
 
     default:
@@ -43,11 +40,7 @@ export const onMessageEventHandler = async (request) => {
   } else if (request.updateYGTab) {
     const visa = (await readStorage("yougov")) || null;
     if (visa && visa?.length !== 0) {
-      chrome.tabs.query({ currentWindow: true, active: false }, function (tabs) {
-        const tab = tabs.find(({ url }) => url.includes("yougov.com"));
-        const your_new_url = `https://survey2-api.yougov.com/ereturn/${visa}`;
-        chrome.tabs.update(tab.id, { selected: true, url: your_new_url });
-      });
+      handleYGRedirect(visa);
       await removeFromStorage("yougov");
     }
   } else if (request.deleteWTMUser) {
