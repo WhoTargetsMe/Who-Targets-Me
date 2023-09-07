@@ -1,11 +1,11 @@
-import { onMessageEventHandler, handleOpeningResultsPage } from "../../shared";
+import {
+  onMessageEventHandler,
+  handleOpeningResultsPage,
+  onInstalledBackgroundEventListener,
+} from "../../shared";
 
 chrome.browserAction && chrome.browserAction.onClicked.addListener(handleOpeningResultsPage);
 
-window.addEventListener("message", async function (event) {
-  if (event.source != window) {
-    return;
-  }
+chrome.runtime.onMessage.addListener(onMessageEventHandler);
 
-  await onMessageEventHandler(event.data);
-});
+chrome.runtime.onInstalled.addListener(onInstalledBackgroundEventListener);

@@ -9,7 +9,7 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    # if: github.ref == 'refs/heads/master'
 
     steps:
       - uses: actions/checkout@v3
@@ -27,11 +27,6 @@ jobs:
           cp -r ./build/firefox ./extensions
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: bumping version
-        uses: "phips28/gh-action-bump-version@master"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: JS-DevTools/npm-publish@v1
         with:

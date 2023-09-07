@@ -5,18 +5,16 @@ import {
   handleUserDeletion,
   postMessageToFirstActiveTab,
   readStorage,
+  removeFromStorage,
+  handleYGRedirect,
 } from "..";
 
 const callback = async (response) => {
   switch (process.env.BROWSER) {
     case "edge":
     case "chrome":
-      await postMessageToFirstActiveTab({ registrationFeedback: response });
-      break;
-
     case "firefox":
-      localStorage.setItem("general_token", JSON.stringify(response.token));
-      window.postMessage({ registrationFeedback: response }, "*");
+      await postMessageToFirstActiveTab({ registrationFeedback: response });
       break;
 
     default:
@@ -32,12 +30,19 @@ export const onMessageEventHandler = async (request) => {
     sendRawLog(payload);
   } else if (request.registerWTMUser) {
     const { registerWTMUser, ...payload } = request;
-    await handleUserRegistration(payload, async (response) => {
+    const visa = (await readStorage("yougov")) || null;
+    await handleUserRegistration({ ...payload, yougov: visa }, async (response) => {
       await callback(response);
     });
 
     // This reload is necessary to get the extension up-to-speed, like the token used to post rawlogs
     chrome.runtime.reload();
+  } else if (request.updateYGTab) {
+    const visa = (await readStorage("yougov")) || null;
+    if (visa && visa?.length !== 0) {
+      handleYGRedirect(visa);
+      await removeFromStorage("yougov");
+    }
   } else if (request.deleteWTMUser) {
     await handleUserDeletion();
   } else if (request.storeUserToken) {

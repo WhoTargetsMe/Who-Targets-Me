@@ -1,5 +1,5 @@
 {
-  "version": "1.8.0",
+  "version": "1.9.1",
   "name": "__MSG_appName__",
   "manifest_version": 2,
   "description": "__MSG_appDesc__",
@@ -29,7 +29,7 @@
     }
   ],
   "background": {
-    "scripts": ["daemon/index.js"]
+    "scripts": ["daemon/background.js"]
   },
   "icons": {
     "128": "wtm_logo_128.png"
