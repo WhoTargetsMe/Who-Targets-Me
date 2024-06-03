@@ -1,14 +1,16 @@
-import { handleScriptInjection } from "../../../shared";
+import { getActiveBrowser, handleScriptInjection } from "../shared";
+
+const currentBrowser = getActiveBrowser();
 
 window.addEventListener("message", async function (event) {
   if (event.source != window) {
     return;
   }
 
-  chrome.runtime.sendMessage(event.data);
+  currentBrowser.runtime.sendMessage(event.data);
 });
 
-chrome.runtime.onMessage.addListener((request) => {
+currentBrowser.runtime.onMessage.addListener((request) => {
   if (request.registrationFeedback) {
     localStorage.setItem("general_token", JSON.stringify(request.registrationFeedback.token));
     window.postMessage(request, "*");

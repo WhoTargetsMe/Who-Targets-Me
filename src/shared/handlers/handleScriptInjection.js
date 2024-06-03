@@ -19,10 +19,19 @@ const checkScripts = (src, targets) => {
   return scriptExists;
 };
 
-const injectOverload = () => {
+const injectRequestOverload = () => {
+  // Todo: change out to a configuration mapping file for the site specific request strategy
+  if (window.location.href.includes("youtube.com")) {
+    injectOverloadScript("daemon/fetch-overload.js");
+  }
+  else {
+    injectOverloadScript("daemon/overload.js");
+  }
+};
+
+const injectOverloadScript = (overloadScriptPath) => {
   const s2 = document.createElement("script");
-  s2.src =
-    chrome.runtime.getURL("daemon/overload.js") || chrome.extension.getURL("daemon/overload.js");
+  s2.src = chrome.runtime.getURL(overloadScriptPath) || chrome.extension.getURL(overloadScriptPath);
   const targets = [document.head, document.documentElement];
   const scriptExists = checkScripts(s2.src, targets);
   if (!scriptExists) {
@@ -39,9 +48,7 @@ export const handleScriptInjection = async () => {
         await setToStorage("userData", { isNotifiedRegister: true });
       }
     }
+  } catch {}
 
-    injectOverload();
-  } catch (error) {
-    injectOverload();
-  }
+  injectRequestOverload();
 };

@@ -29,9 +29,17 @@ export const postSponsoredData = (waistVariablesForSponsoredItem, advert) => {
     .then((waist) => {
       window.postMessage({
         action: "sendRawLog",
-        type: 'FACEBOOK',
+        type: "FACEBOOK",
         body: { advert: JSON.stringify(advert), waist: JSON.stringify(waist) },
       });
     })
     .catch((err) => console.error(err));
+};
+
+export const postYouTubeSponsoredData = (advert) => {
+  window.postMessage({
+    action: "sendRawLog",
+    type: "YOUTUBE",
+    body: { advert: JSON.stringify(advert), waist: "" },
+  });
 };

@@ -11,13 +11,15 @@
   "content_scripts": [
     {
       "matches": [
+        "*://youtube.com/*",
+        "*://*.youtube.com/*",
         "*://facebook.com/*",
         "*://*.facebook.com/*",
         "*://whotargets.me/*",
         "*://*.whotargets.me/*",
         "*://localhost/*"
       ],
-      "js": ["daemon/initOverload.js"]
+      "js": ["daemon/index.js"]
     }
   ],
   "background": {
@@ -29,14 +31,23 @@
   "icons": {
     "128": "wtm_logo_128.png"
   },
-  "web_accessible_resources": [{
-    "resources": ["daemon/overload.js", "daemon/overload.js.map"],
-    "matches": [
-      "*://facebook.com/*",
-      "*://*.facebook.com/*",
-      "*://whotargets.me/*",
-      "*://*.whotargets.me/*",
-      "*://localhost/*"
-    ]
-  }]
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "daemon/fetch-overload.js",
+        "daemon/fetch-overload.js.map",
+        "daemon/overload.js",
+        "daemon/overload.js.map"
+      ],
+      "matches": [
+        "*://youtube.com/*",
+        "*://*.youtube.com/*",
+        "*://facebook.com/*",
+        "*://*.facebook.com/*",
+        "*://whotargets.me/*",
+        "*://*.whotargets.me/*",
+        "*://localhost/*"
+      ]
+    }
+  ]
 }

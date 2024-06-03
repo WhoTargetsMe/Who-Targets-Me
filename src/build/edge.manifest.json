@@ -17,7 +17,7 @@
         "*://*.whotargets.me/*",
         "*://localhost/*"
       ],
-      "js": ["daemon/initOverload.js"]
+      "js": ["daemon/index.js"]
     }
   ],
   "background": {

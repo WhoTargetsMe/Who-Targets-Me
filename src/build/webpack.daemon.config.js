@@ -15,8 +15,9 @@ switch (process.env.BROWSER) {
   case "chrome":
     entry = {
       worker: __dirname + "/../daemon/background/worker.js",
-      initOverload: __dirname + "/../daemon/collector/overload/initOverload.js",
+      index: __dirname + "/../daemon/index.js",
       overload: __dirname + "/../daemon/collector/overload/overload.js",
+      ["fetch-overload"]: __dirname + "/../daemon/collector/overload/fetch-overload.js",
     };
     break;
 
@@ -25,6 +26,7 @@ switch (process.env.BROWSER) {
       index: __dirname + "/../daemon/index.js",
       background: __dirname + "/../daemon/background/background.js",
       overload: __dirname + "/../daemon/collector/overload/overload.js",
+      ["fetch-overload"]: __dirname + "/../daemon/collector/overload/fetch-overload.js",
     };
     break;
 
