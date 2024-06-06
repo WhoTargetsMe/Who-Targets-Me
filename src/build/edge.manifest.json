@@ -39,7 +39,12 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["daemon/overload.js", "daemon/overload.js.map"],
+      "resources": [
+        "daemon/fetch-overload.js",
+        "daemon/fetch-overload.js.map",
+        "daemon/overload.js",
+        "daemon/overload.js.map"
+      ],
       "matches": [
         "*://x.com/*",
         "*://*.x.com/*",

@@ -2,8 +2,8 @@ import _ from "lodash";
 import { postYouTubeSponsoredData } from "./post-sponsored-data";
 
 (function () {
-  // Save the original fetch function
 
+  // Save the original fetch function
   const { fetch: originalFetch } = window;
 
   // Override the fetch function
@@ -26,9 +26,7 @@ const findAdSlotRenderers = (obj) =>
     key === "adSlotRenderer" ? [value] : typeof value === "object" ? findAdSlotRenderers(value) : []
   );
 
-// Packets here refer to network packets, i.e. request/response packets
-const handleResponse = async (url,response) => {
-
+const handleResponse = async (url, response) => {
   const regexList = [/v1\/(search|browse|player|next)\?prettyPrint=false/g];
 
   function isURLInterested(url) {
@@ -38,8 +36,6 @@ const handleResponse = async (url,response) => {
   if (!isURLInterested(url)) {
     return;
   }
-
-  console.log("Intercepted URL: ", url);
 
   try {
     const json = await response.json();
