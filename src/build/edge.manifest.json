@@ -11,6 +11,14 @@
   "content_scripts": [
     {
       "matches": [
+        "*://x.com/*",
+        "*://*.x.com/*",
+        "*://twitter.com/*",
+        "*://*.twitter.com/*",
+        "*://instagram.com/*",
+        "*://*.instagram.com/*",
+        "*://youtube.com/*",
+        "*://*.youtube.com/*",
         "*://facebook.com/*",
         "*://*.facebook.com/*",
         "*://whotargets.me/*",
@@ -33,6 +41,14 @@
     {
       "resources": ["daemon/overload.js", "daemon/overload.js.map"],
       "matches": [
+        "*://x.com/*",
+        "*://*.x.com/*",
+        "*://twitter.com/*",
+        "*://*.twitter.com/*",
+        "*://instagram.com/*",
+        "*://*.instagram.com/*",
+        "*://youtube.com/*",
+        "*://*.youtube.com/*",
         "*://facebook.com/*",
         "*://*.facebook.com/*",
         "*://whotargets.me/*",

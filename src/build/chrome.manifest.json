@@ -11,6 +11,12 @@
   "content_scripts": [
     {
       "matches": [
+        "*://x.com/*",
+        "*://*.x.com/*",
+        "*://twitter.com/*",
+        "*://*.twitter.com/*",
+        "*://instagram.com/*",
+        "*://*.instagram.com/*",
         "*://youtube.com/*",
         "*://*.youtube.com/*",
         "*://facebook.com/*",
@@ -40,6 +46,12 @@
         "daemon/overload.js.map"
       ],
       "matches": [
+        "*://x.com/*",
+        "*://*.x.com/*",
+        "*://twitter.com/*",
+        "*://*.twitter.com/*",
+        "*://instagram.com/*",
+        "*://*.instagram.com/*",
         "*://youtube.com/*",
         "*://*.youtube.com/*",
         "*://facebook.com/*",

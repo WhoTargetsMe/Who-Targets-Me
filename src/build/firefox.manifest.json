@@ -10,6 +10,14 @@
   "permissions": [
     "storage",
     "tabs",
+    "*://x.com/*",
+    "*://*.x.com/*",
+    "*://twitter.com/*",
+    "*://*.twitter.com/*",
+    "*://instagram.com/*",
+    "*://*.instagram.com/*",
+    "*://youtube.com/*",
+    "*://*.youtube.com/*",
     "*://facebook.com/*",
     "*://*.facebook.com/*",
     "*://whotargets.me/*",
@@ -19,6 +27,14 @@
   "content_scripts": [
     {
       "matches": [
+        "*://x.com/*",
+        "*://*.x.com/*",
+        "*://twitter.com/*",
+        "*://*.twitter.com/*",
+        "*://instagram.com/*",
+        "*://*.instagram.com/*",
+        "*://youtube.com/*",
+        "*://*.youtube.com/*",
         "*://facebook.com/*",
         "*://*.facebook.com/*",
         "*://whotargets.me/*",
@@ -34,5 +50,5 @@
   "icons": {
     "128": "wtm_logo_128.png"
   },
-  "web_accessible_resources": ["daemon/overload.js"]
+  "web_accessible_resources": ["daemon/overload.js", "daemon/fetch-overload.js"]
 }
