@@ -15,3 +15,4 @@ export * from "./handlers/handleUserDeletion";
 export * from "./handlers/handleScriptInjection";
 export * from "./handlers/handleYGToken";
 export * from "./handlers/onInstalledBackgroundEventListener";
+export * from "./handlers/handleConsentUpdate";

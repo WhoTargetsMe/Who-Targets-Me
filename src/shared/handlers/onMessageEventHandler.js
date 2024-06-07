@@ -7,6 +7,7 @@ import {
   readStorage,
   removeFromStorage,
   handleYGRedirect,
+  handleConsentUpdate,
 } from "..";
 
 const callback = async (response) => {
@@ -24,6 +25,9 @@ const callback = async (response) => {
 
 export const onMessageEventHandler = async (request) => {
   const token = await readStorage("general_token");
+
+  handleConsentUpdate();
+
 
   if (request.action === "sendRawLog" && token) {
     const { action, ...payload } = request;
@@ -47,6 +51,8 @@ export const onMessageEventHandler = async (request) => {
     await handleUserDeletion();
   } else if (request.storeUserToken) {
     await setToStorage("general_token", request.token);
+  } else if (request.userPreferences) {
+    await setToStorage("wtm_user_preferences", request.userPreferences);
   }
 
   return true;
