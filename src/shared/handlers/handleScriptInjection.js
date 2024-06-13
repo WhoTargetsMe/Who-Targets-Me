@@ -19,12 +19,28 @@ const checkScripts = (src, targets) => {
   return scriptExists;
 };
 
-const injectRequestOverload = () => {
-  // Todo: change out to a configuration mapping file for the site specific request strategy
-  if (window.location.href.includes("youtube.com")) {
-    injectOverloadScript("daemon/fetch-overload.js");
+const domainMapping = {
+  facebook: { domains: ["facebook.com"], overload: "XMLHttpRequest" },
+  youtube: { domains: ["youtube.com"], overload: "fetch" },
+  twitter: { domains: ["twitter.com", "x.com"], overload: "XMLHttpRequest" },
+  instagram: { domains: ["instagram.com"], overload: "XMLHttpRequest" },
+};
+
+const shouldUseFetch = () => {
+  const url = new URL(window.location.href);
+  const hostname = url.hostname;
+
+  for (const [platform, { domains }] of Object.entries(domainMapping)) {
+    if (domains.some((domain) => domain.endsWith(hostname))) {
+      return domainMapping[platform].overload === "fetch";
+    }
   }
-  else {
+};
+
+const injectRequestOverload = () => {
+  if (shouldUseFetch()) {
+    injectOverloadScript("daemon/fetch-overload.js");
+  } else {
     injectOverloadScript("daemon/overload.js");
   }
 };

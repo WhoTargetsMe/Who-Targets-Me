@@ -49,6 +49,10 @@ module.exports = {
         { from: __dirname + "/" + browser + ".manifest.json", to: build_dir + "/manifest.json" },
         { from: __dirname + "/_locales", to: build_dir + "/_locales" },
         { from: __dirname + "/wtm_logo_128.png", to: build_dir + "/wtm_logo_128.png" },
+        {
+          from: __dirname + "/wtm_logo_notification_128.png",
+          to: build_dir + "/wtm_logo_notification_128.png",
+        },
       ],
     }),
     new webpack.DefinePlugin({

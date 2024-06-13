@@ -1,33 +1,12 @@
-import { readStorage, setToStorage } from "..";
+import { readStorage } from "..";
 
-const RESULTS_URL = process.env.RESULTS_URL;
-
-const sendToConsentPage = async () => {
-  try {
-    const url = RESULTS_URL + "consent";
-    chrome.tabs.query({ active: false, currentWindow: true }, () => {
-      try {
-        chrome.tabs.create({ url });
-      } catch (e) {
-        browser.tabs.create({
-          url,
-        });
-      }
-    });
-  } catch (error) {
-    // toolbar button clicked FF: chrome.tabs.update.selected is not supported in FF
-    browser.tabs.create({
-      url,
-    });
-  }
-};
-
-export const handleConsentUpdate = async () => {
+export const handleIconNotificationUpdate = async () => {
   const general_token = await readStorage("general_token");
-  const preferences = await readStorage("wm_user_preferences");
+  const preferences = await readStorage("wtm_user_preferences");
 
-  if (general_token && !preferences?.platforms) {
-    await setToStorage("wtm_user_preferences", { platforms: { facebook: true } });
-    await sendToConsentPage();
+  if (!!general_token && preferences?.platformPermissions === undefined) {
+    chrome.action.setIcon({ path: "/wtm_logo_notification_128.png" });
+  } else {
+    chrome.action.setIcon({ path: "/wtm_logo_128.png" });
   }
 };
