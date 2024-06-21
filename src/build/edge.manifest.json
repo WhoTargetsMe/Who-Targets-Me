@@ -43,7 +43,10 @@
         "daemon/fetch-overload.js",
         "daemon/fetch-overload.js.map",
         "daemon/overload.js",
-        "daemon/overload.js.map"
+        "daemon/overload.js.map",
+        "daemon/notification-modal.js",
+        "daemon/notification-modal.js.map",
+        "wtm_logo_128.png"
       ],
       "matches": [
         "*://x.com/*",

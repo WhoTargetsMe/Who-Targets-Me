@@ -50,5 +50,10 @@
   "icons": {
     "128": "wtm_logo_128.png"
   },
-  "web_accessible_resources": ["daemon/overload.js", "daemon/fetch-overload.js"]
+  "web_accessible_resources": [
+    "daemon/overload.js",
+    "daemon/fetch-overload.js",
+    "daemon/notification-modal.js",
+    "wtm_logo_128.png"
+  ]
 }

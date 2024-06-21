@@ -7,8 +7,17 @@ import {
   readStorage,
   removeFromStorage,
   handleYGRedirect,
-  handleIconNotificationUpdate,
 } from "..";
+
+export const onMessageEventHandler = async (request) => {
+
+  if (request.action) {
+    await handleActions(request);
+  } else {
+    await handleOtherRequests(request);
+  }
+  return true;
+};
 
 const callback = async (response) => {
   switch (process.env.BROWSER) {
@@ -23,13 +32,10 @@ const callback = async (response) => {
   }
 };
 
-export const onMessageEventHandler = async (request) => {
-  const token = await readStorage("general_token");
+const handleOtherRequests = async (request) => {
 
-  if (request.action === "sendRawLog" && token) {
-    const { action, ...payload } = request;
-    sendRawLog(payload);
-  } else if (request.registerWTMUser) {
+  // Registration
+  if (request.registerWTMUser) {
     const { registerWTMUser, ...payload } = request;
     const visa = (await readStorage("yougov")) || null;
     await handleUserRegistration({ ...payload, yougov: visa }, async (response) => {
@@ -48,11 +54,28 @@ export const onMessageEventHandler = async (request) => {
     await handleUserDeletion();
   } else if (request.storeUserToken) {
     await setToStorage("general_token", request.token);
-  } else if (request.userPreferences !== undefined) {
-    await setToStorage("wtm_user_preferences", request.userPreferences);
+  } 
+}
+
+const handleActions = async (request) => {
+  const { action, payload } = request;
+
+  const isLoggedIn = !!(await readStorage("general_token"));
+
+  if (!isLoggedIn) {
+    return;
   }
 
-  await handleIconNotificationUpdate();
-
-  return true;
+  switch (action) {
+    case "SEND_RAW_LOG":
+      await sendRawLog(payload);
+      break;
+    case "SET_USER_PREFERENCES":
+      await setToStorage("wtm_user_preferences", payload);
+      break;
+    case "UPDATE_USER_CONSENT":
+      const userConsent = await readStorage("wtm_user_consent");
+      await setToStorage("wtm_user_consent", { ...userConsent, ...payload });
+      break;
+  }
 };

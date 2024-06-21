@@ -28,9 +28,11 @@ export const postSponsoredData = (waistVariablesForSponsoredItem, advert) => {
   fetchWaistForSponsoredItem(waistVariablesForSponsoredItem)
     .then((waist) => {
       window.postMessage({
-        action: "sendRawLog",
-        type: "FACEBOOK",
-        body: { advert: JSON.stringify(advert), waist: JSON.stringify(waist) },
+        action: "SEND_RAW_LOG",
+        payload: { 
+          type: "FACEBOOK",
+          body: { advert: JSON.stringify(advert), waist: JSON.stringify(waist) },
+        }
       });
     })
     .catch((err) => console.error(err));
@@ -38,8 +40,10 @@ export const postSponsoredData = (waistVariablesForSponsoredItem, advert) => {
 
 export const postYouTubeSponsoredData = (advert) => {
   window.postMessage({
-    action: "sendRawLog",
-    type: "YOUTUBE",
-    body: { advert: JSON.stringify(advert), waist: "" },
+    action: "SEND_RAW_LOG",
+    payload:{ 
+      type: "YOUTUBE",
+      body: { advert: JSON.stringify(advert), waist: "" },
+    }
   });
 };

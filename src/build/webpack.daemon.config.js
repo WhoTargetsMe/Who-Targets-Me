@@ -18,6 +18,7 @@ switch (process.env.BROWSER) {
       index: __dirname + "/../daemon/index.js",
       overload: __dirname + "/../daemon/collector/overload/overload.js",
       ["fetch-overload"]: __dirname + "/../daemon/collector/overload/fetch-overload.js",
+      ["notification-modal"]: __dirname + "/../daemon/notification-modal.js",
     };
     break;
 
@@ -27,6 +28,7 @@ switch (process.env.BROWSER) {
       background: __dirname + "/../daemon/background/background.js",
       overload: __dirname + "/../daemon/collector/overload/overload.js",
       ["fetch-overload"]: __dirname + "/../daemon/collector/overload/fetch-overload.js",
+      ["notification-modal"]: __dirname + "/../daemon/notification-modal.js",
     };
     break;
 
@@ -52,6 +54,10 @@ module.exports = {
         {
           from: __dirname + "/wtm_logo_notification_128.png",
           to: build_dir + "/wtm_logo_notification_128.png",
+        },
+        {
+          from: __dirname + "/fonts",
+          to: build_dir + "/fonts",
         },
       ],
     }),
