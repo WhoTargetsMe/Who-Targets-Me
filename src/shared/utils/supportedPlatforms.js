@@ -1,4 +1,5 @@
 import { readStorage } from "../";
+import { load } from "cheerio";
 
 export const availablePlatforms = ["facebook", "youtube", "twitter", "instagram"];
 
@@ -59,13 +60,13 @@ const fetchLatestTermsAndConditionsDate = async () => {
 
   try {
     const response = await fetch(url);
-    const html = await response.text();
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");
-    const metaTag = doc.querySelector('meta[name="termsAndConditionsDate"]');
+    const htmlString = await response.text();
+
+    const $ = load(htmlString);
+    const metaTag = $('meta[name="termsAndConditionsDate"]');
 
     if (metaTag) {
-      const termsAndConditionsDateString = metaTag.getAttribute("content");
+      const termsAndConditionsDateString = metaTag.attr('content');
 
       try {
         return new Date(termsAndConditionsDateString);
