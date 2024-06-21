@@ -96,13 +96,6 @@
   `;
   document.head.appendChild(style);
 
-
-  // Add the Google Fonts link
-  //const fontLink = document.createElement("link");
-  //fontLink.href = "https://fonts.googleapis.com/css2?family=Varela+Round&display=swap";
-  //fontLink.rel = "stylesheet";
-  //document.head.appendChild(fontLink);
-
   // Create the overlay HTML
   const overlay = document.createElement("div");
   overlay.id = "wtm-extension-overlay";
@@ -120,7 +113,7 @@
       </div>
       <p class="wtm-overlay-message">We now support more platforms, please update your consent.</p>
       <p style="text-align:center">
-        <a class="wtm-overlay-btn wtm-overlay-btn-primary" href="${resultUrl}/consent">Provide Consent</a>
+        <a class="wtm-overlay-btn wtm-overlay-btn-primary" id="wtm_provide_consent-button" target="_blank" href="${resultUrl}/consent">Provide Consent</a>
       </p>
       <div style="text-align:center; margin-top:10px">
         <a class="wtm-overlay-btn wtm-overlay-btn-outline" id="wtm-ask-me-later-button">Ask me later</a>
@@ -129,16 +122,26 @@
   `;
   document.body.appendChild(overlay);
 
-  document.getElementById("wtm-close-overlay").addEventListener("click", () => {
+  document.getElementById("wtm_provide_consent-button").addEventListener("click", () => {
     document.body.removeChild(overlay);
     document.head.removeChild(style);
     askMeLater(1);
   });
 
+  document.getElementById("wtm-close-overlay").addEventListener("click", () => {
+    setTimeout(() => {
+      document.body.removeChild(overlay);
+      document.head.removeChild(style);
+      askMeLater(1);
+    }, 500);
+  });
+
   document.getElementById("wtm-ask-me-later-button").addEventListener("click", () => {
-    document.body.removeChild(overlay);
-    document.head.removeChild(style);
-    askMeLater(7);
+    setTimeout(() => {
+      document.body.removeChild(overlay);
+      document.head.removeChild(style);
+      askMeLater(7);
+    }, 500);
   });
 })();
 
@@ -149,7 +152,7 @@ const askMeLater = (day) => {
   window.postMessage({
     action: "UPDATE_USER_CONSENT",
     payload: {
-      askMeLaterDate
+      askMeLaterDate,
     },
   });
 };
