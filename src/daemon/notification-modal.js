@@ -17,13 +17,12 @@
       right: 20px;
       width: auto;
       height: auto;
-      background: rgba(0, 0, 0, 0.5);
       display: flex;
       justify-content: center;
       align-items: center;
       z-index: 99000;
       padding: 10px;
-      border-radius: 30px;
+      border-radius: 8px;
       font-family: 'Varela Round', sans-serif !important;
       font-size: 14px;
       color: #333;
@@ -33,7 +32,8 @@
       background: white;
       padding: 20px;
       padding-right: 40px;
-      border-radius: 22px;
+      border-radius: 12px;
+      box-shadow: 0px 0px 2px 3px #999;
       font-family: 'Varela Round', sans-serif !important;
     }
 
@@ -68,7 +68,7 @@
       border: 1px solid transparent;
       padding: .375rem .75rem;
       line-height: 1.5;
-      border-radius: .25rem;
+      border-radius: .5rem;
       transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
       text-decoration: inherit;
     }
