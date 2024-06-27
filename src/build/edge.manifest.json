@@ -44,9 +44,13 @@
         "daemon/fetch-overload.js.map",
         "daemon/overload.js",
         "daemon/overload.js.map",
+        "daemon/inline-collector.js",
+        "daemon/inline-collector.js.map",
         "daemon/notification-modal.js",
         "daemon/notification-modal.js.map",
-        "wtm_logo_128.png"
+        "wtm_logo_128.png",
+        "fonts/VarelaRound-Regular.woff2",
+        "fonts/VarelaRound-Regular.woff"
       ],
       "matches": [
         "*://x.com/*",

@@ -1,7 +1,13 @@
-import _ from "lodash";
-import { postYouTubeSponsoredData } from "./post-sponsored-data";
+import { handleYoutubeResponse } from "../platforms/youtube/handleApiResponse";
 
 (function () {
+  const currentScript = document.currentScript;
+  const { platform } = currentScript.dataset;
+
+  // If the platform is not supported, dont overload the fetch function
+  if (platform === null) {
+    return;
+  }
 
   // Save the original fetch function
   const { fetch: originalFetch } = window;
@@ -14,38 +20,20 @@ import { postYouTubeSponsoredData } from "./post-sponsored-data";
     let response = await originalFetch.apply(this, args);
 
     if (response.ok) {
-      handleResponse(url, response.clone());
+      handleResponse(platform, url, response.clone());
     }
 
     return response;
   };
 })();
 
-const findAdSlotRenderers = (obj) =>
-  Object.entries(obj).flatMap(([key, value]) =>
-    key === "adSlotRenderer" ? [value] : typeof value === "object" ? findAdSlotRenderers(value) : []
-  );
 
-const handleResponse = async (url, response) => {
-  const regexList = [/v1\/(search|browse|player|next)\?prettyPrint=false/g];
-
-  function isURLInterested(url) {
-    return regexList.some((regex) => regex.test(url));
-  }
-
-  if (!isURLInterested(url)) {
-    return;
-  }
-
-  try {
-    const json = await response.json();
-
-    const adSlots = findAdSlotRenderers(json);
-
-    adSlots.forEach((addSlot) => {
-      postYouTubeSponsoredData(addSlot);
-    });
-  } catch (e) {
-    console.error(e);
+const handleResponse = async (platform, url, response) => {
+  // Note: Facebook uses XMLHttpRequest, so we don't need to handle it here
+  switch (platform) {
+    case "youtube":
+      return handleYoutubeResponse(url, response);
+    default:
+      return;
   }
 };

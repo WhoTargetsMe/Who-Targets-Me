@@ -5,6 +5,7 @@ import {
   hasRequestedToAskForConsentLater,
 } from "../";
 import { getActiveBrowser } from "../";
+import { getPlatform, domainMapping } from "../../daemon/collector/platforms";
 
 const checkScripts = (src, targets) => {
   let scriptExists = false;
@@ -25,29 +26,17 @@ const checkScripts = (src, targets) => {
   return scriptExists;
 };
 
-const domainMapping = {
-  facebook: { domains: ["facebook.com"], overload: "XMLHttpRequest" },
-  youtube: { domains: ["youtube.com"], overload: "fetch" },
-  twitter: { domains: ["twitter.com", "x.com"], overload: "XMLHttpRequest" },
-  instagram: { domains: ["instagram.com"], overload: "XMLHttpRequest" },
+
+export const shouldUseFetch = () => {
+  const platform = getPlatform();
+  return domainMapping[platform]?.overload === "fetch";
 };
 
-const shouldUseFetch = () => {
-  const url = new URL(window.location.href);
-  const hostname = url.hostname;
-
-  for (const [platform, { domains }] of Object.entries(domainMapping)) {
-    if (domains.some((domain) => hostname.endsWith(domain))) {
-      return domainMapping[platform].overload === "fetch";
-    }
-  }
-};
-
-const injectRequestOverload = () => {
+const injectRequestOverload = (platform) => {
   if (shouldUseFetch()) {
-    injectScript("daemon/fetch-overload.js");
+    injectScript("daemon/fetch-overload.js", { platform });
   } else {
-    injectScript("daemon/overload.js");
+    injectScript("daemon/overload.js", { platform });
   }
 };
 
@@ -67,6 +56,30 @@ const injectScript = (overloadScriptPath, dataset = {}) => {
   }
 };
 
+const showNotificationModal = () => {
+  const logoUrl = getActiveBrowser().runtime.getURL("wtm_logo_128.png");
+  const resultUrl = process.env.RESULTS_URL;
+
+  const fontWoffUrl = getActiveBrowser().runtime.getURL("fonts/VarelaRound-Regular.woff");
+  const fontWoff2Url = getActiveBrowser().runtime.getURL("fonts/VarelaRound-Regular.woff2");
+
+  injectScript(`daemon/notification-modal.js`, { logoUrl, resultUrl, fontWoffUrl, fontWoff2Url });
+};
+
+const isWtmUrl = () => {
+  const resultsUrl = process.env.RESULTS_URL;
+  const url = new URL(window.location.href);
+  return resultsUrl.includes(url.host);
+}
+
+
+const injectInlineCollector = (platform) => {
+  if (platform !== null && domainMapping[platform].hasInlineAdvertContent) {
+    injectScript('daemon/inline-collector.js', { platform });
+  }
+}
+
+
 export const handleScriptInjection = async () => {
   const isRegistered = !!(await readStorage("general_token"));
   try {
@@ -78,7 +91,10 @@ export const handleScriptInjection = async () => {
     }
   } catch {}
 
-  injectRequestOverload();
+  const platform = getPlatform();
+
+  injectRequestOverload(platform);
+  injectInlineCollector(platform);  
 
   if (!isRegistered || isWtmUrl()) {
     return;
@@ -93,19 +109,3 @@ export const handleScriptInjection = async () => {
     showNotificationModal();
   }
 };
-
-const showNotificationModal = () => {
-  const logoUrl = getActiveBrowser().runtime.getURL("wtm_logo_128.png");
-  const resultUrl = process.env.RESULTS_URL;
-
-  const fontWoffUrl = getActiveBrowser().runtime.getURL("fonts/VarelaRound-Regular.woff");
-  const fontWoff2Url = getActiveBrowser().runtime.getURL("fonts/VarelaRound-Regular.woff2");
-
-  injectScript(`daemon/notification-modal.js`, { logoUrl, resultUrl, fontWoffUrl, fontWoff2Url });
-};
-
-function isWtmUrl() {
-  const resultsUrl = process.env.RESULTS_URL;
-  const url = new URL(window.location.href);
-  return resultsUrl.includes(url.host);
-}

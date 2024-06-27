@@ -18,6 +18,7 @@ switch (process.env.BROWSER) {
       index: __dirname + "/../daemon/index.js",
       overload: __dirname + "/../daemon/collector/overload/overload.js",
       ["fetch-overload"]: __dirname + "/../daemon/collector/overload/fetch-overload.js",
+      ["inline-collector"]: __dirname + "/../daemon/collector/content/inline-collector.js",
       ["notification-modal"]: __dirname + "/../daemon/notification-modal.js",
     };
     break;
@@ -28,6 +29,7 @@ switch (process.env.BROWSER) {
       background: __dirname + "/../daemon/background/background.js",
       overload: __dirname + "/../daemon/collector/overload/overload.js",
       ["fetch-overload"]: __dirname + "/../daemon/collector/overload/fetch-overload.js",
+      ["inline-collector"]: __dirname + "/../daemon/collector/content/inline-collector.js",
       ["notification-modal"]: __dirname + "/../daemon/notification-modal.js",
     };
     break;
