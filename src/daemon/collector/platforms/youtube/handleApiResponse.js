@@ -28,7 +28,7 @@ export const handleYoutubeResponse = async (url, response) => {
     const adSlots = findRenderers(json, "adSlotRenderer");
 
     if (adSlots.length > 0) {
-      const context = getYoutubeAdvertisementContext(data, url);
+      const context = getYoutubeAdvertisementContext(json, url);
 
       adSlots.forEach((addSlot) => {
         postYouTubeSponsoredData(context, addSlot);
