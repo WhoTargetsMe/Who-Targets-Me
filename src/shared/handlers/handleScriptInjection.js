@@ -1,9 +1,4 @@
-import { readStorage, setToStorage } from "../";
-import {
-  hasConsentForAllPlatforms,
-  hasAgreedToLatestTermsAndConditions,
-  hasRequestedToAskForConsentLater,
-} from "../";
+import { getUser, readStorage, setToStorage } from "../";
 import { getActiveBrowser } from "../";
 import { getPlatform, domainMapping } from "../../daemon/collector/platforms";
 
@@ -79,12 +74,12 @@ const injectInlineCollector = (platform) => {
   }
 }
 
-
 export const handleScriptInjection = async () => {
-  const isRegistered = !!(await readStorage("general_token"));
+  const user = await getUser();
+
   try {
     const userData = await readStorage("userData");
-    if (isRegistered) {
+    if (user.isLoggedIn) {
       if (!userData.isNotifiedRegister || userData.isNotifiedRegister) {
         await setToStorage("userData", { isNotifiedRegister: true });
       }
@@ -96,16 +91,12 @@ export const handleScriptInjection = async () => {
   injectRequestOverload(platform);
   injectInlineCollector(platform);  
 
-  if (!isRegistered || isWtmUrl()) {
+  if (!user.isLoggedIn || isWtmUrl()) {
     return;
   }
 
-  const hasConsentedForAllPlatforms = await hasConsentForAllPlatforms();
-  const hasAgreedToLatestTerms = await hasAgreedToLatestTermsAndConditions();
-
-  if (!(hasConsentedForAllPlatforms && hasAgreedToLatestTerms)) {
-    if (await hasRequestedToAskForConsentLater()) return;
-
+  if (await user.shouldReconsent()) {
+    if (user.hasRequestedToAskForConsentLater) return;
     showNotificationModal();
   }
 };

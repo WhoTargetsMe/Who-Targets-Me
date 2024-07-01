@@ -44,6 +44,7 @@
       font-size: 20px;
       display: inline-block;
       padding-left: 10px;
+      font-family: 'Varela Round', sans-serif !important;
     }
 
     #wtm-extension-overlay.wtm-overlay .wtm-overlay-icon {
@@ -79,18 +80,21 @@
       text-align: center;
       font-weight: 500;
       margin-left: 12px;
+      font-family: 'Varela Round', sans-serif !important;
     }
 
     #wtm-extension-overlay.wtm-overlay .wtm-overlay-btn-primary {
       color: #fff;
       background-color: #007bff;
       border-color: #007bff;
+      font-family: 'Varela Round', sans-serif !important;
     }
 
     #wtm-extension-overlay.wtm-overlay .wtm-overlay-btn-outline {
       text-decoration: underline;
       cursor: pointer;
       padding: 0;
+      font-family: 'Varela Round', sans-serif !important;
     }
     
   `;
@@ -113,7 +117,7 @@
       </div>
       <p class="wtm-overlay-message">We now support more platforms, please update your consent.</p>
       <p style="text-align:center">
-        <a class="wtm-overlay-btn wtm-overlay-btn-primary" id="wtm_provide_consent-button" target="_blank" href="${resultUrl}/consent">Provide Consent</a>
+        <a class="wtm-overlay-btn wtm-overlay-btn-primary" id="wtm_provide_consent-button" target="_blank" href="${resultUrl?.replace(/\/$/, "")}/consent">Provide Consent</a>
       </p>
       <div style="text-align:center; margin-top:10px">
         <a class="wtm-overlay-btn wtm-overlay-btn-outline" id="wtm-ask-me-later-button">Ask me later</a>
@@ -150,7 +154,7 @@ const askMeLater = (day) => {
   const askMeLaterDate = new Date(now.setDate(now.getDate() + day));
 
   window.postMessage({
-    action: "UPDATE_USER_CONSENT",
+    action: "CONSENT_SET_ASK_ME_LATER_DATE",
     payload: {
       askMeLaterDate,
     },

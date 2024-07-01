@@ -7,7 +7,7 @@ export * from "./utils/removeFromStorage";
 export * from "./utils/shouldOpenResultsPage";
 export * from "./utils/postMessageToFirstActiveTab";
 export * from "./utils/getActiveBrowser";
-export * from "./utils/supportedPlatforms";
+export * from "./utils/user";
 
 export * from "./handlers/onMessageEventHandler";
 export * from "./handlers/handleOpeningResultsPage";

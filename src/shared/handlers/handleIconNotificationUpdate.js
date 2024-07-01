@@ -1,16 +1,14 @@
-import { readStorage } from "..";
 import {
-  hasConsentForAllPlatforms,
-  hasAgreedToLatestTermsAndConditions
+  getUser
 } from "../";
 
 export const handleIconNotificationUpdate = async () => {
-  const isRegistered = !!(await readStorage("general_token"));
 
-  const hasConsentedForAllPlatforms = await hasConsentForAllPlatforms();
-  const hasAgreedToLatestTerms = await hasAgreedToLatestTermsAndConditions();
+  const user = await getUser();
 
-  if (isRegistered && !(hasConsentedForAllPlatforms && hasAgreedToLatestTerms)) {
+  const requiresReconsent = await user.shouldReconsent();
+
+  if (user.isLoggedIn && requiresReconsent) { 
     chrome.action.setIcon({ path: "/wtm_logo_notification_128.png" });
   } else {
     chrome.action.setIcon({ path: "/wtm_logo_128.png" });

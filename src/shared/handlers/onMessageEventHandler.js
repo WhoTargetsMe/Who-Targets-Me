@@ -7,10 +7,10 @@ import {
   readStorage,
   removeFromStorage,
   handleYGRedirect,
+  getUser,
 } from "..";
 
 export const onMessageEventHandler = async (request) => {
-
   if (request.action) {
     await handleActions(request);
   } else {
@@ -33,7 +33,6 @@ const callback = async (response) => {
 };
 
 const handleOtherRequests = async (request) => {
-
   // Registration
   if (request.registerWTMUser) {
     const { registerWTMUser, ...payload } = request;
@@ -54,28 +53,28 @@ const handleOtherRequests = async (request) => {
     await handleUserDeletion();
   } else if (request.storeUserToken) {
     await setToStorage("general_token", request.token);
-  } 
-}
+  }
+};
 
 const handleActions = async (request) => {
   const { action, payload } = request;
 
-  const isLoggedIn = !!(await readStorage("general_token"));
+  const user = await getUser();
 
-  if (!isLoggedIn) {
+  if (!user.isLoggedIn) {
     return;
   }
 
   switch (action) {
     case "SEND_RAW_LOG":
-      await sendRawLog(payload);
+      sendRawLog(payload);
       break;
-    case "SET_USER_PREFERENCES":
-      await setToStorage("wtm_user_preferences", payload);
+    case "UPDATE_USER":
+      user.update(payload);
       break;
-    case "UPDATE_USER_CONSENT":
-      const userConsent = await readStorage("wtm_user_consent");
-      await setToStorage("wtm_user_consent", { ...userConsent, ...payload });
+    case "CONSENT_SET_ASK_ME_LATER_DATE":
+      const { askMeLaterDate } = payload;
+      user.setAskMeLaterConsentDate(askMeLaterDate);
       break;
   }
 };
