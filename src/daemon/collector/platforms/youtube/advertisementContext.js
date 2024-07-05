@@ -26,7 +26,7 @@ export const getYoutubeAdvertisementContext = (data, apiUrl = null) => {
       const videoOwnerRenderer = findRenderers(data, "videoOwnerRenderer")?.[0];
       context.meta = {
         ...context.meta,
-        videoId: url.searchParams.get("v"),
+        videoId: new URL(url)?.searchParams.get("v"),
         channelId: videoOwnerRenderer?.navigationEndpoint?.browseEndpoint?.browseId,
         channelAlias: videoOwnerRenderer?.navigationEndpoint?.browseEndpoint?.canonicalBaseUrl,
         channelTitle: videoOwnerRenderer?.title?.runs?.[0]?.text,
