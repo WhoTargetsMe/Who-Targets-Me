@@ -1,4 +1,4 @@
-import { findRenderers, getYoutubeAdvertisementContext } from ".";
+import { findRenderers, getYoutubeAdvertisementContext, getYoutubeAdvertisementWaistData } from ".";
 import { postYouTubeSponsoredData } from "../../overload/post-sponsored-data";
 
 // OBSERVATIONS:
@@ -29,9 +29,9 @@ export const handleYoutubeResponse = async (url, response) => {
 
     if (adSlots.length > 0) {
       const context = getYoutubeAdvertisementContext(json, url);
-
-      adSlots.forEach((addSlot) => {
-        postYouTubeSponsoredData(context, addSlot);
+      adSlots.forEach(async (addSlot) => {
+        const waist = await getYoutubeAdvertisementWaistData(addSlot);
+        postYouTubeSponsoredData(context, addSlot, waist);
       });
     }
   } catch (e) {

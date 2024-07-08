@@ -38,12 +38,12 @@ export const postSponsoredData = (waistVariablesForSponsoredItem, advert) => {
     .catch((err) => console.error(err));
 };
 
-export const postYouTubeSponsoredData = (context, advert) => {
+export const postYouTubeSponsoredData = (context, advert, waist) => {
   window.postMessage({
     action: "SEND_RAW_LOG",
     payload:{ 
       type: "YOUTUBE",
-      body: { advert: JSON.stringify(advert), context: JSON.stringify(context) },
+      body: { advert: JSON.stringify(advert), context: JSON.stringify(context), waist },
     }
   });
 };

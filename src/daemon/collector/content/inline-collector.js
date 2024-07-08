@@ -1,13 +1,13 @@
 import { handleYoutubeInlineAdvertisements } from "../platforms/youtube/handleInlineCollector";
 
 
-(function() {
+(async function() {
   const currentScript = document.currentScript;
   const { platform } = currentScript.dataset;
 
   switch (platform) {
     case "youtube":
-      handleYoutubeInlineAdvertisements();
+      await handleYoutubeInlineAdvertisements();
       break;
     default:
       break;

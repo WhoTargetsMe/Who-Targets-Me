@@ -130,7 +130,8 @@ class UserLocalStorage {
   }
 
   async shouldReconsent() {
-    return !this.hasConsentForAllPlatforms || !(await this.hasAgreedToLatestTermsAndConditions());
+    const hasntAgreedToLatestTermsAndConditions = !(await this.hasAgreedToLatestTermsAndConditions());
+    return !this.hasConsentForAllPlatforms || hasntAgreedToLatestTermsAndConditions;
   }
 
   async setAskMeLaterConsentDate(askMeLaterDate) {
