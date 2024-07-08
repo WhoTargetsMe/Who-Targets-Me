@@ -25,7 +25,9 @@
     "package:firefox": "npm run build:firefox && web-ext build --source-dir ./build/firefox --filename 'firefox-{version}.zip' --artifacts-dir ./build/firefox --overwrite-dest",
     "package:edge": "npm run build:edge && web-ext build --source-dir ./build/edge --filename 'edge-{version}.zip' --artifacts-dir ./build/edge --overwrite-dest",
     "start:chrome": "web-ext run --target chromium --source-dir ./build/chrome/",
-    "start:firefox": "web-ext run --source-dir ./build/firefox/"
+    "start:firefox": "web-ext run --source-dir ./build/firefox/",
+    "dev-start": "concurrently -k -s first -n \"dev,ext\" -c \"green,blue\" \"npm run dev-daemon\" \"wait-on ./build/$BROWSER && npm run start:$BROWSER\"",
+    "start": "BROWSER=${BROWSER:-chrome} npm run dev-start"
   },
   "author": "",
   "license": "MIT",
@@ -40,15 +42,14 @@
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
+    "concurrently": "^8.2.2",
     "copy-webpack-plugin": "^11.0.0",
     "dotenv": "^16.0.3",
+    "wait-on": "^7.2.0",
     "web-ext": "^8.2.0",
     "webpack": "^5.76.0",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.11.1"
   },
-  "browserslist": [
-    "last 2 versions",
-    "> 1% and not dead"
-  ]
+  "browserslist": ["last 2 versions", "> 1% and not dead"]
 }
