@@ -1,5 +1,6 @@
 import {
-  getUser
+  getUser,
+  getActiveBrowser
 } from "../";
 
 export const handleIconNotificationUpdate = async () => {
@@ -8,9 +9,11 @@ export const handleIconNotificationUpdate = async () => {
 
   const requiresReconsent = await user.shouldReconsent();
 
+  const browser = getActiveBrowser();  
+
   if (user.isLoggedIn && requiresReconsent) { 
-    chrome.action.setIcon({ path: "/wtm_logo_notification_128.png" });
+    browser.action.setIcon({ path: "/wtm_logo_notification_128.png" });
   } else {
-    chrome.action.setIcon({ path: "/wtm_logo_128.png" });
+    browser.action.setIcon({ path: "/wtm_logo_128.png" });
   }
 };
