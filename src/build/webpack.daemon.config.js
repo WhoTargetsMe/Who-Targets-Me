@@ -15,8 +15,11 @@ switch (process.env.BROWSER) {
   case "chrome":
     entry = {
       worker: __dirname + "/../daemon/background/worker.js",
-      initOverload: __dirname + "/../daemon/collector/overload/initOverload.js",
+      index: __dirname + "/../daemon/index.js",
       overload: __dirname + "/../daemon/collector/overload/overload.js",
+      ["fetch-overload"]: __dirname + "/../daemon/collector/overload/fetch-overload.js",
+      ["inline-collector"]: __dirname + "/../daemon/collector/content/inline-collector.js",
+      ["notification-modal"]: __dirname + "/../daemon/notification-modal.js",
     };
     break;
 
@@ -25,6 +28,9 @@ switch (process.env.BROWSER) {
       index: __dirname + "/../daemon/index.js",
       background: __dirname + "/../daemon/background/background.js",
       overload: __dirname + "/../daemon/collector/overload/overload.js",
+      ["fetch-overload"]: __dirname + "/../daemon/collector/overload/fetch-overload.js",
+      ["inline-collector"]: __dirname + "/../daemon/collector/content/inline-collector.js",
+      ["notification-modal"]: __dirname + "/../daemon/notification-modal.js",
     };
     break;
 
@@ -47,6 +53,14 @@ module.exports = {
         { from: __dirname + "/" + browser + ".manifest.json", to: build_dir + "/manifest.json" },
         { from: __dirname + "/_locales", to: build_dir + "/_locales" },
         { from: __dirname + "/wtm_logo_128.png", to: build_dir + "/wtm_logo_128.png" },
+        {
+          from: __dirname + "/wtm_logo_notification_128.png",
+          to: build_dir + "/wtm_logo_notification_128.png",
+        },
+        {
+          from: __dirname + "/fonts",
+          to: build_dir + "/fonts",
+        },
       ],
     }),
     new webpack.DefinePlugin({

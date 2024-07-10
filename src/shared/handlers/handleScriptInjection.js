@@ -1,4 +1,6 @@
-import { readStorage, setToStorage } from "../";
+import { getUser, readStorage, setToStorage } from "../";
+import { getActiveBrowser } from "../";
+import { getPlatform, domainMapping } from "../../daemon/collector/platforms";
 
 const checkScripts = (src, targets) => {
   let scriptExists = false;
@@ -19,29 +21,82 @@ const checkScripts = (src, targets) => {
   return scriptExists;
 };
 
-const injectOverload = () => {
+
+export const shouldUseFetch = () => {
+  const platform = getPlatform();
+  return domainMapping[platform]?.overload === "fetch";
+};
+
+const injectRequestOverload = (platform) => {
+  if (shouldUseFetch()) {
+    injectScript("daemon/fetch-overload.js", { platform });
+  } else {
+    injectScript("daemon/overload.js", { platform });
+  }
+};
+
+const injectScript = (overloadScriptPath, dataset = {}) => {
   const s2 = document.createElement("script");
-  s2.src =
-    chrome.runtime.getURL("daemon/overload.js") || chrome.extension.getURL("daemon/overload.js");
+  s2.src = chrome.runtime.getURL(overloadScriptPath) || chrome.extension.getURL(overloadScriptPath);
   const targets = [document.head, document.documentElement];
+
+  // Set dataset attributes, these are accessible in the injected script
+  Object.keys(dataset).forEach((key) => {
+    s2.dataset[key] = dataset[key];
+  });
+
   const scriptExists = checkScripts(s2.src, targets);
   if (!scriptExists) {
     (targets[0] || targets[1]).appendChild(s2);
   }
 };
 
+const showNotificationModal = () => {
+  const logoUrl = getActiveBrowser().runtime.getURL("wtm_logo_128.png");
+  const resultUrl = process.env.RESULTS_URL;
+
+  const fontWoffUrl = getActiveBrowser().runtime.getURL("fonts/VarelaRound-Regular.woff");
+  const fontWoff2Url = getActiveBrowser().runtime.getURL("fonts/VarelaRound-Regular.woff2");
+
+  injectScript(`daemon/notification-modal.js`, { logoUrl, resultUrl, fontWoffUrl, fontWoff2Url });
+};
+
+const isWtmUrl = () => {
+  const resultsUrl = process.env.RESULTS_URL;
+  const url = new URL(window.location.href);
+  return resultsUrl.includes(url.host);
+}
+
+
+const injectInlineCollector = (platform) => {
+  if (platform !== null && domainMapping[platform].hasInlineAdvertContent) {
+    injectScript('daemon/inline-collector.js', { platform });
+  }
+}
+
 export const handleScriptInjection = async () => {
+  const user = await getUser();
+
   try {
-    const general_token = await readStorage("general_token");
     const userData = await readStorage("userData");
-    if (general_token) {
+    if (user.isLoggedIn) {
       if (!userData.isNotifiedRegister || userData.isNotifiedRegister) {
         await setToStorage("userData", { isNotifiedRegister: true });
       }
     }
+  } catch {}
 
-    injectOverload();
-  } catch (error) {
-    injectOverload();
+  const platform = getPlatform();
+
+  injectRequestOverload(platform);
+  injectInlineCollector(platform);  
+
+  if (!user.isLoggedIn || isWtmUrl()) {
+    return;
+  }
+
+  if (await user.shouldReconsent()) {
+    if (user.hasRequestedToAskForConsentLater) return;
+    showNotificationModal();
   }
 };

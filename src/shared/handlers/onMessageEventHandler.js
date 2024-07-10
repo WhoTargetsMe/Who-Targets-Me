@@ -7,7 +7,17 @@ import {
   readStorage,
   removeFromStorage,
   handleYGRedirect,
+  getUser,
 } from "..";
+
+export const onMessageEventHandler = async (request) => {
+  if (request.action) {
+    await handleActions(request);
+  } else {
+    await handleOtherRequests(request);
+  }
+  return true;
+};
 
 const callback = async (response) => {
   switch (process.env.BROWSER) {
@@ -22,13 +32,9 @@ const callback = async (response) => {
   }
 };
 
-export const onMessageEventHandler = async (request) => {
-  const token = await readStorage("general_token");
-
-  if (request.action === "sendRawLog" && token) {
-    const { action, ...payload } = request;
-    sendRawLog(payload);
-  } else if (request.registerWTMUser) {
+const handleOtherRequests = async (request) => {
+  // Registration
+  if (request.registerWTMUser) {
     const { registerWTMUser, ...payload } = request;
     const visa = (await readStorage("yougov")) || null;
     await handleUserRegistration({ ...payload, yougov: visa }, async (response) => {
@@ -48,6 +54,27 @@ export const onMessageEventHandler = async (request) => {
   } else if (request.storeUserToken) {
     await setToStorage("general_token", request.token);
   }
+};
 
-  return true;
+const handleActions = async (request) => {
+  const { action, payload } = request;
+
+  const user = await getUser();
+
+  if (!user.isLoggedIn) {
+    return;
+  }
+
+  switch (action) {
+    case "SEND_RAW_LOG":
+      sendRawLog(payload);
+      break;
+    case "UPDATE_USER":
+      user.update(payload);
+      break;
+    case "CONSENT_SET_ASK_ME_LATER_DATE":
+      const { askMeLaterDate } = payload;
+      user.setAskMeLaterConsentDate(askMeLaterDate);
+      break;
+  }
 };

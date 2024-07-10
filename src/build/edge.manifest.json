@@ -1,5 +1,5 @@
 {
-  "version": "2.3.1",
+  "version": "2.4.1",
   "name": "__MSG_appName__",
   "manifest_version": 3,
   "description": "__MSG_appDesc__",
@@ -11,13 +11,21 @@
   "content_scripts": [
     {
       "matches": [
+        "*://x.com/*",
+        "*://*.x.com/*",
+        "*://twitter.com/*",
+        "*://*.twitter.com/*",
+        "*://instagram.com/*",
+        "*://*.instagram.com/*",
+        "*://youtube.com/*",
+        "*://*.youtube.com/*",
         "*://facebook.com/*",
         "*://*.facebook.com/*",
         "*://whotargets.me/*",
         "*://*.whotargets.me/*",
         "*://localhost/*"
       ],
-      "js": ["daemon/initOverload.js"]
+      "js": ["daemon/index.js"]
     }
   ],
   "background": {
@@ -31,8 +39,28 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["daemon/overload.js", "daemon/overload.js.map"],
+      "resources": [
+        "daemon/fetch-overload.js",
+        "daemon/fetch-overload.js.map",
+        "daemon/overload.js",
+        "daemon/overload.js.map",
+        "daemon/inline-collector.js",
+        "daemon/inline-collector.js.map",
+        "daemon/notification-modal.js",
+        "daemon/notification-modal.js.map",
+        "wtm_logo_128.png",
+        "fonts/VarelaRound-Regular.woff2",
+        "fonts/VarelaRound-Regular.woff"
+      ],
       "matches": [
+        "*://x.com/*",
+        "*://*.x.com/*",
+        "*://twitter.com/*",
+        "*://*.twitter.com/*",
+        "*://instagram.com/*",
+        "*://*.instagram.com/*",
+        "*://youtube.com/*",
+        "*://*.youtube.com/*",
         "*://facebook.com/*",
         "*://*.facebook.com/*",
         "*://whotargets.me/*",
