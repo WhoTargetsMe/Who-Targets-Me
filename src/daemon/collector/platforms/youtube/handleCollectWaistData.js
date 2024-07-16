@@ -1,4 +1,5 @@
 import { findRenderers } from ".";
+import { load } from "cheerio";
 
 export const getYoutubeAdvertisementWaistData = async (adSlotRenderer) => {
   const aboutThisAdRenderer = findRenderers(adSlotRenderer, "aboutThisAdRenderer")?.[0];
@@ -7,7 +8,19 @@ export const getYoutubeAdvertisementWaistData = async (adSlotRenderer) => {
 
   if (url) {
     const html = await fetchWaistData(url);
-    return html;
+
+    const $ = load(html);
+
+    try {
+      let filteredSubsections = $("div[role=region]").filter(function () {
+        return $(this).find("span[role=heading]").length > 0;
+      });
+
+      return filteredSubsections?.toString();
+    }
+    catch (e) {
+      console.error("Error parsing waist data: ", e);
+    }
   }
 
   return;
