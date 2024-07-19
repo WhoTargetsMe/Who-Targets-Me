@@ -10,9 +10,10 @@ import { postYouTubeSponsoredData } from "../../overload/post-sponsored-data";
 // PLAYER is hit when you mouse over a video whilst browsing (It also seems to run mometaily before running NEXT when you've clicked on a video, but doesn't seem to contain ad data in that case)
 // NEXT is hit when you click on a video, and are actually watching it
 // REEL_ITEM_WATCH is hit when you're watching a youtube short
+// AD_BREAK is in between watching a video
 
 export const handleYoutubeResponse = async (url, response) => {
-  const regexList = [/v1\/(search|browse|player|next|reel\/reel_item_watch)\?prettyPrint=false/g];
+  const regexList = [/v1\/(search|browse|player|next|ad_break|reel\/reel_item_watch)\?prettyPrint=false/g];
 
   const isURLInterested = (url) => {
     return regexList.some((regex) => regex.test(url));
