@@ -10,21 +10,6 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "*://x.com/*",
-        "*://*.x.com/*",
-        "*://twitter.com/*",
-        "*://*.twitter.com/*",
-        "*://instagram.com/*",
-        "*://*.instagram.com/*",
-        "*://youtube.com/*",
-        "*://*.youtube.com/*",
-        "*://facebook.com/*",
-        "*://*.facebook.com/*",
-        "*://whotargets.me/*",
-        "*://*.whotargets.me/*",
-        "*://localhost/*"
-      ],
       "js": ["daemon/index.js"]
     }
   ],
@@ -51,21 +36,6 @@
         "wtm_logo_128.png",
         "fonts/VarelaRound-Regular.woff2",
         "fonts/VarelaRound-Regular.woff"
-      ],
-      "matches": [
-        "*://x.com/*",
-        "*://*.x.com/*",
-        "*://twitter.com/*",
-        "*://*.twitter.com/*",
-        "*://instagram.com/*",
-        "*://*.instagram.com/*",
-        "*://youtube.com/*",
-        "*://*.youtube.com/*",
-        "*://facebook.com/*",
-        "*://*.facebook.com/*",
-        "*://whotargets.me/*",
-        "*://*.whotargets.me/*",
-        "*://localhost/*"
       ]
     }
   ]

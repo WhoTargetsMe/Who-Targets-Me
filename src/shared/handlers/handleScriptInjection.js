@@ -61,6 +61,22 @@ const showNotificationModal = () => {
   injectScript(`daemon/notification-modal.js`, { logoUrl, resultUrl, fontWoffUrl, fontWoff2Url });
 };
 
+const shouldBypassConsent = () => {
+  // Ignore consent for google search results
+  try {
+    const urlObj = new URL(url);
+    const domain = urlObj.hostname;
+
+    // Regular expression to match www.google.* domains
+    const googleSearchDomainRegex = /^www\.google\.[a-z]{2,3}(\.[a-z]{2})?$/;
+
+    return googleSearchDomainRegex.test(domain);
+  } catch (e) {
+    console.error('Invalid URL:', e);
+    return false;
+  }
+}
+
 const isWtmUrl = () => {
   const resultsUrl = process.env.RESULTS_URL;
   const url = new URL(window.location.href);
@@ -97,6 +113,7 @@ export const handleScriptInjection = async () => {
 
   if (await user.shouldReconsent()) {
     if (user.hasRequestedToAskForConsentLater) return;
+    if (shouldBypassConsent()) return;
     showNotificationModal();
   }
 };

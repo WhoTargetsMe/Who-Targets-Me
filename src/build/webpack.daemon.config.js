@@ -1,4 +1,7 @@
 require("dotenv").config();
+const fs = require("fs");
+const path = require("path");
+
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -8,6 +11,37 @@ const browser = process.env.BROWSER || "chrome";
 const node_env = process.env.NODE_ENV || "production";
 
 const build_dir = __dirname + "/../../build/" + browser;
+
+function generateManifest() {
+  const matches = JSON.parse(fs.readFileSync(path.resolve(__dirname, "site-matches.json"))).matches;
+
+  const isV2 = browser === "firefox";
+
+  const templatePath = path.resolve(__dirname, `${isV2 ? "v2" : "v3"}.manifest.template.json`);
+
+  const manifestTemplate = JSON.parse(fs.readFileSync(templatePath));
+
+  if (!fs.existsSync(templatePath)) {
+    throw new Error(`Manifest template not found for browser: ${browser}, at: ${templatePath}`);
+  }
+
+  if (isV2) {
+    manifestTemplate.permissions = [...manifestTemplate.permissions, ...matches];
+  } else {
+    manifestTemplate.web_accessible_resources[0].matches = matches;
+  }
+
+  manifestTemplate.content_scripts[0].matches = matches;
+
+  if (!fs.existsSync(build_dir)) {
+    fs.mkdirSync(build_dir, { recursive: true });
+  }
+
+  fs.writeFileSync(
+    path.resolve(build_dir, "manifest.json"),
+    JSON.stringify(manifestTemplate, null, 2)
+  );
+}
 
 let entry;
 switch (process.env.BROWSER) {
@@ -50,7 +84,6 @@ module.exports = {
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin({
       patterns: [
-        { from: __dirname + "/" + browser + ".manifest.json", to: build_dir + "/manifest.json" },
         { from: __dirname + "/_locales", to: build_dir + "/_locales" },
         { from: __dirname + "/wtm_logo_128.png", to: build_dir + "/wtm_logo_128.png" },
         {
@@ -72,6 +105,18 @@ module.exports = {
         : JSON.stringify(package.dataApi),
       "process.env.BROWSER": JSON.stringify(process.env.BROWSER) || "",
     }),
+    {
+      apply: (compiler) => {
+        compiler.hooks.emit.tapAsync("GenerateManifestPlugin", (_compilation, callback) => {
+          try {
+            generateManifest();
+            callback();
+          } catch (err) {
+            callback(err);
+          }
+        });
+      },
+    },
   ],
   optimization: {
     minimize: false,
