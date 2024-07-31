@@ -1,6 +1,6 @@
-import { findRenderers } from ".";
+import { findRenderers } from "./helpers";
 
-export const getYoutubeAdvertisementContext = (data, apiUrl = null) => {
+export const getAdvertContext = (data, apiUrl = null) => {
 
   const isFromInlineJs = apiUrl === null;
 

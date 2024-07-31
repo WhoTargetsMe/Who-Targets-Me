@@ -1,11 +1,9 @@
-
 export const domainMapping = {
-  facebook: { domains: ["facebook.com"], overload: "XMLHttpRequest" },
-  youtube: { domains: ["youtube.com"], overload: "fetch", hasInlineAdvertContent: true},
+  facebook: { domains: ["facebook.com"], overload: "XMLHttpRequest", hasInlineAdvertContent: true },
+  youtube: { domains: ["youtube.com"], overload: "fetch", hasInlineAdvertContent: true },
   twitter: { domains: ["twitter.com", "x.com"], overload: "XMLHttpRequest" },
   instagram: { domains: ["instagram.com"], overload: "XMLHttpRequest" },
 };
-
 
 export const getPlatform = () => {
   const url = new URL(window.location.href);
@@ -13,7 +11,7 @@ export const getPlatform = () => {
 
   for (const [platform, { domains }] of Object.entries(domainMapping)) {
     if (domains.some((domain) => hostname.endsWith(domain))) {
-      return platform
+      return platform;
     }
   }
   return null; // Not a supported platform
