@@ -20,7 +20,7 @@
     "build:edge": "BROWSER=edge webpack --config src/build/webpack.daemon.config.js",
     "build:firefox": "BROWSER=firefox webpack --config src/build/webpack.daemon.config.js",
     "dev-daemon": "OFFLINE=true webpack --config src/build/webpack.daemon.config.js --watch",
-    "dev-start": "concurrently -k -s first -n \"dev,ext\" -c \"green,blue\" \"npm run dev-daemon\" \"wait-on ./build/$BROWSER && npm run start:$BROWSER\"",
+    "dev-start": "concurrently -k -s first -n \"dev,ext\" -c \"green,blue\" \"npm run dev-daemon\" \"wait-on ./build/$BROWSER/manifest.json && npm run start:$BROWSER\"",
     "dev:chrome": "BROWSER=chrome npm run dev-start",
     "dev:firefox": "BROWSER=firefox npm run dev-start",
     "package:all": "npm run package:chrome && npm run package:firefox && npm run package:edge",
