@@ -1,4 +1,4 @@
-import { handleYoutubeResponse } from "../platforms/youtube/handleApiResponse";
+import { handleApiResponse } from "../platforms/commonHandler";
 
 (function () {
   const currentScript = document.currentScript;
@@ -20,20 +20,9 @@ import { handleYoutubeResponse } from "../platforms/youtube/handleApiResponse";
     let response = await originalFetch.apply(this, args);
 
     if (response.ok) {
-      handleResponse(platform, url, response.clone());
+      handleApiResponse(platform, url, response.clone());
     }
 
     return response;
   };
 })();
-
-
-const handleResponse = async (platform, url, response) => {
-  // Note: Facebook uses XMLHttpRequest, so we don't need to handle it here
-  switch (platform) {
-    case "youtube":
-      return handleYoutubeResponse(url, response);
-    default:
-      return;
-  }
-};

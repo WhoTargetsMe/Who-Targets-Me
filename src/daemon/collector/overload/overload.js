@@ -1,9 +1,9 @@
-import _ from "lodash";
-import { postSponsoredData } from "./post-sponsored-data";
-import { handleAdsInDocument } from "../content/collect";
+import { handleApiResponse } from "../platforms";
 
 (() => {
-  let counter = 0;
+  const currentScript = document.currentScript;
+  const { platform } = currentScript.dataset;
+
   var XHR = XMLHttpRequest.prototype;
   var open = XHR.open;
   var send = XHR.send;
@@ -14,20 +14,11 @@ import { handleAdsInDocument } from "../content/collect";
     return open.apply(this, arguments);
   };
 
-  XHR.send = function (postData) {
+  XHR.send = function (_postData) {
     this.addEventListener("load", function () {
-      if (counter === 0) {
-        counter++;
-        handleAdsInDocument();
+      if (this.responseType === '' || this.responseType === 'text') {
+        handleApiResponse(platform, this._url, this.responseText);
       }
-      handlePackets(
-        {
-          requestBody: postData,
-          method: this._method,
-          url: this._url,
-        },
-        { response: this.responseText }
-      );
     });
     try {
       return send.apply(this, arguments);
@@ -36,38 +27,3 @@ import { handleAdsInDocument } from "../content/collect";
     }
   };
 })();
-
-// Packets here refer to network packets, i.e. request/response packets
-const handlePackets = (requestPacket, responsePacket) => {
-  const { url } = requestPacket;
-  const { response } = responsePacket;
-  const interestedURLsRegEx = /api\/graphql/g;
-
-  if (!interestedURLsRegEx.test(url)) {
-    return;
-  }
-
-  const responsesForParsing = response.split("\n").filter((response) => {
-    const { data } = JSON.parse(response);
-
-    return data && containsSponsoredResponse(data);
-  });
-
-  if (responsesForParsing.length === 0) return;
-
-  responsesForParsing.forEach((advertDataString) => {
-    // TODO would be good to use a validator here
-    const advertData = JSON.parse(advertDataString);
-
-    // We're only interested in the posts with WAIST data
-    // Get WAIST data before sending advert and WAIST rawlog
-    postSponsoredData(advertData.data.node, advertData);
-  });
-};
-
-const containsSponsoredResponse = (response) => {
-  return (
-    response.category === "SPONSORED" ||
-    _.get(response, "viewer.sideFeed.nodes[0].__typename", "") === "AdsSideFeedUnit"
-  );
-};

@@ -1,4 +1,4 @@
-/**
+/*
  * Takes a SPONSORED post and extracts the necessary variables to make a WAIST request
  * @param {{}} post
  * @returns {{
@@ -37,21 +37,23 @@ function getWaistRequestVariablesFromSponsoredPost(node) {
  * @param {Object} advertData Facebook formatted advert data
  * @returns {Promise} Promise containing WAIST data
  */
-export function fetchWaistForSponsoredItem(node) {
+async function fetchWaistForSponsoredItem(node) {
   const waistRequest = getWaistRequestVariablesFromSponsoredPost(node);
   const search = new URLSearchParams(waistRequest);
 
-  return window
+  const data = await window
     .fetch(`/api/graphql/`, {
       body: search.toString(),
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       method: "post",
-    })
-    .then((data) => data.json());
+    });
+  return await data.json();
 }
 
 function getRandomInteger(min, max) {
   return Math.random() * (max - min) + min;
 }
+
+export const getAdvertWaistData = fetchWaistForSponsoredItem;
