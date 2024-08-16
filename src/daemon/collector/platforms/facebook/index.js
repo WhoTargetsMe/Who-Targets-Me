@@ -1,7 +1,7 @@
 import { handleApiResponse } from './handleApiResponse';
-import { handleInlineContent } from './handleInlineContent';  
+import { handleInlineContent } from './handleInlineContent';
 
-export const youtube = {
+export const facebook = {
   handleApiResponse,
   handleInlineContent
 };

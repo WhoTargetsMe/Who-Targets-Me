@@ -1,7 +1,7 @@
-import { findRenderers } from ".";
+import { findRenderers } from "./helpers";
 import { load } from "cheerio";
 
-export const getYoutubeAdvertisementWaistData = async (adSlotRenderer) => {
+export const getAdvertWaistData = async (adSlotRenderer) => {
   const aboutThisAdRenderer = findRenderers(adSlotRenderer, "aboutThisAdRenderer")?.[0];
 
   const url = aboutThisAdRenderer?.url?.privateDoNotAccessOrElseTrustedResourceUrlWrappedValue;
@@ -26,9 +26,9 @@ export const getYoutubeAdvertisementWaistData = async (adSlotRenderer) => {
   return;
 };
 
-const fetchWaistData = async (wasteDataUrl) => {
+const fetchWaistData = async (waistDataUrl) => {
   try {
-    const response = await fetch(wasteDataUrl);
+    const response = await fetch(waistDataUrl);
     const result = await response.text();
     return result;
   } catch (e) {

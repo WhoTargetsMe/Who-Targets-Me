@@ -1,5 +1,7 @@
-import { findRenderers, getYoutubeAdvertisementContext, getYoutubeAdvertisementWaistData } from ".";
-import { postYouTubeSponsoredData } from "../../overload/post-sponsored-data";
+import { getAdvertContext } from "./getAdvertContext";
+import { getAdvertWaistData } from "./getAdvertWaistData";
+import { sendRawlogMessage } from "./sendRawlogMessage";
+import { findRenderers } from "./helpers";
 
 // OBSERVATIONS:
 // ------------------------------------------------------------
@@ -12,7 +14,7 @@ import { postYouTubeSponsoredData } from "../../overload/post-sponsored-data";
 // REEL_ITEM_WATCH is hit when you're watching a youtube short
 // AD_BREAK is in between watching a video
 
-export const handleYoutubeResponse = async (url, response) => {
+export const handleApiResponse = async (url, response) => {
   const regexList = [/v1\/(search|browse|player|next|ad_break|reel\/reel_item_watch)\?prettyPrint=false/g];
 
   const isURLInterested = (url) => {
@@ -29,10 +31,10 @@ export const handleYoutubeResponse = async (url, response) => {
     const adSlots = findRenderers(json, "adSlotRenderer");
 
     if (adSlots.length > 0) {
-      const context = getYoutubeAdvertisementContext(json, url);
+      const context = getAdvertContext(json, url);
       adSlots.forEach(async (addSlot) => {
-        const waist = await getYoutubeAdvertisementWaistData(addSlot);
-        postYouTubeSponsoredData(context, addSlot, waist);
+        const waist = await getAdvertWaistData(addSlot);
+        sendRawlogMessage(context, addSlot, waist);
       });
     }
   } catch (e) {

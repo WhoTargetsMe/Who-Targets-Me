@@ -91,6 +91,12 @@ const injectInlineCollector = (platform) => {
 }
 
 export const handleScriptInjection = async () => {
+
+  const platform = getPlatform();
+
+  injectRequestOverload(platform);
+  injectInlineCollector(platform);  
+
   const user = await getUser();
 
   try {
@@ -101,11 +107,6 @@ export const handleScriptInjection = async () => {
       }
     }
   } catch {}
-
-  const platform = getPlatform();
-
-  injectRequestOverload(platform);
-  injectInlineCollector(platform);  
 
   if (!user.isLoggedIn || isWtmUrl()) {
     return;
