@@ -12,6 +12,9 @@ export const handleInlineContent = async () => {
 const handleAdsInDocument = () => {
   const sideAdRegex = /AdsSideFeedUnit/g;
   const postAdRegex = /"category":"SPONSORED"/g;
+  // 2024-08-25: Category has since been encoded as field `category_enc`
+  //  Try to detect based on presence of sponsored_data content
+  const postAdRegex2 = /\{"sponsored_data":\{"/g;
 
   $('script[type="application/json"]').each((_i, el) => {
     const content = $(el).text();
@@ -21,6 +24,10 @@ const handleAdsInDocument = () => {
     }
 
     if (postAdRegex.test(content)) {
+      handleFeedAds(JSON.parse(content));
+    }
+
+    if (postAdRegex2.test(content)) {
       handleFeedAds(JSON.parse(content));
     }
   });
