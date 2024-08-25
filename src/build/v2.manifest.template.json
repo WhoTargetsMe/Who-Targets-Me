@@ -1,5 +1,5 @@
 {
-  "version": "1.10.1",
+  "version": "1.10.2",
   "name": "__MSG_appName__",
   "manifest_version": 2,
   "description": "__MSG_appDesc__",
@@ -7,10 +7,7 @@
   "browser_action": {
     "default_icon": "wtm_logo_128.png"
   },
-  "permissions": [
-    "storage",
-    "tabs"
-  ],
+  "permissions": ["storage", "tabs"],
   "content_scripts": [
     {
       "js": ["daemon/index.js"]
