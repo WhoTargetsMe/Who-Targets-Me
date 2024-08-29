@@ -15,7 +15,9 @@ import { findRenderers } from "./helpers";
 // AD_BREAK is in between watching a video
 
 export const handleApiResponse = async (url, response) => {
-  const regexList = [/v1\/(search|browse|player|next|ad_break|reel\/reel_item_watch)\?prettyPrint=false/g];
+  const regexList = [
+    /v1\/(search|browse|player|next|ad_break|reel\/reel_item_watch)\?prettyPrint=false/g,
+  ];
 
   const isURLInterested = (url) => {
     return regexList.some((regex) => regex.test(url));
