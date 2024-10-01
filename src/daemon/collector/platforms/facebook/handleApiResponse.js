@@ -38,8 +38,9 @@ const containsSponsoredResponse = (response) => {
   return (
     response.category === "SPONSORED" ||
     // 2024-08-25: Category has since been encoded as field `category_enc`
-    //  Try to detect based on presence of sponsored_data content
+    // Try to detect based on presence of sponsored_data content
     _.has(response, "node.sponsored_data.ad_id") ||
+    _.has(response, "node.sponsored_data") || // 2024-10-01 changes: there is only node.sponsored_data, not necessarily ad_id
     _.get(response, "viewer.sideFeed.nodes[0].__typename", "") === "AdsSideFeedUnit"
   );
 };

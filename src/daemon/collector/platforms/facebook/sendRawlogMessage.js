@@ -3,6 +3,8 @@ import { getAdvertWaistData } from "./getAdvertWaistData";
 export const sendRawlogMessage = (waistVariablesForSponsoredItem, advert) => {
   getAdvertWaistData(waistVariablesForSponsoredItem)
     .then((waist) => {
+      if (waist?.errors || waist?.error) return;
+
       window.postMessage({
         action: "SEND_RAW_LOG",
         payload: {
