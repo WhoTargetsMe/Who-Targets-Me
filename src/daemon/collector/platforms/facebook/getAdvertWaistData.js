@@ -16,10 +16,10 @@ function getWaistRequestVariablesFromSponsoredPost(node) {
   const doc_id = 5574710692594916;
   const { fb_dtsg } = window.require("getAsyncParams")("POST");
 
-  const ad_ids = JSONPath({ path: "$..sponsored_data..ad_id", json: node }) || [];
+  const ad_ids = JSONPath({ path: "$..ad_id", json: node }) || [];
   const ad_id = ad_ids.find((str) => str && str.length > 0);
 
-  const client_tokens = JSONPath({ path: "$..sponsored_data..client_token", json: node }) || [];
+  const client_tokens = JSONPath({ path: "$..client_token", json: node }) || [];
   const client_token = client_tokens.find((str) => str && str.length > 0);
 
   variables.adId = ad_id;

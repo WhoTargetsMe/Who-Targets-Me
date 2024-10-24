@@ -1,5 +1,6 @@
-import { sendRawlogMessage } from "./sendRawlogMessage";
 import _ from "lodash";
+import { JSONPath } from "jsonpath-plus";
+import { sendRawlogMessage } from "./sendRawlogMessage";
 
 export const handleApiResponse = async (url, response) => {
   const regexList = [/api\/graphql/g];
@@ -14,7 +15,7 @@ export const handleApiResponse = async (url, response) => {
 
   try {
     const responsesForParsing = response.split("\n").filter((response) => {
-      const { data } = JSON.parse(response);
+      const data = JSON.parse(response);
 
       return data && containsSponsoredResponse(data);
     });
@@ -27,7 +28,7 @@ export const handleApiResponse = async (url, response) => {
 
       // We're only interested in the posts with WAIST data
       // Get WAIST data before sending advert and WAIST rawlog
-      sendRawlogMessage(advertData.data.node, advertData);
+      sendRawlogMessage(advertData.data, advertData);
     });
   } catch (e) {
     console.error(e);
@@ -35,12 +36,19 @@ export const handleApiResponse = async (url, response) => {
 };
 
 const containsSponsoredResponse = (response) => {
+  const sponsoredDataResults = JSONPath({ path: "$..sponsored_data", json: response }) || [];
+  const typeNameResults = (JSONPath({ path: "$..__typename", json: response }) || []).filter(
+    (str) => str.trim().toLowerCase() === "sponsoreddata"
+  );
+
   return (
     response.category === "SPONSORED" ||
     // 2024-08-25: Category has since been encoded as field `category_enc`
     // Try to detect based on presence of sponsored_data content
     _.has(response, "node.sponsored_data.ad_id") ||
     _.has(response, "node.sponsored_data") || // 2024-10-01 changes: there is only node.sponsored_data, not necessarily ad_id
-    _.get(response, "viewer.sideFeed.nodes[0].__typename", "") === "AdsSideFeedUnit"
+    _.get(response, "viewer.sideFeed.nodes[0].__typename", "") === "AdsSideFeedUnit" ||
+    sponsoredDataResults.length !== 0 ||
+    typeNameResults.length !== 0
   );
 };
