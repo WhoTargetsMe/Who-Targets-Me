@@ -1,3 +1,4 @@
+import { getAdvertContext } from "./getAdvertContext";
 import { sendRawlogMessage } from "./sendRawlogMessage";
 import $ from "jquery";
 
@@ -45,8 +46,9 @@ const handleFeedAds = (content) => {
 
   cleanSponsoredData.forEach((data) => {
     if (isDataItem(data)) {
+      const context = getAdvertContext();
       const pointer = data[1].__bbox.result;
-      sendRawlogMessage(pointer.data.node, pointer);
+      sendRawlogMessage(pointer.data.node, pointer, context);
     }
   });
 };
@@ -61,8 +63,10 @@ const handleSideAds = (content) => {
       // iterable side unit adverts
       const sideAdverts = pointer.data.viewer.sideFeed.nodes[0].ads.nodes;
 
+      const context = getAdvertContext();
+
       sideAdverts.forEach((node) => {
-        sendRawlogMessage(node, node);
+        sendRawlogMessage(node, node, context);
       });
     }
   });

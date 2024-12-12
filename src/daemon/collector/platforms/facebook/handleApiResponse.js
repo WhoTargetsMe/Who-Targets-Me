@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { JSONPath } from "jsonpath-plus";
 import { sendRawlogMessage } from "./sendRawlogMessage";
+import { getAdvertContext } from "./getAdvertContext";
 
 export const handleApiResponse = async (url, response) => {
   const regexList = [/api\/graphql/g];
@@ -22,13 +23,15 @@ export const handleApiResponse = async (url, response) => {
 
     if (responsesForParsing.length === 0) return;
 
+    const context = getAdvertContext();
+
     responsesForParsing.forEach((advertDataString) => {
       // TODO would be good to use a validator here
       const advertData = JSON.parse(advertDataString);
 
       // We're only interested in the posts with WAIST data
       // Get WAIST data before sending advert and WAIST rawlog
-      sendRawlogMessage(advertData.data, advertData);
+      sendRawlogMessage(advertData.data, advertData, context);
     });
   } catch (e) {
     console.error(e);
