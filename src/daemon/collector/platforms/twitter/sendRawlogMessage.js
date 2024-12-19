@@ -1,9 +1,9 @@
-export const sendRawlogMessage = (advert, waist) => {
+export const sendRawlogMessage = (advert, waist, context) => {
   window.postMessage({
     action: "SEND_RAW_LOG",
-    payload:{ 
+    payload: {
       type: "TWITTER",
-      body: { advert: JSON.stringify(advert), waist },
-    }
+      body: { advert: JSON.stringify(advert), waist, context: JSON.stringify(context) },
+    },
   });
 };

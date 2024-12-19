@@ -1,5 +1,6 @@
 import { getAdvertWaistData } from "./getAdvertWaistData";
 import { sendRawlogMessage } from "./sendRawlogMessage";
+import { getAdvertContext } from "./getAdvertContext";
 
 export const handleApiResponse = async (url, response) => {
   const regexList = [/i\/api\/graphql/g];
@@ -21,7 +22,8 @@ export const handleApiResponse = async (url, response) => {
       promotedTweets.forEach(async (tweet) => {
         const advertiserId = tweet?.promotedMetadata?.impressionId;
         const waist = await getAdvertWaistData(advertiserId);
-        sendRawlogMessage(tweet.entry, waist);
+        const context = getAdvertContext();
+        sendRawlogMessage(tweet.entry, waist, context);
       });
     }
   } catch (e) {
@@ -29,11 +31,9 @@ export const handleApiResponse = async (url, response) => {
   }
 };
 
-
-
 // promoted ads in twitter seem to follow a pattern. They exist within an entries array
 // The ones that are promoted contain promotedMetadata .entries[1].content.itemContent.promotedMetadata
-// e.g 
+// e.g
 // data.home.home_timeline_urt.instructions[0].entries[1].content.itemContent.promotedMetadata
 // data["threaded_conversation_with_injections_v2"].instructions[0].entries[2].content.items[0].item.itemContent.promotedMetadata
 // This function will find all entries that contain promotedMetadata
