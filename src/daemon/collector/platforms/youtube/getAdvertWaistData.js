@@ -7,18 +7,14 @@ export const getAdvertWaistData = async (adSlotRenderer) => {
   const url = aboutThisAdRenderer?.url?.privateDoNotAccessOrElseTrustedResourceUrlWrappedValue;
 
   if (url) {
-    const html = await fetchWaistData(url);
-
-    const $ = load(html);
-
     try {
-      let filteredSubsections = $("div[role=region]").filter(function () {
-        return $(this).find("span[role=heading]").length > 0;
-      });
+      const text = await fetchWaistData(url);
+      const $ = load(text);
+      $("head").remove();
+      $("script").remove();
 
-      return filteredSubsections?.toString();
-    }
-    catch (e) {
+      return $.html();
+    } catch (e) {
       console.error("Error parsing waist data: ", e);
     }
   }
