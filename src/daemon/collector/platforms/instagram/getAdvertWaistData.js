@@ -1,3 +1,5 @@
+import { JSONPath } from "jsonpath-plus";
+
 export const getAdvertWaistData = loadWebBloksUrl;
 
 async function loadWebBloksUrl(node) {
@@ -22,7 +24,7 @@ async function loadWebBloksUrl(node) {
     __d: "www",
   };
 
-  const json = await window.require("webBloksFetchJson")(webBlokUrl, { ...asyncParams, ...stuff});
+  const json = await window.require("webBloksFetchJson")(webBlokUrl, { ...asyncParams, ...stuff });
 
   const found = findMatchingValues(json);
 
@@ -31,35 +33,15 @@ async function loadWebBloksUrl(node) {
 }
 
 function findMatchingValues(jsonObj) {
-  const matches = [];
+  const results = JSONPath({
+    path: "$..['bk.components.Text']",
+    json: jsonObj,
+  });
 
-  // Recursive function to traverse the JSON object
-  function traverse(obj) {
-    if (typeof obj === "object" && obj !== null) {
-      // Check if the current object matches the sub-hierarchy
-      if (
-        obj.extensions &&
-        Array.isArray(obj.extensions) &&
-        obj.extensions[0] &&
-        obj.extensions[0]["bk.components.AccessibilityExtension"] &&
-        obj.extensions[0]["bk.components.AccessibilityExtension"].label &&
-        !obj.extensions[0]["bk.components.AccessibilityExtension"].label.indexOf("?") !== -1 &&
-        !obj.extensions[0]["bk.components.AccessibilityExtension"].hasOwnProperty("role") &&
-        obj.text_size === "14sp" &&
-        obj.text_style === "normal"
-      ) {
-        matches.push(obj.extensions[0]["bk.components.AccessibilityExtension"].label);
-      }
+  const matches =
+    results
+      .filter((r) => r?.text_size === "14sp" && r?.text_style === "normal")
+      .map((r) => r?.text) || [];
 
-      // Traverse each property of the object
-      for (const key in obj) {
-        if (obj.hasOwnProperty(key)) {
-          traverse(obj[key]);
-        }
-      }
-    }
-  }
-
-  traverse(jsonObj);
   return matches;
 }
