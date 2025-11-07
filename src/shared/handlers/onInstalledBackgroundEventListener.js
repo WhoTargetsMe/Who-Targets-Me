@@ -6,6 +6,7 @@ import {
   setToStorage,
   shouldOpenResultsPage,
 } from "../";
+import { handleUserCountry } from "./handleUserCountry";
 
 export const onInstalledBackgroundEventListener = async () => {
   const userData = await readStorage("userData");
@@ -29,5 +30,14 @@ export const onInstalledBackgroundEventListener = async () => {
     const visa = await handleYGToken();
     await removeFromStorage("yougov");
     await setToStorage("yougov", visa);
+  }
+
+  // user country
+  const userCountry = await readStorage("userCountry");
+  if (!userCountry) {
+    const country = await handleUserCountry();
+    if (country.length) {
+      await setToStorage("userCountry", country);
+    }
   }
 };
