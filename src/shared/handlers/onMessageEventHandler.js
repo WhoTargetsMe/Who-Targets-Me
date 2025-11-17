@@ -9,6 +9,7 @@ import {
   handleYGRedirect,
   getUser,
 } from "..";
+import { euCountries } from "../utils/eu-countries";
 
 export const onMessageEventHandler = async (request) => {
   if (request.action) {
@@ -62,6 +63,11 @@ const handleActions = async (request) => {
   const user = await getUser();
 
   if (!user.isLoggedIn) {
+    return;
+  }
+
+  const userCountry = await readStorage("userCountry");
+  if (userCountry && euCountries.includes(userCountry.toLowerCase())) {
     return;
   }
 
