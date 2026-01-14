@@ -4,6 +4,10 @@ import { handleApiResponse } from "../platforms";
   const currentScript = document.currentScript;
   const { platform } = currentScript.dataset;
 
+  if (platform === null || platform === "null") {
+    return;
+  }
+
   var XHR = XMLHttpRequest.prototype;
   var open = XHR.open;
   var send = XHR.send;
@@ -16,14 +20,15 @@ import { handleApiResponse } from "../platforms";
 
   XHR.send = function (_postData) {
     this.addEventListener("load", function () {
-      if (this.responseType === '' || this.responseType === 'text') {
-        handleApiResponse(platform, this._url, this.responseText);
+      try {
+        if (this.responseType === "" || this.responseType === "text") {
+          handleApiResponse(platform, this._url, this.responseText);
+        }
+      } catch (err) {
+        console.error(err);
       }
     });
-    try {
-      return send.apply(this, arguments);
-    } catch (err) {
-      console.error(err);
-    }
+
+    return send.apply(this, arguments);
   };
 })();

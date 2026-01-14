@@ -21,5 +21,7 @@ currentBrowser.runtime.onMessage.addListener((request) => {
 });
 
 (async () => {
-  await handleScriptInjection();
+  try {
+    await handleScriptInjection();
+  } catch (error) {}
 })();
