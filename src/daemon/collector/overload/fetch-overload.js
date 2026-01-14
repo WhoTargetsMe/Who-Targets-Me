@@ -5,7 +5,7 @@ import { handleApiResponse } from "../platforms/commonHandler";
   const { platform } = currentScript.dataset;
 
   // If the platform is not supported, dont overload the fetch function
-  if (platform === null) {
+  if (platform === null || platform === "null") {
     return;
   }
 
