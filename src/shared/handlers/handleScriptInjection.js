@@ -21,7 +21,6 @@ const checkScripts = (src, targets) => {
   return scriptExists;
 };
 
-
 export const shouldUseFetch = () => {
   const platform = getPlatform();
   return domainMapping[platform]?.overload === "fetch";
@@ -72,30 +71,32 @@ const shouldBypassConsent = () => {
 
     return googleSearchDomainRegex.test(domain);
   } catch (e) {
-    console.error('Invalid URL:', e);
+    console.error("Invalid URL:", e);
     return false;
   }
-}
+};
 
 const isWtmUrl = () => {
   const resultsUrl = process.env.RESULTS_URL;
   const url = new URL(window.location.href);
   return resultsUrl.includes(url.host);
-}
-
+};
 
 const injectInlineCollector = (platform) => {
   if (platform !== null && domainMapping[platform].hasInlineAdvertContent) {
-    injectScript('daemon/inline-collector.js', { platform });
+    injectScript("daemon/inline-collector.js", { platform });
   }
-}
+};
 
 export const handleScriptInjection = async () => {
-
   const platform = getPlatform();
 
+  if (!platform && !isWtmUrl()) {
+    return;
+  }
+
   injectRequestOverload(platform);
-  injectInlineCollector(platform);  
+  injectInlineCollector(platform);
 
   const user = await getUser();
 
