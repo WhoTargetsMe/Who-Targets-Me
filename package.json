@@ -41,7 +41,7 @@
     "fetch-http-client": "^1.0.1",
     "jquery": "^3.2.1",
     "jsonpath-plus": "^9.0.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.23"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
